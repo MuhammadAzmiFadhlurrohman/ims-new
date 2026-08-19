@@ -493,6 +493,7 @@ class InstallationPipelineResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->recordUrl(null)
             ->recordAction(null)
             ->columns([
@@ -503,14 +504,23 @@ class InstallationPipelineResource extends Resource
                         $internetNo = $record->internet_number ?? '-';
                         $custName = strtoupper($record->customer_name ?? $record->customer?->name ?? '-');
                         $gender = $record->customer?->gender == 'female' ? 'P' : 'L';
-                        $pkgName = strtoupper($record->package->name ?? $record->package_code ?? '-');
+                        $pkgName = strtoupper($record->package->name ?? $record->package_code ?? 'INTERNET STANDARD');
+                        $phone = $record->customer?->phone_number ?? $record->phone_number ?? '';
                         $detailUrl = \App\Filament\Resources\CustomerSubscriptionResource::getUrl('view', ['record' => $record]);
 
+                        $phoneHtml = $phone ? "<span style='font-size: 10.5px; color: #64748b; font-family: monospace;'>📞 {$phone}</span>" : "";
+
                         return "
-                            <div class='flex flex-col text-[12px] leading-snug space-y-0.5'>
-                                <a href='{$detailUrl}' class='font-black text-slate-900 tracking-tight underline decoration-slate-300 hover:text-blue-600 transition-colors'>{$internetNo}</a>
-                                <a href='{$detailUrl}' class='font-bold text-slate-800 underline decoration-slate-400 hover:text-blue-600 transition-colors'>{$custName} / ({$gender})</a>
-                                <a href='{$detailUrl}' class='text-slate-600 text-[10.5px] underline decoration-slate-300 hover:text-blue-600 transition-colors'>{$pkgName}</a>
+                            <div class='ims-cust-card'>
+                                <a href='{$detailUrl}' class='ims-cid-badge'>
+                                    <span>{$internetNo}</span>
+                                </a>
+                                <div style='display: flex; align-items: center; gap: 4px; margin-top: 2px;'>
+                                    <a href='{$detailUrl}' class='ims-cust-name'>{$custName}</a>
+                                    <span style='font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px; background: #e2e8f0; color: #475569;'>{$gender}</span>
+                                </div>
+                                <span class='ims-pkg-pill'>📦 {$pkgName}</span>
+                                {$phoneHtml}
                             </div>
                         ";
                     })
@@ -518,9 +528,10 @@ class InstallationPipelineResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('group_service')
-                    ->label('Group layanan')
+                    ->label('Group Layanan')
                     ->formatStateUsing(fn ($state) => strtoupper($state ?? 'MEDIANET'))
-                    ->extraAttributes(['class' => 'font-bold text-slate-700 text-xs tracking-wider uppercase'])
+                    ->badge()
+                    ->color('info')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('installation_address')
@@ -541,9 +552,9 @@ class InstallationPipelineResource extends Resource
                         $fullAddrStr = implode(', ', $parts);
 
                         return "
-                            <div class='flex flex-col text-[11.5px] leading-relaxed max-w-sm'>
-                                <span class='font-black text-slate-900 tracking-wide uppercase'>{$building}</span>
-                                <span class='text-slate-500 text-[10px] mt-0.5 leading-snug'>{$fullAddrStr}</span>
+                            <div style='display: flex; flex-direction: column; gap: 3px; max-width: 260px;'>
+                                <span style='font-size: 11px; font-weight: 900; color: #1e293b; background: #f1f5f9; padding: 2px 6px; border-radius: 6px; width: fit-content;'>🏢 {$building}</span>
+                                <span style='font-size: 11px; color: #64748b; line-height: 1.4;'>{$fullAddrStr}</span>
                             </div>
                         ";
                     })
@@ -551,92 +562,73 @@ class InstallationPipelineResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('registration_status')
-                    ->label('Status')
+                    ->label('Status Pipeline')
                     ->html()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
                         $status = $record->registration_status ?? 'Data Input';
-                        $updated = $record->updated_at ? $record->updated_at->format('d M Y H:i') . ' WIB' : '-';
+                        $updated = $record->updated_at ? $record->updated_at->format('d M Y H:i') : '-';
 
-                        $slot = '10 Agust 2026 13:00-15:00WIB';
+                        $slot = '10 Agust 2026 13:00-15:00 WIB';
                         $isInstalasi = ($status === 'Jadwal Instalasi Terbit' || str_contains($status, 'Instalasi Terbit'));
                         $isAktivasi = ($status === 'Jadwal Aktivasi Terbit' || $status === 'Proses Aktivasi' || str_contains($status, 'Aktivasi'));
                         $isSurvey = ($status === 'Jadwal Survey Terbit' || str_contains($status, 'Survey'));
 
                         if ($isInstalasi && $record->installation_date) {
-                            $slot = $record->installation_date->format('d M Y') . ' ' . ($record->installation_time_slot ?? '13:00-15:00WIB');
+                            $slot = $record->installation_date->format('d M Y') . ' ' . ($record->installation_time_slot ?? '13:00-15:00 WIB');
                         } elseif ($isAktivasi && $record->activation_date) {
-                            $slot = $record->activation_date->format('d M Y') . ' ' . ($record->activation_time_slot ?? '13:00-15:00WIB');
+                            $slot = $record->activation_date->format('d M Y') . ' ' . ($record->activation_time_slot ?? '13:00-15:00 WIB');
                         } elseif ($isSurvey && $record->survey_date) {
-                            $slot = $record->survey_date->format('d M Y') . ' ' . ($record->survey_time_slot ?? '13:00-15:00WIB');
+                            $slot = $record->survey_date->format('d M Y') . ' ' . ($record->survey_time_slot ?? '13:00-15:00 WIB');
                         }
 
-                        $titleBadge = match ($status) {
-                            'Jadwal Instalasi Terbit' => 'Jadwal Instalasi Terbit',
-                            'Selesai Instalasi' => 'Selesai Instalasi',
-                            'Jadwal Aktivasi Terbit' => 'Jadwal Aktivasi Terbit',
-                            'Proses Aktivasi' => 'Proses Aktivasi',
-                            'Jadwal Survey Terbit' => 'Jadwal Survey Terbit',
-                            'Selesai Survey' => 'Selesai Survey',
-                            default => $status,
+                        $pillClass = match ($status) {
+                            'Jadwal Survey Terbit' => 'ims-pill-survey',
+                            'Selesai Survey' => 'ims-pill-survey-done',
+                            'Jadwal Instalasi Terbit' => 'ims-pill-instalasi',
+                            'Selesai Instalasi' => 'ims-pill-instalasi-done',
+                            'Jadwal Aktivasi Terbit', 'Proses Aktivasi' => 'ims-pill-aktivasi',
+                            'Batal Pasang' => 'ims-pill-batal',
+                            default => 'ims-pill-survey',
                         };
 
-                        $stepText = match ($status) {
-                            'Jadwal Instalasi Terbit' => 'POSTING INSTALASI',
-                            'Selesai Instalasi' => 'SELESAI INSTALASI',
-                            'Jadwal Aktivasi Terbit' => 'JADWAL AKTIVASI',
-                            'Proses Aktivasi' => 'POSTING AKTIVASI',
-                            'Jadwal Survey Terbit' => 'POSTING SURVEY',
-                            'Selesai Survey' => 'SELESAI SURVEY',
-                            default => strtoupper($status),
-                        };
                         $statusType = strtoupper($record->status_type ?? 'TEMPORARY DELETE');
-                        $rawStatusType = $record->status_type ?? 'Temporary Delete';
-                        $custNameSafe = addslashes($record->customer_name ?? '');
                         $key = $record->getKey();
                         $safeKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $key);
 
                         return "
                             <div class='ims-status-box'>
-                                <div class='ims-schedule-pill'>
-                                    {$titleBadge}
-                                    <span class='ims-schedule-slot'>{$slot}</span>
+                                <div class='ims-schedule-pill {$pillClass}'>
+                                    <span>📌 {$status}</span>
+                                    <span class='ims-schedule-slot'>🕒 {$slot}</span>
                                 </div>
-                                <div style='display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; margin-top: 3px;'>
-                                    <span class='ims-step-badge' style='white-space: nowrap;'>{$stepText}</span>
+                                <div style='display: flex; align-items: center; gap: 6px; margin-top: 2px;'>
                                     <button
                                         type='button'
                                         onclick=\"document.querySelector('.ims-status-trigger-{$safeKey}')?.click()\"
-                                        class='ims-temp-badge hover:opacity-80 transition-opacity'
-                                        style='white-space: nowrap; cursor: pointer; border: 1px solid #ffe4e6; text-align: center;'
+                                        class='ims-temp-badge'
                                         title='Klik untuk ubah status tipe'
                                     >
                                         {$statusType}
                                     </button>
-                                </div>
-                                <span class='ims-updated-text'>Updated {$updated}</span>
-                                <div style='margin-top: 3px;'>
-                                    <span class='ims-billing-btn'>
-                                        <svg style='width: 13px; height: 13px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z'/></svg>
-                                        Billing
-                                    </span>
+                                    <span class='ims-updated-text'>Up: {$updated}</span>
                                 </div>
                             </div>
                         ";
                     }),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Tanggal SO')
+                    ->label('Tanggal SO & Sales')
                     ->html()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
-                        $tgl = $record->created_at ? $record->created_at->format('d M Y H.i') . ' WIB' : '10 Agust 2026 20.51 WIB';
+                        $tgl = $record->created_at ? $record->created_at->format('d M Y H:i') : '10 Agust 2026';
                         $sales = strtoupper($record->sales_name ?? 'NUNU NUGRAHA');
-                        $salesCode = $record->sales_code ? "SALES : {$record->sales_code}" : "SALES : 12345";
+                        $salesCode = $record->sales_code ? "ID: {$record->sales_code}" : "ID: 12345";
 
                         return "
-                            <div class='flex flex-col text-[11px] text-slate-600 leading-tight space-y-0.5'>
-                                <span>{$tgl}</span>
-                                <span class='font-bold text-slate-800 uppercase'>{$sales}</span>
-                                <span class='text-slate-500 uppercase text-[10px]'>{$salesCode}</span>
+                            <div style='display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: #475569;'>
+                                <span style='font-weight: 700;'>📅 {$tgl}</span>
+                                <span style='font-weight: 800; color: #0f172a;'>👤 {$sales}</span>
+                                <span style='font-size: 10px; color: #94a3b8; font-family: monospace;'>{$salesCode}</span>
                             </div>
                         ";
                     })
