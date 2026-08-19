@@ -1,0 +1,513 @@
+/* ============================================================
+   IMS MSN – OLT FTTH Management Theme (Sapphire Navy Gradient)
+   File: resources/css/filament/admin/olt-theme.css
+   ============================================================ */
+
+/* ── Container Layout ── */
+.olt-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* ── Top Header Card ── */
+.olt-top-header {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 0.85rem 1.25rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.olt-top-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.olt-title-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    background: #eff6ff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0284c7;
+}
+
+.olt-title-text {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+
+.olt-select-switcher {
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    color: #1e293b !important;
+    background-color: #ffffff !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 13px 13px !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    padding: 0.45rem 2.2rem 0.45rem 0.85rem !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    cursor: pointer !important;
+    outline: none !important;
+    height: 36px !important;
+}
+
+.olt-select-switcher:focus {
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
+}
+
+/* ── Breadcrumb Bar ── */
+.olt-breadcrumb-bar {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left: 5px solid #0f2b48 !important;
+    border-radius: 8px !important;
+    padding: 0.65rem 1rem !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #1e293b;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+}
+
+.olt-breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #64748b;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-weight: 700;
+    font-size: 0.76rem;
+    padding: 0;
+    transition: color 0.15s ease;
+}
+
+.olt-breadcrumb-link:hover {
+    color: #0284c7;
+}
+
+.olt-breadcrumb-active {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #0f172a;
+    font-weight: 900;
+}
+
+.olt-breadcrumb-sep {
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+/* ── Form Card ── */
+.olt-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 1.1rem 1.25rem !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+}
+
+.olt-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.olt-card-title {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.olt-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.85rem;
+    width: 100%;
+}
+
+.olt-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.olt-field-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.olt-input {
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 7px !important;
+    padding: 0.48rem 0.75rem !important;
+    height: 38px !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    transition: all 0.15s ease !important;
+}
+
+.olt-input:focus {
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
+}
+
+.olt-select {
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 7px !important;
+    padding: 0.48rem 0.75rem !important;
+    height: 38px !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    cursor: pointer !important;
+}
+
+.olt-select:focus {
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
+}
+
+/* ── Buttons ── */
+.olt-btn-add {
+    background: #00a86b !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 7px !important;
+    padding: 0 1.25rem !important;
+    height: 38px !important;
+    font-size: 0.76rem !important;
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.4rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 6px rgba(0, 168, 107, 0.3) !important;
+    white-space: nowrap !important;
+    transition: all 0.15s ease !important;
+}
+
+.olt-btn-add:hover {
+    background: #00915c !important;
+    box-shadow: 0 4px 10px rgba(0, 168, 107, 0.4) !important;
+    transform: translateY(-1px) !important;
+}
+
+.olt-btn-add:active {
+    transform: translateY(0) !important;
+}
+
+.olt-btn-back {
+    background: #ffffff !important;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 7px !important;
+    padding: 0 0.85rem !important;
+    height: 38px !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    white-space: nowrap !important;
+}
+
+.olt-btn-back:hover {
+    background: #f8fafc !important;
+    border-color: #94a3b8 !important;
+}
+
+.olt-btn-history {
+    background: #0284c7 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 7px !important;
+    padding: 0 0.95rem !important;
+    height: 38px !important;
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3) !important;
+    transition: all 0.15s ease !important;
+    white-space: nowrap !important;
+}
+
+.olt-btn-history:hover {
+    background: #0369a1 !important;
+}
+
+/* ── Table Container ── */
+.olt-table-container {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden !important;
+}
+
+.olt-table-wrapper {
+    width: 100% !important;
+    overflow-x: auto !important;
+}
+
+.olt-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    text-align: left !important;
+    font-size: 0.76rem !important;
+}
+
+/* ── Table Header (Matching Sapphire Navy Sidebar Theme) ── */
+.olt-table thead tr {
+    background: linear-gradient(90deg, #0a1c30 0%, #133357 50%, #0a1c30 100%) !important;
+    border: none !important;
+}
+
+.olt-table thead th {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    padding: 0.78rem 1rem !important;
+    border: none !important;
+    white-space: nowrap !important;
+}
+
+.olt-table thead th * {
+    color: #ffffff !important;
+}
+
+.olt-table tbody tr {
+    background: #ffffff !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    transition: background 0.12s ease !important;
+}
+
+.olt-table tbody tr:hover {
+    background: #f8fbfa !important;
+}
+
+.olt-table tbody td {
+    padding: 0.8rem 1rem !important;
+    color: #0f172a !important;
+    vertical-align: top !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+/* ── Table Action Buttons ── */
+.olt-btn-view {
+    background: #0f3e5d !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 5px !important;
+    padding: 0.32rem 0.75rem !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 3px rgba(15, 62, 93, 0.3) !important;
+    transition: all 0.15s ease !important;
+    white-space: nowrap !important;
+}
+
+.olt-btn-view:hover {
+    background: #092b42 !important;
+    transform: translateY(-1px) !important;
+}
+
+.olt-btn-edit {
+    background: #e68a00 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 5px !important;
+    padding: 0.32rem 0.75rem !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 3px rgba(230, 138, 0, 0.3) !important;
+    transition: all 0.15s ease !important;
+    white-space: nowrap !important;
+}
+
+.olt-btn-edit:hover {
+    background: #c47500 !important;
+    transform: translateY(-1px) !important;
+}
+
+.olt-btn-delete {
+    background: #d93b3b !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 5px !important;
+    padding: 0.32rem 0.75rem !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 3px rgba(217, 59, 59, 0.3) !important;
+    transition: all 0.15s ease !important;
+    white-space: nowrap !important;
+}
+
+.olt-btn-delete:hover {
+    background: #b82a2a !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ── Progress Usage Bar ── */
+.olt-progress-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 6.5rem;
+}
+
+.olt-progress-track {
+    width: 100%;
+    height: 5px;
+    background: #e2e8f0;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.olt-progress-bar {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 0.3s ease;
+}
+
+.olt-progress-bar-green {
+    background: #10b981;
+}
+
+.olt-progress-bar-yellow {
+    background: #f59e0b;
+}
+
+.olt-progress-bar-red {
+    background: #ef4444;
+}
+
+/* ── Pill Badge OLT in User list ── */
+.olt-badge-blue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #0284c7;
+    color: #ffffff !important;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 0.18rem 0.65rem;
+    border-radius: 9999px;
+    box-shadow: 0 1px 3px rgba(2, 132, 199, 0.3);
+}
+
+.olt-badge-blue * {
+    color: #ffffff !important;
+}
+
+/* ── Filament Resource Table Header Gradient (Matching Sapphire Navy Theme) ── */
+.fi-ta-ctn .fi-ta-table thead,
+.fi-ta-ctn .fi-ta-table thead tr {
+    background: linear-gradient(90deg, #0a1c30 0%, #133357 50%, #0a1c30 100%) !important;
+    border: none !important;
+}
+
+.fi-ta-ctn .fi-ta-table thead th,
+.fi-ta-ctn .fi-ta-table thead td,
+.fi-ta-ctn .fi-ta-header-cell,
+.fi-ta-ctn .fi-ta-selection-cell,
+.fi-ta-ctn .fi-ta-actions-header-cell,
+.fi-ta-ctn thead th,
+.fi-ta-ctn thead td {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.fi-ta-ctn .fi-ta-header-cell,
+.fi-ta-ctn .fi-ta-header-cell *,
+.fi-ta-ctn thead th,
+.fi-ta-ctn thead th * {
+    color: #ffffff !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+}
+
+.fi-ta-ctn thead input[type="checkbox"] {
+    accent-color: #0284c7 !important;
+}
+
+.fi-ta-ctn .fi-ta-header-cell button:hover * {
+    color: #e0f2fe !important;
+}
+
+.fi-ta-ctn .fi-ta-row:hover td {
+    background-color: #f8fbfa !important;
+}
+
+.fi-ta-actions .fi-btn {
+    border-radius: 6px !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    padding: 0.25rem 0.65rem !important;
+}

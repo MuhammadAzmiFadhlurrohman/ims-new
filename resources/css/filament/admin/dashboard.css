@@ -1,0 +1,332 @@
+/* ============================================================
+   IMS MSN – Dashboard Premium Light Theme  (v2 — aggressive override)
+   File: resources/css/filament/admin/dashboard.css
+   ============================================================ */
+
+/* ── BODY — clean soft light background matching screenshot ── */
+html.fi body.fi-body,
+html body.fi-body,
+body.fi-body {
+    background: #f4f6fb !important;
+    min-height: 100vh !important;
+}
+
+/* ── MAIN CONTENT AREA — transparent so body gradient shows ── */
+html body .fi-main-ctn,
+html body .fi-main,
+.fi-main-ctn,
+.fi-main {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* ── PAGE WRAPPER ── */
+.fi-page,
+.fi-page > div {
+    background: transparent !important;
+}
+
+
+
+/* ── PAGE HEADING ── */
+.fi-header-heading,
+.fi-page-header-heading,
+h1.fi-header-heading {
+    font-size: 2.2rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.035em !important;
+    line-height: 1.1 !important;
+}
+
+/* Breadcrumbs */
+.fi-breadcrumbs li,
+.fi-breadcrumbs a,
+.fi-breadcrumbs span {
+    color: #6366f1 !important;
+    font-weight: 500 !important;
+    font-size: 0.72rem !important;
+}
+
+/* ── ACCOUNT WIDGET (Welcome card) ── */
+html body .fi-wi-account,
+.fi-wi-account {
+    background: rgba(255, 255, 255, 0.80) !important;
+    border: 1px solid rgba(226, 232, 240, 0.60) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.08) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* ── STATS OVERVIEW — wrapper ── */
+html body .fi-wi-stats-overview,
+.fi-wi-stats-overview {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ── STAT CARD ── */
+html body .fi-wi-stats-overview-stat,
+.fi-wi-stats-overview-stat {
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(226, 232, 240, 0.65) !important;
+    border-radius: 18px !important;
+    padding: 1.25rem 1.4rem !important;
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.04),
+        0 8px 24px rgba(99, 102, 241, 0.07) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.fi-wi-stats-overview-stat:hover {
+    transform: translateY(-3px) !important;
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.06),
+        0 16px 36px rgba(99, 102, 241, 0.13) !important;
+}
+
+/* Accent top border per card */
+.fi-wi-stats-overview-stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #06b6d4);
+    border-radius: 18px 18px 0 0;
+}
+
+/* Stat label */
+html body .fi-wi-stats-overview-stat-label,
+.fi-wi-stats-overview-stat-label {
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.09em !important;
+    color: #64748b !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Stat value */
+html body .fi-wi-stats-overview-stat-value,
+.fi-wi-stats-overview-stat-value {
+    font-size: 1.80rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.1 !important;
+}
+
+/* Stat description */
+html body .fi-wi-stats-overview-stat-description,
+.fi-wi-stats-overview-stat-description {
+    font-size: 0.72rem !important;
+    color: #64748b !important;
+    margin-top: 0.35rem !important;
+}
+
+/* ── GENERIC WIDGETS & SECTIONS ── */
+html body .fi-wi,
+.fi-wi {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(226, 232, 240, 0.60) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.07) !important;
+    overflow: hidden !important;
+}
+
+/* Stats overview itself has no card bg */
+html body .fi-wi.fi-wi-stats-overview,
+.fi-wi.fi-wi-stats-overview {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+}
+
+/* ── CHART WIDGET CARDS (MATCHING USER SCREENSHOT) ── */
+.fi-wi-chart {
+    background: #ffffff !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+    padding: 1.5rem 1.75rem !important;
+    position: relative !important;
+}
+
+.fi-wi-chart .fi-section-header,
+.fi-wi-chart .fi-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 0 0.85rem 0 !important;
+    border-bottom: none !important;
+}
+
+.fi-wi-chart .fi-section-header-heading,
+.fi-wi-chart h3,
+.fi-wi-chart h2 {
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+.fi-wi-chart .fi-section-header-heading::before,
+.fi-wi-chart h3::before,
+.fi-wi-chart h2::before {
+    content: '' !important;
+    display: inline-block !important;
+    width: 3.5px !important;
+    height: 14px !important;
+    background-color: #2563eb !important;
+    border-radius: 2px !important;
+}
+
+/* 3 dots icon at the top right of each chart card */
+.fi-wi-chart::after {
+    content: '⋮';
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+    font-size: 1.2rem;
+    color: #94a3b8;
+    font-weight: 800;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* ── SECTION CONTAINERS ── */
+html body .fi-section,
+.fi-section {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(226, 232, 240, 0.60) !important;
+    border-radius: 18px !important;
+    box-shadow:
+        0 2px 4px rgba(0,0,0,0.03),
+        0 8px 24px rgba(99,102,241,0.06) !important;
+    overflow: hidden !important;
+}
+
+.fi-section-header {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.50) !important;
+    padding: 1rem 1.25rem 0.75rem !important;
+}
+
+.fi-section-header-heading {
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+}
+
+/* ── TABLE — transparent to blend with card bg ── */
+html body .fi-ta-ctn,
+.fi-ta-ctn {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+html body .fi-ta-header-toolbar,
+.fi-ta-header-toolbar {
+    background: transparent !important;
+}
+
+html body .fi-ta-header-cell,
+html body .fi-ta-header-cell *,
+html body table.fi-ta-table th,
+html body table.fi-ta-table th *,
+.fi-ta-header-cell,
+.fi-ta-header-cell *,
+table.fi-ta-table th,
+table.fi-ta-table th * {
+    color: #1e293b !important;
+    font-size: 0.70rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+html body .fi-ta-header-cell,
+html body table.fi-ta-table th,
+.fi-ta-header-cell,
+table.fi-ta-table th {
+    background: rgba(245, 247, 255, 0.90) !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.65) !important;
+}
+
+html body .fi-ta-row:hover .fi-ta-cell,
+html body table.fi-ta-table tr:hover td {
+    background: rgba(99, 102, 241, 0.04) !important;
+}
+
+html body .fi-ta-pagination,
+.fi-ta-pagination {
+    background: transparent !important;
+    border-top: 1px solid rgba(226, 232, 240, 0.55) !important;
+}
+
+/* ── MODAL ── */
+html body .fi-modal-window,
+.fi-modal-window {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(226, 232, 240, 0.60) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14) !important;
+}
+
+/* ── BADGES ── */
+.fi-badge {
+    border-radius: 6px !important;
+}
+
+/* ── BUTTON PRIMARY ── */
+html body .fi-btn-primary,
+.fi-btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    box-shadow: 0 3px 10px rgba(99, 102, 241, 0.35) !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .fi-btn-primary:hover,
+.fi-btn-primary:hover {
+    background: linear-gradient(135deg, #4338ca, #4f46e5) !important;
+    box-shadow: 0 5px 18px rgba(99, 102, 241, 0.45) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ── CUSTOM SCROLLBAR ── */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.22);
+    border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.40);
+}

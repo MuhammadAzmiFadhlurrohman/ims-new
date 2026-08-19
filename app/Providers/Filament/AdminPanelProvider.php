@@ -1,0 +1,270 @@
+<?php
+
+namespace App\Providers\Filament;
+
+use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\AuthenticateSession;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
+use Filament\Pages;
+use Filament\Panel;
+use Filament\PanelProvider;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\MaxWidth;
+use Filament\View\PanelsRenderHook;
+use Filament\Tables\View\TablesRenderHook;
+use Filament\Widgets;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+class AdminPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->default()
+            ->id('admin')
+            ->path('admin')
+            ->login()
+            ->brandName('IMS ONE')
+            ->brandLogo(fn () => view('filament.components.brand-logo'))
+            ->darkMode(false)
+            ->colors([
+                'primary' => Color::Blue,
+                'gray'    => Color::Slate,
+            ])
+            ->font('Inter')
+            ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('17rem')
+            ->collapsedSidebarWidth('4.5rem')
+            ->maxContentWidth(MaxWidth::Full)
+            ->globalSearch(false)
+            ->renderHook(
+                PanelsRenderHook::USER_MENU_BEFORE,
+                fn () => view('filament.components.header-datetime')
+            )
+            ->renderHook(
+                PanelsRenderHook::SIDEBAR_FOOTER,
+                fn () => view('filament.components.sidebar-footer')
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => Blade::render('<style>{!! file_get_contents(resource_path("css/filament/admin/theme.css")) !!}</style>')
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => Blade::render('<style>{!! file_get_contents(resource_path("css/filament/admin/sidebar-glass.css")) !!}</style>')
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => Blade::render('<style>{!! file_get_contents(resource_path("css/filament/admin/dashboard.css")) !!}</style>')
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => Blade::render('<style>{!! file_get_contents(resource_path("css/filament/admin/pendaftaran.css")) !!}</style>')
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => Blade::render('<style>{!! file_get_contents(resource_path("css/filament/admin/header.css")) !!}</style>')
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => file_exists(resource_path("css/filament/admin/olt-theme.css"))
+                    ? Blade::render('<style>{!! file_get_contents(resource_path("css/filament/admin/olt-theme.css")) !!}</style>')
+                    : ''
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => Blade::render('
+                    <script>
+                        window.currentImsRecordKey = "";
+
+                        window.openImsStatusModal = function(key, status) {
+                            window.currentImsRecordKey = key;
+                            var radios = document.querySelectorAll("input[name=\'ims_status_radio\']");
+                            for (var i = 0; i < radios.length; i++) {
+                                if (radios[i].value.toLowerCase() === (status || "").toLowerCase()) {
+                                    radios[i].checked = true;
+                                }
+                            }
+                            var modal = document.getElementById("ims-status-modal");
+                            if (modal) {
+                                modal.style.setProperty("display", "flex", "important");
+                            } else {
+                                console.error("Modal ims-status-modal not found");
+                            }
+                        };
+
+                        window.closeImsStatusModal = function() {
+                            var modal = document.getElementById("ims-status-modal");
+                            if (modal) {
+                                modal.style.setProperty("display", "none", "important");
+                            }
+                        };
+
+                        window.submitImsStatusChange = function() {
+                            var selectedRadio = document.querySelector("input[name=\'ims_status_radio\']:checked");
+                            var statusValue = selectedRadio ? selectedRadio.value : "Temporary Delete";
+                            var saveText = document.getElementById("ims-btn-save-text");
+                            if (saveText) saveText.textContent = "Menyimpan...";
+
+                            var csrfMeta = document.querySelector("meta[name=\'csrf-token\']");
+                            var csrfToken = csrfMeta ? csrfMeta.content : "";
+
+                            fetch("/admin/update-status-type", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": csrfToken,
+                                    "Accept": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    key: window.currentImsRecordKey,
+                                    status_type: statusValue
+                                })
+                            }).then(function(res) { return res.json(); }).then(function(data) {
+                                if (saveText) saveText.textContent = "Ubah";
+                                window.closeImsStatusModal();
+                                window.location.reload();
+                            }).catch(function(err) {
+                                alert("Gagal update status: " + err.message);
+                                if (saveText) saveText.textContent = "Ubah";
+                            });
+                        };
+
+                        // Hover-to-Open Submenu on Minimized Sidebar
+                        document.addEventListener("mouseover", function(e) {
+                            var sidebar = document.querySelector(".fi-sidebar");
+                            if (!sidebar || sidebar.classList.contains("fi-sidebar-open")) return;
+
+                            var target = e.target.closest(".fi-sidebar-group");
+                            if (target) {
+                                var trigger = target.querySelector(".fi-dropdown-trigger") || target.querySelector("button");
+                                if (trigger && !trigger.getAttribute("data-hover-opened")) {
+                                    trigger.setAttribute("data-hover-opened", "true");
+                                    trigger.click();
+                                    setTimeout(function() {
+                                        trigger.removeAttribute("data-hover-opened");
+                                    }, 400);
+                                }
+                            }
+                        });
+                    </script>
+                ')
+            )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn () => view('filament.components.status-type-modal')
+            )
+            ->renderHook(
+                TablesRenderHook::TOOLBAR_BEFORE,
+                fn () => (request()->routeIs('*monthly-invoices*') || str_contains(request()->url(), 'monthly-invoices'))
+                    ? view('filament.widgets.billing-summary-widget')
+                    : ''
+            )
+            ->renderHook(
+                PanelsRenderHook::BODY_START,
+                fn () => Blade::render('
+                    <style>
+                        html.fi body.fi-body,
+                        body.fi-body {
+                            background: linear-gradient(145deg, #dff5f0 0%, #e8eeff 30%, #ede9ff 60%, #e0f2fe 100%) fixed !important;
+                        }
+                        .fi-main-ctn, .fi-main, .fi-page {
+                            background: transparent !important;
+                            background-color: transparent !important;
+                        }
+                    </style>
+                ')
+            )
+            ->navigationGroups([
+                NavigationGroup::make('Pelanggan & Layanan')
+                    ->icon('heroicon-o-users')
+                    ->collapsed(false),
+                NavigationGroup::make('Keuangan & Billing')
+                    ->icon('heroicon-o-banknotes')
+                    ->collapsed(false),
+                NavigationGroup::make('Operasional & Helpdesk')
+                    ->icon('heroicon-o-wrench-screwdriver')
+                    ->collapsed(false),
+                NavigationGroup::make('Jaringan & Inventaris')
+                    ->icon('heroicon-o-server-stack')
+                    ->collapsed(false),
+                NavigationGroup::make('OLT')
+                    ->icon('heroicon-o-share')
+                    ->collapsed(false),
+                NavigationGroup::make('Manajemen Internal & System')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->collapsed(true),
+            ])
+            ->navigationItems((function () {
+                $items = [];
+                try {
+                    if (\Illuminate\Support\Facades\Schema::hasTable('olts')) {
+                        $olts = \App\Models\Olt::all();
+                        $sort = 10;
+                        foreach ($olts as $olt) {
+                            $items[] = \Filament\Navigation\NavigationItem::make($olt->name)
+                                ->group('OLT')
+                                ->icon('heroicon-o-server-stack')
+                                ->sort($sort++)
+                                ->isActiveWhen(fn () => request()->get('olt') === $olt->code && request()->routeIs('filament.admin.pages.olt-management-page'))
+                                ->url(fn () => \App\Filament\Pages\OltManagementPage::getUrl(['olt' => $olt->code]));
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    // fail silently
+                }
+                return $items;
+            })())
+            ->plugins([
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
+                    ->gridColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 3,
+                    ])
+                    ->sectionColumnSpan(1)
+                    ->checkboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 4,
+                    ])
+                    ->resourceCheckboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                    ]),
+            ])
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->pages([
+                Pages\Dashboard::class,
+            ])
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->widgets([
+                //
+            ])
+            ->middleware([
+                EncryptCookies::class,
+                AddQueuedCookiesToResponse::class,
+                StartSession::class,
+                AuthenticateSession::class,
+                ShareErrorsFromSession::class,
+                VerifyCsrfToken::class,
+                SubstituteBindings::class,
+                DisableBladeIconComponents::class,
+                DispatchServingFilamentEvent::class,
+            ])
+            ->authMiddleware([
+                Authenticate::class,
+            ]);
+    }
+}

@@ -1,0 +1,501 @@
+/* ============================================================
+   IMS MSN – Pendaftaran & Registrasi 1-Line Filter & Rich UI
+   File: resources/css/filament/admin/pendaftaran.css
+   ============================================================ */
+
+/* ── 1-Line Filter Bar Container ── */
+.fi-ta-filters-above-content-ctn {
+    background: #ffffff !important;
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04) !important;
+    padding: 0.75rem 1.25rem !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Sembunyikan Header "Filters" bawaan */
+.fi-ta-filters-above-content-ctn > header {
+    display: none !important;
+}
+
+/* Container form filter: paksa 1 baris fleksibel */
+.fi-ta-filters-above-content-ctn form > div {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 1.25rem !important;
+    align-items: center !important;
+}
+
+/* Sembunyikan label bawaan agar tidak makan tempat */
+.fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label {
+    display: none !important;
+}
+
+.fi-ta-filters-above-content-ctn .fi-fo-field-wrp {
+    margin-bottom: 0 !important;
+}
+
+/* Input Fields - Clean Underline Style persis contoh */
+.fi-ta-filters-above-content-ctn .fi-input-wrp {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0.2rem 0 !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Dropdown SEMUA LAYANAN / SEMUA STATUS / SEMUA WILAYAH */
+.fi-ta-filters-above-content-ctn select.fi-input {
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* Text Input NAMA & ALAMAT (garis bawah hijau/mint) */
+.fi-ta-filters-above-content-ctn input[type="text"].fi-input {
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.fi-ta-filters-above-content-ctn input[type="text"].fi-input::placeholder {
+    color: #64748b !important;
+    font-weight: 700 !important;
+}
+
+/* Garis bawah hijau mint untuk input nama & alamat */
+.fi-ta-filters-above-content-ctn .fi-fo-text-input .fi-input-wrp {
+    border-bottom: 2px solid #10b981 !important;
+}
+
+.fi-ta-filters-above-content-ctn .fi-input-wrp:focus-within {
+    border-bottom-color: #059669 !important;
+}
+
+/* ── Tombol Reset (Merah Coral) & Export (Kuning Emas) ── */
+.fi-ta-filters-above-content-ctn a[wire\\:click*="resetTableFiltersForm"],
+.fi-ta-filters-above-content-ctn button[wire\\:click*="resetTableFiltersForm"] {
+    background: #f87171 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    font-weight: 800 !important;
+    font-size: 0.78rem !important;
+    padding: 0.45rem 1rem !important;
+    box-shadow: 0 2px 6px rgba(248, 113, 113, 0.4) !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    text-decoration: none !important;
+}
+
+/* Header Action Export Button (Kuning/Orange) */
+.fi-ta-header-actions .fi-btn-color-warning,
+.fi-ta-header-actions button[wire\\:click*="export"] {
+    background: #f59e0b !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    font-weight: 800 !important;
+    font-size: 0.78rem !important;
+    padding: 0.45rem 1.1rem !important;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4) !important;
+    border: none !important;
+}
+
+/* ── Table Container & Solid Styling ── */
+html body .fi-ta-ctn,
+.fi-ta-ctn {
+    background: #f8fafc !important;
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04) !important;
+    overflow: hidden !important;
+}
+
+/* Header Table (th) */
+html body .fi-ta-header-cell,
+html body table.fi-ta-table th,
+.fi-ta-header-cell,
+table.fi-ta-table th {
+    background: #f8fafc !important;
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em !important;
+    text-transform: uppercase !important;
+    border-bottom: 2px solid #cbd5e1 !important;
+    padding: 0.85rem 1rem !important;
+}
+
+html body .fi-ta-header-cell *,
+html body .fi-ta-header-cell-label,
+html body .fi-ta-header-cell button,
+html body .fi-ta-header-cell span,
+html body table.fi-ta-table th *,
+.fi-ta-header-cell *,
+.fi-ta-header-cell-label,
+.fi-ta-header-cell button,
+.fi-ta-header-cell span,
+table.fi-ta-table th * {
+    color: #1e293b !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em !important;
+    text-transform: uppercase !important;
+}
+
+/* Table Rows & Cells (tr & td) */
+html body table.fi-ta-table,
+html body table.fi-ta-table tbody,
+html body table.fi-ta-table tr,
+html body table.fi-ta-table td,
+html body .fi-ta-row,
+html body .fi-ta-cell,
+.fi-ta-row,
+.fi-ta-cell,
+table.fi-ta-table td {
+    background: #f8fafc !important;
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+    padding: 0.95rem 1rem !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    vertical-align: top !important;
+}
+
+html body .fi-ta-cell-content,
+html body .fi-ta-text,
+html body .fi-ta-text-item,
+html body .fi-ta-text-item-label,
+.fi-ta-cell-content,
+.fi-ta-text,
+.fi-ta-text-item,
+.fi-ta-text-item-label {
+    color: #1e293b !important;
+}
+
+html body table.fi-ta-table td a,
+html body .fi-ta-cell a,
+.fi-ta-cell a {
+    color: #0f172a !important;
+}
+
+html body table.fi-ta-table td a:hover,
+html body .fi-ta-cell a:hover,
+.fi-ta-cell a:hover {
+    color: #2563eb !important;
+}
+
+html body table.fi-ta-table tr:hover td,
+html body .fi-ta-row:hover .fi-ta-cell {
+    background: #eef4fc !important;
+    background-color: #eef4fc !important;
+}
+
+/* Status Column Rich Badges */
+.ims-status-box {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 230px;
+}
+
+.ims-schedule-pill {
+    background: #eef2ff;
+    color: #4338ca;
+    border: 1px solid #c7d2fe;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.ims-schedule-slot {
+    font-size: 10px;
+    font-weight: 600;
+    color: #6366f1;
+    display: block;
+    margin-top: 1px;
+}
+
+.ims-step-badge {
+    display: inline-block;
+    background: #ffe4e6;
+    color: #be123c;
+    border: 1px solid #fecdd3;
+    border-radius: 4px;
+    padding: 2.5px 6.5px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.ims-temp-badge {
+    display: inline-block;
+    background: #fff1f2;
+    color: #e11d48;
+    border: 1px solid #ffe4e6;
+    border-radius: 4px;
+    padding: 2.5px 6.5px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 10 !important;
+    transition: all 0.15s ease !important;
+}
+
+.ims-temp-badge:hover {
+    background: #ffe4e6 !important;
+    color: #be123c !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 5px rgba(225, 29, 72, 0.25) !important;
+}
+
+.ims-temp-badge:active {
+    transform: translateY(0) !important;
+}
+
+.ims-updated-text {
+    font-size: 10px;
+    font-weight: 600;
+    color: #64748b;
+    text-decoration: underline;
+    text-decoration-color: #cbd5e1;
+}
+
+.ims-billing-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #4f46e5;
+    color: #ffffff !important;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(79, 70, 229, 0.3);
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+.ims-billing-btn:hover {
+    background: #4338ca;
+}
+
+/* Actions Column Links */
+.fi-ta-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.35rem !important;
+}
+
+.fi-ta-actions .fi-btn,
+.fi-ta-actions button,
+.fi-ta-actions a {
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    padding: 0.1rem 0.2rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.3rem !important;
+}
+
+.fi-ta-actions [wire\\:click*="batal_pasang"] {
+    color: #ef4444 !important;
+}
+
+.fi-ta-actions [wire\\:click*="aktivasi"],
+.fi-ta-actions [wire\\:click*="instalasi"],
+.fi-ta-actions [wire\\:click*="survey"] {
+    color: #2563eb !important;
+}
+
+.fi-ta-actions [wire\\:click*="edit"],
+.fi-ta-actions a[href*="/edit"] {
+    color: #0284c7 !important;
+}
+
+.fi-ta-actions [wire\:click*="delete"] {
+    color: #dc2626 !important;
+}
+
+/* Sembunyikan trigger Ubah Status Tipe di Kolom Aksi */
+.fi-ta-actions [wire\:click*="change_status_type"],
+.ims-native-status-btn {
+    display: none !important;
+}
+
+/* ── Modal Ubah Status Tipe (Live, Dummy, Temporary Delete, Permanent Delete) ── */
+.fi-modal-window {
+    border-radius: 12px !important;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25) !important;
+}
+
+.fi-modal-header {
+    padding: 1rem 1.5rem 0.5rem !important;
+}
+
+.fi-modal-header-heading {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+}
+
+.fi-modal-content {
+    padding: 1rem 1.5rem 1.5rem !important;
+}
+
+/* Tombol Modal: Ubah (Navy Blue) & Batal (Orange) */
+.fi-modal-footer-actions .fi-btn-primary,
+.fi-modal-footer-actions button[type="submit"] {
+    background: #1e3a8a !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    padding: 0.45rem 1.1rem !important;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.35) !important;
+}
+
+.fi-modal-footer-actions .fi-btn-primary:hover,
+.fi-modal-footer-actions button[type="submit"]:hover {
+    background: #172554 !important;
+}
+
+.fi-modal-footer-actions .fi-btn-color-gray,
+.fi-modal-footer-actions button[x-on\:click*="close"] {
+    background: #f59e0b !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    padding: 0.45rem 1.1rem !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35) !important;
+    border: none !important;
+}
+
+.fi-modal-footer-actions .fi-btn-color-gray:hover,
+.fi-modal-footer-actions button[x-on\:click*="close"]:hover {
+    background: #d97706 !important;
+}
+
+/* Horizontal Radio Options matching Screenshot */
+.fi-fo-radio {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 1.5rem !important;
+}
+
+.fi-fo-radio label {
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    cursor: pointer !important;
+}
+
+.fi-fo-radio input[type="radio"]:checked + span,
+.fi-fo-radio input[type="radio"]:checked ~ span {
+    color: #2563eb !important;
+    font-weight: 700 !important;
+}
+
+
+/* Header Action (+ Registrasi Baru) */
+.fi-page-header-actions .fi-btn-primary {
+    background: #2563eb !important;
+    border-radius: 6px !important;
+    font-weight: 800 !important;
+    font-size: 0.82rem !important;
+    padding: 0.5rem 1.15rem !important;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35) !important;
+}
+
+/* ── Custom Photo Upload Dropzone (Persis Screenshot Foto KTP & Rumah) ── */
+.custom-photo-upload .filepond--root {
+    min-height: 190px !important;
+    height: 190px !important;
+    margin-bottom: 0 !important;
+    font-family: inherit !important;
+}
+
+.custom-photo-upload .filepond--panel-root {
+    background-color: #ffffff !important;
+    border: 1.5px solid #d1d5db !important;
+    border-radius: 2px !important;
+    box-shadow: none !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.custom-photo-upload:hover .filepond--panel-root,
+.custom-photo-upload .filepond--root:focus-within .filepond--panel-root {
+    border-color: #94a3b8 !important;
+}
+
+.custom-photo-upload .filepond--drop-label {
+    min-height: 190px !important;
+    height: 190px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+}
+
+.custom-photo-upload .filepond--drop-label label {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    color: #4f86d6 !important;
+    font-size: 13.5px !important;
+    font-weight: 400 !important;
+    cursor: pointer !important;
+    line-height: 1.4 !important;
+    text-align: center !important;
+    padding: 10px !important;
+}
+
+/* Centered Cloud Upload Icon SVG */
+.custom-photo-upload .filepond--drop-label label::before {
+    content: '' !important;
+    display: block !important;
+    width: 64px !important;
+    height: 64px !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.1' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z' /%3E%3C/svg%3E") !important;
+}
+
+/* Hide any nested SVGs inside drop label if standard FilePond */
+.custom-photo-upload .filepond--drop-label svg {
+    display: none !important;
+}
+
+/* Override default filepond text if needed */
+.custom-photo-upload .filepond--label-action {
+    text-decoration: none !important;
+    color: #4f86d6 !important;
+}
+
