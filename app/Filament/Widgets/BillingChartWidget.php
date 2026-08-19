@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\MonthlyInvoice;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Facades\DB;
 
 class BillingChartWidget extends ChartWidget
 {
@@ -20,7 +21,7 @@ class BillingChartWidget extends ChartWidget
         $startDate = now()->subMonths(5)->startOfMonth();
         $endDate = now()->endOfMonth();
 
-        $driver = MonthlyInvoice::getConnection()->getDriverName();
+        $driver = DB::connection()->getDriverName();
         $dateExpr = $driver === 'sqlite' 
             ? "strftime('%Y-%m', created_at)" 
             : "DATE_FORMAT(created_at, '%Y-%m')";
