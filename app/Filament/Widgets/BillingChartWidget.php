@@ -20,9 +20,14 @@ class BillingChartWidget extends ChartWidget
         $startDate = now()->subMonths(5)->startOfMonth();
         $endDate = now()->endOfMonth();
 
+        $driver = MonthlyInvoice::getConnection()->getDriverName();
+        $dateExpr = $driver === 'sqlite' 
+            ? "strftime('%Y-%m', created_at)" 
+            : "DATE_FORMAT(created_at, '%Y-%m')";
+
         // 1 query tunggal agregasi cepat untuk 6 bulan
         $invoices = MonthlyInvoice::whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw("strftime('%Y-%m', created_at) as ym, payment_status, sum(total_amount) as total")
+            ->selectRaw("{$dateExpr} as ym, payment_status, sum(total_amount) as total")
             ->groupBy('ym', 'payment_status')
             ->get();
 
