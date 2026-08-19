@@ -766,7 +766,7 @@ class InstallationPipelineResource extends Resource
                     })
                     ->visible(fn (CustomerSubscription $record) => !in_array($record->registration_status, ['Batal Pasang', 'LIVE', '20', 'Aktif'])),
 
-                // ── 2. JADWAL SURVEY (Saat Status Data Input) ────────────────
+                // ── 2. JADWAL SURVEY ─────────────────────────────────────────
                 Tables\Actions\Action::make('jadwal_survey')
                     ->label('Jadwal Survey')
                     ->icon('heroicon-m-calendar-days')
@@ -776,7 +776,6 @@ class InstallationPipelineResource extends Resource
                     ->form([
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                // Kolom Kiri: Waktu, Catatan, Foto Mapping
                                 Forms\Components\Group::make([
                                     Forms\Components\Grid::make(2)
                                         ->schema([
@@ -803,7 +802,6 @@ class InstallationPipelineResource extends Resource
                                     Forms\Components\Textarea::make('survey_note')
                                         ->label('Catatan Survey *')
                                         ->placeholder('masukan catatan untuk teknisi lapangan saat proses instalasi.')
-                                        ->helperText('masukan catatan untuk teknisi lapangan saat proses instalasi.')
                                         ->rows(3)
                                         ->required(),
 
@@ -817,7 +815,6 @@ class InstallationPipelineResource extends Resource
                                         ->required(),
                                 ]),
 
-                                // Kolom Kanan: Team Survey
                                 Forms\Components\Group::make([
                                     Forms\Components\CheckboxList::make('survey_team')
                                         ->label('Team Survey *')
@@ -845,10 +842,10 @@ class InstallationPipelineResource extends Resource
                     })
                     ->visible(fn (CustomerSubscription $record) =>
                         empty($record->survey_date) &&
-                        in_array($record->registration_status, ['Data Input', 'SUR', null, ''])
+                        (in_array($record->registration_status, ['Data Input', 'SUR', null, '']) || empty($record->registration_status))
                     ),
 
-                // ── 3. REPORT SURVEY (Saat Jadwal Survey Sudah Terbit) ───────
+                // ── 3. REPORT SURVEY ─────────────────────────────────────────
                 Tables\Actions\Action::make('report_survey')
                     ->label('Report Survey')
                     ->icon('heroicon-m-clipboard-document-check')
@@ -864,7 +861,6 @@ class InstallationPipelineResource extends Resource
                         'odp_code' => $record->odp_code ?? null,
                     ])
                     ->form([
-                        // Jadwal Ulang Checkbox di bagian atas
                         Forms\Components\Checkbox::make('is_reschedule')
                             ->label('Jadwal Ulang Survey ?  Ya, Jadwal Ulang')
                             ->helperText('Centang jika survey perlu dijadwalkan ulang')
@@ -872,7 +868,6 @@ class InstallationPipelineResource extends Resource
 
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                // Kolom Kiri: Selesai Survey, Catatan, Radio Bisa Pasang, OLT/PON/ODP, Foto Mapping
                                 Forms\Components\Group::make([
                                     Forms\Components\Grid::make(2)
                                         ->schema([
@@ -900,7 +895,6 @@ class InstallationPipelineResource extends Resource
                                         ->reactive()
                                         ->hidden(fn (Forms\Get $get) => (bool) $get('is_reschedule')),
 
-                                    // Cascading Dropdown: OLT -> PON -> ODP
                                     Forms\Components\Grid::make(3)
                                         ->schema([
                                             Forms\Components\Select::make('olt_code')
@@ -965,7 +959,6 @@ class InstallationPipelineResource extends Resource
                                         ->hidden(fn (Forms\Get $get) => (bool) $get('is_reschedule')),
                                 ]),
 
-                                // Kolom Kanan: Team Survey & Perangkat Yang Digunakan
                                 Forms\Components\Group::make([
                                     Forms\Components\CheckboxList::make('survey_team')
                                         ->label('Team Survey *')
@@ -1014,7 +1007,6 @@ class InstallationPipelineResource extends Resource
                             'registration_status' => $newStatus,
                         ]);
 
-                        // Update jumlah port terpakai pada ODP terkait
                         if ($isInstallable && !empty($data['odp_code'])) {
                             $odp = \App\Models\Odp::where('code', $data['odp_code'])->first();
                             if ($odp) {
@@ -1026,7 +1018,7 @@ class InstallationPipelineResource extends Resource
                         if ($isInstallable) {
                             Notification::make()
                                 ->title('Report Survey Disimpan')
-                                ->body("Survey untuk {$record->customer_name} selesai. Status: Selesai Survey (Siap Terbitkan Jadwal Pasang).")
+                                ->body("Survey untuk {$record->customer_name} selesai. Status: Selesai Survey.")
                                 ->success()
                                 ->send();
                         } else {
@@ -1038,10 +1030,11 @@ class InstallationPipelineResource extends Resource
                         }
                     })
                     ->visible(fn (CustomerSubscription $record) =>
-                        in_array($record->registration_status, ['Jadwal Survey Terbit', 'POSTING SURVEY'])
+                        in_array($record->registration_status, ['Jadwal Survey Terbit', 'Jadwal Sur', 'POSTING SURVEY', 'Jadwal Survey']) ||
+                        (str_contains(strtolower($record->registration_status ?? ''), 'sur') && !str_contains(strtolower($record->registration_status ?? ''), 'selesai'))
                     ),
 
-                // ── 4. JADWAL INSTALASI (Gambar 2: Saat Status Selesai Survey) ───
+                // ── 4. JADWAL INSTALASI ───────────────────────────────────────
                 Tables\Actions\Action::make('jadwal_instalasi')
                     ->label('Jadwal Instalasi')
                     ->icon('heroicon-m-calendar-days')
@@ -1062,7 +1055,6 @@ class InstallationPipelineResource extends Resource
                     ->form([
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                // Sisi Kiri: Tanggal, Waktu, Team, Catatan, Update Foto
                                 Forms\Components\Group::make([
                                     Forms\Components\Grid::make(2)
                                         ->schema([
@@ -1074,7 +1066,7 @@ class InstallationPipelineResource extends Resource
 
                                             Forms\Components\Select::make('installation_time_slot')
                                                 ->label('Waktu Instalasi')
-                                                ->placeholder('Select a State')
+                                                ->placeholder('Pilih waktu')
                                                 ->options([
                                                     '09:00-12:00 WIB' => '09:00-12:00 WIB',
                                                     '13:00-16:00 WIB' => '13:00-16:00 WIB',
@@ -1092,7 +1084,6 @@ class InstallationPipelineResource extends Resource
                                     Forms\Components\Textarea::make('installation_note')
                                         ->label('Catatan Pemasangan')
                                         ->placeholder('masukan catatan untuk teknisi lapangan saat proses instalasi.')
-                                        ->helperText('masukan catatan untuk teknisi lapangan saat proses instalasi.')
                                         ->rows(3)
                                         ->required(),
 
@@ -1105,7 +1096,6 @@ class InstallationPipelineResource extends Resource
                                         ->maxSize(10240),
                                 ]),
 
-                                // Sisi Kanan: Perangkat / Peralatan yang Digunakan
                                 Forms\Components\ViewField::make('installation_equipment')
                                     ->view('filament.forms.components.equipment-selector'),
                             ]),
@@ -1128,10 +1118,11 @@ class InstallationPipelineResource extends Resource
                             ->send();
                     })
                     ->visible(fn (CustomerSubscription $record) =>
-                        in_array($record->registration_status, ['Selesai Survey', 'Survey Selesai', 'Penarikan kabel'])
+                        in_array($record->registration_status, ['Selesai Survey', 'Survey Selesai', 'Penarikan kabel', 'Selesai Sur']) ||
+                        str_contains(strtolower($record->registration_status ?? ''), 'selesai sur')
                     ),
 
-                // ── 5. REPORT INSTALASI (Gambar 4: Saat Jadwal Instalasi Terbit) ──
+                // ── 5. REPORT INSTALASI ───────────────────────────────────────
                 Tables\Actions\Action::make('report_instalasi')
                     ->label('Report Instalasi')
                     ->icon('heroicon-m-clipboard-document-check')
@@ -1157,7 +1148,6 @@ class InstallationPipelineResource extends Resource
 
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                // Sisi Kiri
                                 Forms\Components\Group::make([
                                     Forms\Components\Grid::make(2)
                                         ->schema([
@@ -1182,7 +1172,6 @@ class InstallationPipelineResource extends Resource
                                         ->maxSize(10240),
                                 ]),
 
-                                // Sisi Kanan: Team Instalasi & Perangkat Yang Digunakan
                                 Forms\Components\Group::make([
                                     Forms\Components\CheckboxList::make('installation_team')
                                         ->label('Team Instalasi *')
@@ -1230,10 +1219,11 @@ class InstallationPipelineResource extends Resource
                             ->send();
                     })
                     ->visible(fn (CustomerSubscription $record) =>
-                        in_array($record->registration_status, ['Jadwal Instalasi Terbit', 'POSTING INSTALASI'])
+                        in_array($record->registration_status, ['Jadwal Instalasi Terbit', 'Jadwal Ins', 'POSTING INSTALASI', 'Jadwal Instalasi']) ||
+                        (str_contains(strtolower($record->registration_status ?? ''), 'ins') && !str_contains(strtolower($record->registration_status ?? ''), 'selesai'))
                     ),
 
-                // ── 6. JADWAL AKTIVASI (Gambar 1 & Gambar 2: Saat Selesai Instalasi) ───
+                // ── 6. JADWAL AKTIVASI ────────────────────────────────────────
                 Tables\Actions\Action::make('jadwal_aktivasi')
                     ->label('Jadwal Aktivasi')
                     ->icon('heroicon-m-calendar-days')
@@ -1252,7 +1242,6 @@ class InstallationPipelineResource extends Resource
                     ->form([
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                // Sisi Kiri: Jadwal, Waktu, Team, POP, Media, Catatan
                                 Forms\Components\Group::make([
                                     Forms\Components\Grid::make(2)
                                         ->schema([
@@ -1264,7 +1253,7 @@ class InstallationPipelineResource extends Resource
 
                                             Forms\Components\Select::make('activation_time_slot')
                                                 ->label('Waktu Aktivasi')
-                                                ->placeholder('Select a State')
+                                                ->placeholder('Pilih waktu')
                                                 ->options([
                                                     '09:00-12:00 WIB' => '09:00-12:00 WIB',
                                                     '13:00-16:00 WIB' => '13:00-16:00 WIB',
@@ -1283,13 +1272,11 @@ class InstallationPipelineResource extends Resource
                                         ->schema([
                                             Forms\Components\Select::make('pop_odn')
                                                 ->label('POP/ODN')
-                                                ->placeholder('Select a State')
                                                 ->options(static::getPopOdnOptions())
                                                 ->required(),
 
                                             Forms\Components\Select::make('media_access')
                                                 ->label('Media Akses')
-                                                ->placeholder('Select a State')
                                                 ->options([
                                                     'Fiber Optic (FTTH)' => 'Fiber Optic (FTTH)',
                                                     'Broadband Wireless' => 'Broadband Wireless',
@@ -1301,11 +1288,9 @@ class InstallationPipelineResource extends Resource
                                     Forms\Components\Textarea::make('activation_note')
                                         ->label('Catatan Proses Aktivasi')
                                         ->placeholder('informasi pendukung proses aktivasi.')
-                                        ->helperText('informasi pendukung proses aktivasi.')
                                         ->rows(3),
                                 ]),
 
-                                // Sisi Kanan: Perangkat / Peralatan yang Digunakan
                                 Forms\Components\Section::make('Perangkat/ Peralatan Yang Digunakan')
                                     ->schema([
                                         Forms\Components\Repeater::make('activation_equipment')
@@ -1343,18 +1328,12 @@ class InstallationPipelineResource extends Resource
                             ->success()
                             ->send();
                     })
-                    ->visible(function (CustomerSubscription $record) {
-                        $user = auth()->user();
-                        if (!$user) {
-                            return false;
-                        }
+                    ->visible(fn (CustomerSubscription $record) =>
+                        in_array($record->registration_status, ['Selesai Instalasi', 'Selesai Ins']) ||
+                        str_contains(strtolower($record->registration_status ?? ''), 'selesai ins')
+                    ),
 
-                        $isNocOrAdmin = $user->hasRole('super_admin') || $user->hasAnyRole(['noc', 'noc_support', 'admin_noc']);
-
-                        return $isNocOrAdmin && $record->registration_status === 'Selesai Instalasi';
-                    }),
-
-                // ── 6.5 MULAI AKTIVASI (PPPoE, Pilih Router, Local Address, Profile PPP, Remote Address, Buat Secret MikroTik) ──
+                // ── 6.5 MULAI AKTIVASI ────────────────────────────────────────
                 Tables\Actions\Action::make('mulai_aktivasi')
                     ->label('Mulai Aktivasi')
                     ->icon('heroicon-m-play-circle')
@@ -1380,25 +1359,21 @@ class InstallationPipelineResource extends Resource
                     })
                     ->form([
                         Forms\Components\Section::make('Kredensial PPPoE Pelanggan')
-                            ->description('Username dan password PPPoE yang otomatis digenerate dari nomor pelanggan.')
                             ->schema([
                                 Forms\Components\TextInput::make('ont_username')
                                     ->label('PPPoE Username')
                                     ->required()
-                                    ->readOnly()
-                                    ->helperText('Otomatis terisi dari nomor registrasi pelanggan'),
+                                    ->readOnly(),
 
                                 Forms\Components\TextInput::make('ont_password')
                                     ->label('PPPoE Password')
                                     ->required()
                                     ->password()
-                                    ->revealable()
-                                    ->helperText('Otomatis digenerate sistem (bisa diubah jika perlu)'),
+                                    ->revealable(),
                             ])
                             ->columns(2),
 
                         Forms\Components\Section::make('Konfigurasi Router & IP Address')
-                            ->description('Pilih router MikroTik target. Local Address & Profil PPP akan terisi otomatis.')
                             ->schema([
                                 Forms\Components\Select::make('router_id')
                                     ->label('Pilih Router MikroTik *')
@@ -1417,8 +1392,7 @@ class InstallationPipelineResource extends Resource
                                 Forms\Components\TextInput::make('local_address')
                                     ->label('Local Address (Gateway)')
                                     ->placeholder('10.10.10.1')
-                                    ->required()
-                                    ->helperText('Otomatis terisi dari IP Router terpilih'),
+                                    ->required(),
 
                                 Forms\Components\Select::make('pppoe_profile')
                                     ->label('Profile PPP *')
@@ -1445,15 +1419,13 @@ class InstallationPipelineResource extends Resource
                                 Forms\Components\TextInput::make('remote_address')
                                     ->label('Remote Address (IP Pelanggan) *')
                                     ->placeholder('Contoh: 10.10.10.25 atau pool name')
-                                    ->required()
-                                    ->helperText('IP Address yang dialokasikan khusus untuk pelanggan ini'),
+                                    ->required(),
                             ])
                             ->columns(2),
                     ])
                     ->action(function (CustomerSubscription $record, array $data) {
                         $router = !empty($data['router_id']) ? \App\Models\Router::find($data['router_id']) : null;
 
-                        // Eksekusi buat PPPoE Secret ke Router MikroTik
                         $secretResult = ['success' => true, 'message' => 'PPPoE Secret tersimpan'];
                         if ($router) {
                             $comment = "IMS MSN - {$record->customer_name} ({$record->internet_number})";
@@ -1477,7 +1449,6 @@ class InstallationPipelineResource extends Resource
                             'registration_status' => 'Proses Aktivasi',
                         ]);
 
-                        // Catat ke History Router
                         \App\Models\RouterHistory::log(
                             actionType: 'Buat PPPoE',
                             internetNumber: $record->internet_number,
@@ -1491,32 +1462,18 @@ class InstallationPipelineResource extends Resource
                             payload: $data
                         );
 
-                        if (!empty($secretResult['warning'])) {
-                            Notification::make()
-                                ->title('Proses Aktivasi Dimulai (Lokal)')
-                                ->body($secretResult['message'])
-                                ->warning()
-                                ->send();
-                        } else {
-                            Notification::make()
-                                ->title('PPPoE Secret Berhasil Dibuat di MikroTik!')
-                                ->body("Akun {$data['ont_username']} telah aktif di router. Silakan lanjutkan ke Report Aktivasi.")
-                                ->success()
-                                ->send();
-                        }
+                        Notification::make()
+                            ->title('PPPoE Secret Berhasil Dibuat di MikroTik!')
+                            ->body("Akun {$data['ont_username']} telah aktif. Silakan lanjutkan ke Report Aktivasi.")
+                            ->success()
+                            ->send();
                     })
-                    ->visible(function (CustomerSubscription $record) {
-                        $user = auth()->user();
-                        if (!$user) {
-                            return false;
-                        }
+                    ->visible(fn (CustomerSubscription $record) =>
+                        in_array($record->registration_status, ['Jadwal Aktivasi Terbit', 'Jadwal Akt', 'Jadwal Aktivasi']) ||
+                        (str_contains(strtolower($record->registration_status ?? ''), 'akt') && !str_contains(strtolower($record->registration_status ?? ''), 'proses') && !str_contains(strtolower($record->registration_status ?? ''), 'selesai'))
+                    ),
 
-                        $isNocOrAdmin = $user->hasRole('super_admin') || $user->hasAnyRole(['noc', 'noc_support', 'admin_noc']);
-
-                        return $isNocOrAdmin && in_array($record->registration_status, ['Jadwal Aktivasi Terbit']);
-                    }),
-
-                // ── 7. REPORT AKTIVASI (Saat Proses Aktivasi Selesai Dikonfigurasi) ──
+                // ── 7. REPORT AKTIVASI ────────────────────────────────────────
                 Tables\Actions\Action::make('report_aktivasi')
                     ->label('Report Aktivasi')
                     ->icon('heroicon-m-clipboard-document-check')
@@ -1538,7 +1495,6 @@ class InstallationPipelineResource extends Resource
 
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                // Sisi Kiri
                                 Forms\Components\Group::make([
                                     Forms\Components\DatePicker::make('activation_finished_at')
                                         ->label('Selesai Aktivasi')
@@ -1574,7 +1530,6 @@ class InstallationPipelineResource extends Resource
                                         ]),
                                 ]),
 
-                                // Sisi Kanan: Perangkat Yang Digunakan
                                 Forms\Components\Section::make('Perangkat/ Peralatan Yang Digunakan')
                                     ->schema([
                                         Forms\Components\Repeater::make('activation_equipment')
@@ -1615,7 +1570,6 @@ class InstallationPipelineResource extends Resource
                             return;
                         }
 
-                        // Mengaktifkan Pelanggan (Status LIVE) -> Otomatis hilang dari pendaftaran dan pindah ke Pelanggan Aktif
                         $record->update([
                             'activation_finished_at' => $data['activation_finished_at'],
                             'activation_finished_note' => $data['activation_finished_note'],
@@ -1632,16 +1586,10 @@ class InstallationPipelineResource extends Resource
                             ->success()
                             ->send();
                     })
-                    ->visible(function (CustomerSubscription $record) {
-                        $user = auth()->user();
-                        if (!$user) {
-                            return false;
-                        }
-
-                        $isNocOrAdmin = $user->hasRole('super_admin') || $user->hasAnyRole(['noc', 'noc_support', 'admin_noc']);
-
-                        return $isNocOrAdmin && in_array($record->registration_status, ['Proses Aktivasi', 'POSTING AKTIVASI']);
-                    }),
+                    ->visible(fn (CustomerSubscription $record) =>
+                        in_array($record->registration_status, ['Proses Aktivasi', 'POSTING AKTIVASI', 'Jadwal Aktivasi Terbit', 'Jadwal Akt', 'Jadwal Aktivasi']) ||
+                        str_contains(strtolower($record->registration_status ?? ''), 'akt')
+                    ),
 
                 // ── 8. EDIT & HAPUS ──────────────────────────────────────────
                 Tables\Actions\EditAction::make()
