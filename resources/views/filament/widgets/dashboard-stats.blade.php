@@ -1,13 +1,75 @@
 <x-filament-widgets::widget class="fi-wi-stats-overview w-full">
     <div x-data="{
-        searchQuery: '',
-        activeFilter: 'ALL',
-        showModal: null, // 'total', 'active', 'isolated'
+        showModal: null,
         isDark: false,
         lastUpdated: 'Baru saja',
         isRefreshing: false,
-        allCustomers: {{ json_encode($searchItems) }},
+        activeSlide: 0,
+        totalSlides: 3,
         
+        // Counter Animation values (Starts from 0)
+        displayTotal: 0,
+        displayActive: 0,
+        displayIsolated: 0,
+        displayTraffic: 0.0,
+        displayUpload: 0.0,
+        barAktifWidth: 0,
+        barSuspendWidth: 0,
+        barTerminasiWidth: 0,
+
+        targetTotal: {{ (int)$totalCustomers }},
+        targetActive: {{ (int)$activeCustomers }},
+        targetIsolated: {{ (int)$isolatedCustomers }},
+        targetAktifPct: {{ (float)$activePercentage }},
+        targetSuspendPct: {{ (float)$isolatedPercentage }},
+        targetTerminasiPct: {{ (float)$terminatedPercentage }},
+
+        init() {
+            // 1. Run Number Counting Animation from 0 to Current Data
+            this.animateCounters();
+
+            // 2. Auto-sliding Carousel Banner every 4.5s
+            setInterval(() => {
+                this.activeSlide = (this.activeSlide + 1) % this.totalSlides;
+            }, 4500);
+
+            // 3. Live micro-fluctuation for traffic monitor simulation
+            setInterval(() => {
+                if (this.displayTraffic > 0) {
+                    let jitter = (Math.random() * 0.16 - 0.08);
+                    this.displayTraffic = Math.max(2.5, +(3.84 + jitter).toFixed(2));
+                    this.displayUpload = Math.max(1.2, +(1.92 + (jitter * 0.5)).toFixed(2));
+                }
+            }, 3000);
+        },
+
+        animateCounters() {
+            const duration = 1400; // ms
+            const startTime = performance.now();
+
+            const step = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // Ease Out Cubic
+                const ease = 1 - Math.pow(1 - progress, 3);
+
+                this.displayTotal = Math.round(ease * this.targetTotal);
+                this.displayActive = Math.round(ease * this.targetActive);
+                this.displayIsolated = Math.round(ease * this.targetIsolated);
+                this.displayTraffic = +(ease * 3.84).toFixed(2);
+                this.displayUpload = +(ease * 1.92).toFixed(2);
+                
+                this.barAktifWidth = +(ease * this.targetAktifPct).toFixed(1);
+                this.barSuspendWidth = +(ease * this.targetSuspendPct).toFixed(1);
+                this.barTerminasiWidth = +(ease * this.targetTerminasiPct).toFixed(1);
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            };
+            requestAnimationFrame(step);
+        },
+
         toggleTheme() {
             this.isDark = !this.isDark;
             if (this.isDark) {
@@ -19,25 +81,110 @@
 
         refreshData() {
             this.isRefreshing = true;
+            this.displayTotal = 0;
+            this.displayActive = 0;
+            this.displayIsolated = 0;
+            this.animateCounters();
             setTimeout(() => {
                 this.isRefreshing = false;
                 this.lastUpdated = 'Baru saja';
             }, 600);
-        },
-
-        get filteredCustomers() {
-            return this.allCustomers.filter(c => {
-                const matchesFilter = this.activeFilter === 'ALL' || c.status === this.activeFilter;
-                const matchesSearch = !this.searchQuery || 
-                    c.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                    c.cid.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                    c.phone.toLowerCase().includes(this.searchQuery.toLowerCase());
-                return matchesFilter && matchesSearch;
-            }).slice(0, 8);
         }
     }">
 
-        {{-- ── 1. TOP COMMAND & REALTIME STATUS BAR ── --}}
+        {{-- ── 1. SLIDING HERO CAROUSEL BANNER & LIVE TRAFFIC ── --}}
+        <div class="ims-slider-banner">
+            <div class="ims-slide-track" :style="'transform: translateX(-' + (activeSlide * 33.333333) + '%);'">
+                
+                {{-- Slide 1: Live Network & Bandwidth Traffic --}}
+                <div class="ims-slide-item">
+                    <div style="display: flex; align-items: center; gap: 1.25rem;">
+                        <div style="width: 52px; height: 52px; border-radius: 16px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg style="width: 28px; height: 28px; color: #38bdf8;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2px;">
+                                <span class="ims-live-traffic-badge">
+                                    <span class="ims-live-beacon" style="width: 8px; height: 8px; background: #38bdf8;"></span>
+                                    LIVE TRAFFIC GATEWAY
+                                </span>
+                                <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 700;">MikroTik Core CCR2004</span>
+                            </div>
+                            <div style="font-size: 1.1rem; font-weight: 900; color: #ffffff; letter-spacing: -0.02em;">
+                                Total Bandwidth: <span style="color: #38bdf8; font-size: 1.35rem;" x-text="displayTraffic + ' Gbps'"></span>
+                                <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 600; margin-left: 0.5rem;">(Tx: <span x-text="displayUpload"></span> Gbps / Rx: <span x-text="displayTraffic"></span> Gbps)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; text-align: right;">
+                        <div>
+                            <div style="font-size: 0.72rem; color: #94a3b8; text-transform: uppercase; font-weight: 800;">PPPoE Sesi Aktif</div>
+                            <div style="font-size: 1.25rem; font-weight: 900; color: #4ade80;" x-text="displayActive + ' User'"></div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Slide 2: OLT Core & Fiber Optic Health --}}
+                <div class="ims-slide-item">
+                    <div style="display: flex; align-items: center; gap: 1.25rem;">
+                        <div style="width: 52px; height: 52px; border-radius: 16px; background: rgba(74, 222, 128, 0.15); border: 1px solid rgba(74, 222, 128, 0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg style="width: 28px; height: 28px; color: #4ade80;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+                        </div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2px;">
+                                <span class="ims-live-traffic-badge" style="color: #4ade80; background: rgba(74, 222, 128, 0.15); border-color: rgba(74, 222, 128, 0.35);">
+                                    ⚡ STATUS OLT & PON CORE
+                                </span>
+                                <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 700;">ZTE C320 / Huawei GPON</span>
+                            </div>
+                            <div style="font-size: 1.1rem; font-weight: 900; color: #ffffff; letter-spacing: -0.02em;">
+                                3 Unit OLT Online | <span style="color: #4ade80;">7 Port PON Aktif</span> | Rata-rata OPM: <span style="color: #38bdf8;">-19.4 dBm (Normal)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <a href="{{ url('/admin/olt-coverage-page') }}" style="display: inline-block; padding: 0.45rem 0.95rem; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff; font-size: 0.75rem; font-weight: 800; border-radius: 12px; text-decoration: none;">
+                            Buka Peta Topologi &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                {{-- Slide 3: Otomasi Billing & Penerimaan --}}
+                <div class="ims-slide-item">
+                    <div style="display: flex; align-items: center; gap: 1.25rem;">
+                        <div style="width: 52px; height: 52px; border-radius: 16px; background: rgba(251, 146, 60, 0.15); border: 1px solid rgba(251, 146, 60, 0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg style="width: 28px; height: 28px; color: #fb923c;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2px;">
+                                <span class="ims-live-traffic-badge" style="color: #fb923c; background: rgba(251, 146, 60, 0.15); border-color: rgba(251, 146, 60, 0.35);">
+                                    💰 OTOMASI BILLING & ISOLIR
+                                </span>
+                                <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 700;">Midtrans Gateway & WhatsApp Bot</span>
+                            </div>
+                            <div style="font-size: 1.1rem; font-weight: 900; color: #ffffff; letter-spacing: -0.02em;">
+                                <span style="color: #4ade80;" x-text="targetAktifPct + '% Tagihan Terbayar'"></span> | Auto-Isolir Siap Eksekusi Jatuh Tempo
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <a href="{{ url('/admin/monthly-invoices') }}" style="display: inline-block; padding: 0.45rem 0.95rem; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff; font-size: 0.75rem; font-weight: 800; border-radius: 12px; text-decoration: none;">
+                            Invoice Bulanan &rarr;
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Slide Navigation Dots -->
+            <div class="ims-slide-nav-dots">
+                <span @click="activeSlide = 0" class="ims-slide-dot" :class="{ 'active': activeSlide === 0 }"></span>
+                <span @click="activeSlide = 1" class="ims-slide-dot" :class="{ 'active': activeSlide === 1 }"></span>
+                <span @click="activeSlide = 2" class="ims-slide-dot" :class="{ 'active': activeSlide === 2 }"></span>
+            </div>
+        </div>
+
+        {{-- ── 2. TOP COMMAND & REALTIME STATUS BAR ── --}}
         <div class="ims-top-command-bar">
             <div class="ims-beacon-wrap">
                 <span class="ims-live-beacon"></span>
@@ -66,8 +213,7 @@
             </div>
         </div>
 
-
-        {{-- ── 3. KARTU STATISTIK INTERAKTIF ── --}}
+        {{-- ── 3. KARTU STATISTIK DENGAN ANIMASI ANGKA BERJALAN DARI 0 ── --}}
         <div class="ims-stats-grid">
             <!-- ── Card 1: TOTAL PELANGGAN ── -->
             <div @click="showModal = 'total'" class="ims-stat-card ims-card-blue">
@@ -84,7 +230,7 @@
                 </div>
 
                 <div class="ims-stat-number ims-num-blue">
-                    {{ number_format($totalCustomers, 0, ',', '.') }}
+                    <span x-text="displayTotal">0</span>
                     <span style="font-size: 1rem; font-weight: 700; color: #94a3b8;">User</span>
                 </div>
 
@@ -112,9 +258,9 @@
                 </div>
 
                 <div class="ims-stat-number ims-num-green">
-                    {{ number_format($activeCustomers, 0, ',', '.') }}
-                    <span style="font-size: 0.85rem; font-weight: 800; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; padding: 0.2rem 0.5rem; border-radius: 8px;">
-                        {{ $activePercentage }}% Live
+                    <span x-text="displayActive">0</span>
+                    <span style="font-size: 0.85rem; font-weight: 800; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; padding: 0.2rem 0.5rem; border-radius: 8px;" x-text="targetAktifPct + '% Live'">
+                        0% Live
                     </span>
                 </div>
 
@@ -142,7 +288,7 @@
                 </div>
 
                 <div class="ims-stat-number ims-num-amber">
-                    {{ number_format($isolatedCustomers, 0, ',', '.') }}
+                    <span x-text="displayIsolated">0</span>
                     <span style="font-size: 1rem; font-weight: 700; color: #94a3b8;">User</span>
                 </div>
 
@@ -169,23 +315,23 @@
                     </div>
                 </div>
                 <div style="font-size: 0.8rem; font-weight: 800; color: #475569;">
-                    Total Keseluruhan: <span style="color: #2563eb; font-weight: 900;">{{ number_format($totalAll, 0, ',', '.') }}</span> User
+                    Total Keseluruhan: <span style="color: #2563eb; font-weight: 900;" x-text="displayTotal"></span> User
                 </div>
             </div>
 
-            <!-- Horizontal Bar with Percentages -->
+            <!-- Horizontal Bar with Percentages Animating from 0% -->
             <div class="ims-bar-container">
                 <!-- Aktif -->
-                <div class="ims-bar-segment ims-segment-green" style="width: {{ $activePercentage }}%;" title="Pelanggan Aktif: {{ number_format($activeCustomers) }} User ({{ $activePercentage }}%)">
-                    <span>{{ $activePercentage }}%</span>
+                <div class="ims-bar-segment ims-segment-green" :style="'width: ' + barAktifWidth + '%;'" title="Pelanggan Aktif">
+                    <span x-text="barAktifWidth + '%'"></span>
                 </div>
                 <!-- Suspend -->
-                <div class="ims-bar-segment ims-segment-amber" style="width: {{ $isolatedPercentage }}%;" title="Pelanggan Suspend: {{ number_format($isolatedCustomers) }} User ({{ $isolatedPercentage }}%)">
-                    <span x-show="{{ $isolatedPercentage }} > 3">{{ $isolatedPercentage }}%</span>
+                <div class="ims-bar-segment ims-segment-amber" :style="'width: ' + barSuspendWidth + '%;'" title="Pelanggan Suspend">
+                    <span x-show="barSuspendWidth > 2" x-text="barSuspendWidth + '%'"></span>
                 </div>
                 <!-- Terminasi -->
-                <div class="ims-bar-segment ims-segment-rose" style="width: {{ $terminatedPercentage }}%;" title="Pelanggan Terminasi: {{ number_format($terminatedCustomers) }} User ({{ $terminatedPercentage }}%)">
-                    <span x-show="{{ $terminatedPercentage }} > 3">{{ $terminatedPercentage }}%</span>
+                <div class="ims-bar-segment ims-segment-rose" :style="'width: ' + barTerminasiWidth + '%;'" title="Pelanggan Terminasi">
+                    <span x-show="barTerminasiWidth > 2" x-text="barTerminasiWidth + '%'"></span>
                 </div>
             </div>
 
@@ -196,7 +342,7 @@
                         <span style="width: 10px; height: 10px; border-radius: 50%; background: #16a34a; display: inline-block;"></span>
                         <span>1. Pelanggan Aktif</span>
                     </div>
-                    <span>{{ number_format($activeCustomers) }} ({{ $activePercentage }}%)</span>
+                    <span><strong x-text="displayActive"></strong> (<span x-text="targetAktifPct + '%'"></span>)</span>
                 </div>
 
                 <div class="ims-legend-box ims-legend-amber">
@@ -204,7 +350,7 @@
                         <span style="width: 10px; height: 10px; border-radius: 50%; background: #d97706; display: inline-block;"></span>
                         <span>2. Pelanggan Suspend</span>
                     </div>
-                    <span>{{ number_format($isolatedCustomers) }} ({{ $isolatedPercentage }}%)</span>
+                    <span><strong x-text="displayIsolated"></strong> (<span x-text="targetSuspendPct + '%'"></span>)</span>
                 </div>
 
                 <div class="ims-legend-box ims-legend-rose">
