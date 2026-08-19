@@ -86,12 +86,17 @@ table.fi-ta-table th {
 }
 
 /* Table Rows & Cells (td) */
-table.fi-ta-table td {
+table.fi-ta-table tbody tr {
+    position: relative !important;
+    transition: all 0.2s ease !important;
+}
+
+table.fi-ta-table tbody tr td {
     padding: 1rem 1.1rem !important;
     border-bottom: 1px solid #f1f5f9 !important;
     vertical-align: top !important;
     font-size: 0.82rem !important;
-    transition: background-color 0.15s ease !important;
+    transition: background-color 0.2s ease, border-left-color 0.2s ease !important;
 }
 
 /* Zebra striping */
@@ -99,8 +104,17 @@ table.fi-ta-table tbody tr:nth-child(even) td {
     background-color: #fbfcfe !important;
 }
 
+/* ── Hover Effect with Left Indicator Border ── */
 table.fi-ta-table tbody tr:hover td {
-    background-color: #f1f5f9 !important;
+    background-color: #f0f7ff !important;
+}
+
+table.fi-ta-table tbody tr td:first-child {
+    border-left: 4px solid transparent !important;
+}
+
+table.fi-ta-table tbody tr:hover td:first-child {
+    border-left: 4px solid #2563eb !important;
 }
 
 /* ── 3. CUSTOM REGISTRATION UI COMPONENTS ── */

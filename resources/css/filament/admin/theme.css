@@ -214,13 +214,25 @@ table.fi-ta-table td a:hover {
     color: #2563eb !important;
 }
 
-.fi-ta-row {
-    transition: background-color 0.12s ease !important;
+.fi-ta-row,
+table.fi-ta-table tbody tr {
+    transition: background-color 0.15s ease !important;
+}
+
+.fi-ta-row td:first-child,
+table.fi-ta-table tbody tr td:first-child {
+    border-left: 4px solid transparent !important;
+    transition: border-left-color 0.15s ease, background-color 0.15s ease !important;
 }
 
 .fi-ta-row:hover .fi-ta-cell,
 table.fi-ta-table tr:hover td {
-    background: #f8fbff !important;
+    background: #f0f7ff !important;
+}
+
+.fi-ta-row:hover td:first-child,
+table.fi-ta-table tr:hover td:first-child {
+    border-left: 4px solid #2563eb !important;
 }
 
 /* Specific text helpers in table cells */
