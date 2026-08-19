@@ -14,7 +14,12 @@ class BillingChartWidget extends ChartWidget
 
     protected static ?string $maxHeight = '280px';
 
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = [
+        'default' => 'full',
+        'md' => 1,
+        'lg' => 1,
+        'xl' => 1,
+    ];
 
     protected function getData(): array
     {

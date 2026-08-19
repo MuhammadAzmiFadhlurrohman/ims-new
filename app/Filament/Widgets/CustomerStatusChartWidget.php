@@ -15,7 +15,9 @@ class CustomerStatusChartWidget extends ChartWidget
 
     protected int | string | array $columnSpan = [
         'default' => 'full',
+        'md' => 1,
         'lg' => 1,
+        'xl' => 1,
     ];
 
     protected function getData(): array
