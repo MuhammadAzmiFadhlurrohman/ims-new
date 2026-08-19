@@ -66,62 +66,6 @@
             </div>
         </div>
 
-        {{-- ── 2. FILTER & PENCARIAN INSTAN INTERAKTIF ── --}}
-        <div class="ims-filter-search-box">
-            <div class="ims-filter-group">
-                <span style="font-size: 0.75rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; margin-right: 0.25rem;">
-                    Filter:
-                </span>
-                <button type="button" @click="activeFilter = 'ALL'" :class="activeFilter === 'ALL' ? 'ims-filter-pill active-all' : 'ims-filter-pill'">
-                    Semua ({{ $totalAll }})
-                </button>
-                <button type="button" @click="activeFilter = 'AKTIF'" :class="activeFilter === 'AKTIF' ? 'ims-filter-pill active-aktif' : 'ims-filter-pill'">
-                    Aktif ({{ $activeCustomers }})
-                </button>
-                <button type="button" @click="activeFilter = 'SUSPEND'" :class="activeFilter === 'SUSPEND' ? 'ims-filter-pill active-suspend' : 'ims-filter-pill'">
-                    Suspend ({{ $isolatedCustomers }})
-                </button>
-                <button type="button" @click="activeFilter = 'TERMINASI'" :class="activeFilter === 'TERMINASI' ? 'ims-filter-pill active-terminasi' : 'ims-filter-pill'">
-                    Terminasi ({{ $terminatedCustomers }})
-                </button>
-            </div>
-
-            <div class="ims-search-wrapper">
-                <svg class="ims-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                <input type="text" x-model="searchQuery" placeholder="Cari nama, ID internet, atau HP..." class="ims-search-input">
-                <template x-if="searchQuery">
-                    <button type="button" @click="searchQuery = ''" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); border: none; background: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer;">
-                        &times;
-                    </button>
-                </template>
-
-                <!-- Search Dropdown Results -->
-                <div x-show="searchQuery.length > 0" x-cloak class="ims-search-dropdown" @click.away="searchQuery = ''">
-                    <div style="font-size: 0.72rem; font-weight: 900; color: #94a3b8; padding: 0.4rem 0.6rem; text-transform: uppercase;">
-                        Hasil Pencarian Cepat:
-                    </div>
-                    <template x-for="cust in filteredCustomers" :key="cust.cid">
-                        <a :href="cust.url" class="ims-search-item">
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <div style="width: 32px; height: 32px; border-radius: 10px; background: #dbeafe; color: #1d4ed8; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.8rem;">
-                                    <span x-text="cust.name.charAt(0)"></span>
-                                </div>
-                                <div>
-                                    <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a;" x-text="cust.name"></div>
-                                    <div style="font-size: 0.72rem; color: #64748b; font-family: monospace;" x-text="'CID: ' + cust.cid + ' | Paket: ' + cust.package"></div>
-                                </div>
-                            </div>
-                            <span style="padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.68rem; font-weight: 900;" :style="cust.status === 'AKTIF' ? 'background: #dcfce7; color: #15803d;' : (cust.status === 'SUSPEND' ? 'background: #fef3c7; color: #b45309;' : 'background: #ffe4e6; color: #be123c;')" x-text="cust.status"></span>
-                        </a>
-                    </template>
-                    <template x-if="filteredCustomers.length === 0">
-                        <div style="padding: 1rem; text-align: center; font-size: 0.78rem; color: #94a3b8;">
-                            Tidak ada pelanggan yang cocok dengan pencarian Anda.
-                        </div>
-                    </template>
-                </div>
-            </div>
-        </div>
 
         {{-- ── 3. KARTU STATISTIK INTERAKTIF ── --}}
         <div class="ims-stats-grid">
