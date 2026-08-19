@@ -80,6 +80,24 @@ class BillingChartWidget extends ChartWidget
     protected function getOptions(): array
     {
         return [
+            'animation' => [
+                'duration' => 2000,
+                'easing' => 'easeOutQuart',
+            ],
+            'animations' => [
+                'x' => [
+                    'type' => 'number',
+                    'easing' => 'easeOutQuart',
+                    'duration' => 2000,
+                    'from' => 0,
+                ],
+                'y' => [
+                    'type' => 'number',
+                    'easing' => 'easeOutQuart',
+                    'duration' => 1800,
+                    'from' => 0,
+                ],
+            ],
             'plugins' => [
                 'legend' => [
                     'display' => true,

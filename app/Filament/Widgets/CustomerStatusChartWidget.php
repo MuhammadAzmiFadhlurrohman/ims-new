@@ -63,6 +63,12 @@ class CustomerStatusChartWidget extends ChartWidget
     protected function getOptions(): array
     {
         return [
+            'animation' => [
+                'animateScale' => true,
+                'animateRotate' => true,
+                'duration' => 1800,
+                'easing' => 'easeOutQuart',
+            ],
             'plugins' => [
                 'legend' => [
                     'display' => true,
