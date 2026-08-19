@@ -5,82 +5,75 @@
         }
     </style>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; margin: 0.5rem 0 1.5rem 0;">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
 
-        {{-- 1. Gangguan Layanan (Purple-Blue) --}}
-        <a href="{{ url('/admin/tickets?category=gangguan') }}" style="background: linear-gradient(135deg, #5870f5 0%, #6b82fa 100%); border-radius: 12px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(88, 112, 245, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(88, 112, 245, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(88, 112, 245, 0.25)';">
-            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-                <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Gangguan Layanan</span>
-                <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $gangguanCount }} Tiket</span>
+        {{-- 1. Gangguan Layanan (Indigo-Blue Glowing) --}}
+        <a href="{{ url('/admin/tickets?category=gangguan') }}" class="ims-action-card group" style="background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);">
+            <div class="flex flex-col gap-1 z-10">
+                <span class="text-xs font-semibold text-blue-100 uppercase tracking-wider">Tiket Gangguan</span>
+                <span class="text-2xl font-black text-white tracking-tight">{{ $gangguanCount }}</span>
+                <span class="text-[11px] font-medium text-blue-200 mt-1 flex items-center gap-1">
+                    Buka Helpdesk &rarr;
+                </span>
             </div>
-            <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <div class="icon-bubble z-10 shadow-inner">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
             </div>
         </a>
 
-        {{-- 2. Ubah Password (Pink-Red) --}}
-        <a href="{{ url('/admin/tickets?category=ubah_password') }}" style="background: linear-gradient(135deg, #ff5e73 0%, #ff788a 100%); border-radius: 12px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(255, 94, 115, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(255, 94, 115, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(255, 94, 115, 0.25)';">
-            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-                <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Ubah Password</span>
-                <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $ubahPasswordCount }} Tiket</span>
+        {{-- 2. Ubah Password (Pink-Rose Vibrant) --}}
+        <a href="{{ url('/admin/tickets?category=ubah_password') }}" class="ims-action-card group" style="background: linear-gradient(135deg, #e11d48 0%, #f43f5e 100%);">
+            <div class="flex flex-col gap-1 z-10">
+                <span class="text-xs font-semibold text-rose-100 uppercase tracking-wider">Ubah Password</span>
+                <span class="text-2xl font-black text-white tracking-tight">{{ $ubahPasswordCount }}</span>
+                <span class="text-[11px] font-medium text-rose-200 mt-1 flex items-center gap-1">
+                    Permintaan User &rarr;
+                </span>
             </div>
-            <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-        </a>
-
-        {{-- 3. Cek Coverage Area (Golden Yellow) --}}
-        <a href="{{ url('/admin/tickets?category=coverage') }}" style="background: linear-gradient(135deg, #eeb037 0%, #f6c459 100%); border-radius: 12px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(238, 176, 55, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(238, 176, 55, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(238, 176, 55, 0.25)';">
-            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-                <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Cek Coverage Area</span>
-                <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $coverageCount }} Tiket</span>
-            </div>
-            <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+            <div class="icon-bubble z-10 shadow-inner">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
             </div>
         </a>
 
-        {{-- 4. Terminasi (Purple-Blue) --}}
-        <a href="{{ url('/admin/service-terminations') }}" style="background: linear-gradient(135deg, #5870f5 0%, #6b82fa 100%); border-radius: 12px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(88, 112, 245, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(88, 112, 245, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(88, 112, 245, 0.25)';">
-            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-                <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Terminasi</span>
-                <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $terminasiCount }} Tiket</span>
+        {{-- 3. Cek Coverage Area (Amber-Orange Radiant) --}}
+        <a href="{{ url('/admin/tickets?category=coverage') }}" class="ims-action-card group" style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);">
+            <div class="flex flex-col gap-1 z-10">
+                <span class="text-xs font-semibold text-amber-100 uppercase tracking-wider">Cek Coverage</span>
+                <span class="text-2xl font-black text-white tracking-tight">{{ $coverageCount }}</span>
+                <span class="text-[11px] font-medium text-amber-200 mt-1 flex items-center gap-1">
+                    Survey Area &rarr;
+                </span>
             </div>
-            <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-            </div>
-        </a>
-
-        {{-- 5. Suspend Layanan (Pink-Red) --}}
-        <a href="{{ url('/admin/service-suspensions') }}" style="background: linear-gradient(135deg, #ff5e73 0%, #ff788a 100%); border-radius: 12px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(255, 94, 115, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(255, 94, 115, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(255, 94, 115, 0.25)';">
-            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-                <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Suspend Layanan</span>
-                <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $suspendCount }} Tiket</span>
-            </div>
-            <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div class="icon-bubble z-10 shadow-inner">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
             </div>
         </a>
 
-        {{-- 6. Pemasangan Baru (Golden Yellow) --}}
-        <a href="{{ url('/admin/installation-pipelines') }}" style="background: linear-gradient(135deg, #eeb037 0%, #f6c459 100%); border-radius: 12px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(238, 176, 55, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(238, 176, 55, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(238, 176, 55, 0.25)';">
-            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-                <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Pemasangan Baru</span>
-                <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $psbCount }} Tiket</span>
+        {{-- 4. Terminasi (Violet-Purple Deep) --}}
+        <a href="{{ url('/admin/service-terminations') }}" class="ims-action-card group" style="background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);">
+            <div class="flex flex-col gap-1 z-10">
+                <span class="text-xs font-semibold text-purple-100 uppercase tracking-wider">Terminasi</span>
+                <span class="text-2xl font-black text-white tracking-tight">{{ $terminasiCount }}</span>
+                <span class="text-[11px] font-medium text-purple-200 mt-1 flex items-center gap-1">
+                    Tarik ONT / Kabel &rarr;
+                </span>
             </div>
-            <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+            <div class="icon-bubble z-10 shadow-inner">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
             </div>
         </a>
 
-        {{-- 7. Ubah Layanan (Soft Cyan/Turquoise) --}}
-        <a href="{{ url('/admin/package-mutations') }}" style="background: linear-gradient(135deg, #22c9e2 0%, #46ddf2 100%); border-radius: 12px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(34, 201, 226, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(34, 201, 226, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(34, 201, 226, 0.25)';">
-            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-                <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Ubah Layanan</span>
-                <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $ubahLayananCount }} Tiket</span>
+        {{-- 5. Suspend Layanan (Red-Orange Bold) --}}
+        <a href="{{ url('/admin/service-suspensions') }}" class="ims-action-card group" style="background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%);">
+            <div class="flex flex-col gap-1 z-10">
+                <span class="text-xs font-semibold text-orange-100 uppercase tracking-wider">Suspend Layanan</span>
+                <span class="text-2xl font-black text-white tracking-tight">{{ $suspendCount }}</span>
+                <span class="text-[11px] font-medium text-orange-200 mt-1 flex items-center gap-1">
+                    Daftar Isolir &rarr;
+                </span>
             </div>
-            <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <div class="icon-bubble z-10 shadow-inner">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 4.243a9 9 0 01-2.828-2.828m0 0l2.828-2.829m-2.828 2.829L3 21M8.464 15.536a5 5 0 01-2.828-2.828"/></svg>
             </div>
         </a>
 
