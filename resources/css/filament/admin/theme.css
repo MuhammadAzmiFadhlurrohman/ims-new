@@ -913,3 +913,77 @@ html.dark table.fi-ta-table th {
 html.dark .fi-ta-header-cell-label {
     color: #cbd5e1 !important;
 }
+
+/* ============================================================
+   ── ULTRA-SMOOTH THEME TRANSITIONS & CIRCULAR EXPAND ANIMATION ──
+   ============================================================ */
+
+/* 1. View Transitions API CSS Overrides */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+    z-index: 1;
+}
+
+::view-transition-new(root) {
+    z-index: 999999;
+}
+
+html.dark::view-transition-old(root) {
+    z-index: 999999;
+}
+
+html.dark::view-transition-new(root) {
+    z-index: 1;
+}
+
+/* 2. Global Silky-Smooth Transitions Across All Elements & Pages */
+html,
+body,
+body.fi-body,
+.fi-layout,
+.fi-sidebar,
+.fi-topbar,
+.fi-header,
+.fi-main-ctn,
+.fi-main,
+.fi-page,
+.fi-section,
+.fi-card,
+.fi-ta-ctn,
+.fi-ta-content,
+.fi-ta-table,
+.fi-ta-table tr,
+.fi-ta-table td,
+.fi-ta-table th,
+.fi-ta-cell,
+.fi-input-wrp,
+.fi-select-input,
+.ims-card,
+.ims-ticket-card,
+.ims-stat-card,
+.ims-distribution-card,
+.ims-sidebar-footer,
+.ims-sidebar-footer-card,
+.matrix-item-card,
+.matrix-pill,
+.olt-card,
+.olt-top-header,
+.olt-breadcrumb-bar,
+.olt-table-container,
+.olt-table,
+.olt-table tr,
+.olt-table td,
+.olt-input,
+.olt-select,
+.ims-theme-toggle-btn {
+    transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                fill 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}

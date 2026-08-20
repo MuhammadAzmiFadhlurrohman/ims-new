@@ -117,19 +117,61 @@ class AdminPanelProvider extends PanelProvider
                                 } catch(e) {}
                             };
 
-                            window.toggleImsTheme = function() {
+                            window.toggleImsTheme = function(event) {
                                 var isDark = document.documentElement.classList.contains("dark");
-                                if (isDark) {
-                                    document.documentElement.classList.remove("dark");
-                                    localStorage.setItem("ims_theme", "light");
-                                    localStorage.setItem("theme", "light");
-                                } else {
-                                    document.documentElement.classList.add("dark");
-                                    localStorage.setItem("ims_theme", "dark");
-                                    localStorage.setItem("theme", "dark");
+                                var targetTheme = isDark ? "light" : "dark";
+
+                                function applyToggle() {
+                                    if (targetTheme === "dark") {
+                                        document.documentElement.classList.add("dark");
+                                    } else {
+                                        document.documentElement.classList.remove("dark");
+                                    }
+                                    localStorage.setItem("ims_theme", targetTheme);
+                                    localStorage.setItem("theme", targetTheme);
+                                    if (typeof window.syncImsThemeIcons === "function") {
+                                        window.syncImsThemeIcons();
+                                    }
                                 }
-                                if (typeof window.syncImsThemeIcons === "function") {
-                                    window.syncImsThemeIcons();
+
+                                // Check if View Transitions API is supported
+                                if (document.startViewTransition) {
+                                    var x = (event && typeof event.clientX === "number" && event.clientX > 0) 
+                                        ? event.clientX 
+                                        : (window.innerWidth - 60);
+                                    var y = (event && typeof event.clientY === "number" && event.clientY > 0) 
+                                        ? event.clientY 
+                                        : 35;
+                                    var endRadius = Math.hypot(
+                                        Math.max(x, window.innerWidth - x),
+                                        Math.max(y, window.innerHeight - y)
+                                    );
+
+                                    var transition = document.startViewTransition(function() {
+                                        applyToggle();
+                                    });
+
+                                    transition.ready.then(function() {
+                                        var clipPath = [
+                                            "circle(0px at " + x + "px " + y + "px)",
+                                            "circle(" + endRadius + "px at " + x + "px " + y + "px)"
+                                        ];
+
+                                        document.documentElement.animate(
+                                            {
+                                                clipPath: targetTheme === "dark" ? clipPath : clipPath.slice().reverse()
+                                            },
+                                            {
+                                                duration: 480,
+                                                easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+                                                pseudoElement: targetTheme === "dark" 
+                                                    ? "::view-transition-new(root)" 
+                                                    : "::view-transition-old(root)"
+                                            }
+                                        );
+                                    });
+                                } else {
+                                    applyToggle();
                                 }
                             };
 

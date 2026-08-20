@@ -13,14 +13,14 @@
         id="ims-theme-toggle"
         class="ims-theme-toggle-btn"
         title="Ubah Mode (Gelap / Terang)"
-        onclick="toggleImsTheme()"
+        onclick="window.toggleImsTheme(event)"
     >
         <!-- Sun Icon (for Dark Mode -> Switch to Light) -->
-        <svg id="ims-theme-icon-sun" class="ims-theme-icon hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <svg id="ims-theme-icon-sun" class="ims-theme-icon ims-theme-icon-sun hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
         <!-- Moon Icon (for Light Mode -> Switch to Dark) -->
-        <svg id="ims-theme-icon-moon" class="ims-theme-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <svg id="ims-theme-icon-moon" class="ims-theme-icon ims-theme-icon-moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
         </svg>
     </button>
@@ -48,7 +48,7 @@
     }
     setInterval(updateImsClock, 1000);
 
-    // ── 2. THEME TOGGLE LOGIC ──
+    // ── 2. SYNC THEME ICONS LOGIC ──
     window.syncImsThemeIcons = function() {
         const isDark = document.documentElement.classList.contains('dark');
         const sunIcon = document.getElementById('ims-theme-icon-sun');
@@ -64,25 +64,7 @@
         }
     };
 
-    window.toggleImsTheme = function() {
-        const isDark = document.documentElement.classList.contains('dark');
-        if (isDark) {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('ims_theme', 'light');
-        } else {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('ims_theme', 'dark');
-        }
-        syncImsThemeIcons();
-    };
-
-    // Apply saved theme immediately
-    const savedTheme = localStorage.getItem('ims_theme');
-    if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-    } else {
-        document.documentElement.classList.remove('dark');
-    }
-    syncImsThemeIcons();
+    // Initial sync
+    window.syncImsThemeIcons();
 })();
 </script>
