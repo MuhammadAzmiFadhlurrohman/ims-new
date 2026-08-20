@@ -508,19 +508,23 @@ class InstallationPipelineResource extends Resource
                         $phone = $record->customer?->phone_number ?? $record->phone_number ?? '';
                         $detailUrl = \App\Filament\Resources\CustomerSubscriptionResource::getUrl('view', ['record' => $record]);
 
-                        $phoneHtml = $phone ? "<span style='font-size: 10.5px; color: #64748b; font-family: monospace;'>📞 {$phone}</span>" : "";
+                        $phoneHtml = $phone ? "<span class='ims-cust-phone' style='font-size: 11px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>" : "";
 
                         return "
                             <div class='ims-cust-card'>
-                                <a href='{$detailUrl}' class='ims-cid-badge'>
-                                    <span>{$internetNo}</span>
-                                </a>
-                                <div style='display: flex; align-items: center; gap: 4px; margin-top: 2px;'>
+                                <div class='ims-cust-top-row'>
+                                    <a href='{$detailUrl}' class='ims-cid-badge'>
+                                        <span>{$internetNo}</span>
+                                    </a>
+                                </div>
+                                <div class='ims-cust-name-row' style='display: flex; align-items: center; gap: 6px;'>
                                     <a href='{$detailUrl}' class='ims-cust-name'>{$custName}</a>
                                     <span style='font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px; background: #e2e8f0; color: #475569;'>{$gender}</span>
                                 </div>
-                                <span class='ims-pkg-pill'>📦 {$pkgName}</span>
-                                {$phoneHtml}
+                                <div class='ims-cust-meta-row' style='display: flex; align-items: center; gap: 8px; flex-wrap: wrap;'>
+                                    <span class='ims-pkg-pill'>📦 {$pkgName}</span>
+                                    {$phoneHtml}
+                                </div>
                             </div>
                         ";
                     })
