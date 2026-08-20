@@ -1,6 +1,6 @@
 /* ============================================================
-   IMS MSN – Enterprise Compact & Clean Design System
-   Scalable, Responsive, and Pixel-Perfect at 100% Zoom
+   IMS ONE – Enterprise Design System (Theme, Tables, Tabs, & Cards)
+   File: resources/css/filament/admin/theme.css
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -15,44 +15,167 @@
 html {
     font-size: 13.5px !important;
     zoom: 0.8;
-    /* Scaled to 80% — matches browser at 80% zoom */
 }
 
 /* ══════════════════════════════════════
-   SIDEBAR – Handled by sidebar-glass.css
+   SIDEBAR DIMENSIONS
    ══════════════════════════════════════ */
 :root {
     --sidebar-width: 22vw;
     --collapsed-sidebar-width: 4.5rem;
 }
 
-
-
 /* ══════════════════════════════════════
-   TOPBAR & BREADCRUMBS
+   PAGE WRAPPER, TOPBAR & BREADCRUMBS
    ══════════════════════════════════════ */
-
-
 .fi-main-ctn,
 .fi-main {
     background: #f8fafc !important;
 }
 
 .fi-breadcrumbs {
-    font-size: 0.72rem !important;
-    margin-bottom: 0.25rem !important;
+    font-size: 0.76rem !important;
+    margin-bottom: 0.35rem !important;
 }
 
 .fi-breadcrumbs * {
     color: #64748b !important;
 }
 
+.fi-breadcrumbs a:hover * {
+    color: #0284c7 !important;
+}
+
+.fi-header {
+    margin-bottom: 1.25rem !important;
+}
+
 .fi-header-heading,
 .fi-page-header-heading {
-    font-size: 1.25rem !important;
-    font-weight: 800 !important;
+    font-size: 1.35rem !important;
+    font-weight: 900 !important;
     color: #0f172a !important;
     letter-spacing: -0.02em !important;
+    line-height: 1.2 !important;
+}
+
+/* ── Primary Action Button in Header (e.g. + Tambah Paket Baru, + Tambah Router) ── */
+.fi-header-actions .fi-btn,
+.fi-page-header-actions .fi-btn,
+.fi-ac-btn-action {
+    background: linear-gradient(135deg, #0050d8 0%, #0284c7 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid #0050d8 !important;
+    border-radius: 10px !important;
+    padding: 0.55rem 1.25rem !important;
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    box-shadow: 0 4px 14px rgba(0, 80, 216, 0.35) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    cursor: pointer !important;
+}
+
+.fi-header-actions .fi-btn:hover,
+.fi-page-header-actions .fi-btn:hover,
+.fi-ac-btn-action:hover {
+    background: linear-gradient(135deg, #003db3 0%, #026ba3 100%) !important;
+    box-shadow: 0 6px 18px rgba(0, 80, 216, 0.45) !important;
+    transform: translateY(-1.5px) !important;
+}
+
+.fi-header-actions .fi-btn svg,
+.fi-page-header-actions .fi-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+    stroke: currentColor !important;
+    color: inherit !important;
+}
+
+/* ══════════════════════════════════════
+   TABS FILTER BAR (SEGMENTED CAPSULE TABS)
+   ══════════════════════════════════════ */
+.fi-tabs,
+.fi-ta-tabs,
+nav.fi-tabs {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    padding: 5px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    margin-bottom: 1rem !important;
+    overflow-x: auto !important;
+    max-width: 100% !important;
+}
+
+.fi-tabs-item,
+.fi-tabs-item-btn,
+.fi-tabs button,
+.fi-tabs a {
+    border-radius: 9px !important;
+    padding: 0.45rem 0.95rem !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+    background: transparent !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    transition: all 0.15s ease !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+}
+
+.fi-tabs-item:hover,
+.fi-tabs-item-btn:hover,
+.fi-tabs button:hover,
+.fi-tabs a:hover {
+    color: #0284c7 !important;
+    background: #f1f5f9 !important;
+}
+
+/* Active Tab (Royal Blue Pill) */
+.fi-tabs-item[aria-selected="true"],
+.fi-tabs-item.fi-active,
+.fi-tabs-item-btn[aria-selected="true"],
+.fi-tabs-item-active {
+    background: linear-gradient(135deg, #0050d8 0%, #0284c7 100%) !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    box-shadow: 0 3px 10px rgba(0, 80, 216, 0.35) !important;
+}
+
+.fi-tabs-item[aria-selected="true"] *,
+.fi-tabs-item.fi-active *,
+.fi-tabs-item-active * {
+    color: #ffffff !important;
+}
+
+/* Tab Badges / Counter Pills (e.g. 22, 35, 42) */
+.fi-tabs-item .fi-badge,
+.fi-tabs-item-btn .fi-badge {
+    background: #eff6ff !important;
+    color: #1d4ed8 !important;
+    border: 1px solid #bfdbfe !important;
+    border-radius: 999px !important;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    padding: 0.1rem 0.45rem !important;
+}
+
+.fi-tabs-item[aria-selected="true"] .fi-badge,
+.fi-tabs-item.fi-active .fi-badge,
+.fi-tabs-item-active .fi-badge {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
 }
 
 /* ══════════════════════════════════════
@@ -61,53 +184,77 @@ html {
 .fi-ta-ctn {
     background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
-    border-radius: 10px !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
     overflow: hidden !important;
-    /* Removes the second/outer scrollbar */
-    margin-top: 0.5rem !important;
+    margin-top: 0.75rem !important;
 }
 
 .fi-ta-content {
     overflow-x: auto !important;
-    /* Single smooth table scrollbar */
 }
 
 /* Table Toolbar / Search & Filter Area */
-.fi-ta-header-toolbar {
-    padding: 0.75rem 1rem !important;
+.fi-ta-header-toolbar,
+.fi-ta-header {
+    padding: 0.85rem 1.25rem !important;
     background: #ffffff !important;
     border-bottom: 1px solid #f1f5f9 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
 }
 
 .fi-ta-search-field input {
-    height: 2.1rem !important;
-    font-size: 0.76rem !important;
-    border-radius: 6px !important;
-    border-color: #cbd5e1 !important;
-    background: #fafbfc !important;
+    height: 2.4rem !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    border: 1.5px solid #cbd5e1 !important;
+    background: #f8fafc !important;
+    padding-left: 2.2rem !important;
+    transition: all 0.2s ease !important;
 }
 
 .fi-ta-search-field input:focus {
-    border-color: #2563eb !important;
+    border-color: #0284c7 !important;
     background: #ffffff !important;
+    box-shadow: 0 0 0 3.5px rgba(2, 132, 199, 0.16) !important;
 }
 
-.fi-ta-filter-trigger-btn,
-.fi-ta-actions-trigger-btn {
-    height: 2.1rem !important;
-    padding: 0 0.65rem !important;
-    border-radius: 6px !important;
-    font-size: 0.75rem !important;
-    border: 1px solid #e2e8f0 !important;
+.fi-ta-filter-trigger-btn {
+    height: 2.4rem !important;
+    padding: 0 0.85rem !important;
+    border-radius: 10px !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    border: 1.5px solid #cbd5e1 !important;
     background: #ffffff !important;
     color: #475569 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    transition: all 0.15s ease !important;
+    cursor: pointer !important;
 }
 
-/* Table Header (All columns & rows in thead) */
+.fi-ta-filter-trigger-btn:hover {
+    border-color: #0284c7 !important;
+    color: #0284c7 !important;
+    background: #f0f9ff !important;
+}
+
+/* Hide empty redundant bulk action dropdown when no selection */
+.fi-ta-actions-trigger-btn[aria-expanded="false"]:only-child {
+    display: none !important;
+}
+
+/* ── Table Header (Sapphire Navy Gradient + Cyan Bottom Accent) ── */
 table.fi-ta-table thead,
 table.fi-ta-table thead tr {
-    background: linear-gradient(90deg, #0a1c30 0%, #133357 50%, #0a1c30 100%) !important;
+    background: linear-gradient(90deg, #071526 0%, #0d2847 50%, #071526 100%) !important;
     border: none !important;
 }
 
@@ -121,10 +268,10 @@ table.fi-ta-table thead th *,
 table.fi-ta-table thead td,
 table.fi-ta-table thead td * {
     color: #ffffff !important;
-    font-size: 0.72rem !important;
+    font-size: 0.74rem !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.04em !important;
+    letter-spacing: 0.05em !important;
     white-space: nowrap !important;
     text-align: left !important;
 }
@@ -135,22 +282,19 @@ table.fi-ta-table thead td {
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
-    padding: 0.75rem 0.95rem !important;
+    border-bottom: 2px solid #00d4ff !important;
+    padding: 0.95rem 1.15rem !important;
 }
 
-table.fi-ta-table thead input[type="checkbox"] {
-    accent-color: #0284c7 !important;
-}
-
-/* Table Data Cells (All rows) */
+/* ── Table Data Cells & Rows ── */
 .fi-ta-cell,
 table.fi-ta-table td {
-    font-size: 0.78rem !important;
-    color: #1e293b !important;
+    font-size: 0.82rem !important;
+    color: #0f172a !important;
     background: #ffffff !important;
     border-bottom: 1px solid #f1f5f9 !important;
-    vertical-align: top !important;
-    padding: 0.75rem 0.95rem !important;
+    vertical-align: middle !important;
+    padding: 0.85rem 1.15rem !important;
     text-align: left !important;
 }
 
@@ -158,22 +302,11 @@ table.fi-ta-table td {
 .fi-ta-text,
 .fi-ta-text-item,
 .fi-ta-text-item-label {
-    color: #1e293b !important;
+    color: #0f172a !important;
+    font-weight: 600 !important;
     text-align: left !important;
     justify-content: flex-start !important;
-    align-items: flex-start !important;
-}
-
-/* Links inside Table Cells */
-.fi-ta-cell a,
-table.fi-ta-table td a {
-    color: #0f172a !important;
-    transition: color 0.15s ease !important;
-}
-
-.fi-ta-cell a:hover,
-table.fi-ta-table td a:hover {
-    color: #2563eb !important;
+    align-items: center !important;
 }
 
 .fi-ta-row,
@@ -181,56 +314,28 @@ table.fi-ta-table tbody tr {
     transition: background-color 0.15s ease !important;
 }
 
-.fi-ta-row td:first-child,
-table.fi-ta-table tbody tr td:first-child {
-    border-left: 4px solid transparent !important;
-    transition: border-left-color 0.15s ease, background-color 0.15s ease !important;
-}
-
 .fi-ta-row:hover .fi-ta-cell,
 table.fi-ta-table tr:hover td {
-    background: #f0f7ff !important;
+    background: #f8fbff !important;
 }
 
-.fi-ta-row:hover td:first-child,
-table.fi-ta-table tr:hover td:first-child {
-    border-left: 4px solid #2563eb !important;
+.fi-ta-row:last-child td,
+table.fi-ta-table tbody tr:last-child td {
+    border-bottom: none !important;
 }
 
-/* Specific text helpers in table cells */
-.fi-ta-cell .text-slate-900,
-table.fi-ta-table .text-slate-900 {
-    color: #0f172a !important;
-}
-
-.fi-ta-cell .text-slate-800,
-table.fi-ta-table .text-slate-800 {
-    color: #1e293b !important;
-}
-
-.fi-ta-cell .text-slate-700,
-table.fi-ta-table .text-slate-700 {
-    color: #334155 !important;
-}
-
-.fi-ta-cell .text-slate-600,
-table.fi-ta-table .text-slate-600 {
-    color: #475569 !important;
-}
-
-.fi-ta-cell .text-slate-500,
-table.fi-ta-table .text-slate-500,
-.fi-ta-cell .text-slate-400,
-table.fi-ta-table .text-slate-400 {
-    color: #64748b !important;
-}
-
-/* Description text under cell values */
-.fi-ta-col-description {
-    color: #64748b !important;
-    font-size: 0.7rem !important;
-    line-height: 1.35 !important;
-    margin-top: 2px !important;
+/* Code Pills (e.g. AG0001, BR001, NIK) */
+.fi-ta-text-item-label:has(code),
+.fi-ta-cell code,
+.fi-ta-text code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 0.74rem !important;
+    font-weight: 800 !important;
+    color: #0284c7 !important;
+    background: #eff6ff !important;
+    border: 1px solid #bfdbfe !important;
+    padding: 2px 7px !important;
+    border-radius: 6px !important;
 }
 
 /* ── Table Action Buttons (Modern Horizontal Pill Buttons) ── */
@@ -247,27 +352,28 @@ table.fi-ta-table .text-slate-400 {
 .fi-ta-actions .fi-btn,
 .fi-ta-actions button,
 .fi-ta-actions a {
-    font-size: 0.74rem !important;
+    font-size: 0.75rem !important;
     font-weight: 800 !important;
-    padding: 0.35rem 0.75rem !important;
+    padding: 0.38rem 0.85rem !important;
     border-radius: 8px !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 0.35rem !important;
+    gap: 0.4rem !important;
     white-space: nowrap !important;
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
     text-decoration: none !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+    cursor: pointer !important;
 }
 
 .fi-ta-actions .fi-btn:hover,
 .fi-ta-actions button:hover,
 .fi-ta-actions a:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-1.5px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* Color theme mappings for buttons */
+/* Color theme mappings for action buttons */
 .fi-ta-actions [class*="color-info"],
 .fi-ta-actions .fi-btn-color-info {
     background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
@@ -296,6 +402,13 @@ table.fi-ta-table .text-slate-400 {
     border: none !important;
 }
 
+.fi-ta-actions [class*="color-success"],
+.fi-ta-actions .fi-btn-color-success {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
 .fi-ta-actions svg {
     width: 14px !important;
     height: 14px !important;
@@ -304,26 +417,29 @@ table.fi-ta-table .text-slate-400 {
     flex-shrink: 0 !important;
 }
 
-
 /* Pagination Bar */
 .fi-ta-pagination {
-    padding: 0.65rem 1rem !important;
+    padding: 0.85rem 1.25rem !important;
     background: #ffffff !important;
     border-top: 1px solid #f1f5f9 !important;
-    font-size: 0.75rem !important;
+    font-size: 0.78rem !important;
     color: #64748b !important;
+    font-weight: 600 !important;
 }
 
 /* ══════════════════════════════════════
-   BADGES & CHIPS
+   BADGES & CHIPS (TAILORED STYLING)
    ══════════════════════════════════════ */
 .fi-badge {
-    font-size: 0.65rem !important;
-    font-weight: 700 !important;
-    padding: 0.15rem 0.45rem !important;
-    border-radius: 4px !important;
-    letter-spacing: 0.01em !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    padding: 0.2rem 0.65rem !important;
+    border-radius: 6px !important;
+    letter-spacing: 0.02em !important;
     line-height: 1.2 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
 }
 
 /* ══════════════════════════════════════
@@ -332,36 +448,42 @@ table.fi-ta-table .text-slate-400 {
 .fi-section {
     background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
-    border-radius: 10px !important;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
 }
 
 .fi-input,
 input.fi-input,
 textarea.fi-input,
 select.fi-input {
-    border-radius: 6px !important;
-    border-color: #cbd5e1 !important;
-    font-size: 0.78rem !important;
-    padding: 0.42rem 0.68rem !important;
+    border-radius: 10px !important;
+    border: 1.5px solid #cbd5e1 !important;
+    font-size: 0.82rem !important;
+    padding: 0.55rem 0.85rem !important;
+    background: #f8fafc !important;
+    transition: all 0.2s ease !important;
 }
 
-.fi-input:focus {
-    border-color: #2563eb !important;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1) !important;
+.fi-input:focus,
+input.fi-input:focus,
+select.fi-input:focus {
+    border-color: #0284c7 !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3.5px rgba(2, 132, 199, 0.16) !important;
 }
 
 /* ══════════════════════════════════════
    MODAL WINDOWS
    ══════════════════════════════════════ */
 .fi-modal-window {
-    border-radius: 12px !important;
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.16) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.25) !important;
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
 }
 
 .fi-modal-header-heading {
-    font-size: 0.95rem !important;
-    font-weight: 700 !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
     color: #0f172a !important;
 }
 
