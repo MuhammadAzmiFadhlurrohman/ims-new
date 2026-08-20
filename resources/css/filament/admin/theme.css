@@ -22,7 +22,7 @@ html {
    SIDEBAR – Handled by sidebar-glass.css
    ══════════════════════════════════════ */
 :root {
-    --sidebar-width: 17rem;
+    --sidebar-width: 22vw;
     --collapsed-sidebar-width: 4.5rem;
 }
 

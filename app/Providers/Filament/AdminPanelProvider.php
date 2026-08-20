@@ -43,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Inter')
             ->sidebarCollapsibleOnDesktop()
-            ->sidebarWidth('17rem')
+            ->sidebarWidth('22vw')
             ->collapsedSidebarWidth('4.5rem')
             ->maxContentWidth(MaxWidth::Full)
             ->globalSearch(false)

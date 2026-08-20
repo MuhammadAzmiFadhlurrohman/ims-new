@@ -29,6 +29,19 @@
     margin: 0 !important;
 }
 
+@media (min-width: 1024px) {
+    .fi-sidebar.fi-sidebar-open {
+        width: 22vw !important;
+        min-width: 22vw !important;
+        max-width: 22vw !important;
+    }
+
+    .fi-main-ctn {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+}
 
 .fi-sidebar > div.overflow-x-clip {
     flex-shrink: 0 !important;
