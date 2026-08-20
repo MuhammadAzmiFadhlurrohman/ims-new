@@ -920,8 +920,7 @@ html.dark .fi-ta-header-cell-label {
 
 /* 1. View Transitions API CSS Overrides */
 ::view-transition-group(root) {
-    animation-duration: 0.6s !important;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
+    animation-duration: 0.55s !important;
 }
 
 ::view-transition-image-pair(root) {
@@ -945,6 +944,16 @@ html.dark .fi-ta-header-cell-label {
 
 ::view-transition-new(root) {
     z-index: 9999999 !important;
+    animation: imsCircleReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes imsCircleReveal {
+    0% {
+        clip-path: circle(0px at var(--ims-toggle-x, 90vw) var(--ims-toggle-y, 35px));
+    }
+    100% {
+        clip-path: circle(160vmax at var(--ims-toggle-x, 90vw) var(--ims-toggle-y, 35px));
+    }
 }
 
 /* 2. Global Silky-Smooth Transitions Across All Elements & Pages */
