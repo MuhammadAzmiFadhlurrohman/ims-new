@@ -233,45 +233,77 @@ table.fi-ta-table .text-slate-400 {
     margin-top: 2px !important;
 }
 
-/* Table Action Buttons Container – Stack Vertically matching Screenshot */
+/* ── Table Action Buttons (Modern Horizontal Pill Buttons) ── */
 .fi-ta-actions {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 0.25rem !important;
-    min-width: 8.5rem !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0.45rem !important;
+    flex-wrap: nowrap !important;
+    min-width: max-content !important;
 }
 
 .fi-ta-actions .fi-btn,
 .fi-ta-actions button,
 .fi-ta-actions a {
-    font-size: 0.72rem !important;
-    padding: 0.15rem 0.35rem !important;
-    background: transparent !important;
-    border: none !important;
-    border-radius: 4px !important;
-    font-weight: 600 !important;
-    color: #475569 !important;
-    white-space: nowrap !important;
-    box-shadow: none !important;
+    font-size: 0.74rem !important;
+    font-weight: 800 !important;
+    padding: 0.35rem 0.75rem !important;
+    border-radius: 8px !important;
     display: inline-flex !important;
     align-items: center !important;
     gap: 0.35rem !important;
-    transition: all 0.15s ease !important;
-    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    text-decoration: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 
 .fi-ta-actions .fi-btn:hover,
 .fi-ta-actions button:hover,
 .fi-ta-actions a:hover {
-    color: #2563eb !important;
-    background: #f1f5f9 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Color theme mappings for buttons */
+.fi-ta-actions [class*="color-info"],
+.fi-ta-actions .fi-btn-color-info {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.fi-ta-actions [class*="color-warning"],
+.fi-ta-actions .fi-btn-color-warning {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.fi-ta-actions [class*="color-danger"],
+.fi-ta-actions .fi-btn-color-danger {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.fi-ta-actions [class*="color-primary"],
+.fi-ta-actions .fi-btn-color-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
 }
 
 .fi-ta-actions svg {
-    width: 0.95rem !important;
-    height: 0.95rem !important;
+    width: 14px !important;
+    height: 14px !important;
+    stroke: currentColor !important;
+    color: inherit !important;
+    flex-shrink: 0 !important;
 }
+
 
 /* Pagination Bar */
 .fi-ta-pagination {
