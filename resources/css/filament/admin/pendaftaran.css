@@ -30,9 +30,7 @@ html.dark .fi-ta-filters-above-content-ctn {
     align-items: center !important;
 }
 
-.fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label {
-    display: none !important;
-}
+/* NOTE: Label hiding for DESKTOP ONLY — moved to @media (min-width: 1024px) block below */
 
 .fi-ta-filters-above-content-ctn .fi-fo-field-wrp {
     margin-bottom: 0 !important;
@@ -349,6 +347,11 @@ html.dark .ims-temp-badge:hover {
         display: block !important;
     }
 
+    /* Hide label on desktop filter (labels take space in the clean horizontal filter bar) */
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label {
+        display: none !important;
+    }
+
     /* Hide Mobile Detail Action Button on Desktop */
     .ims-mobile-only-btn,
     .fi-ta-actions .ims-mobile-only-btn,
@@ -619,6 +622,47 @@ html.dark .ims-temp-badge:hover {
         border: none !important;
         background: transparent !important;
         box-sizing: border-box !important;
+    }
+
+    /* ── CRITICAL: Override Filament TextColumn wrappers inside the first cell ──
+       Filament's TextColumn renders the HTML content inside several nested wrappers:
+         td > div.fi-ta-text.grid.px-3.py-4
+           > div.flex.max-w-max           ← max-w-max KILLS full-width cards!
+             > div.fi-ta-text-item.inline-flex
+               > span.fi-ta-text-item-label
+                 → Our HTML card renders here
+
+       We must override each wrapper to block + 100% width + zero restrictions. */
+    table.fi-ta-table tbody tr td:first-child .fi-ta-text,
+    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        grid-template-columns: none !important;
+    }
+
+    table.fi-ta-table tbody tr td:first-child .fi-ta-text > div,
+    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text > div {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+    }
+
+    table.fi-ta-table tbody tr td:first-child .fi-ta-text-item,
+    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text-item {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    table.fi-ta-table tbody tr td:first-child .fi-ta-text-item-label,
+    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text-item-label {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
 
