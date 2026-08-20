@@ -798,3 +798,57 @@ html.dark .fi-dropdown-list-item a:hover {
     background: #0e2b4f !important;
     color: #00d4ff !important;
 }
+
+/* ── Dark Mode Text & Links in Tables ── */
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700 {
+    color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-slate-500 {
+    color: #94a3b8 !important;
+}
+
+html.dark a.font-black.text-slate-900,
+html.dark a.text-slate-900 {
+    color: #ffffff !important;
+}
+
+html.dark a.text-slate-800 {
+    color: #cbd5e1 !important;
+}
+
+html.dark .fi-ta-filters,
+html.dark .fi-ta-filters-form,
+html.dark .fi-ta-filters-above-content-ctn,
+html.dark .fi-ta-filters-above-content {
+    background: #08192e !important;
+    border-color: #14355a !important;
+}
+
+html.dark .fi-ta-filters .fi-input-wrp,
+html.dark .fi-ta-filters-above-content .fi-input-wrp,
+html.dark .fi-input-wrp {
+    background: #051324 !important;
+    border-color: #1e3a5f !important;
+    color: #ffffff !important;
+}
+
+html.dark select.fi-input,
+html.dark input.fi-input,
+html.dark .fi-select-input {
+    color: #f1f5f9 !important;
+    background: transparent !important;
+}
+
+html.dark select.fi-input option {
+    background: #08192e !important;
+    color: #f1f5f9 !important;
+}
+
+html.dark .fi-btn-link,
+html.dark button[type="reset"] {
+    color: #f43f5e !important;
+}

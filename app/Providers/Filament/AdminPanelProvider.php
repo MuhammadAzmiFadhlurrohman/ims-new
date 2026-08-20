@@ -48,6 +48,23 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(MaxWidth::Full)
             ->globalSearch(false)
             ->renderHook(
+                PanelsRenderHook::HEAD_START,
+                fn () => Blade::render('
+                    <script>
+                        (function() {
+                            try {
+                                var theme = localStorage.getItem("ims_theme") || localStorage.getItem("theme");
+                                if (theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+                                    document.documentElement.classList.add("dark");
+                                } else {
+                                    document.documentElement.classList.remove("dark");
+                                }
+                            } catch (e) {}
+                        })();
+                    </script>
+                ')
+            )
+            ->renderHook(
                 PanelsRenderHook::USER_MENU_BEFORE,
                 fn () => view('filament.components.header-datetime')
             )
@@ -85,6 +102,54 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::HEAD_END,
                 fn () => Blade::render('
                     <script>
+                        (function() {
+                            window.applyImsTheme = function() {
+                                try {
+                                    var theme = localStorage.getItem("ims_theme") || localStorage.getItem("theme");
+                                    if (theme === "dark") {
+                                        document.documentElement.classList.add("dark");
+                                    } else if (theme === "light") {
+                                        document.documentElement.classList.remove("dark");
+                                    }
+                                    if (typeof window.syncImsThemeIcons === "function") {
+                                        window.syncImsThemeIcons();
+                                    }
+                                } catch(e) {}
+                            };
+
+                            window.toggleImsTheme = function() {
+                                var isDark = document.documentElement.classList.contains("dark");
+                                if (isDark) {
+                                    document.documentElement.classList.remove("dark");
+                                    localStorage.setItem("ims_theme", "light");
+                                    localStorage.setItem("theme", "light");
+                                } else {
+                                    document.documentElement.classList.add("dark");
+                                    localStorage.setItem("ims_theme", "dark");
+                                    localStorage.setItem("theme", "dark");
+                                }
+                                if (typeof window.syncImsThemeIcons === "function") {
+                                    window.syncImsThemeIcons();
+                                }
+                            };
+
+                            window.applyImsTheme();
+                            document.addEventListener("DOMContentLoaded", window.applyImsTheme);
+                            document.addEventListener("livewire:navigated", window.applyImsTheme);
+                            document.addEventListener("livewire:init", window.applyImsTheme);
+
+                            // Enforce dark class preservation against livewire re-renders
+                            try {
+                                var observer = new MutationObserver(function() {
+                                    var theme = localStorage.getItem("ims_theme") || localStorage.getItem("theme");
+                                    if (theme === "dark" && !document.documentElement.classList.contains("dark")) {
+                                        document.documentElement.classList.add("dark");
+                                    }
+                                });
+                                observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+                            } catch(e) {}
+                        })();
+
                         window.currentImsRecordKey = "";
 
                         window.openImsStatusModal = function(key, status) {
@@ -177,6 +242,12 @@ class AdminPanelProvider extends PanelProvider
                         html.fi body.fi-body,
                         body.fi-body {
                             background: linear-gradient(145deg, #dff5f0 0%, #e8eeff 30%, #ede9ff 60%, #e0f2fe 100%) fixed !important;
+                        }
+                        html.dark body.fi-body,
+                        html.dark.fi body.fi-body,
+                        html.dark {
+                            background: #030a14 !important;
+                            background-color: #030a14 !important;
                         }
                         .fi-main-ctn, .fi-main, .fi-page {
                             background: transparent !important;

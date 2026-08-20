@@ -13,6 +13,12 @@
     margin-bottom: 1.25rem !important;
 }
 
+html.dark .fi-ta-filters-above-content-ctn {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
 .fi-ta-filters-above-content-ctn > header {
     display: none !important;
 }
@@ -41,10 +47,21 @@
     transition: all 0.2s ease !important;
 }
 
+html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp {
+    background: #051324 !important;
+    border-color: #1e3a5f !important;
+}
+
 .fi-ta-filters-above-content-ctn .fi-input-wrp:focus-within {
     background: #ffffff !important;
     border-color: #2563eb !important;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+}
+
+html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp:focus-within {
+    background: #092240 !important;
+    border-color: #00d4ff !important;
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.18) !important;
 }
 
 .fi-ta-filters-above-content-ctn select.fi-input,
@@ -56,6 +73,21 @@
     background: transparent !important;
 }
 
+html.dark .fi-ta-filters-above-content-ctn select.fi-input,
+html.dark .fi-ta-filters-above-content-ctn input[type="text"].fi-input,
+html.dark .fi-ta-filters-above-content-ctn .fi-select-input {
+    color: #f1f5f9 !important;
+}
+
+html.dark .fi-ta-filters-above-content-ctn select.fi-input option {
+    background: #08192e !important;
+    color: #f1f5f9 !important;
+}
+
+html.dark .fi-ta-filters-above-content-ctn input[type="text"].fi-input::placeholder {
+    color: #64748b !important;
+}
+
 /* ── 2. TABLE WRAPPER & ZEBRA HOVER ── */
 .fi-ta-ctn {
     background: #ffffff !important;
@@ -63,6 +95,12 @@
     border-radius: 20px !important;
     box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
     overflow: hidden !important;
+}
+
+html.dark .fi-ta-ctn {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* Header Table (th) */

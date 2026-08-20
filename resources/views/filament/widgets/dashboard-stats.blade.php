@@ -71,11 +71,8 @@
         },
 
         toggleTheme() {
-            this.isDark = !this.isDark;
-            if (this.isDark) {
-                document.body.style.filter = 'invert(0.9) hue-rotate(180deg)';
-            } else {
-                document.body.style.filter = 'none';
+            if (typeof window.toggleImsTheme === 'function') {
+                window.toggleImsTheme();
             }
         },
 
