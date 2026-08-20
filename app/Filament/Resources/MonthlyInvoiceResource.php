@@ -389,7 +389,7 @@ class MonthlyInvoiceResource extends Resource
             ->actions([
                 // ── 0. CHANGE PAYMENT METHOD MODAL ──
                 Tables\Actions\Action::make('change_payment_method')
-                    ->label('Change Payment Method')
+                    ->label('Change Payment')
                     ->icon('heroicon-m-credit-card')
                     ->color('primary')
                     ->modalHeading('Change Payment Method')
