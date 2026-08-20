@@ -1256,53 +1256,35 @@ html.dark table.fi-ta-table th {
     }
 
     /* ── Table Cell Rows Inside Card ── */
-    /* NOTE: pendaftaran.css overrides td:first-child to display: block and
-       td:not(:first-child) to display: none for the pipeline card view.
-       The rules below are intentionally low-specificity to allow those overrides. */
     .fi-ta-cell,
     table.fi-ta-table td,
     table.fi-ta-table tbody tr td {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        padding: 0.45rem 0 !important;
+        display: block !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
         border: none !important;
-        border-bottom: 1px solid #f1f5f9 !important;
         background: transparent !important;
         font-size: 0.84rem !important;
-        width: 100% !important;
         box-sizing: border-box !important;
     }
 
     html.dark .fi-ta-cell,
     html.dark table.fi-ta-table td,
     html.dark table.fi-ta-table tbody tr td {
-        border-bottom-color: rgba(255, 255, 255, 0.05) !important;
         background: transparent !important;
-    }
-
-    /* First Cell (Card Header / ID & Primary Title Highlight) */
-    .fi-ta-cell:first-child,
-    table.fi-ta-table tbody tr td:first-child {
-        padding-bottom: 0.65rem !important;
-        font-weight: 900 !important;
-        font-size: 0.96rem !important;
-        color: #0f172a !important;
-        border-bottom: 1.5px solid #e2e8f0 !important;
-    }
-
-    html.dark .fi-ta-cell:first-child,
-    html.dark table.fi-ta-table tbody tr td:first-child {
-        color: #ffffff !important;
-        border-bottom-color: #14355a !important;
     }
 
     .fi-ta-cell-content,
     .fi-ta-text,
+    .fi-ta-text > div,
     .fi-ta-text-item,
     .fi-ta-text-item-label {
-        font-size: 0.84rem !important;
-        color: #0f172a !important;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     html.dark .fi-ta-cell-content,

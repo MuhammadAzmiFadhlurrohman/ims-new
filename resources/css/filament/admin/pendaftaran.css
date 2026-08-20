@@ -601,7 +601,14 @@ html.dark .ims-temp-badge:hover {
 
 
     /* ── C. TABLE RESET & STANDALONE CARD RENDERING ── */
-    .fi-ta-ctn {
+    .fi-ta-ctn,
+    .fi-ta-content,
+    table.fi-ta-table,
+    table.fi-ta-table tbody {
+        display: block !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
@@ -609,10 +616,14 @@ html.dark .ims-temp-badge:hover {
         margin: 0 !important;
         padding: 0 !important;
         overflow: visible !important;
+        box-sizing: border-box !important;
     }
 
-    .fi-ta-content {
-        overflow: visible !important;
+    table.fi-ta-table tbody {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        width: 100% !important;
     }
 
     /* Hide table header row */
@@ -622,24 +633,13 @@ html.dark .ims-temp-badge:hover {
         display: none !important;
     }
 
-    /* Table & Tbody as Vertical Flex Cards Container */
-    table.fi-ta-table,
-    table.fi-ta-table tbody {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 12px !important;
-        width: 100% !important;
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    /* Each Row is a Card Wrapper */
+    /* Each Row is a Full-Width Card Wrapper */
     table.fi-ta-table tbody tr,
     table.fi-ta-table tbody tr.fi-ta-row {
         display: block !important;
         width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
         background: transparent !important;
         border: none !important;
         border-left: none !important;
@@ -660,12 +660,15 @@ html.dark .ims-temp-badge:hover {
     }
 
     /* Column 1 (internet_number) renders the entire Standalone Card */
+    table.fi-ta-table tbody tr td,
     table.fi-ta-table tbody tr td.fi-table-cell-internet-number,
     table.fi-ta-table tbody tr.fi-ta-row td.fi-table-cell-internet-number,
     table.fi-ta-table tbody tr td:first-child,
     table.fi-ta-table tbody tr.fi-ta-row td:first-child {
         display: block !important;
         width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
         padding: 0 !important;
         margin: 0 !important;
         border: none !important;
@@ -673,20 +676,21 @@ html.dark .ims-temp-badge:hover {
         box-sizing: border-box !important;
     }
 
-    /* Neutralize Filament's TextColumn nested wrappers */
-    table.fi-ta-table tbody tr td:first-child .fi-ta-text,
-    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text,
-    table.fi-ta-table tbody tr td:first-child .fi-ta-text > div,
-    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text > div,
-    table.fi-ta-table tbody tr td:first-child .fi-ta-text-item,
-    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text-item,
-    table.fi-ta-table tbody tr td:first-child .fi-ta-text-item-label,
-    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text-item-label,
-    table.fi-ta-table tbody tr td:first-child .fi-ta-cell-content {
+    /* Neutralize ALL Filament's TextColumn nested wrappers and max-w-max */
+    table.fi-ta-table tbody tr td .fi-ta-text,
+    table.fi-ta-table tbody tr td .fi-ta-text > div,
+    table.fi-ta-table tbody tr td .fi-ta-text-item,
+    table.fi-ta-table tbody tr td .fi-ta-text-item-label,
+    table.fi-ta-table tbody tr td .fi-ta-cell-content,
+    .fi-table-cell-internet-number .fi-ta-text,
+    .fi-table-cell-internet-number .fi-ta-text > div,
+    .fi-table-cell-internet-number .fi-ta-text-item,
+    .fi-table-cell-internet-number .fi-ta-text-item-label {
         display: block !important;
         width: 100% !important;
+        min-width: 100% !important;
         max-width: 100% !important;
-        min-width: 0 !important;
+        flex: 1 1 100% !important;
         padding: 0 !important;
         margin: 0 !important;
         border: none !important;
@@ -695,7 +699,7 @@ html.dark .ims-temp-badge:hover {
     }
 
 
-    /* ── D. STANDALONE MOBILE CARD DESIGN ── */
+    /* ── D. STANDALONE MOBILE CARD DESIGN (100% FULL WIDTH) ── */
     .ims-standalone-card {
         display: flex !important;
         flex-direction: column !important;
@@ -707,6 +711,8 @@ html.dark .ims-temp-badge:hover {
         box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
         gap: 8px !important;
         width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
         box-sizing: border-box !important;
     }
 
