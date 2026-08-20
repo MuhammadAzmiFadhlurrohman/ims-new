@@ -3,33 +3,127 @@
    File: resources/css/filament/admin/pendaftaran.css
    ========================================================================== */
 
-/* ── 1. FILTER BAR CONTAINER (INLINE & CLEAN GRID) ── */
-.fi-ta-filters-above-content-ctn {
-    background: #ffffff !important;
-    border-radius: 18px !important;
-    border: 1px solid #e2e8f0 !important;
-    box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05) !important;
-    padding: 1.1rem 1.4rem !important;
-    margin-bottom: 1.25rem !important;
+/* ── 1. FILTER BAR CONTAINER (DESKTOP) ── */
+@media (min-width: 1024px) {
+    .fi-ta-filters-above-content-ctn {
+        background: #ffffff !important;
+        border-radius: 18px !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05) !important;
+        padding: 1.1rem 1.4rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+
+    html.dark .fi-ta-filters-above-content-ctn {
+        background: #08192e !important;
+        border-color: #14355a !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .fi-ta-filters-above-content-ctn > header {
+        display: none !important;
+    }
+
+    .fi-ta-filters-above-content-ctn form > div {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+        gap: 1rem !important;
+        align-items: center !important;
+    }
+
+    /* ── 2. DESKTOP TABLE WRAPPER & ZEBRA HOVER ── */
+    .fi-ta-ctn {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 20px !important;
+        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+        overflow: hidden !important;
+    }
+
+    html.dark .fi-ta-ctn {
+        background: #08192e !important;
+        border-color: #14355a !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    /* Header Table (th) */
+    .fi-ta-header-cell,
+    table.fi-ta-table th {
+        background: #f8fafc !important;
+        color: #0f172a !important;
+        font-size: 0.76rem !important;
+        font-weight: 900 !important;
+        letter-spacing: 0.04em !important;
+        text-transform: uppercase !important;
+        border-bottom: 2px solid #e2e8f0 !important;
+        padding: 1rem 1.1rem !important;
+    }
+
+    .fi-ta-header-cell *,
+    .fi-ta-header-cell-label {
+        color: #0f172a !important;
+        font-weight: 900 !important;
+        text-transform: uppercase !important;
+    }
+
+    /* Table Rows & Cells (td) */
+    table.fi-ta-table tbody tr {
+        position: relative !important;
+        transition: all 0.2s ease !important;
+    }
+
+    table.fi-ta-table tbody tr td {
+        padding: 1rem 1.1rem !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        vertical-align: top !important;
+        font-size: 0.82rem !important;
+        transition: background-color 0.2s ease, border-left-color 0.2s ease !important;
+    }
+
+    /* Zebra striping */
+    table.fi-ta-table tbody tr:nth-child(even) td {
+        background-color: #fbfcfe !important;
+    }
+
+    html.dark table.fi-ta-table tbody tr:nth-child(even) td {
+        background-color: #0b1f38 !important;
+    }
+
+    html.dark table.fi-ta-table tbody tr:nth-child(odd) td {
+        background-color: #08192e !important;
+    }
+
+    /* Hover Effect with Left Indicator Border */
+    table.fi-ta-table tbody tr:hover td {
+        background-color: #f0f7ff !important;
+    }
+
+    html.dark table.fi-ta-table tbody tr:hover td {
+        background-color: #0e2d52 !important;
+    }
+
+    table.fi-ta-table tbody tr td:first-child {
+        border-left: 4px solid transparent !important;
+    }
+
+    table.fi-ta-table tbody tr:hover td:first-child {
+        border-left: 4px solid #2563eb !important;
+    }
+
+    html.dark table.fi-ta-table tbody tr:hover td:first-child {
+        border-left: 4px solid #00d4ff !important;
+    }
+
+    .fi-ta-actions {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 0.45rem !important;
+        flex-wrap: nowrap !important;
+    }
 }
 
-html.dark .fi-ta-filters-above-content-ctn {
-    background: #08192e !important;
-    border-color: #14355a !important;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
-}
-
-.fi-ta-filters-above-content-ctn > header {
-    display: none !important;
-}
-
-.fi-ta-filters-above-content-ctn form > div {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
-    gap: 1rem !important;
-    align-items: center !important;
-}
-
+/* ── GLOBAL FILTER STYLES ── */
 .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label {
     display: none !important;
 }
@@ -86,89 +180,6 @@ html.dark .fi-ta-filters-above-content-ctn select.fi-input option {
 
 html.dark .fi-ta-filters-above-content-ctn input[type="text"].fi-input::placeholder {
     color: #64748b !important;
-}
-
-/* ── 2. TABLE WRAPPER & ZEBRA HOVER ── */
-.fi-ta-ctn {
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 20px !important;
-    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
-    overflow: hidden !important;
-}
-
-html.dark .fi-ta-ctn {
-    background: #08192e !important;
-    border-color: #14355a !important;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
-}
-
-/* Header Table (th) */
-.fi-ta-header-cell,
-table.fi-ta-table th {
-    background: #f8fafc !important;
-    color: #0f172a !important;
-    font-size: 0.76rem !important;
-    font-weight: 900 !important;
-    letter-spacing: 0.04em !important;
-    text-transform: uppercase !important;
-    border-bottom: 2px solid #e2e8f0 !important;
-    padding: 1rem 1.1rem !important;
-}
-
-.fi-ta-header-cell *,
-.fi-ta-header-cell-label {
-    color: #0f172a !important;
-    font-weight: 900 !important;
-    text-transform: uppercase !important;
-}
-
-/* Table Rows & Cells (td) */
-table.fi-ta-table tbody tr {
-    position: relative !important;
-    transition: all 0.2s ease !important;
-}
-
-table.fi-ta-table tbody tr td {
-    padding: 1rem 1.1rem !important;
-    border-bottom: 1px solid #f1f5f9 !important;
-    vertical-align: top !important;
-    font-size: 0.82rem !important;
-    transition: background-color 0.2s ease, border-left-color 0.2s ease !important;
-}
-
-/* Zebra striping */
-table.fi-ta-table tbody tr:nth-child(even) td {
-    background-color: #fbfcfe !important;
-}
-
-html.dark table.fi-ta-table tbody tr:nth-child(even) td {
-    background-color: #0b1f38 !important;
-}
-
-html.dark table.fi-ta-table tbody tr:nth-child(odd) td {
-    background-color: #08192e !important;
-}
-
-/* ── Hover Effect with Left Indicator Border ── */
-table.fi-ta-table tbody tr:hover td {
-    background-color: #f0f7ff !important;
-}
-
-html.dark table.fi-ta-table tbody tr:hover td {
-    background-color: #0e2d52 !important;
-}
-
-table.fi-ta-table tbody tr td:first-child {
-    border-left: 4px solid transparent !important;
-}
-
-table.fi-ta-table tbody tr:hover td:first-child {
-    border-left: 4px solid #2563eb !important;
-}
-
-html.dark table.fi-ta-table tbody tr:hover td:first-child {
-    border-left: 4px solid #00d4ff !important;
 }
 
 /* ── 3. CUSTOM REGISTRATION UI COMPONENTS ── */
@@ -319,91 +330,246 @@ html.dark .ims-temp-badge:hover {
     font-weight: 600;
 }
 
-/* ── 5. ACTION BUTTONS ── */
-.fi-ta-actions {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    gap: 0.45rem !important;
-    flex-wrap: nowrap !important;
+/* ══════════════════════════════════════════════════════════════════════
+   5. MOBILE TABLE-TO-CARD TRANSFORMATION & 2-COLUMN FILTERS (< 1024px)
+   ══════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1023px) {
+    /* ── 2-Column Filters ── */
+    .fi-ta-filters-above-content-ctn {
+        padding: 0.75rem !important;
+        border-radius: 14px !important;
+        margin-bottom: 0.75rem !important;
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+
+    html.dark .fi-ta-filters-above-content-ctn {
+        background: #08192e !important;
+        border-color: #14355a !important;
+    }
+
+    .fi-ta-filters-above-content-ctn > header {
+        display: none !important;
+    }
+
+    .fi-ta-filters-above-content-ctn form > div,
+    .fi-ta-filters-form .grid,
+    .fi-ta-filters .grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 0.45rem !important;
+        width: 100% !important;
+    }
+
+    .fi-ta-filters-above-content-ctn .fi-input-wrp,
+    .fi-ta-filter .fi-input-wrp {
+        border-radius: 10px !important;
+        padding: 0.2rem 0.5rem !important;
+    }
+
+    .fi-ta-filters-above-content-ctn select.fi-input,
+    .fi-ta-filters-above-content-ctn input[type="text"].fi-input {
+        font-size: 0.74rem !important;
+        height: 2.2rem !important;
+    }
+
+    /* ── Table-to-Card Container ── */
+    .fi-ta-ctn {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    .fi-ta-content {
+        overflow: visible !important;
+    }
+
+    /* Hide Table Headers on Mobile */
+    table.fi-ta-table thead,
+    .fi-ta-header-cell,
+    table.fi-ta-table th {
+        display: none !important;
+    }
+
+    /* Convert Table & Tbody into Vertical Flex List */
+    table.fi-ta-table {
+        display: block !important;
+        width: 100% !important;
+        background: transparent !important;
+        border: none !important;
+    }
+
+    table.fi-ta-table tbody {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.85rem !important;
+        width: 100% !important;
+    }
+
+    /* ── EXECUTIVE MOBILE DATA CARD ── */
+    .fi-ta-row,
+    table.fi-ta-table tbody tr {
+        display: flex !important;
+        flex-direction: column !important;
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-left: 5px solid #0284c7 !important;
+        border-radius: 16px !important;
+        padding: 1rem 1.15rem !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+        gap: 0.45rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+    }
+
+    .fi-ta-row:nth-child(even),
+    table.fi-ta-table tbody tr:nth-child(even) {
+        border-left-color: #059669 !important;
+    }
+
+    .fi-ta-row:nth-child(3n),
+    table.fi-ta-table tbody tr:nth-child(3n) {
+        border-left-color: #881337 !important;
+    }
+
+    html.dark .fi-ta-row,
+    html.dark table.fi-ta-table tbody tr {
+        background: #08192e !important;
+        border-color: #14355a !important;
+        border-left-color: #00d4ff !important;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45) !important;
+    }
+
+    html.dark .fi-ta-row:nth-child(even),
+    html.dark table.fi-ta-table tbody tr:nth-child(even) {
+        border-left-color: #10b981 !important;
+    }
+
+    html.dark .fi-ta-row:nth-child(3n),
+    html.dark table.fi-ta-table tbody tr:nth-child(3n) {
+        border-left-color: #f43f5e !important;
+    }
+
+    /* ── Table Cells inside Card ── */
+    .fi-ta-cell,
+    table.fi-ta-table td,
+    table.fi-ta-table tbody tr td {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0.45rem 0 !important;
+        border: none !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        background: transparent !important;
+        font-size: 0.84rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    html.dark .fi-ta-cell,
+    html.dark table.fi-ta-table td,
+    html.dark table.fi-ta-table tbody tr td {
+        border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+        background: transparent !important;
+    }
+
+    /* Hide Mobile-tagged Columns (Alamat & Tanggal SO) */
+    .ims-mobile-hide,
+    td:has(.ims-mobile-hide),
+    .fi-ta-cell:has(.ims-mobile-hide) {
+        display: none !important;
+    }
+
+    /* First Cell (Card Header) */
+    .fi-ta-cell:first-child,
+    table.fi-ta-table tbody tr td:first-child {
+        padding-bottom: 0.65rem !important;
+        font-weight: 900 !important;
+        font-size: 0.95rem !important;
+        color: #0f172a !important;
+        border-bottom: 1.5px solid #e2e8f0 !important;
+        border-left: none !important;
+    }
+
+    html.dark .fi-ta-cell:first-child,
+    html.dark table.fi-ta-table tbody tr td:first-child {
+        color: #ffffff !important;
+        border-bottom-color: #14355a !important;
+    }
+
+    /* Last Cell (Card Footer with Actions) */
+    .fi-ta-cell:last-child,
+    table.fi-ta-table tbody tr td:last-child {
+        border-bottom: none !important;
+        padding-top: 0.75rem !important;
+        margin-top: 0.25rem !important;
+        border-top: 1.5px solid #f1f5f9 !important;
+        width: 100% !important;
+    }
+
+    html.dark .fi-ta-cell:last-child,
+    html.dark table.fi-ta-table tbody tr td:last-child {
+        border-top-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* ── Card Action Buttons ── */
+    .fi-ta-actions,
+    table.fi-ta-table td:last-child .fi-ta-actions {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.5rem !important;
+        flex-wrap: wrap !important;
+    }
+
+    .fi-ta-actions .fi-btn,
+    .fi-ta-actions button,
+    .fi-ta-actions a {
+        flex: 1 1 auto !important;
+        font-size: 0.78rem !important;
+        font-weight: 800 !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 12px !important;
+        justify-content: center !important;
+        min-width: 80px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    /* Pastel Detail Pill Button */
+    .fi-ta-actions [class*="color-info"],
+    .fi-ta-actions .fi-btn-color-info,
+    .fi-ta-actions a[class*="color-info"],
+    .fi-ta-actions [class*="view"],
+    .fi-ta-actions a:has(svg):first-child {
+        background: #e0f2fe !important;
+        color: #0369a1 !important;
+        -webkit-text-fill-color: #0369a1 !important;
+        border: 1.5px solid #bae6fd !important;
+    }
+
+    .fi-ta-actions [class*="color-info"] svg,
+    .fi-ta-actions [class*="color-info"] * {
+        color: #0369a1 !important;
+        stroke: #0369a1 !important;
+    }
+
+    html.dark .fi-ta-actions [class*="color-info"],
+    html.dark .fi-ta-actions .fi-btn-color-info {
+        background: #09264a !important;
+        color: #38bdf8 !important;
+        -webkit-text-fill-color: #38bdf8 !important;
+        border-color: #144e8c !important;
+    }
+
+    html.dark .fi-ta-actions [class*="color-info"] svg {
+        color: #38bdf8 !important;
+        stroke: #38bdf8 !important;
+    }
 }
-
-.fi-ta-actions .fi-btn,
-.fi-ta-actions button,
-.fi-ta-actions a {
-    border-radius: 8px !important;
-    font-size: 0.74rem !important;
-    font-weight: 800 !important;
-    padding: 0.35rem 0.75rem !important;
-    transition: all 0.15s ease !important;
-    white-space: nowrap !important;
-}
-
-.fi-ta-actions .fi-btn *,
-.fi-ta-actions button *,
-.fi-ta-actions a *,
-.fi-btn-label {
-    color: #ffffff !important;
-    -webkit-text-fill-color: #ffffff !important;
-}
-
-.fi-ta-actions .fi-btn:hover,
-.fi-ta-actions button:hover,
-.fi-ta-actions a:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* ── STACK VERTICALLY ON INVOICE & BILLING TABLES (ATAS KE BAWAH) ── */
-.fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions,
-.fi-ta-table td:has([class*="paymethod-trigger"]) .fi-ta-actions,
-.fi-ta-table td:has([class*="paymethod-trigger"]) ~ td .fi-ta-actions,
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(3)),
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(4)),
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(3)),
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)),
-.fi-page-list-monthly-invoices .fi-ta-actions,
-.fi-page-list-registration-invoices .fi-ta-actions,
-[class*="monthly-invoices"] .fi-ta-actions,
-[class*="registration-invoices"] .fi-ta-actions {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    justify-content: center !important;
-    gap: 0.22rem !important;
-    min-width: 112px !important;
-    max-width: 125px !important;
-    width: 100% !important;
-}
-
-.fi-page-list-monthly-invoices .fi-ta-actions .fi-btn,
-.fi-page-list-registration-invoices .fi-ta-actions .fi-btn,
-[class*="monthly-invoices"] .fi-ta-actions .fi-btn,
-[class*="registration-invoices"] .fi-ta-actions .fi-btn,
-.fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions .fi-btn,
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(3)) .fi-btn,
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(4)) .fi-btn,
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(3)) button,
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)) button {
-    width: 100% !important;
-    justify-content: center !important;
-    padding: 0.22rem 0.35rem !important;
-    font-size: 0.67rem !important;
-    border-radius: 6px !important;
-    white-space: nowrap !important;
-    box-sizing: border-box !important;
-    gap: 3px !important;
-}
-
-.fi-page-list-monthly-invoices .fi-ta-actions .fi-btn-label,
-.fi-page-list-registration-invoices .fi-ta-actions .fi-btn-label,
-[class*="monthly-invoices"] .fi-ta-actions .fi-btn-label,
-[class*="registration-invoices"] .fi-ta-actions .fi-btn-label {
-    white-space: nowrap !important;
-    font-size: 0.67rem !important;
-    letter-spacing: -0.01em !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-}
-
-
