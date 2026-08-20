@@ -123,65 +123,6 @@
     }
 }
 
-/* ── GLOBAL FILTER STYLES ── */
-.fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label {
-    display: none !important;
-}
-
-.fi-ta-filters-above-content-ctn .fi-fo-field-wrp {
-    margin-bottom: 0 !important;
-}
-
-.fi-ta-filters-above-content-ctn .fi-input-wrp {
-    background: #f8fafc !important;
-    border: 1.5px solid #cbd5e1 !important;
-    border-radius: 12px !important;
-    box-shadow: none !important;
-    padding: 0.35rem 0.65rem !important;
-    transition: all 0.2s ease !important;
-}
-
-html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp {
-    background: #051324 !important;
-    border-color: #1e3a5f !important;
-}
-
-.fi-ta-filters-above-content-ctn .fi-input-wrp:focus-within {
-    background: #ffffff !important;
-    border-color: #2563eb !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
-}
-
-html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp:focus-within {
-    background: #092240 !important;
-    border-color: #00d4ff !important;
-    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.18) !important;
-}
-
-.fi-ta-filters-above-content-ctn select.fi-input,
-.fi-ta-filters-above-content-ctn input[type="text"].fi-input {
-    font-size: 0.78rem !important;
-    font-weight: 700 !important;
-    color: #0f172a !important;
-    border: none !important;
-    background: transparent !important;
-}
-
-html.dark .fi-ta-filters-above-content-ctn select.fi-input,
-html.dark .fi-ta-filters-above-content-ctn input[type="text"].fi-input,
-html.dark .fi-ta-filters-above-content-ctn .fi-select-input {
-    color: #f1f5f9 !important;
-}
-
-html.dark .fi-ta-filters-above-content-ctn select.fi-input option {
-    background: #08192e !important;
-    color: #f1f5f9 !important;
-}
-
-html.dark .fi-ta-filters-above-content-ctn input[type="text"].fi-input::placeholder {
-    color: #64748b !important;
-}
-
 /* ── 3. CUSTOM REGISTRATION UI COMPONENTS ── */
 .ims-cust-card {
     display: flex;
@@ -334,7 +275,7 @@ html.dark .ims-temp-badge:hover {
    5. MOBILE TABLE-TO-CARD TRANSFORMATION & 2-COLUMN FILTERS (< 1024px)
    ══════════════════════════════════════════════════════════════════════ */
 @media (max-width: 1023px) {
-    /* ── 2-Column Filters ── */
+    /* ── 2-Column Filters Layout (Both Inline and Dropdown/Modal) ── */
     .fi-ta-filters-above-content-ctn {
         padding: 0.75rem !important;
         border-radius: 14px !important;
@@ -352,25 +293,85 @@ html.dark .ims-temp-badge:hover {
         display: none !important;
     }
 
+    /* Grid 2 Kolom untuk Semua Form Filter */
     .fi-ta-filters-above-content-ctn form > div,
+    .fi-ta-filters-above-content-ctn .grid,
+    .fi-ta-filters-form > div,
     .fi-ta-filters-form .grid,
-    .fi-ta-filters .grid {
+    .fi-ta-filters .grid,
+    .fi-ta-filters-dropdown form > div,
+    .fi-dropdown-panel form > div {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 0.45rem !important;
+        gap: 0.6rem !important;
         width: 100% !important;
     }
 
-    .fi-ta-filters-above-content-ctn .fi-input-wrp,
-    .fi-ta-filter .fi-input-wrp {
-        border-radius: 10px !important;
-        padding: 0.2rem 0.5rem !important;
+    /* Filter Wrapper & Input Styling */
+    .fi-ta-filter,
+    .fi-ta-filters-form .fi-fo-field-wrp,
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
     }
 
-    .fi-ta-filters-above-content-ctn select.fi-input,
-    .fi-ta-filters-above-content-ctn input[type="text"].fi-input {
-        font-size: 0.74rem !important;
-        height: 2.2rem !important;
+    .fi-ta-filters-above-content-ctn .fi-input-wrp,
+    .fi-ta-filters-form .fi-input-wrp,
+    .fi-ta-filter .fi-input-wrp,
+    .fi-ta-filters-dropdown .fi-input-wrp {
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 2.65rem !important;
+        min-height: 2.65rem !important;
+        background: #f8fafc !important;
+        border: 1.5px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        padding: 0 0.65rem !important;
+        box-sizing: border-box !important;
+    }
+
+    html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp,
+    html.dark .fi-ta-filters-form .fi-input-wrp,
+    html.dark .fi-ta-filter .fi-input-wrp {
+        background: #051324 !important;
+        border-color: #1e3a5f !important;
+    }
+
+    .fi-ta-filters-above-content-ctn select,
+    .fi-ta-filters-above-content-ctn input,
+    .fi-ta-filters-form select,
+    .fi-ta-filters-form input,
+    .fi-ta-filter select,
+    .fi-ta-filter input,
+    .fi-ta-filters-dropdown select,
+    .fi-ta-filters-dropdown input {
+        display: block !important;
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        border: none !important;
+        background: transparent !important;
+        color: #0f172a !important;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        padding: 0 !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    html.dark .fi-ta-filters-above-content-ctn select,
+    html.dark .fi-ta-filters-above-content-ctn input,
+    html.dark .fi-ta-filters-form select,
+    html.dark .fi-ta-filters-form input,
+    html.dark .fi-ta-filter select,
+    html.dark .fi-ta-filter input {
+        color: #f1f5f9 !important;
     }
 
     /* ── Table-to-Card Container ── */
@@ -388,7 +389,7 @@ html.dark .ims-temp-badge:hover {
         overflow: visible !important;
     }
 
-    /* Hide Table Headers on Mobile */
+    /* Sembunyikan Table Headers Total di Mobile */
     table.fi-ta-table thead,
     .fi-ta-header-cell,
     table.fi-ta-table th {
@@ -478,7 +479,7 @@ html.dark .ims-temp-badge:hover {
         background: transparent !important;
     }
 
-    /* Hide Mobile-tagged Columns (Alamat & Tanggal SO) */
+    /* Sembunyikan Kolom Lokasi & Tanggal SO di Card Mobile */
     .ims-mobile-hide,
     td:has(.ims-mobile-hide),
     .fi-ta-cell:has(.ims-mobile-hide) {
@@ -517,58 +518,65 @@ html.dark .ims-temp-badge:hover {
         border-top-color: rgba(255, 255, 255, 0.08) !important;
     }
 
-    /* ── Card Action Buttons ── */
-    .fi-ta-actions,
-    table.fi-ta-table td:last-child .fi-ta-actions {
+    /* ── Card Action Buttons Footer: HANYA TAMPILKAN TOMBOL DETAIL ── */
+    .fi-ta-actions {
         width: 100% !important;
+        display: block !important;
+    }
+
+    /* Sembunyikan semua tombol aksi di card KECUALI tombol Detail (pertama) */
+    .fi-ta-actions .fi-btn:not(:first-child),
+    .fi-ta-actions button:not(:first-child),
+    .fi-ta-actions a:not(:first-child),
+    .fi-ta-actions > div:not(:first-child),
+    .fi-ta-actions .fi-action:not(:first-child) {
+        display: none !important;
+    }
+
+    /* Tombol Detail Pastel Full-Width */
+    .fi-ta-actions .fi-btn:first-child,
+    .fi-ta-actions button:first-child,
+    .fi-ta-actions a:first-child,
+    .fi-ta-actions .fi-action:first-child {
         display: flex !important;
-        flex-direction: row !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        justify-content: center !important;
         align-items: center !important;
-        justify-content: center !important;
         gap: 0.5rem !important;
-        flex-wrap: wrap !important;
-    }
-
-    .fi-ta-actions .fi-btn,
-    .fi-ta-actions button,
-    .fi-ta-actions a {
-        flex: 1 1 auto !important;
-        font-size: 0.78rem !important;
+        padding: 0.65rem 1rem !important;
+        font-size: 0.84rem !important;
         font-weight: 800 !important;
-        padding: 0.5rem 1rem !important;
         border-radius: 12px !important;
-        justify-content: center !important;
-        min-width: 80px !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-    }
-
-    /* Pastel Detail Pill Button */
-    .fi-ta-actions [class*="color-info"],
-    .fi-ta-actions .fi-btn-color-info,
-    .fi-ta-actions a[class*="color-info"],
-    .fi-ta-actions [class*="view"],
-    .fi-ta-actions a:has(svg):first-child {
         background: #e0f2fe !important;
         color: #0369a1 !important;
         -webkit-text-fill-color: #0369a1 !important;
         border: 1.5px solid #bae6fd !important;
+        box-shadow: 0 2px 6px rgba(3, 105, 161, 0.12) !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
     }
 
-    .fi-ta-actions [class*="color-info"] svg,
-    .fi-ta-actions [class*="color-info"] * {
+    .fi-ta-actions .fi-btn:first-child svg,
+    .fi-ta-actions button:first-child svg,
+    .fi-ta-actions a:first-child svg {
         color: #0369a1 !important;
         stroke: #0369a1 !important;
+        width: 16px !important;
+        height: 16px !important;
     }
 
-    html.dark .fi-ta-actions [class*="color-info"],
-    html.dark .fi-ta-actions .fi-btn-color-info {
+    html.dark .fi-ta-actions .fi-btn:first-child,
+    html.dark .fi-ta-actions button:first-child,
+    html.dark .fi-ta-actions a:first-child {
         background: #09264a !important;
         color: #38bdf8 !important;
         -webkit-text-fill-color: #38bdf8 !important;
         border-color: #144e8c !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
     }
 
-    html.dark .fi-ta-actions [class*="color-info"] svg {
+    html.dark .fi-ta-actions .fi-btn:first-child svg {
         color: #38bdf8 !important;
         stroke: #38bdf8 !important;
     }

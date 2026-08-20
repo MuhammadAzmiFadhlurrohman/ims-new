@@ -735,7 +735,8 @@ class InstallationPipelineResource extends Resource
                         $sales = strtoupper($record->sales_name ?? '-');
                         $created = $record->created_at ? $record->created_at->format('d M Y H:i WIB') : '-';
 
-                        $mapsLink = $mapsUrl ? "<a href='{$mapsUrl}' target='_blank' style='color: #0284c7; font-weight: 700; text-decoration: underline; margin-left: 6px;'>Buka Google Maps ↗</a>" : "";
+                        $key = $record->getKey();
+                        $safeKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $key);
 
                         return new \Illuminate\Support\HtmlString("
                             <div style='display: flex; flex-direction: column; gap: 14px; font-size: 12.5px; line-height: 1.4;'>
@@ -770,6 +771,20 @@ class InstallationPipelineResource extends Resource
                                         <div><span style='color: #64748b; font-size: 10.5px;'>Status Tipe:</span><div style='font-weight: 800; color: #d97706;'>{$statusType}</div></div>
                                         <div><span style='color: #64748b; font-size: 10.5px;'>Nama Sales PIC:</span><div style='font-weight: 700; color: #0f172a;'>👤 {$sales}</div></div>
                                         <div><span style='color: #64748b; font-size: 10.5px;'>Tanggal SO Registrasi:</span><div style='font-weight: 700; color: #0f172a;'>📅 {$created}</div></div>
+                                    </div>
+                                </div>
+
+                                <!-- Section 4: Aksi Lanjutan -->
+                                <div style='background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px;'>
+                                    <div style='font-size: 11px; font-weight: 800; color: #0284c7; text-transform: uppercase; margin-bottom: 8px;'>⚡ Tindakan & Aksi Operasional</div>
+                                    <div style='display: flex; flex-wrap: wrap; gap: 8px;'>
+                                        <button type='button' onclick=\"document.querySelector('.ims-status-trigger-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>✏️ Ubah Status Tipe</button>
+                                        <button type='button' onclick=\"document.querySelector('.ims-act-survey-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>📅 Jadwal Survey</button>
+                                        <button type='button' onclick=\"document.querySelector('.ims-act-repsurvey-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>📋 Report Survey</button>
+                                        <button type='button' onclick=\"document.querySelector('.ims-act-instalasi-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>🔧 Jadwal Instalasi</button>
+                                        <button type='button' onclick=\"document.querySelector('.ims-act-repinstalasi-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>✅ Report Instalasi</button>
+                                        <button type='button' onclick=\"document.querySelector('.ims-act-aktivasi-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>🚀 Posting Aktivasi</button>
+                                        <button type='button' onclick=\"document.querySelector('.ims-act-batal-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>❌ Batal Pasang</button>
                                     </div>
                                 </div>
                             </div>
@@ -819,6 +834,9 @@ class InstallationPipelineResource extends Resource
                     ->label('Batal Pasang')
                     ->icon('heroicon-m-x-mark')
                     ->color('danger')
+                    ->extraAttributes(fn (CustomerSubscription $record) => [
+                        'class' => 'ims-act-batal-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey()),
+                    ])
                     ->requiresConfirmation()
                     ->modalHeading('Batalkan Pemasangan')
                     ->modalDescription(fn (CustomerSubscription $record) => "Apakah Anda yakin ingin membatalkan registrasi pemasangan untuk {$record->customer_name}?")
@@ -847,6 +865,9 @@ class InstallationPipelineResource extends Resource
                     ->label('Jadwal Survey')
                     ->icon('heroicon-m-calendar-days')
                     ->color('primary')
+                    ->extraAttributes(fn (CustomerSubscription $record) => [
+                        'class' => 'ims-act-survey-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey()),
+                    ])
                     ->modalHeading(fn (CustomerSubscription $record) => "Form Survey An/{$record->customer_name}")
                     ->modalWidth('6xl')
                     ->form([

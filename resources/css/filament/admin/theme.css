@@ -1049,31 +1049,74 @@ html.dark .fi-ta-header-cell-label {
     .fi-ta-filters-above-content-ctn form,
     .fi-ta-filters-form form,
     .fi-ta-filters-above-content-ctn form > div,
-    .fi-ta-filters-form > div {
+    .fi-ta-filters-form > div,
+    .fi-dropdown-panel form > div {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 0.45rem !important;
+        gap: 0.6rem !important;
         width: 100% !important;
     }
 
     .fi-ta-filter,
-    .fi-ta-filter > div,
-    .fi-ta-filter .fi-input-wrp,
-    .fi-ta-filter .fi-select-input,
-    .fi-ta-filter select,
-    .fi-ta-filter input {
+    .fi-ta-filters-form .fi-fo-field-wrp,
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp {
+        display: flex !important;
+        flex-direction: column !important;
         width: 100% !important;
         min-width: 0 !important;
+        margin: 0 !important;
+    }
+
+    .fi-ta-filter .fi-input-wrp,
+    .fi-ta-filters-form .fi-input-wrp,
+    .fi-ta-filters-above-content-ctn .fi-input-wrp,
+    .fi-dropdown-panel .fi-input-wrp {
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 2.65rem !important;
+        min-height: 2.65rem !important;
+        background: #f8fafc !important;
+        border: 1.5px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        padding: 0 0.65rem !important;
+        box-sizing: border-box !important;
+    }
+
+    html.dark .fi-ta-filter .fi-input-wrp,
+    html.dark .fi-ta-filters-form .fi-input-wrp,
+    html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp {
+        background: #051324 !important;
+        border-color: #1e3a5f !important;
     }
 
     .fi-ta-filter input,
     .fi-ta-filter select,
     .fi-ta-filters-form input,
-    .fi-ta-filters-form select {
-        height: 2.4rem !important;
-        font-size: 0.76rem !important;
-        border-radius: 10px !important;
-        padding: 0 0.5rem !important;
+    .fi-ta-filters-form select,
+    .fi-ta-filters-above-content-ctn input,
+    .fi-ta-filters-above-content-ctn select {
+        display: block !important;
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        border: none !important;
+        background: transparent !important;
+        color: #0f172a !important;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        padding: 0 !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    html.dark .fi-ta-filter input,
+    html.dark .fi-ta-filter select,
+    html.dark .fi-ta-filters-form input,
+    html.dark .fi-ta-filters-form select {
+        color: #f1f5f9 !important;
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -1095,7 +1138,8 @@ html.dark .fi-ta-header-cell-label {
 
     /* Hide Table Headers on Mobile */
     table.fi-ta-table thead,
-    .fi-ta-header-cell {
+    .fi-ta-header-cell,
+    table.fi-ta-table th {
         display: none !important;
     }
 
@@ -1209,7 +1253,8 @@ html.dark .fi-ta-header-cell-label {
 
     /* ── Table Cell Rows Inside Card ── */
     .fi-ta-cell,
-    table.fi-ta-table td {
+    table.fi-ta-table td,
+    table.fi-ta-table tbody tr td {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
@@ -1223,7 +1268,8 @@ html.dark .fi-ta-header-cell-label {
     }
 
     html.dark .fi-ta-cell,
-    html.dark table.fi-ta-table td {
+    html.dark table.fi-ta-table td,
+    html.dark table.fi-ta-table tbody tr td {
         border-bottom-color: rgba(255, 255, 255, 0.05) !important;
         background: transparent !important;
     }
@@ -1263,8 +1309,8 @@ html.dark .fi-ta-header-cell-label {
     .fi-ta-cell:last-child,
     table.fi-ta-table tbody tr td:last-child {
         border-bottom: none !important;
-        padding-top: 0.85rem !important;
-        margin-top: 0.35rem !important;
+        padding-top: 0.75rem !important;
+        margin-top: 0.25rem !important;
         border-top: 1.5px solid #f1f5f9 !important;
         width: 100% !important;
     }
@@ -1274,141 +1320,68 @@ html.dark .fi-ta-header-cell-label {
         border-top-color: rgba(255, 255, 255, 0.08) !important;
     }
 
-    /* ── Card Action Buttons Footer ── */
+    /* ── Card Action Buttons Footer: HANYA TOMBOL DETAIL PADA MOBILE CARD ── */
     .fi-ta-actions,
     table.fi-ta-table td:last-child .fi-ta-actions {
         width: 100% !important;
+        display: block !important;
+    }
+
+    /* Sembunyikan semua tombol aksi di card KECUALI tombol Detail (pertama) */
+    .fi-ta-actions .fi-btn:not(:first-child),
+    .fi-ta-actions button:not(:first-child),
+    .fi-ta-actions a:not(:first-child),
+    .fi-ta-actions > div:not(:first-child),
+    .fi-ta-actions .fi-action:not(:first-child) {
+        display: none !important;
+    }
+
+    /* Tombol Detail Pastel Full-Width */
+    .fi-ta-actions .fi-btn:first-child,
+    .fi-ta-actions button:first-child,
+    .fi-ta-actions a:first-child,
+    .fi-ta-actions .fi-action:first-child {
         display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 0.55rem !important;
-        flex-wrap: wrap !important;
-        min-width: 0 !important;
+        width: 100% !important;
         max-width: 100% !important;
-    }
-
-    .fi-ta-actions .fi-btn,
-    .fi-ta-actions button,
-    .fi-ta-actions a {
-        flex: 1 1 auto !important;
-        font-size: 0.76rem !important;
-        font-weight: 800 !important;
-        padding: 0.5rem 0.95rem !important;
-        border-radius: 12px !important;
-        gap: 0.35rem !important;
         justify-content: center !important;
-        min-width: 80px !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-        transition: all 0.15s ease !important;
-    }
-
-    .fi-ta-actions .fi-btn:hover,
-    .fi-ta-actions button:hover,
-    .fi-ta-actions a:hover {
-        transform: translateY(-1px) !important;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    /* Custom Pastel Pill Buttons like reference image */
-    /* 1. Detail / View (Soft Blue Pill) */
-    .fi-ta-actions [class*="color-info"],
-    .fi-ta-actions .fi-btn-color-info,
-    .fi-ta-actions a[class*="color-info"],
-    .fi-ta-actions [class*="view"] {
+        align-items: center !important;
+        gap: 0.5rem !important;
+        padding: 0.65rem 1rem !important;
+        font-size: 0.84rem !important;
+        font-weight: 800 !important;
+        border-radius: 12px !important;
         background: #e0f2fe !important;
         color: #0369a1 !important;
         -webkit-text-fill-color: #0369a1 !important;
         border: 1.5px solid #bae6fd !important;
+        box-shadow: 0 2px 6px rgba(3, 105, 161, 0.12) !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
     }
 
-    .fi-ta-actions [class*="color-info"] svg,
-    .fi-ta-actions [class*="color-info"] *,
-    .fi-ta-actions [class*="view"] svg {
+    .fi-ta-actions .fi-btn:first-child svg,
+    .fi-ta-actions button:first-child svg,
+    .fi-ta-actions a:first-child svg {
         color: #0369a1 !important;
         stroke: #0369a1 !important;
+        width: 16px !important;
+        height: 16px !important;
     }
 
-    /* 2. Edit (Soft Amber Pill) */
-    .fi-ta-actions [class*="color-warning"],
-    .fi-ta-actions .fi-btn-color-warning,
-    .fi-ta-actions a[class*="color-warning"],
-    .fi-ta-actions [class*="edit"] {
-        background: #fef3c7 !important;
-        color: #b45309 !important;
-        -webkit-text-fill-color: #b45309 !important;
-        border: 1.5px solid #fde68a !important;
-    }
-
-    .fi-ta-actions [class*="color-warning"] svg,
-    .fi-ta-actions [class*="color-warning"] *,
-    .fi-ta-actions [class*="edit"] svg {
-        color: #b45309 !important;
-        stroke: #b45309 !important;
-    }
-
-    /* 3. Delete / Hapus (Soft Rose Pill) */
-    .fi-ta-actions [class*="color-danger"],
-    .fi-ta-actions .fi-btn-color-danger,
-    .fi-ta-actions button[class*="color-danger"],
-    .fi-ta-actions [class*="delete"] {
-        background: #ffe4e6 !important;
-        color: #be123c !important;
-        -webkit-text-fill-color: #be123c !important;
-        border: 1.5px solid #fecdd3 !important;
-    }
-
-    .fi-ta-actions [class*="color-danger"] svg,
-    .fi-ta-actions [class*="color-danger"] *,
-    .fi-ta-actions [class*="delete"] svg {
-        color: #be123c !important;
-        stroke: #be123c !important;
-    }
-
-    /* Dark Mode Pastel Pill Overrides */
-    html.dark .fi-ta-actions [class*="color-info"],
-    html.dark .fi-ta-actions .fi-btn-color-info,
-    html.dark .fi-ta-actions a[class*="color-info"],
-    html.dark .fi-ta-actions [class*="view"] {
+    html.dark .fi-ta-actions .fi-btn:first-child,
+    html.dark .fi-ta-actions button:first-child,
+    html.dark .fi-ta-actions a:first-child {
         background: #09264a !important;
         color: #38bdf8 !important;
         -webkit-text-fill-color: #38bdf8 !important;
         border-color: #144e8c !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
     }
 
-    html.dark .fi-ta-actions [class*="color-info"] svg {
+    html.dark .fi-ta-actions .fi-btn:first-child svg {
         color: #38bdf8 !important;
         stroke: #38bdf8 !important;
-    }
-
-    html.dark .fi-ta-actions [class*="color-warning"],
-    html.dark .fi-ta-actions .fi-btn-color-warning,
-    html.dark .fi-ta-actions a[class*="color-warning"],
-    html.dark .fi-ta-actions [class*="edit"] {
-        background: #331f06 !important;
-        color: #fbbf24 !important;
-        -webkit-text-fill-color: #fbbf24 !important;
-        border-color: #78350f !important;
-    }
-
-    html.dark .fi-ta-actions [class*="color-warning"] svg {
-        color: #fbbf24 !important;
-        stroke: #fbbf24 !important;
-    }
-
-    html.dark .fi-ta-actions [class*="color-danger"],
-    html.dark .fi-ta-actions .fi-btn-color-danger,
-    html.dark .fi-ta-actions button[class*="color-danger"],
-    html.dark .fi-ta-actions [class*="delete"] {
-        background: #330b14 !important;
-        color: #fb7185 !important;
-        -webkit-text-fill-color: #fb7185 !important;
-        border-color: #881337 !important;
-    }
-
-    html.dark .fi-ta-actions [class*="color-danger"] svg {
-        color: #fb7185 !important;
-        stroke: #fb7185 !important;
     }
 
     .fi-ta-actions svg {
