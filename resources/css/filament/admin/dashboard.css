@@ -558,23 +558,31 @@ html.dark .ims-modal-content div[style*="color: #0f172a"] {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   MOBILE RESPONSIVE ENHANCEMENTS (< 768px)
+   MOBILE RESPONSIVE ENHANCEMENTS (< 1024px)
    ══════════════════════════════════════════════════════════════ */
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     .ims-slider-banner {
-        border-radius: 16px !important;
-        margin-bottom: 1rem !important;
+        border-radius: 14px !important;
+        margin-bottom: 0.85rem !important;
     }
 
     .ims-slide-item {
-        padding: 1rem !important;
+        padding: 0.85rem !important;
         flex-direction: column !important;
         align-items: flex-start !important;
-        gap: 0.85rem !important;
+        gap: 0.75rem !important;
     }
 
     .ims-slide-left {
         width: 100% !important;
+    }
+
+    .ims-slide-left h3 {
+        font-size: 0.95rem !important;
+    }
+
+    .ims-slide-left p {
+        font-size: 0.78rem !important;
     }
 
     .ims-slide-action {
@@ -585,24 +593,94 @@ html.dark .ims-modal-content div[style*="color: #0f172a"] {
     .ims-slide-action button {
         width: 100% !important;
         justify-content: center !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.78rem !important;
+        border-radius: 10px !important;
     }
 
     .ims-quick-kpi {
-        padding: 1rem !important;
-        border-radius: 16px !important;
+        padding: 0.85rem !important;
+        border-radius: 14px !important;
     }
 
     .ims-kpi-counter {
-        font-size: 1.85rem !important;
+        font-size: 1.6rem !important;
+    }
+
+    .ims-kpi-label {
+        font-size: 0.72rem !important;
     }
 
     .ims-status-card {
-        padding: 1rem !important;
-        border-radius: 16px !important;
+        padding: 0.85rem !important;
+        border-radius: 14px !important;
+    }
+
+    .ims-status-card h4 {
+        font-size: 0.82rem !important;
     }
 
     .ims-distribution-card {
+        padding: 0.85rem !important;
+        border-radius: 14px !important;
+    }
+
+    .ims-distribution-card h3,
+    .ims-dist-title,
+    h3.ims-dist-title {
+        font-size: 0.88rem !important;
+    }
+
+    .ims-dist-sub {
+        font-size: 0.72rem !important;
+    }
+
+    .ims-bubble-green,
+    .ims-bubble-rose,
+    .ims-bubble-amber {
+        font-size: 0.68rem !important;
+        padding: 0.15rem 0.5rem !important;
+    }
+
+    .ims-card-footer {
+        padding: 0.65rem 0.85rem !important;
+        font-size: 0.72rem !important;
+    }
+
+    .ims-legend-green,
+    .ims-legend-amber,
+    .ims-legend-rose {
+        font-size: 0.68rem !important;
+        padding: 0.2rem 0.5rem !important;
+    }
+
+    /* Modal on mobile */
+    .ims-modal-content {
         padding: 1rem !important;
-        border-radius: 16px !important;
+        border-radius: 14px !important;
+        max-width: calc(100vw - 2rem) !important;
+    }
+}
+
+/* ── Extra Small Dashboard (< 480px) ── */
+@media (max-width: 479px) {
+    .ims-slide-item {
+        padding: 0.65rem !important;
+    }
+
+    .ims-quick-kpi {
+        padding: 0.65rem !important;
+    }
+
+    .ims-kpi-counter {
+        font-size: 1.4rem !important;
+    }
+
+    .ims-status-card {
+        padding: 0.65rem !important;
+    }
+
+    .ims-distribution-card {
+        padding: 0.65rem !important;
     }
 }

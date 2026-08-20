@@ -1314,31 +1314,40 @@ html.dark .ims-flyout-bullet {
 
 @media (max-width: 1023px) {
     .fi-sidebar {
-        width: 18.5rem !important;
-        min-width: 18.5rem !important;
-        max-width: 86vw !important;
+        width: 17rem !important;
+        min-width: 17rem !important;
+        max-width: 80vw !important;
         background: #ffffff !important;
-        box-shadow: 0 0 50px rgba(0, 0, 0, 0.35) !important;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.25) !important;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
     html.dark .fi-sidebar {
         background: #031021 !important;
-        border-right: 1px solid #143860 !important;
-        box-shadow: 0 0 60px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 212, 255, 0.2) !important;
+        border-right: 1px solid rgba(20, 56, 96, 0.6) !important;
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 212, 255, 0.12) !important;
     }
 
     .fi-sidebar-header {
-        padding: 1rem 1.25rem !important;
+        padding: 0.85rem 1rem !important;
     }
 
     .fi-sidebar-nav {
-        padding: 0.75rem 1rem !important;
+        padding: 0.5rem 0.75rem !important;
     }
 
     .fi-sidebar .ims-brand-container {
         justify-content: flex-start !important;
         width: auto !important;
-        gap: 12px !important;
+        gap: 10px !important;
+    }
+
+    .fi-sidebar .ims-brand-title {
+        font-size: 1rem !important;
+    }
+
+    .fi-sidebar .ims-brand-subtitle {
+        font-size: 0.65rem !important;
     }
 
     .fi-sidebar .ims-brand-title,
@@ -1363,8 +1372,13 @@ html.dark .ims-flyout-bullet {
     .fi-sidebar .ims-group-header {
         display: flex !important;
         justify-content: flex-start !important;
-        padding: 0.35rem 0.5rem !important;
-        margin-top: 0.4rem !important;
+        padding: 0.3rem 0.5rem !important;
+        margin-top: 0.35rem !important;
+    }
+
+    .fi-sidebar .ims-group-title {
+        font-size: 0.65rem !important;
+        letter-spacing: 0.06em !important;
     }
 
     .fi-sidebar .ims-flyout-trigger-wrap {
@@ -1382,17 +1396,52 @@ html.dark .ims-flyout-bullet {
         align-items: center !important;
         justify-content: flex-start !important;
         width: 100% !important;
-        padding: 0.5rem 0.85rem !important;
-        border-radius: 12px !important;
+        padding: 0.45rem 0.75rem !important;
+        border-radius: 10px !important;
+        font-size: 0.82rem !important;
+    }
+
+    .fi-sidebar .fi-sidebar-item-icon-box {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        border-radius: 8px !important;
+    }
+
+    .fi-sidebar .fi-sidebar-item-icon-box svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .fi-sidebar .fi-sidebar-item-label {
+        font-size: 0.8rem !important;
     }
 
     .fi-sidebar .ims-sidebar-footer {
-        padding: 1rem !important;
+        padding: 0.75rem !important;
         margin-top: auto !important;
     }
 
     .fi-sidebar .ims-sidebar-footer-card {
         display: flex !important;
+        padding: 0.65rem !important;
+        border-radius: 10px !important;
+    }
+
+    .fi-sidebar .ims-sidebar-footer-status {
+        font-size: 0.68rem !important;
+    }
+
+    .fi-sidebar .ims-sidebar-footer-version {
+        font-size: 0.6rem !important;
+    }
+
+    .fi-sidebar .ims-sidebar-footer-copy {
+        font-size: 0.58rem !important;
+    }
+
+    .fi-sidebar .ims-sidebar-footer-subcopy {
+        font-size: 0.55rem !important;
     }
 
     .fi-sidebar .ims-sidebar-footer-collapsed-dot {
