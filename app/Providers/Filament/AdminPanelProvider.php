@@ -153,10 +153,9 @@ class AdminPanelProvider extends PanelProvider
                                 }
 
                                 if (document.startViewTransition) {
-                                    var endRadius = Math.hypot(
-                                        Math.max(x, window.innerWidth - x),
-                                        Math.max(y, window.innerHeight - y)
-                                    );
+                                    var maxDistX = Math.max(x, window.innerWidth - x);
+                                    var maxDistY = Math.max(y, window.innerHeight - y);
+                                    var endRadius = Math.hypot(maxDistX, maxDistY) * 1.6 + 500;
 
                                     var transition = document.startViewTransition(function() {
                                         applyDOMToggle();
