@@ -318,8 +318,9 @@ html.dark .fi-sidebar-item-button.is-standalone .fi-sidebar-item-label {
     margin-top: 0.65rem !important;
 }
 
+.fi-sidebar.fi-sidebar-open .ims-group-header,
 .ims-group-header {
-    display: flex !important;
+    display: flex;
     align-items: center !important;
     gap: 0.65rem !important;
     padding: 0.35rem 0.5rem !important;
@@ -1148,14 +1149,11 @@ html.dark .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn {
 }
 
 .fi-sidebar:not(.fi-sidebar-open) .ims-group-header {
-    justify-content: center !important;
-    padding: 0.55rem 0 !important;
-    margin: 0.2rem 0 !important;
-    width: 100% !important;
+    display: none !important;
 }
 
 .fi-sidebar:not(.fi-sidebar-open) .ims-group-dashboard {
-    margin-bottom: 0.4rem !important;
+    margin-bottom: 0.5rem !important;
 }
 
 .fi-sidebar:not(.fi-sidebar-open) .ims-group-dashboard .fi-sidebar-item-button,
@@ -1163,9 +1161,14 @@ html.dark .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    padding: 0.25rem 0 !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    display: flex !important;
+    align-items: center !important;
     justify-content: center !important;
-    width: 100% !important;
     transform: none !important;
 }
 
@@ -1179,12 +1182,22 @@ html.dark .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn {
 }
 
 .fi-sidebar:not(.fi-sidebar-open) .ims-sidebar-footer {
-    padding: 8px 6px !important;
+    padding: 10px 0 !important;
+    margin-top: auto !important;
+    background: transparent !important;
+    border-top: 1px solid rgba(226, 232, 240, 0.5) !important;
+}
+
+html.dark .fi-sidebar:not(.fi-sidebar-open) .ims-sidebar-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
 .fi-sidebar:not(.fi-sidebar-open) .ims-sidebar-footer-card {
-    justify-content: center !important;
-    padding: 6px !important;
+    display: none !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .ims-sidebar-footer-collapsed-dot {
+    margin: 0 auto !important;
 }
 
 
