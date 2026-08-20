@@ -13,14 +13,21 @@
 }
 
 html {
-    font-size: 13px !important;
+    font-size: 13.5px !important;
+    zoom: 0.8;
+}
+
+@media (max-width: 1023px) {
+    html {
+        zoom: 1 !important;
+    }
 }
 
 /* ══════════════════════════════════════
    SIDEBAR DIMENSIONS
    ══════════════════════════════════════ */
 :root {
-    --sidebar-width: 17.5rem;
+    --sidebar-width: 22vw;
     --collapsed-sidebar-width: 4.5rem;
 }
 

@@ -5,8 +5,7 @@
 
 /* ── 1. GLOBAL LAYOUT & SIDEBAR FULL-HEIGHT STRETCH ── */
 .fi-layout {
-    min-height: 100vh !important;
-    min-height: 100dvh !important;
+    min-height: 125vh !important;
     align-items: stretch !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
@@ -20,12 +19,6 @@
     justify-content: space-between !important;
     overflow: hidden !important;
     margin: 0 !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    min-height: 100vh !important;
-    min-height: 100dvh !important;
-    max-height: 100vh !important;
-    max-height: 100dvh !important;
     box-sizing: border-box !important;
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -44,28 +37,20 @@ html.dark .fi-sidebar {
 /* Desktop layout rules */
 @media (min-width: 1024px) {
     .fi-sidebar {
+        height: 125vh !important;
+        min-height: 125vh !important;
         position: sticky !important;
         top: 0 !important;
         bottom: 0 !important;
-        height: 100vh !important;
-        height: 100dvh !important;
-        min-height: 100vh !important;
-        min-height: 100dvh !important;
-        max-height: 100vh !important;
-        max-height: 100dvh !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        align-self: flex-start !important;
+        align-self: stretch !important;
         flex-shrink: 0 !important;
         z-index: 30 !important;
-        overflow: hidden !important;
     }
 
     .fi-sidebar.fi-sidebar-open {
-        width: 17.5rem !important;
-        min-width: 17.5rem !important;
-        max-width: 17.5rem !important;
+        width: 22vw !important;
+        min-width: 22vw !important;
+        max-width: 22vw !important;
     }
 
     .fi-sidebar:not(.fi-sidebar-open) {
@@ -92,6 +77,7 @@ html.dark .fi-sidebar {
         width: 100% !important;
         min-width: 100% !important;
         max-width: 100% !important;
+        min-height: 100vh !important;
     }
 
     .fi-main-ctn,
@@ -145,10 +131,10 @@ html.dark .fi-sidebar {
 .fi-sidebar-header {
     background: transparent !important;
     border-bottom: 1px solid #f1f5f9 !important;
-    padding: 0.75rem 1rem !important;
-    height: 4.4rem !important;
-    min-height: 4.4rem !important;
-    max-height: 4.4rem !important;
+    padding: 1rem 1.15rem !important;
+    height: 5.2rem !important;
+    min-height: 5.2rem !important;
+    max-height: 5.2rem !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -172,15 +158,15 @@ html.dark .fi-sidebar-header {
 .ims-brand-container {
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
+    gap: 12px !important;
     overflow: visible !important;
     min-width: 0 !important;
 }
 
 .ims-brand-wifi-svg,
 .ims-brand-wifi svg {
-    width: 28px !important;
-    height: 28px !important;
+    width: 36px !important;
+    height: 36px !important;
     fill: #0284c7 !important;
     filter: drop-shadow(0 2px 8px rgba(2, 132, 199, 0.35)) !important;
     flex-shrink: 0 !important;
@@ -194,7 +180,7 @@ html.dark .ims-brand-wifi svg {
 }
 
 .ims-brand-title {
-    font-size: 1.05rem !important;
+    font-size: 1.22rem !important;
     font-weight: 800 !important;
     color: #0f172a !important;
     letter-spacing: -0.01em !important;
