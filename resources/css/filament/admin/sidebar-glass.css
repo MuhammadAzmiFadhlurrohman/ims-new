@@ -3,7 +3,12 @@
    File: resources/css/filament/admin/sidebar-glass.css
    ============================================================ */
 
-/* ── 1. SIDEBAR CONTAINER (Sticky 100vh Full Viewport) ── */
+/* ── 1. GLOBAL LAYOUT & SIDEBAR FULL-HEIGHT STRETCH ── */
+.fi-layout {
+    min-height: 100vh !important;
+    align-items: stretch !important;
+}
+
 .fi-sidebar {
     background: #020b18 linear-gradient(180deg, #041328 0%, #030e20 40%, #020a17 100%) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
@@ -13,22 +18,30 @@
     max-height: 100vh !important;
     position: sticky !important;
     top: 0 !important;
+    bottom: 0 !important;
+    align-self: stretch !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
     overflow: hidden !important;
     flex-shrink: 0 !important;
     z-index: 30 !important;
+    margin: 0 !important;
 }
 
-/* ── 2. SIDEBAR HEADER (Brand area) ── */
+.fi-sidebar > div.overflow-x-clip {
+    flex-shrink: 0 !important;
+    width: 100% !important;
+}
+
+/* ── 2. SIDEBAR HEADER & TOGGLE BUTTON (SINGLE BUTTON SWITCH) ── */
 .fi-sidebar-header {
     background: transparent !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-    padding: 1.1rem 1.25rem !important;
-    height: 5.4rem !important;
-    min-height: 5.4rem !important;
-    max-height: 5.4rem !important;
+    padding: 1rem 1.15rem !important;
+    height: 5.2rem !important;
+    min-height: 5.2rem !important;
+    max-height: 5.2rem !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -48,41 +61,74 @@
 .ims-brand-container {
     display: flex !important;
     align-items: center !important;
-    gap: 14px !important;
+    gap: 12px !important;
     overflow: visible !important;
+    min-width: 0 !important;
 }
 
 .ims-brand-wifi svg {
-    width: 38px !important;
-    height: 38px !important;
+    width: 36px !important;
+    height: 36px !important;
     fill: #00d4ff !important;
     filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.95)) drop-shadow(0 0 20px rgba(0, 212, 255, 0.45)) !important;
+    flex-shrink: 0 !important;
 }
 
-/* Collapse Toggle Button (Circular Dark Navy Button on Right) */
+/* Respect Alpine x-show for buttons */
+.fi-sidebar-header .fi-icon-btn[style*="display: none"],
+.fi-sidebar-header .fi-icon-btn[style*="display:none"] {
+    display: none !important;
+}
+
+/* Common Header Button Styles */
 .fi-sidebar-header .fi-icon-btn {
-    color: #8899ac !important;
-    background: #07172c !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 50% !important;
-    width: 2.1rem !important;
-    height: 2.1rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0 !important;
+    cursor: pointer !important;
     transition: all 0.2s ease !important;
     flex-shrink: 0 !important;
 }
 
-.fi-sidebar-header .fi-icon-btn:hover {
+/* When Sidebar is OPEN: Show ONLY Left Chevron (<) on the far right, Hide Right Chevron (>) */
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .ims-brand-container {
+    display: flex !important;
+}
+
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .fi-icon-btn[x-on\:click*="open"],
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .fi-icon-btn[aria-label*="expand"],
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .fi-icon-btn[aria-label*="Buka"],
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .fi-icon-btn:first-of-type:not(:last-of-type) {
+    display: none !important;
+}
+
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .fi-icon-btn[x-on\:click*="close"],
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .fi-icon-btn[aria-label*="collapse"],
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .fi-icon-btn[aria-label*="Tutup"],
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .fi-icon-btn:last-of-type {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: auto !important;
+    width: 2.1rem !important;
+    height: 2.1rem !important;
+    background: #07172c !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #8899ac !important;
+}
+
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .fi-icon-btn:last-of-type:hover {
     color: #ffffff !important;
     background: #0d2847 !important;
     border-color: #00d4ff !important;
     box-shadow: 0 0 10px rgba(0, 212, 255, 0.35) !important;
 }
 
-.fi-sidebar-header .fi-icon-btn svg {
+.fi-sidebar.fi-sidebar-open .fi-sidebar-header .fi-icon-btn svg {
     width: 1rem !important;
     height: 1rem !important;
     color: inherit !important;
@@ -96,7 +142,7 @@
     overflow-y: auto !important;
     overflow-x: hidden !important;
     min-height: 0 !important;
-    padding: 0.85rem 0.75rem !important;
+    padding: 0.75rem 0.75rem !important;
 }
 
 .fi-sidebar-nav > ul,
@@ -531,7 +577,7 @@
     .fi-sidebar:not(.fi-sidebar-open) nav,
     .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-nav {
         overflow: visible !important;
-        padding: 0.85rem 0.25rem !important;
+        padding: 0.75rem 0.25rem !important;
     }
 
     .fi-sidebar:not(.fi-sidebar-open) .ims-group-header,
@@ -584,13 +630,23 @@
         display: none !important;
     }
 
-    /* Expand button on collapsed header */
-    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn {
+    /* In Collapsed state: Hide close button, show ONLY open button (>) centered */
+    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn[x-on\:click*="close"],
+    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn[aria-label*="collapse"],
+    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn[aria-label*="Tutup"],
+    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn:last-of-type {
+        display: none !important;
+    }
+
+    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn[x-on\:click*="open"],
+    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn[aria-label*="expand"],
+    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn[aria-label*="Buka"],
+    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn:first-of-type {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 2.6rem !important;
-        height: 2.6rem !important;
+        width: 2.5rem !important;
+        height: 2.5rem !important;
         border-radius: 50% !important;
         background: #082342 !important;
         border: 1.5px solid #00d4ff !important;
@@ -598,10 +654,9 @@
         box-shadow: 0 0 12px rgba(0, 212, 255, 0.45) !important;
         cursor: pointer !important;
         margin: 0 auto !important;
-        transition: all 0.2s ease !important;
     }
 
-    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn:hover {
+    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn:first-of-type:hover {
         background: #00d4ff !important;
         color: #020b18 !important;
         box-shadow: 0 0 20px rgba(0, 212, 255, 0.85) !important;
@@ -609,13 +664,12 @@
     }
 
     .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn svg {
-        width: 1.25rem !important;
-        height: 1.25rem !important;
+        width: 1.2rem !important;
+        height: 1.2rem !important;
         color: inherit !important;
         display: block !important;
     }
 }
-
 
 .ims-collapsed-group-btn {
     width: 2.85rem !important;
@@ -825,4 +879,3 @@
     color: #7dd3fc !important;
     border: 1px solid rgba(56, 189, 248, 0.3) !important;
 }
-
