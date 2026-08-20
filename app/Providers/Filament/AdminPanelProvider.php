@@ -155,7 +155,7 @@ class AdminPanelProvider extends PanelProvider
                                 if (document.startViewTransition) {
                                     var maxDistX = Math.max(x, window.innerWidth - x);
                                     var maxDistY = Math.max(y, window.innerHeight - y);
-                                    var endRadius = Math.hypot(maxDistX, maxDistY) * 1.6 + 500;
+                                    var endRadius = Math.ceil(Math.hypot(maxDistX, maxDistY) * 1.1);
 
                                     var transition = document.startViewTransition(function() {
                                         applyDOMToggle();
@@ -170,8 +170,8 @@ class AdminPanelProvider extends PanelProvider
                                             var anim = document.documentElement.animate(
                                                 { clipPath: clipPath },
                                                 {
-                                                    duration: 1100,
-                                                    easing: "cubic-bezier(0.3, 0, 0.2, 1)",
+                                                    duration: 1000,
+                                                    easing: "cubic-bezier(0.35, 0, 0.25, 1)",
                                                     pseudoElement: "::view-transition-new(root)"
                                                 }
                                             );
