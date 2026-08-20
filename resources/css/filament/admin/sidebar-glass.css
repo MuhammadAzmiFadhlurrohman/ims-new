@@ -84,9 +84,13 @@ html.dark .fi-sidebar {
         min-width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        padding: 1.15rem 1.15rem 2.5rem 1.15rem !important;
         flex: 1 1 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .fi-page {
+        padding: 0 !important;
     }
 
     .fi-sidebar {
