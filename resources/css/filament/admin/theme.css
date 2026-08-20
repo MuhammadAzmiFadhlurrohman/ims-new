@@ -554,3 +554,193 @@ select.fi-input:focus {
 .fi-ta-selection-cell {
     display: none !important;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   SMOOTH TRANSITIONS & ULTRA-PREMIUM DARK MODE DESIGN SYSTEM
+   ══════════════════════════════════════════════════════════════ */
+html,
+body,
+.fi-main-ctn,
+.fi-main,
+.fi-topbar,
+.fi-sidebar,
+.fi-ta-ctn,
+.fi-section,
+.fi-tabs,
+.fi-modal-window,
+.fi-ta-cell,
+table.fi-ta-table td,
+.fi-input,
+.fi-ta-header-toolbar {
+    transition: background-color 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* ── Dark Mode Root & Main Containers ── */
+html.dark,
+html.dark body,
+html.dark .fi-main-ctn,
+html.dark .fi-main {
+    background-color: #030a14 !important;
+    color: #e2e8f0 !important;
+}
+
+html.dark .fi-header-heading,
+html.dark .fi-page-header-heading {
+    color: #ffffff !important;
+}
+
+html.dark .fi-breadcrumbs * {
+    color: #94a3b8 !important;
+}
+
+html.dark .fi-breadcrumbs a:hover * {
+    color: #00d4ff !important;
+}
+
+/* ── Dark Mode Tabs ── */
+html.dark .fi-tabs,
+html.dark .fi-ta-tabs,
+html.dark nav.fi-tabs {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .fi-tabs-item,
+html.dark .fi-tabs-item-btn,
+html.dark .fi-tabs button,
+html.dark .fi-tabs a {
+    color: #94a3b8 !important;
+}
+
+html.dark .fi-tabs-item:hover,
+html.dark .fi-tabs-item-btn:hover {
+    color: #00d4ff !important;
+    background: rgba(0, 212, 255, 0.08) !important;
+}
+
+html.dark .fi-tabs-item .fi-badge,
+html.dark .fi-tabs-item-btn .fi-badge {
+    background: #0d284a !important;
+    color: #00d4ff !important;
+    border-color: #1a4270 !important;
+}
+
+/* ── Dark Mode Tables ── */
+html.dark .fi-ta-ctn {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark .fi-ta-header-toolbar,
+html.dark .fi-ta-header,
+html.dark .fi-ta-pagination {
+    background: #08192e !important;
+    border-color: #14355a !important;
+}
+
+html.dark .fi-ta-search-field input {
+    background: #051324 !important;
+    border-color: #1e3a5f !important;
+    color: #ffffff !important;
+}
+
+html.dark .fi-ta-search-field input:focus {
+    border-color: #00d4ff !important;
+    box-shadow: 0 0 0 3.5px rgba(0, 212, 255, 0.18) !important;
+}
+
+html.dark .fi-ta-filter-trigger-btn {
+    background: #051324 !important;
+    border-color: #1e3a5f !important;
+    color: #94a3b8 !important;
+}
+
+html.dark .fi-ta-cell,
+html.dark table.fi-ta-table td {
+    background: #08192e !important;
+    color: #e2e8f0 !important;
+    border-bottom-color: #0d2748 !important;
+}
+
+html.dark .fi-ta-cell-content,
+html.dark .fi-ta-text,
+html.dark .fi-ta-text-item,
+html.dark .fi-ta-text-item-label {
+    color: #e2e8f0 !important;
+}
+
+html.dark .fi-ta-row:hover .fi-ta-cell,
+html.dark table.fi-ta-table tr:hover td {
+    background: #0d284a !important;
+}
+
+html.dark .fi-ta-text-item-label:has(code),
+html.dark .fi-ta-cell code,
+html.dark .fi-ta-text code {
+    background: #061830 !important;
+    border-color: #14467c !important;
+    color: #00d4ff !important;
+}
+
+/* ── Dark Mode Sections, Forms, Inputs ── */
+html.dark .fi-section {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .fi-section-header-heading,
+html.dark .fi-section-header-description {
+    color: #e2e8f0 !important;
+}
+
+html.dark .fi-input,
+html.dark input.fi-input,
+html.dark textarea.fi-input,
+html.dark select.fi-input {
+    background: #051324 !important;
+    border-color: #1e3a5f !important;
+    color: #ffffff !important;
+}
+
+html.dark .fi-input:focus,
+html.dark input.fi-input:focus,
+html.dark select.fi-input:focus {
+    border-color: #00d4ff !important;
+    box-shadow: 0 0 0 3.5px rgba(0, 212, 255, 0.18) !important;
+}
+
+/* ── Dark Mode Modals ── */
+html.dark .fi-modal-window {
+    background: #08192e !important;
+    border-color: #1a4270 !important;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7) !important;
+}
+
+html.dark .fi-modal-header-heading {
+    color: #ffffff !important;
+}
+
+html.dark .fi-dropdown-panel {
+    background: #08192e !important;
+    border-color: #1a4270 !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.dark .fi-dropdown-list-item,
+html.dark .fi-dropdown-list-item button,
+html.dark .fi-dropdown-list-item a {
+    color: #cbd5e1 !important;
+}
+
+html.dark .fi-dropdown-list-item:hover,
+html.dark .fi-dropdown-list-item button:hover,
+html.dark .fi-dropdown-list-item a:hover {
+    background: #0e2b4f !important;
+    color: #00d4ff !important;
+}

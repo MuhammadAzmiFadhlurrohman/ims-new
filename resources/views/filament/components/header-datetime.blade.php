@@ -1,15 +1,34 @@
-<div class="ims-header-info-wrapper flex items-center">
+<div class="ims-header-info-wrapper flex items-center gap-3">
     <!-- Live Date & Clock Pill -->
     <div class="ims-live-clock-pill flex items-center gap-2 px-3.5 py-1.5 bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-bold text-slate-700">
-        <svg style="width: 14px; height: 14px; color: #3b82f6;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <span id="ims-live-clock" class="font-mono text-[11.5px]">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y H:i:s') }} WIB</span>
     </div>
+
+    <!-- Dark / Light Mode Toggle Button -->
+    <button
+        type="button"
+        id="ims-theme-toggle"
+        class="ims-theme-toggle-btn"
+        title="Ubah Mode (Gelap / Terang)"
+        onclick="toggleImsTheme()"
+    >
+        <!-- Sun Icon (for Dark Mode -> Switch to Light) -->
+        <svg id="ims-theme-icon-sun" class="ims-theme-icon hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <!-- Moon Icon (for Light Mode -> Switch to Dark) -->
+        <svg id="ims-theme-icon-moon" class="ims-theme-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+    </button>
 </div>
 
 <script>
 (function() {
+    // ── 1. CLOCK LOGIC ──
     function updateImsClock() {
         const el = document.getElementById('ims-live-clock');
         if (!el) return;
@@ -28,5 +47,42 @@
         el.textContent = `${day}, ${date} ${month} ${year} ${hours}:${minutes}:${seconds} WIB`;
     }
     setInterval(updateImsClock, 1000);
+
+    // ── 2. THEME TOGGLE LOGIC ──
+    window.syncImsThemeIcons = function() {
+        const isDark = document.documentElement.classList.contains('dark');
+        const sunIcon = document.getElementById('ims-theme-icon-sun');
+        const moonIcon = document.getElementById('ims-theme-icon-moon');
+        if (sunIcon && moonIcon) {
+            if (isDark) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+    };
+
+    window.toggleImsTheme = function() {
+        const isDark = document.documentElement.classList.contains('dark');
+        if (isDark) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ims_theme', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('ims_theme', 'dark');
+        }
+        syncImsThemeIcons();
+    };
+
+    // Apply saved theme immediately
+    const savedTheme = localStorage.getItem('ims_theme');
+    if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+    syncImsThemeIcons();
 })();
 </script>
