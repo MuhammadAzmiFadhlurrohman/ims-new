@@ -6,6 +6,7 @@
 /* ── 1. GLOBAL LAYOUT & SIDEBAR FULL-HEIGHT STRETCH ── */
 .fi-layout {
     min-height: 100vh !important;
+    min-height: 125vh !important;
     align-items: stretch !important;
 }
 
@@ -13,9 +14,8 @@
     background: #020b18 linear-gradient(180deg, #041328 0%, #030e20 40%, #020a17 100%) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
     box-shadow: 6px 0 28px rgba(0, 0, 0, 0.6) !important;
-    height: 100vh !important;
-    min-height: 100vh !important;
-    max-height: 100vh !important;
+    height: 125vh !important;
+    min-height: 125vh !important;
     position: sticky !important;
     top: 0 !important;
     bottom: 0 !important;
@@ -28,6 +28,7 @@
     z-index: 30 !important;
     margin: 0 !important;
 }
+
 
 .fi-sidebar > div.overflow-x-clip {
     flex-shrink: 0 !important;

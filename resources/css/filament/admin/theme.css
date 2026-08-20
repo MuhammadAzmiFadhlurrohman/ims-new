@@ -19,51 +19,13 @@ html {
 }
 
 /* ══════════════════════════════════════
-   SIDEBAR – width & basic structure only
-   (Glassmorphism styling → sidebar-glass.css)
+   SIDEBAR – Handled by sidebar-glass.css
    ══════════════════════════════════════ */
 :root {
-    --sidebar-width: 20vw;
+    --sidebar-width: 17rem;
     --collapsed-sidebar-width: 4.5rem;
 }
 
-@media (min-width: 768px) {
-    .fi-layout {
-        display: flex !important;
-        flex-direction: row-reverse !important;
-        min-height: 100vh !important;
-        width: 100% !important;
-    }
-
-    /* Desktop Sidebar: Static Left Side-by-Side with 20% Screen Width */
-    .fi-sidebar {
-        position: sticky !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 20vw !important;
-        min-width: 20vw !important;
-        max-width: 20vw !important;
-        height: 125vh !important;
-        min-height: 125vh !important;
-        transform: none !important;
-        visibility: visible !important;
-        flex-shrink: 0 !important;
-        z-index: 20 !important;
-    }
-
-    .fi-main-ctn {
-        flex: 1 1 auto !important;
-        width: calc(100% - 20vw) !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
-    }
-}
-
-@media (max-width: 767px) {
-    .fi-sidebar {
-        width: 18rem !important;
-    }
-}
 
 
 /* ══════════════════════════════════════
