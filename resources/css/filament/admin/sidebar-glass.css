@@ -523,19 +523,26 @@ html.dark .ims-group-theme-olt .ims-group-icon {
     color: #00d4ff !important;
     filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.75)) !important;
 }
-.ims-group-theme-olt .fi-sidebar-item-icon-box {
+.ims-group-theme-olt .fi-sidebar-item-icon-box,
+.ims-group-theme-olt .ims-collapsed-group-btn {
     background: #f0f9ff !important;
     border-color: #bae6fd !important;
 }
-.ims-group-theme-olt .fi-sidebar-item-icon {
+.ims-group-theme-olt .fi-sidebar-item-icon,
+.ims-group-theme-olt .ims-collapsed-group-btn svg,
+.ims-group-theme-olt .ims-collapsed-group-icon {
     color: #0284c7 !important;
 }
-html.dark .ims-group-theme-olt .fi-sidebar-item-icon-box {
+html.dark .ims-group-theme-olt .fi-sidebar-item-icon-box,
+html.dark .ims-group-theme-olt .ims-collapsed-group-btn {
     background: #06192e !important;
     border-color: #0d3b66 !important;
 }
-html.dark .ims-group-theme-olt .fi-sidebar-item-icon {
+html.dark .ims-group-theme-olt .fi-sidebar-item-icon,
+html.dark .ims-group-theme-olt .ims-collapsed-group-btn svg,
+html.dark .ims-group-theme-olt .ims-collapsed-group-icon {
     color: #00d4ff !important;
+    filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.75)) !important;
 }
 
 /* Theme 2: MANAJEMEN INTERNAL (Emerald) */
@@ -548,19 +555,26 @@ html.dark .ims-group-theme-manajemen .ims-group-icon {
     color: #00f0b5 !important;
     filter: drop-shadow(0 0 6px rgba(0, 240, 181, 0.75)) !important;
 }
-.ims-group-theme-manajemen .fi-sidebar-item-icon-box {
+.ims-group-theme-manajemen .fi-sidebar-item-icon-box,
+.ims-group-theme-manajemen .ims-collapsed-group-btn {
     background: #f0fdf4 !important;
     border-color: #bbf7d0 !important;
 }
-.ims-group-theme-manajemen .fi-sidebar-item-icon {
+.ims-group-theme-manajemen .fi-sidebar-item-icon,
+.ims-group-theme-manajemen .ims-collapsed-group-btn svg,
+.ims-group-theme-manajemen .ims-collapsed-group-icon {
     color: #059669 !important;
 }
-html.dark .ims-group-theme-manajemen .fi-sidebar-item-icon-box {
+html.dark .ims-group-theme-manajemen .fi-sidebar-item-icon-box,
+html.dark .ims-group-theme-manajemen .ims-collapsed-group-btn {
     background: #041f22 !important;
     border-color: #0a4b49 !important;
 }
-html.dark .ims-group-theme-manajemen .fi-sidebar-item-icon {
+html.dark .ims-group-theme-manajemen .fi-sidebar-item-icon,
+html.dark .ims-group-theme-manajemen .ims-collapsed-group-btn svg,
+html.dark .ims-group-theme-manajemen .ims-collapsed-group-icon {
     color: #00f0b5 !important;
+    filter: drop-shadow(0 0 6px rgba(0, 240, 181, 0.75)) !important;
 }
 
 /* Theme 3: PELANGGAN & LAYANAN (Blue) */
@@ -573,19 +587,26 @@ html.dark .ims-group-theme-pelanggan .ims-group-icon {
     color: #60a5fa !important;
     filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.75)) !important;
 }
-.ims-group-theme-pelanggan .fi-sidebar-item-icon-box {
+.ims-group-theme-pelanggan .fi-sidebar-item-icon-box,
+.ims-group-theme-pelanggan .ims-collapsed-group-btn {
     background: #eff6ff !important;
     border-color: #bfdbfe !important;
 }
-.ims-group-theme-pelanggan .fi-sidebar-item-icon {
+.ims-group-theme-pelanggan .fi-sidebar-item-icon,
+.ims-group-theme-pelanggan .ims-collapsed-group-btn svg,
+.ims-group-theme-pelanggan .ims-collapsed-group-icon {
     color: #2563eb !important;
 }
-html.dark .ims-group-theme-pelanggan .fi-sidebar-item-icon-box {
+html.dark .ims-group-theme-pelanggan .fi-sidebar-item-icon-box,
+html.dark .ims-group-theme-pelanggan .ims-collapsed-group-btn {
     background: #07192f !important;
     border-color: #123d6b !important;
 }
-html.dark .ims-group-theme-pelanggan .fi-sidebar-item-icon {
+html.dark .ims-group-theme-pelanggan .fi-sidebar-item-icon,
+html.dark .ims-group-theme-pelanggan .ims-collapsed-group-btn svg,
+html.dark .ims-group-theme-pelanggan .ims-collapsed-group-icon {
     color: #60a5fa !important;
+    filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.75)) !important;
 }
 
 /* Theme 4: KEUANGAN & BILLING (Amber / Gold) */
@@ -598,19 +619,26 @@ html.dark .ims-group-theme-keuangan .ims-group-icon {
     color: #34d399 !important;
     filter: drop-shadow(0 0 6px rgba(52, 211, 153, 0.75)) !important;
 }
-.ims-group-theme-keuangan .fi-sidebar-item-icon-box {
+.ims-group-theme-keuangan .fi-sidebar-item-icon-box,
+.ims-group-theme-keuangan .ims-collapsed-group-btn {
     background: #fffbeb !important;
     border-color: #fde68a !important;
 }
-.ims-group-theme-keuangan .fi-sidebar-item-icon {
+.ims-group-theme-keuangan .fi-sidebar-item-icon,
+.ims-group-theme-keuangan .ims-collapsed-group-btn svg,
+.ims-group-theme-keuangan .ims-collapsed-group-icon {
     color: #d97706 !important;
 }
-html.dark .ims-group-theme-keuangan .fi-sidebar-item-icon-box {
+html.dark .ims-group-theme-keuangan .fi-sidebar-item-icon-box,
+html.dark .ims-group-theme-keuangan .ims-collapsed-group-btn {
     background: #052220 !important;
     border-color: #0a4d44 !important;
 }
-html.dark .ims-group-theme-keuangan .fi-sidebar-item-icon {
+html.dark .ims-group-theme-keuangan .fi-sidebar-item-icon,
+html.dark .ims-group-theme-keuangan .ims-collapsed-group-btn svg,
+html.dark .ims-group-theme-keuangan .ims-collapsed-group-icon {
     color: #34d399 !important;
+    filter: drop-shadow(0 0 6px rgba(52, 211, 153, 0.75)) !important;
 }
 
 /* Theme 5: OPERASIONAL & HELPDESK (Purple / Indigo) */
@@ -623,19 +651,26 @@ html.dark .ims-group-theme-operasional .ims-group-icon {
     color: #f59e0b !important;
     filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.75)) !important;
 }
-.ims-group-theme-operasional .fi-sidebar-item-icon-box {
+.ims-group-theme-operasional .fi-sidebar-item-icon-box,
+.ims-group-theme-operasional .ims-collapsed-group-btn {
     background: #faf5ff !important;
     border-color: #e9d5ff !important;
 }
-.ims-group-theme-operasional .fi-sidebar-item-icon {
+.ims-group-theme-operasional .fi-sidebar-item-icon,
+.ims-group-theme-operasional .ims-collapsed-group-btn svg,
+.ims-group-theme-operasional .ims-collapsed-group-icon {
     color: #7c3aed !important;
 }
-html.dark .ims-group-theme-operasional .fi-sidebar-item-icon-box {
+html.dark .ims-group-theme-operasional .fi-sidebar-item-icon-box,
+html.dark .ims-group-theme-operasional .ims-collapsed-group-btn {
     background: #251604 !important;
     border-color: #553307 !important;
 }
-html.dark .ims-group-theme-operasional .fi-sidebar-item-icon {
+html.dark .ims-group-theme-operasional .fi-sidebar-item-icon,
+html.dark .ims-group-theme-operasional .ims-collapsed-group-btn svg,
+html.dark .ims-group-theme-operasional .ims-collapsed-group-icon {
     color: #f59e0b !important;
+    filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.75)) !important;
 }
 
 /* Theme 6: JARINGAN & INVENTARIS (Teal) */
@@ -648,19 +683,26 @@ html.dark .ims-group-theme-jaringan .ims-group-icon {
     color: #c084fc !important;
     filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.75)) !important;
 }
-.ims-group-theme-jaringan .fi-sidebar-item-icon-box {
+.ims-group-theme-jaringan .fi-sidebar-item-icon-box,
+.ims-group-theme-jaringan .ims-collapsed-group-btn {
     background: #f0fdfa !important;
     border-color: #99f6e4 !important;
 }
-.ims-group-theme-jaringan .fi-sidebar-item-icon {
+.ims-group-theme-jaringan .fi-sidebar-item-icon,
+.ims-group-theme-jaringan .ims-collapsed-group-btn svg,
+.ims-group-theme-jaringan .ims-collapsed-group-icon {
     color: #0d9488 !important;
 }
-html.dark .ims-group-theme-jaringan .fi-sidebar-item-icon-box {
+html.dark .ims-group-theme-jaringan .fi-sidebar-item-icon-box,
+html.dark .ims-group-theme-jaringan .ims-collapsed-group-btn {
     background: #1c0f2f !important;
     border-color: #451f72 !important;
 }
-html.dark .ims-group-theme-jaringan .fi-sidebar-item-icon {
+html.dark .ims-group-theme-jaringan .fi-sidebar-item-icon,
+html.dark .ims-group-theme-jaringan .ims-collapsed-group-btn svg,
+html.dark .ims-group-theme-jaringan .ims-collapsed-group-icon {
     color: #c084fc !important;
+    filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.75)) !important;
 }
 
 /* ── 9. ACTIVE ITEM ── */

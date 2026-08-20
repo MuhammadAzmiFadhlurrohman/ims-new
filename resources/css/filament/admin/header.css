@@ -36,30 +36,12 @@ html.fi body .fi-topbar,
     width: 100% !important;
 }
 
-/* Hamburger button on desktop */
-.fi-topbar-open-sidebar-btn,
-.fi-topbar-close-sidebar-btn {
-    color: #1e293b !important;
-    padding: 0.55rem !important;
-    border-radius: 10px !important;
-    border: 1px solid #cbd5e1 !important;
-    background: #f8fafc !important;
-    transition: all 0.15s ease !important;
-    cursor: pointer !important;
-}
-
-.fi-topbar-open-sidebar-btn svg,
-.fi-topbar-close-sidebar-btn svg {
-    width: 1.45rem !important;
-    height: 1.45rem !important;
-    color: #0f172a !important;
-}
-
-.fi-topbar-open-sidebar-btn:hover,
-.fi-topbar-close-sidebar-btn:hover {
-    background: #eff6ff !important;
-    border-color: #0284c7 !important;
-    color: #0284c7 !important;
+/* Hide duplicate sidebar button on desktop (sidebar header has its own toggle) */
+@media (min-width: 1024px) {
+    .fi-topbar-open-sidebar-btn,
+    .fi-topbar-close-sidebar-btn {
+        display: none !important;
+    }
 }
 
 /* Desktop Right elements */
