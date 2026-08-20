@@ -176,7 +176,9 @@
                                         @if ($child->shouldOpenUrlInNewTab()) target="_blank" @endif
                                         class="ims-flyout-link {{ $child->isActive() ? 'active' : '' }}"
                                     >
-                                        <span class="ims-flyout-bullet"></span>
+                                        <div class="ims-flyout-icon-box">
+                                            <span class="ims-flyout-bullet"></span>
+                                        </div>
                                         <span class="ims-flyout-link-text">{{ $child->getLabel() }}</span>
                                     </a>
                                 @endforeach
@@ -186,14 +188,16 @@
                                     @if ($item->shouldOpenUrlInNewTab()) target="_blank" @endif
                                     class="ims-flyout-link {{ $itemIsActive ? 'active' : '' }}"
                                 >
-                                    @if ($itemIcon)
-                                        <x-filament::icon
-                                            :icon="$itemIcon"
-                                            class="ims-flyout-icon"
-                                        />
-                                    @else
-                                        <span class="ims-flyout-bullet"></span>
-                                    @endif
+                                    <div class="ims-flyout-icon-box">
+                                        @if ($itemIcon)
+                                            <x-filament::icon
+                                                :icon="$itemIcon"
+                                                class="ims-flyout-icon"
+                                            />
+                                        @else
+                                            <span class="ims-flyout-bullet"></span>
+                                        @endif
+                                    </div>
                                     <span class="ims-flyout-link-text">{{ $item->getLabel() }}</span>
                                     @if ($badge = $item->getBadge())
                                         <span class="ims-flyout-item-badge">{{ $badge }}</span>
@@ -202,6 +206,7 @@
                             @endif
                         @endforeach
                     </div>
+
                 </div>
             </div>
         @endif
