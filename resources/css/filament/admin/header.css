@@ -227,6 +227,11 @@ html.dark .fi-user-menu-label {
 /* ══════════════════════════════════════════════════════════════
    2. MOBILE TOPBAR HEADER (Dark Sapphire Navy + Cyan Neon Border)
    ══════════════════════════════════════════════════════════════ */
+/* Hide close button x on topbar (hamburger toggle handles open/close) */
+.fi-topbar-close-sidebar-btn {
+    display: none !important;
+}
+
 @media (max-width: 1023px) {
     html body .fi-topbar,
     html.fi body .fi-topbar,
@@ -236,7 +241,7 @@ html.dark .fi-user-menu-label {
         -webkit-backdrop-filter: blur(12px) !important;
         border-bottom: 1.5px solid #e2e8f0 !important;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
-        height: 4.2rem !important;
+        height: 4.4rem !important;
     }
 
     html.dark body .fi-topbar,
@@ -248,65 +253,70 @@ html.dark .fi-user-menu-label {
     }
 
     .fi-topbar nav {
-        padding: 0 0.85rem !important;
-        gap: 8px !important;
+        padding: 0 1rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
         height: 100% !important;
+        width: 100% !important;
     }
 
     /* Mobile Hamburger Icon */
-    .fi-topbar-open-sidebar-btn,
-    .fi-topbar-close-sidebar-btn {
+    .fi-topbar-open-sidebar-btn {
         background: #f8fafc !important;
-        border: 1px solid #cbd5e1 !important;
+        border: 1.5px solid #cbd5e1 !important;
         color: #0f172a !important;
-        padding: 0.5rem !important;
-        border-radius: 10px !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        border-radius: 11px !important;
         flex-shrink: 0 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        padding: 0 !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
     }
 
-    .fi-topbar-open-sidebar-btn svg,
-    .fi-topbar-close-sidebar-btn svg {
+    .fi-topbar-open-sidebar-btn svg {
         color: #0f172a !important;
-        width: 1.3rem !important;
-        height: 1.3rem !important;
+        width: 1.25rem !important;
+        height: 1.25rem !important;
     }
 
-    html.dark .fi-topbar-open-sidebar-btn,
-    html.dark .fi-topbar-close-sidebar-btn {
-        background: rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(0, 212, 255, 0.35) !important;
+    html.dark .fi-topbar-open-sidebar-btn {
+        background: #081d36 !important;
+        border: 1.5px solid #143e6a !important;
         color: #00d4ff !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
     }
 
-    html.dark .fi-topbar-open-sidebar-btn svg,
-    html.dark .fi-topbar-close-sidebar-btn svg {
+    html.dark .fi-topbar-open-sidebar-btn svg {
         color: #00d4ff !important;
         filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.8)) !important;
     }
 
     .ims-header-info-wrapper {
+        display: flex !important;
+        align-items: center !important;
         gap: 8px !important;
-        flex: 1 !important;
-        justify-content: flex-end !important;
+        flex-shrink: 0 !important;
     }
 
     /* Mobile Live Clock Pill */
     .ims-live-clock-pill {
         background: #f1f5f9 !important;
-        border: 1px solid #cbd5e1 !important;
+        border: 1.5px solid #cbd5e1 !important;
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
-        padding: 6px 10px !important;
-        border-radius: 10px !important;
+        height: 38px !important;
+        padding: 0 12px !important;
+        border-radius: 11px !important;
         gap: 6px !important;
-        flex: 1 1 auto !important;
-        max-width: 185px !important;
-        min-width: 0 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        flex-shrink: 0 !important;
     }
 
     .ims-live-clock-pill svg {
@@ -319,98 +329,93 @@ html.dark .fi-user-menu-label {
     #ims-live-clock {
         color: #0f172a !important;
         font-weight: 700 !important;
-        font-size: 11.5px !important;
+        font-size: 12px !important;
         white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
     }
 
     html.dark .ims-live-clock-pill {
-        background: rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+        background: #081d36 !important;
+        border: 1.5px solid #143e6a !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
     }
 
     html.dark .ims-live-clock-pill svg {
         color: #00d4ff !important;
+        filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.6)) !important;
     }
 
     html.dark #ims-live-clock {
         color: #ffffff !important;
     }
 
+    /* Mobile Theme Toggle */
+    .ims-theme-toggle-btn {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        border-radius: 11px !important;
+        border: 1.5px solid #cbd5e1 !important;
+        background: #f8fafc !important;
+        color: #0f172a !important;
+        flex-shrink: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    html.dark .ims-theme-toggle-btn {
+        background: #081d36 !important;
+        border: 1.5px solid #143e6a !important;
+        color: #00d4ff !important;
+    }
+
     /* Mobile User Button */
     .fi-user-menu {
-        margin-left: 2px !important;
+        margin-left: 0 !important;
         flex-shrink: 0 !important;
     }
 
     .fi-user-menu button,
     .fi-user-menu a,
     .fi-user-menu-trigger {
-        background: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
+        background: #f8fafc !important;
+        border: 1.5px solid #cbd5e1 !important;
         color: #0f172a !important;
-        padding: 5px 9px 5px 6px !important;
-        border-radius: 10px !important;
-        gap: 6px !important;
-        height: 36px !important;
+        height: 38px !important;
+        width: 38px !important;
+        min-width: 38px !important;
+        padding: 0 !important;
+        border-radius: 11px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
     }
 
     html.dark .fi-user-menu button,
     html.dark .fi-user-menu a,
     html.dark .fi-user-menu-trigger {
-        background: rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        background: #081d36 !important;
+        border: 1.5px solid #143e6a !important;
         color: #ffffff !important;
     }
 
     .fi-user-avatar,
     .fi-avatar,
     .fi-user-menu .fi-avatar {
-        width: 24px !important;
-        height: 24px !important;
-        min-width: 24px !important;
-        font-size: 10.5px !important;
-        margin-right: 0 !important;
+        width: 26px !important;
+        height: 26px !important;
+        min-width: 26px !important;
+        font-size: 11px !important;
+        margin: 0 !important;
     }
 
     .fi-user-menu span,
     .fi-user-menu-label,
-    .fi-user-menu button > span {
-        color: #0f172a !important;
-        font-size: 11.5px !important;
-        font-weight: 700 !important;
-        max-width: 90px !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        white-space: nowrap !important;
-    }
-
-    html.dark .fi-user-menu span,
-    html.dark .fi-user-menu-label,
-    html.dark .fi-user-menu button > span {
-        color: #ffffff !important;
-    }
-
+    .fi-user-menu button > span,
     .fi-user-menu svg,
     .fi-user-menu .fi-dropdown-trigger-icon {
-        width: 12px !important;
-        height: 12px !important;
-    }
-
-    @media (max-width: 520px) {
-        .fi-user-menu span,
-        .fi-user-menu-label,
-        .fi-user-menu button > span {
-            display: none !important;
-        }
-        .fi-user-menu svg,
-        .fi-user-menu .fi-dropdown-trigger-icon {
-            display: none !important;
-        }
+        display: none !important;
     }
 }
 

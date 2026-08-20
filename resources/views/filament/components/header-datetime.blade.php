@@ -1,10 +1,13 @@
-<div class="ims-header-info-wrapper flex items-center gap-3">
+<div class="ims-header-info-wrapper flex items-center gap-2 sm:gap-3">
     <!-- Live Date & Clock Pill -->
-    <div class="ims-live-clock-pill flex items-center gap-2 px-3.5 py-1.5 bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-bold text-slate-700">
-        <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <div class="ims-live-clock-pill flex items-center gap-1.5 sm:gap-2">
+        <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span id="ims-live-clock" class="font-mono text-[11.5px]">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y H:i:s') }} WIB</span>
+        <span id="ims-live-clock" class="font-mono">
+            <span class="ims-clock-full hidden lg:inline">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y H:i:s') }} WIB</span>
+            <span class="ims-clock-mobile lg:hidden">{{ \Carbon\Carbon::now()->format('H:i') }} WIB</span>
+        </span>
     </div>
 
     <!-- Dark / Light Mode Toggle Button -->
@@ -44,7 +47,17 @@
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const seconds = String(now.getSeconds()).padStart(2, '0');
 
-        el.textContent = `${day}, ${date} ${month} ${year} ${hours}:${minutes}:${seconds} WIB`;
+        const timeFull = `${day}, ${date} ${month} ${year} ${hours}:${minutes}:${seconds} WIB`;
+        const timeShort = `${hours}:${minutes} WIB`;
+
+        const fullEl = el.querySelector('.ims-clock-full');
+        const mobileEl = el.querySelector('.ims-clock-mobile');
+        if (fullEl && mobileEl) {
+            fullEl.textContent = timeFull;
+            mobileEl.textContent = timeShort;
+        } else {
+            el.textContent = window.innerWidth >= 1024 ? timeFull : timeShort;
+        }
     }
     setInterval(updateImsClock, 1000);
 
