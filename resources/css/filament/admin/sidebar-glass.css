@@ -1,295 +1,524 @@
 /* ============================================================
-   IMS MSN – Sidebar Premium Dark Theme (Tree-Line & Cyan Accents)
+   IMS ONE – Exact Match Dark Sidebar (Color-Coded Themes & Squircles)
    File: resources/css/filament/admin/sidebar-glass.css
    ============================================================ */
 
-/* ── SIDEBAR WRAPPER (Full Height Sticky 125vh) ── */
+/* ── 1. SIDEBAR CONTAINER (Sticky 100vh Full Viewport) ── */
 .fi-sidebar {
-    background: #051326 linear-gradient(180deg, #091e38 0%, #06162a 40%, #040e1c 100%) !important;
+    background: #020b18 linear-gradient(180deg, #041328 0%, #030e20 40%, #020a17 100%) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
-    box-shadow: 6px 0 25px rgba(0, 0, 0, 0.45) !important;
-    height: 125vh !important;
-    min-height: 125vh !important;
-    max-height: 125vh !important;
+    box-shadow: 6px 0 28px rgba(0, 0, 0, 0.6) !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+    position: sticky !important;
+    top: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    overflow-y: hidden !important;
-    overflow-x: hidden !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+    z-index: 30 !important;
+}
+
+/* ── 2. SIDEBAR HEADER (Brand area) ── */
+.fi-sidebar-header {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 1.1rem 1.25rem !important;
+    height: 5.4rem !important;
+    min-height: 5.4rem !important;
+    max-height: 5.4rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-shrink: 0 !important;
+    overflow: visible !important;
+}
+
+.fi-sidebar-header .fi-logo,
+.fi-sidebar-header a {
+    display: flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+.ims-brand-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    overflow: visible !important;
+}
+
+.ims-brand-wifi svg {
+    width: 38px !important;
+    height: 38px !important;
+    fill: #00d4ff !important;
+    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.95)) drop-shadow(0 0 20px rgba(0, 212, 255, 0.45)) !important;
+}
+
+/* Collapse Toggle Button (Circular Dark Navy Button on Right) */
+.fi-sidebar-header .fi-icon-btn {
+    color: #8899ac !important;
+    background: #07172c !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 50% !important;
+    width: 2.1rem !important;
+    height: 2.1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    transition: all 0.2s ease !important;
     flex-shrink: 0 !important;
 }
 
+.fi-sidebar-header .fi-icon-btn:hover {
+    color: #ffffff !important;
+    background: #0d2847 !important;
+    border-color: #00d4ff !important;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.35) !important;
+}
+
+.fi-sidebar-header .fi-icon-btn svg {
+    width: 1rem !important;
+    height: 1rem !important;
+    color: inherit !important;
+    filter: none !important;
+}
+
+/* ── 3. NAVIGATION SCROLL CONTAINER ── */
 .fi-sidebar nav,
 .fi-sidebar-nav {
     flex: 1 1 auto !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     min-height: 0 !important;
-}
-
-/* ── SIDEBAR FOOTER ── */
-.ims-sidebar-footer {
-    margin-top: auto !important;
-    flex-shrink: 0 !important;
-    background: linear-gradient(180deg, rgba(4, 14, 28, 0.85) 0%, #020810 100%) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-/* ── SIDEBAR HEADER (Brand area with Glowing Wifi logo) ── */
-.fi-sidebar-header {
-    background: linear-gradient(135deg, rgba(2, 132, 199, 0.18) 0%, rgba(3, 105, 161, 0.05) 100%) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-    padding: 1.4rem 1.4rem !important;
-    height: 5.2rem !important;
-    min-height: 5.2rem !important;
-    display: flex !important;
-    align-items: center !important;
-}
-
-.fi-sidebar-header svg,
-.fi-logo svg {
-    fill: #00d4ff !important;
-    color: #00d4ff !important;
-    stroke: none !important;
-    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.95)) !important;
-    width: 32px !important;
-    height: 32px !important;
-    flex-shrink: 0 !important;
-}
-
-/* Brand name */
-.fi-logo,
-.fi-logo * {
-    color: #ffffff !important;
-    font-weight: 900 !important;
-    font-size: 1.25rem !important;
-    letter-spacing: -0.01em !important;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
-}
-
-/* ── NAV WRAPPER (Balanced Top Spacing for Dashboard) ── */
-.fi-sidebar nav,
-.fi-sidebar-nav {
-    padding: 0.75rem 0.65rem !important;
+    padding: 0.85rem 0.75rem !important;
 }
 
 .fi-sidebar-nav > ul,
 .fi-sidebar-nav .fi-sidebar-nav-groups {
+    display: flex !important;
+    flex-direction: column !important;
     gap: 0.25rem !important;
     row-gap: 0.25rem !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* ── STANDALONE DASHBOARD ITEM (TOP ITEM) ── */
-.fi-sidebar-item-button.is-standalone,
-.fi-sidebar-nav > ul > li:first-child .fi-sidebar-item-button {
-    margin-top: 0.15rem !important;
-    margin-bottom: 0.45rem !important;
+/* ── 4. STANDALONE DASHBOARD CARD (TOP ITEM) ── */
+.ims-group-dashboard {
+    margin-bottom: 0.75rem !important;
+    list-style: none !important;
 }
 
-/* ── GROUP HEADER DIVIDERS & TEXT (COMPACT & BALANCED) ── */
+.ims-group-dashboard .fi-sidebar-item-button,
+.fi-sidebar-item-button.is-standalone {
+    background: #041427 !important;
+    border: 1px solid #0e355c !important;
+    border-radius: 12px !important;
+    padding: 0.55rem 0.75rem !important;
+    margin: 0.2rem 0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.85rem !important;
+    width: 100% !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.ims-group-dashboard .fi-sidebar-item-button:hover,
+.fi-sidebar-item-button.is-standalone:hover {
+    background: #061d38 !important;
+    border-color: #1e5288 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 10px rgba(56, 189, 248, 0.2) !important;
+}
+
+.ims-group-dashboard .fi-sidebar-item-icon-box,
+.fi-sidebar-item-button.is-standalone .fi-sidebar-item-icon-box {
+    background: #082952 !important;
+    border: 1px solid #12549a !important;
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 9px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+}
+
+.ims-group-dashboard .fi-sidebar-item-icon-box svg,
+.fi-sidebar-item-button.is-standalone .fi-sidebar-item-icon-box svg {
+    color: #38bdf8 !important;
+    width: 1.15rem !important;
+    height: 1.15rem !important;
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.5)) !important;
+}
+
+.ims-group-dashboard .fi-sidebar-item-label,
+.fi-sidebar-item-button.is-standalone .fi-sidebar-item-label {
+    color: #ffffff !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+}
+
+/* ── 5. GROUP HEADERS & DIVIDERS ── */
+.fi-sidebar-group {
+    list-style: none !important;
+    margin: 0.2rem 0 !important;
+    padding: 0 !important;
+}
+
 .fi-sidebar-group + .fi-sidebar-group {
-    margin-top: 0.35rem !important;
+    margin-top: 0.65rem !important;
 }
 
 .ims-group-header {
     display: flex !important;
     align-items: center !important;
-    gap: 0.55rem !important;
+    gap: 0.65rem !important;
     padding: 0.35rem 0.5rem !important;
     margin-top: 0.25rem !important;
-    margin-bottom: 0.15rem !important;
+    margin-bottom: 0.3rem !important;
     text-align: left !important;
-    justify-content: flex-start !important;
 }
 
-.ims-group-header span {
-    color: #94a3b8 !important;
-    font-size: 0.68rem !important;
+.ims-group-title {
+    font-size: 0.72rem !important;
     font-weight: 800 !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
-    margin-left: 0.15rem !important;
+    white-space: nowrap !important;
+    font-family: 'Inter', sans-serif !important;
+    transition: all 0.2s ease !important;
 }
 
-.ims-group-header:hover span {
-    color: #ffffff !important;
-}
-
-.ims-group-header svg,
-.ims-group-icon-glow svg {
-    color: #00d4ff !important;
-    width: 1.15rem !important;
-    height: 1.15rem !important;
-    filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.85)) !important;
+.ims-group-icon-glow {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     flex-shrink: 0 !important;
 }
 
-/* ── TREE LINE & CYAN DOT CONNECTORS ── */
+.ims-group-icon-glow svg,
+.ims-group-icon {
+    width: 1.15rem !important;
+    height: 1.15rem !important;
+    flex-shrink: 0 !important;
+    transition: all 0.2s ease !important;
+}
+
+.ims-group-divider {
+    height: 1px !important;
+    flex: 1 1 auto !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    margin-left: 0.5rem !important;
+}
+
+/* ── 6. DEFAULT ITEM ROW & SQUIRCLE ICON CONTAINER ── */
+.fi-sidebar-item {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.fi-sidebar-item-button {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.85rem !important;
+    border-radius: 12px !important;
+    margin: 1px 0 !important;
+    padding: 0.35rem 0.5rem !important;
+    color: #cbd5e1 !important;
+    font-size: 0.84rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
+    text-decoration: none !important;
+    transition: all 0.18s ease !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    width: 100% !important;
+    text-align: left !important;
+    cursor: pointer !important;
+    position: relative !important;
+}
+
+/* Squircle Icon Container (The Rounded Box Around Each Icon) */
+.fi-sidebar-item-icon-box {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    border-radius: 9px !important;
+    background: #081d36 !important;
+    border: 1px solid #123d6b !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    transition: all 0.18s ease !important;
+}
+
+.fi-sidebar-item-icon {
+    width: 1.15rem !important;
+    height: 1.15rem !important;
+    color: #93c5fd !important;
+    stroke: currentColor !important;
+    flex-shrink: 0 !important;
+    transition: all 0.18s ease !important;
+}
+
+.fi-sidebar-item-label {
+    color: #e2e8f0 !important;
+    font-size: 0.84rem !important;
+    font-weight: 500 !important;
+    flex: 1 1 auto !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    transition: color 0.18s ease !important;
+}
+
+.fi-sidebar-item-button:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
+    transform: translateX(2px) !important;
+}
+
+.fi-sidebar-item-button:hover .fi-sidebar-item-label {
+    color: #ffffff !important;
+}
+
+/* ── 7. TREE LINE & CONNECTOR DOTS (BASE) ── */
 .fi-sidebar.fi-sidebar-open .ims-tree-line {
-    border-left: 2px solid rgba(2, 132, 199, 0.75) !important;
+    border-left: 2px solid #0284c7 !important;
     margin-left: 1.15rem !important;
-    padding-left: 0.75rem !important;
+    padding-left: 0.95rem !important;
+    margin-top: 0.2rem !important;
+    margin-bottom: 0.35rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.3rem !important;
+    list-style: none !important;
 }
 
 .fi-sidebar.fi-sidebar-open .ims-tree-dot {
     position: absolute !important;
-    left: -1.05rem !important;
+    left: -1.22rem !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
-    width: 7px !important;
-    height: 7px !important;
+    width: 6px !important;
+    height: 6px !important;
     border-radius: 50% !important;
-    background: #00bfff !important;
-    box-shadow: 0 0 6px rgba(0, 191, 255, 0.9) !important;
-    border: 1.5px solid #051326 !important;
     z-index: 10 !important;
     display: block !important;
+    transition: all 0.2s ease !important;
 }
 
-.fi-sidebar.fi-sidebar-open .ims-tree-dot.active {
-    background: #38bdf8 !important;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 1) !important;
-    width: 8px !important;
-    height: 8px !important;
-    left: -1.08rem !important;
+/* ── 8. COLOR-CODED GROUP THEMES ── */
+
+/* Theme 1: OLT (Electric Cyan #00d4ff) */
+.ims-group-theme-olt .ims-group-title,
+.ims-group-theme-olt .ims-group-icon {
+    color: #00d4ff !important;
+    filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.75)) !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-olt .ims-tree-line {
+    border-left-color: #0284c7 !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-olt .ims-tree-dot {
+    background: #00d4ff !important;
+    box-shadow: 0 0 6px rgba(0, 212, 255, 0.8) !important;
+}
+.ims-group-theme-olt .fi-sidebar-item-icon-box {
+    background: #06192e !important;
+    border-color: #0d3b66 !important;
+}
+.ims-group-theme-olt .fi-sidebar-item-icon {
+    color: #00d4ff !important;
 }
 
-/* ── STANDALONE DASHBOARD ITEM (Rounded Dark Container with Cyan Left Accent) ── */
-.fi-sidebar-item-button.is-standalone,
-.fi-sidebar-nav > ul > li:first-child .fi-sidebar-item-button {
-    background: rgba(255, 255, 255, 0.04) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-left: 3.5px solid #0284c7 !important;
-    border-radius: 12px !important;
-    margin-bottom: 0.5rem !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+/* Theme 2: MANAJEMEN INTERNAL & SYSTEM (Emerald Turquoise #00f0b5) */
+.ims-group-theme-manajemen .ims-group-title,
+.ims-group-theme-manajemen .ims-group-icon {
+    color: #00f0b5 !important;
+    filter: drop-shadow(0 0 6px rgba(0, 240, 181, 0.75)) !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-manajemen .ims-tree-line {
+    border-left-color: #059669 !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-manajemen .ims-tree-dot {
+    background: #00f0b5 !important;
+    box-shadow: 0 0 6px rgba(0, 240, 181, 0.8) !important;
+}
+.ims-group-theme-manajemen .fi-sidebar-item-icon-box {
+    background: #041f22 !important;
+    border-color: #0a4b49 !important;
+}
+.ims-group-theme-manajemen .fi-sidebar-item-icon {
+    color: #00f0b5 !important;
 }
 
-.fi-sidebar-item-button.is-standalone .fi-sidebar-item-icon,
-.fi-sidebar-nav > ul > li:first-child .fi-sidebar-item-button svg {
-    color: #38bdf8 !important;
+/* Theme 3: PELANGGAN & LAYANAN (Royal Sky Blue #60a5fa) */
+.ims-group-theme-pelanggan .ims-group-title,
+.ims-group-theme-pelanggan .ims-group-icon {
+    color: #60a5fa !important;
+    filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.75)) !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-pelanggan .ims-tree-line {
+    border-left-color: #2563eb !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-pelanggan .ims-tree-dot {
+    background: #60a5fa !important;
+    box-shadow: 0 0 6px rgba(96, 165, 250, 0.8) !important;
+}
+.ims-group-theme-pelanggan .fi-sidebar-item-icon-box {
+    background: #07192f !important;
+    border-color: #123d6b !important;
+}
+.ims-group-theme-pelanggan .fi-sidebar-item-icon {
+    color: #60a5fa !important;
 }
 
-/* ── NAV ITEMS ── */
-.fi-sidebar-item-button {
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.75rem !important;
-    border-radius: 10px !important;
-    margin: 2px 0 !important;
-    padding: 0.55rem 0.85rem !important;
-    color: #e2e8f0 !important;
-    font-size: 0.82rem !important;
-    font-weight: 600 !important;
-    transition: all 0.18s ease !important;
-    background: transparent !important;
-    border: none !important;
-    width: 100% !important;
-    text-align: left !important;
-    cursor: pointer !important;
+/* Theme 4: KEUANGAN & BILLING (Mint Green #34d399 / #10b981) */
+.ims-group-theme-keuangan .ims-group-title,
+.ims-group-theme-keuangan .ims-group-icon {
+    color: #34d399 !important;
+    filter: drop-shadow(0 0 6px rgba(52, 211, 153, 0.75)) !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-keuangan .ims-tree-line {
+    border-left-color: #059669 !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-keuangan .ims-tree-dot {
+    background: #10b981 !important;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.8) !important;
+}
+.ims-group-theme-keuangan .fi-sidebar-item-icon-box {
+    background: #052220 !important;
+    border-color: #0a4d44 !important;
+}
+.ims-group-theme-keuangan .fi-sidebar-item-icon {
+    color: #34d399 !important;
 }
 
-.fi-sidebar-item-button * {
-    color: #e2e8f0 !important;
+/* Theme 5: OPERASIONAL & HELPDESK (Amber Orange #f59e0b) */
+.ims-group-theme-operasional .ims-group-title,
+.ims-group-theme-operasional .ims-group-icon {
+    color: #f59e0b !important;
+    filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.75)) !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-operasional .ims-tree-line {
+    border-left-color: #b45309 !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-operasional .ims-tree-dot {
+    background: #f59e0b !important;
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.8) !important;
+}
+.ims-group-theme-operasional .fi-sidebar-item-icon-box {
+    background: #251604 !important;
+    border-color: #553307 !important;
+}
+.ims-group-theme-operasional .fi-sidebar-item-icon {
+    color: #f59e0b !important;
 }
 
-/* ── HOVER ── */
-.fi-sidebar-item-button:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
-    color: #ffffff !important;
-    transform: translateX(2px) !important;
+/* Theme 6: JARINGAN & INVENTARIS (Vivid Purple #c084fc / #a855f7) */
+.ims-group-theme-jaringan .ims-group-title,
+.ims-group-theme-jaringan .ims-group-icon {
+    color: #c084fc !important;
+    filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.75)) !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-jaringan .ims-tree-line {
+    border-left-color: #7c3aed !important;
+}
+.fi-sidebar.fi-sidebar-open .ims-group-theme-jaringan .ims-tree-dot {
+    background: #a855f7 !important;
+    box-shadow: 0 0 6px rgba(168, 85, 247, 0.8) !important;
+}
+.ims-group-theme-jaringan .fi-sidebar-item-icon-box {
+    background: #1c0f2f !important;
+    border-color: #451f72 !important;
+}
+.ims-group-theme-jaringan .fi-sidebar-item-icon {
+    color: #c084fc !important;
 }
 
-.fi-sidebar-item-button:hover * {
-    color: #ffffff !important;
-}
-
-.fi-sidebar-item-button:hover svg {
-    color: #38bdf8 !important;
-}
-
-/* ── ACTIVE ITEM — GLOWING ROYAL BLUE GRADIENT (MATCHING SCREENSHOT) ── */
+/* ── 9. ACTIVE ITEM (ROYAL BLUE PILL + GLOWING ACCENT) ── */
 .fi-sidebar-item-button.fi-active,
 .fi-sidebar-item-button[aria-current="page"],
-.fi-sidebar-item.fi-active .fi-sidebar-item-button {
-    background: linear-gradient(90deg, #0077ff 0%, #0055ff 100%) !important;
-    border-left: 3.5px solid #38bdf8 !important;
-    color: #ffffff !important;
-    font-weight: 800 !important;
-    border-radius: 10px !important;
-    box-shadow: 0 4px 18px rgba(0, 119, 255, 0.5), 0 0 10px rgba(56, 189, 248, 0.3) !important;
+.fi-sidebar-item.fi-active > .fi-sidebar-item-button,
+.fi-sidebar-item.fi-sidebar-item-active > .fi-sidebar-item-button {
+    background: linear-gradient(90deg, #0050d8 0%, #0036a3 100%) !important;
+    border: 1px solid #0066ff !important;
+    border-left: 3.5px solid #00d4ff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 18px rgba(0, 80, 216, 0.45) !important;
 }
 
-.fi-sidebar-item-button.fi-active *,
-.fi-sidebar-item.fi-active .fi-sidebar-item-button * {
+.fi-sidebar-item-button.fi-active .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active > .fi-sidebar-item-button .fi-sidebar-item-label {
     color: #ffffff !important;
     font-weight: 700 !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) !important;
 }
 
-.fi-sidebar-item-button.fi-active svg,
-.fi-sidebar-item.fi-active .fi-sidebar-item-button svg {
+.fi-sidebar-item-button.fi-active .fi-sidebar-item-icon-box,
+.fi-sidebar-item.fi-active > .fi-sidebar-item-button .fi-sidebar-item-icon-box {
+    background: #0066ff !important;
+    border-color: #38bdf8 !important;
+    box-shadow: 0 2px 8px rgba(0, 102, 255, 0.5) !important;
+}
+
+.fi-sidebar-item-button.fi-active .fi-sidebar-item-icon,
+.fi-sidebar-item.fi-active > .fi-sidebar-item-button .fi-sidebar-item-icon {
     color: #ffffff !important;
-    filter: drop-shadow(0 1px 4px rgba(255, 255, 255, 0.6)) !important;
 }
 
-/* ── ICONS (default & bright glowing cyan) ── */
-.fi-sidebar svg,
-.fi-sidebar [data-icon],
-.fi-sidebar .fi-icon,
-.fi-sidebar-item-button svg,
-.fi-sidebar-group svg,
-.fi-sidebar button svg {
-    width: 1.25rem !important;
-    height: 1.25rem !important;
-    color: #38bdf8 !important;
-    stroke: currentColor !important;
-    flex-shrink: 0 !important;
-    filter: drop-shadow(0 1px 3px rgba(56, 189, 248, 0.4)) !important;
-    transition: all 0.18s ease !important;
+.fi-sidebar.fi-sidebar-open .fi-sidebar-item.fi-active .ims-tree-dot,
+.fi-sidebar.fi-sidebar-open .fi-sidebar-item-button.fi-active ~ .ims-tree-dot,
+.fi-sidebar.fi-sidebar-open .ims-tree-dot.active {
+    width: 8px !important;
+    height: 8px !important;
+    left: -1.28rem !important;
+    box-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff !important;
+    background: #00d4ff !important;
 }
 
-.fi-sidebar-item-button:hover svg,
-.fi-sidebar-group button:hover svg,
-.fi-sidebar button:hover svg {
-    color: #ffffff !important;
-    filter: drop-shadow(0 2px 8px rgba(56, 189, 248, 0.8)) !important;
-    transform: scale(1.1) !important;
-}
-
-/* ── BADGES ── */
-.fi-sidebar-item .fi-badge {
-    background: rgba(14, 165, 233, 0.25) !important;
-    color: #7dd3fc !important;
-    border: 1px solid rgba(56, 189, 248, 0.35) !important;
-    font-size: 0.62rem !important;
+/* ── 10. BADGES (e.g. Roles '7') ── */
+.fi-sidebar-item .fi-badge,
+.fi-sidebar .fi-badge {
+    background: #012d22 !important;
+    color: #00f0b5 !important;
+    border: 1px solid #047857 !important;
+    font-size: 0.68rem !important;
     font-weight: 800 !important;
-    padding: 0.1rem 0.45rem !important;
+    padding: 0.12rem 0.55rem !important;
     border-radius: 9999px !important;
     margin-left: auto !important;
+    letter-spacing: 0.02em !important;
 }
 
-/* ── SLIM SCROLLBAR ── */
-.fi-sidebar nav::-webkit-scrollbar {
-    width: 4px;
+/* ── 11. ULTRA-SLIM SCROLLBAR ── */
+.fi-sidebar nav::-webkit-scrollbar,
+.fi-sidebar-nav::-webkit-scrollbar {
+    width: 4px !important;
 }
 
-.fi-sidebar nav::-webkit-scrollbar-track {
-    background: transparent;
+.fi-sidebar nav::-webkit-scrollbar-track,
+.fi-sidebar-nav::-webkit-scrollbar-track {
+    background: transparent !important;
 }
 
-.fi-sidebar nav::-webkit-scrollbar-thumb {
-    background: rgba(56, 189, 248, 0.25);
-    border-radius: 99px;
+.fi-sidebar nav::-webkit-scrollbar-thumb,
+.fi-sidebar-nav::-webkit-scrollbar-thumb {
+    background: rgba(56, 189, 248, 0.25) !important;
+    border-radius: 99px !important;
 }
 
-/* ── TOPBAR to match header ── */
-.fi-topbar {
-    background: #ffffff !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
-}
-
-/* ── COLLAPSED SIDEBAR (Icon Rail / ~5% Width & Hover Flyout) ── */
+/* ── 12. COLLAPSED SIDEBAR (MINI RAIL MODE / 4.5rem) ── */
 @media (min-width: 1024px) {
     .fi-sidebar:not(.fi-sidebar-open) {
         width: 4.5rem !important;
@@ -305,7 +534,6 @@
         padding: 0.85rem 0.25rem !important;
     }
 
-    /* HIDE all group headers, tree lines, and nested items inside groups when collapsed */
     .fi-sidebar:not(.fi-sidebar-open) .ims-group-header,
     .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-group > div.ims-group-header,
     .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-group-label,
@@ -327,74 +555,111 @@
         margin: 4px 0 !important;
     }
 
-    /* ONLY standalone items (like Dashboard) outside groups */
     .fi-sidebar:not(.fi-sidebar-open) > nav > ul > li > a.fi-sidebar-item-button,
     .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-item-button.is-standalone {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        padding: 0.6rem !important;
-        width: 2.75rem !important;
-        height: 2.75rem !important;
+        padding: 0.65rem !important;
+        width: 2.85rem !important;
+        height: 2.85rem !important;
         margin: 4px auto !important;
-        border-radius: 10px !important;
+        border-radius: 11px !important;
     }
 
     .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-item-button span:not(.fi-badge) {
         display: none !important;
     }
 
-    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-item-button svg {
-        margin: 0 auto !important;
-        width: 1.35rem !important;
-        height: 1.35rem !important;
+    .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header {
+        justify-content: center !important;
+        padding: 0.75rem 0.5rem !important;
+    }
+
+    .fi-sidebar:not(.fi-sidebar-open) .ims-brand-container div:last-child {
+        display: none !important;
     }
 
     .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn {
-        margin: 0 auto !important;
+        display: none !important;
     }
 }
 
-/* ── SOLID HOVER FLYOUT POPUP MENU (100% NON-TRANSPARENT) ── */
+.ims-collapsed-group-btn {
+    width: 2.85rem !important;
+    height: 2.85rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 11px !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.ims-collapsed-group-btn:hover {
+    background: rgba(56, 189, 248, 0.15) !important;
+    border-color: rgba(56, 189, 248, 0.4) !important;
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.3) !important;
+}
+
+.ims-collapsed-group-btn.active {
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(14, 165, 233, 0.2) 100%) !important;
+    border: 1px solid rgba(56, 189, 248, 0.5) !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4) !important;
+}
+
+.ims-collapsed-group-icon {
+    width: 1.3rem !important;
+    height: 1.3rem !important;
+    color: #38bdf8 !important;
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6)) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* ── 13. FLYOUT POPUP MENU (COLLAPSED STATE) ── */
 .ims-flyout-menu {
     position: absolute !important;
-    left: calc(100% + 14px) !important;
-    top: -6px !important;
-    width: 250px !important;
-    min-width: 250px !important;
-    background-color: #0b1d30 !important;
-    background: linear-gradient(165deg, #0f2742 0%, #091726 100%) !important;
-    border: 1.5px solid #0284c7 !important;
+    left: calc(100% + 12px) !important;
+    top: -4px !important;
+    width: 255px !important;
+    min-width: 255px !important;
+    background: #081120 linear-gradient(165deg, #0d1e35 0%, #060d19 100%) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
     border-radius: 12px !important;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 15px rgba(2, 132, 199, 0.35) !important;
-    padding: 0.65rem !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(2, 132, 199, 0.25) !important;
+    padding: 0.7rem !important;
     z-index: 999999 !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
 }
 
 .ims-flyout-header {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 0.4rem 0.6rem 0.5rem !important;
+    padding: 0.35rem 0.5rem 0.5rem !important;
     margin-bottom: 0.45rem !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 .ims-flyout-title {
     color: #38bdf8 !important;
-    font-size: 0.76rem !important;
+    font-size: 0.74rem !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.06em !important;
+    letter-spacing: 0.08em !important;
+    font-family: 'Inter', sans-serif !important;
 }
 
 .ims-flyout-badge {
-    background: rgba(2, 132, 199, 0.25) !important;
+    background: rgba(2, 132, 199, 0.22) !important;
     color: #7dd3fc !important;
-    border: 1px solid rgba(56, 189, 248, 0.4) !important;
-    font-size: 0.65rem !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    font-size: 0.62rem !important;
     font-weight: 800 !important;
-    padding: 0.15rem 0.5rem !important;
+    padding: 0.12rem 0.45rem !important;
     border-radius: 999px !important;
 }
 
@@ -406,83 +671,30 @@
     overflow-y: auto !important;
 }
 
-.ims-flyout-subgroup-title {
-    color: rgba(148, 163, 184, 0.8) !important;
-    font-size: 0.68rem !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.04em !important;
-    padding: 0.35rem 0.6rem 0.15rem !important;
-}
-
 .ims-flyout-link {
     display: flex !important;
     align-items: center !important;
     gap: 0.65rem !important;
-    padding: 0.5rem 0.75rem !important;
-    border-radius: 7px !important;
-    color: #cbd5e1 !important;
+    padding: 0.48rem 0.7rem !important;
+    border-radius: 8px !important;
+    color: #94a3b8 !important;
     text-decoration: none !important;
-    font-size: 0.8rem !important;
-    font-weight: 600 !important;
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
     background: transparent !important;
     transition: all 0.15s ease !important;
 }
 
 .ims-flyout-link:hover {
-    background: rgba(56, 189, 248, 0.18) !important;
+    background: rgba(56, 189, 248, 0.14) !important;
     color: #ffffff !important;
     transform: translateX(3px) !important;
 }
 
 .ims-flyout-link.active {
-    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(14, 165, 233, 0.2) 100%) !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
     color: #ffffff !important;
     font-weight: 700 !important;
-    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4) !important;
+    box-shadow: 0 2px 10px rgba(2, 132, 199, 0.3) !important;
 }
-
-.ims-flyout-icon {
-    width: 1.1rem !important;
-    height: 1.1rem !important;
-    color: #38bdf8 !important;
-    flex-shrink: 0 !important;
-}
-
-.ims-flyout-link:hover .ims-flyout-icon,
-.ims-flyout-link.active .ims-flyout-icon {
-    color: #ffffff !important;
-}
-
-.ims-flyout-bullet {
-    width: 6px !important;
-    height: 6px !important;
-    background: #38bdf8 !important;
-    border-radius: 50% !important;
-    flex-shrink: 0 !important;
-}
-
-.ims-flyout-link:hover .ims-flyout-bullet,
-.ims-flyout-link.active .ims-flyout-bullet {
-    background: #ffffff !important;
-}
-
-.ims-flyout-link-text {
-    flex: 1 1 auto !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    color: inherit !important;
-}
-
-.ims-flyout-item-badge {
-    font-size: 0.62rem !important;
-    font-weight: 800 !important;
-    padding: 0.1rem 0.45rem !important;
-    border-radius: 999px !important;
-    background: rgba(56, 189, 248, 0.25) !important;
-    color: #7dd3fc !important;
-}
-
-
-
