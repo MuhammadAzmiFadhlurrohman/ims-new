@@ -561,41 +561,107 @@ html.dark .ims-modal-content div[style*="color: #0f172a"] {
    MOBILE RESPONSIVE ENHANCEMENTS (< 1024px)
    ══════════════════════════════════════════════════════════════ */
 @media (max-width: 1023px) {
+    /* Top Command Status Bar */
+    .ims-top-command-bar {
+        padding: 0.85rem 1rem !important;
+        border-radius: 14px !important;
+        margin-bottom: 0.85rem !important;
+        gap: 0.5rem !important;
+        justify-content: flex-start !important;
+    }
+
+    .ims-beacon-wrap {
+        gap: 0.65rem !important;
+        width: 100% !important;
+    }
+
+    .ims-badge-live {
+        font-size: 0.68rem !important;
+        padding: 0.15rem 0.5rem !important;
+    }
+
+    /* Sliding Hero Carousel Banner */
     .ims-slider-banner {
         border-radius: 14px !important;
         margin-bottom: 0.85rem !important;
     }
 
     .ims-slide-item {
-        padding: 0.85rem !important;
+        padding: 1rem 1.15rem 1.75rem 1.15rem !important;
         flex-direction: column !important;
         align-items: flex-start !important;
+        gap: 0.85rem !important;
+        position: relative !important;
+    }
+
+    .ims-slide-item > div:first-child {
+        display: flex !important;
+        align-items: flex-start !important;
         gap: 0.75rem !important;
-    }
-
-    .ims-slide-left {
         width: 100% !important;
     }
 
-    .ims-slide-left h3 {
-        font-size: 0.95rem !important;
+    .ims-slide-item > div:first-child > div:first-child {
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important;
+        border-radius: 12px !important;
     }
 
-    .ims-slide-left p {
-        font-size: 0.78rem !important;
+    .ims-slide-item > div:first-child > div:first-child svg {
+        width: 22px !important;
+        height: 22px !important;
     }
 
-    .ims-slide-action {
-        width: 100% !important;
+    .ims-live-traffic-badge {
+        font-size: 0.65rem !important;
+        padding: 0.15rem 0.5rem !important;
     }
 
-    .ims-slide-action a,
-    .ims-slide-action button {
-        width: 100% !important;
+    .ims-slide-item a,
+    .ims-slide-item button {
+        display: inline-flex !important;
+        align-items: center !important;
         justify-content: center !important;
-        padding: 0.5rem 1rem !important;
-        font-size: 0.78rem !important;
+        padding: 0.45rem 0.95rem !important;
+        font-size: 0.76rem !important;
         border-radius: 10px !important;
+    }
+
+    .ims-slide-nav-dots {
+        bottom: 8px !important;
+        right: 14px !important;
+    }
+
+    /* Stats Grid & Cards */
+    .ims-stats-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        width: 100% !important;
+    }
+
+    .ims-stat-card {
+        padding: 1rem 1.15rem !important;
+        border-radius: 14px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .ims-stat-number {
+        font-size: 2.2rem !important;
+        margin: 0.4rem 0 !important;
+    }
+
+    .ims-card-header {
+        margin-bottom: 0.25rem !important;
+    }
+
+    .ims-card-footer {
+        padding: 0.65rem 0.85rem !important;
+        font-size: 0.74rem !important;
+        border-radius: 10px !important;
+        margin-top: 0.5rem !important;
     }
 
     .ims-quick-kpi {
@@ -621,7 +687,7 @@ html.dark .ims-modal-content div[style*="color: #0f172a"] {
     }
 
     .ims-distribution-card {
-        padding: 0.85rem !important;
+        padding: 1rem !important;
         border-radius: 14px !important;
     }
 
@@ -642,11 +708,6 @@ html.dark .ims-modal-content div[style*="color: #0f172a"] {
         padding: 0.15rem 0.5rem !important;
     }
 
-    .ims-card-footer {
-        padding: 0.65rem 0.85rem !important;
-        font-size: 0.72rem !important;
-    }
-
     .ims-legend-green,
     .ims-legend-amber,
     .ims-legend-rose {
@@ -665,7 +726,11 @@ html.dark .ims-modal-content div[style*="color: #0f172a"] {
 /* ── Extra Small Dashboard (< 480px) ── */
 @media (max-width: 479px) {
     .ims-slide-item {
-        padding: 0.65rem !important;
+        padding: 0.75rem 0.85rem 1.5rem 0.85rem !important;
+    }
+
+    .ims-stat-number {
+        font-size: 1.9rem !important;
     }
 
     .ims-quick-kpi {
@@ -681,6 +746,6 @@ html.dark .ims-modal-content div[style*="color: #0f172a"] {
     }
 
     .ims-distribution-card {
-        padding: 0.65rem !important;
+        padding: 0.75rem !important;
     }
 }

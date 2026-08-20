@@ -186,7 +186,7 @@
             <div class="ims-beacon-wrap">
                 <span class="ims-live-beacon"></span>
                 <div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                         <strong style="font-size: 0.85rem; letter-spacing: 0.04em; color: #0f172a; text-transform: uppercase;">
                             SISTEM KONEKSI LIVE
                         </strong>
@@ -196,12 +196,6 @@
                         Monitoring OLT, PON & Billing Terintegrasi Real-Time
                     </div>
                 </div>
-            </div>
-
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <button type="button" @click="toggleTheme()" class="ims-theme-toggle" title="Ganti Mode Gelap / Terang">
-                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-                </button>
             </div>
         </div>
 
