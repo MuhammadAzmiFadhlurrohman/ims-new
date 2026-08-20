@@ -170,7 +170,7 @@ class AdminPanelProvider extends PanelProvider
                                             var anim = document.documentElement.animate(
                                                 { clipPath: clipPath },
                                                 {
-                                                    duration: 1000,
+                                                    duration: 1500,
                                                     easing: "cubic-bezier(0.35, 0, 0.25, 1)",
                                                     pseudoElement: "::view-transition-new(root)"
                                                 }
