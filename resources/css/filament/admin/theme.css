@@ -1017,9 +1017,63 @@ html.dark .fi-ta-header-cell-label {
     .fi-tabs button,
     .fi-tabs a {
         padding: 0.4rem 0.75rem !important;
-        font-size: 0.72rem !important;
-        border-radius: 8px !important;
-        flex-shrink: 0 !important;
+    /* ── Mobile Layout Horizontal Padding Reduction ── */
+    .fi-main-ctn,
+    .fi-main {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.65rem 0.5rem 2.5rem 0.5rem !important;
+        box-sizing: border-box !important;
+    }
+
+    .fi-page {
+        padding: 0 !important;
+        gap: 0.65rem !important;
+        max-width: 100% !important;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       2-COLUMN MOBILE TABLE FILTERS (< 1024px)
+       ══════════════════════════════════════════════════════════════ */
+    .fi-ta-filters-above-content-ctn,
+    .fi-ta-filters-above-content,
+    .fi-ta-filters-form,
+    .fi-ta-filters {
+        width: 100% !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .fi-ta-filters-form .grid,
+    .fi-ta-filters-above-content-ctn .grid,
+    .fi-ta-filters .grid,
+    .fi-ta-filters-above-content-ctn form,
+    .fi-ta-filters-form form,
+    .fi-ta-filters-above-content-ctn form > div,
+    .fi-ta-filters-form > div {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 0.45rem !important;
+        width: 100% !important;
+    }
+
+    .fi-ta-filter,
+    .fi-ta-filter > div,
+    .fi-ta-filter .fi-input-wrp,
+    .fi-ta-filter .fi-select-input,
+    .fi-ta-filter select,
+    .fi-ta-filter input {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .fi-ta-filter input,
+    .fi-ta-filter select,
+    .fi-ta-filters-form input,
+    .fi-ta-filters-form select {
+        height: 2.4rem !important;
+        font-size: 0.76rem !important;
+        border-radius: 10px !important;
+        padding: 0 0.5rem !important;
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -1032,6 +1086,7 @@ html.dark .fi-ta-header-cell-label {
         border-radius: 0 !important;
         margin-top: 0.5rem !important;
         overflow: visible !important;
+        padding: 0 !important;
     }
 
     .fi-ta-content {
@@ -1044,18 +1099,25 @@ html.dark .fi-ta-header-cell-label {
         display: none !important;
     }
 
+    /* Hide columns tagged as mobile-hidden on Card view */
+    .ims-mobile-hide,
+    td:has(.ims-mobile-hide),
+    .fi-ta-cell:has(.ims-mobile-hide) {
+        display: none !important;
+    }
+
     /* Mobile Table Toolbar / Search */
     .fi-ta-header-toolbar,
     .fi-ta-header {
-        padding: 0.85rem 1rem !important;
+        padding: 0.75rem 0.85rem !important;
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 16px !important;
-        margin-bottom: 0.85rem !important;
+        border-radius: 14px !important;
+        margin-bottom: 0.75rem !important;
         flex-direction: column !important;
         align-items: stretch !important;
-        gap: 0.5rem !important;
-        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+        gap: 0.45rem !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
     }
 
     html.dark .fi-ta-header-toolbar,
@@ -1071,16 +1133,16 @@ html.dark .fi-ta-header-cell-label {
 
     .fi-ta-search-field input {
         width: 100% !important;
-        height: 2.6rem !important;
-        font-size: 0.84rem !important;
-        border-radius: 12px !important;
+        height: 2.5rem !important;
+        font-size: 0.82rem !important;
+        border-radius: 10px !important;
     }
 
     .fi-ta-filter-trigger-btn {
         width: 100% !important;
         justify-content: center !important;
-        height: 2.5rem !important;
-        border-radius: 12px !important;
+        height: 2.4rem !important;
+        border-radius: 10px !important;
     }
 
     /* Convert Table & Tbody into Vertical Flex List */
@@ -1094,7 +1156,7 @@ html.dark .fi-ta-header-cell-label {
     table.fi-ta-table tbody {
         display: flex !important;
         flex-direction: column !important;
-        gap: 1rem !important;
+        gap: 0.75rem !important;
         width: 100% !important;
     }
 
@@ -1106,10 +1168,10 @@ html.dark .fi-ta-header-cell-label {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         border-left: 5px solid #0284c7 !important;
-        border-radius: 18px !important;
-        padding: 1.15rem 1.25rem !important;
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
-        gap: 0.45rem !important;
+        border-radius: 16px !important;
+        padding: 0.95rem 1rem !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+        gap: 0.4rem !important;
         width: 100% !important;
         box-sizing: border-box !important;
         position: relative !important;
