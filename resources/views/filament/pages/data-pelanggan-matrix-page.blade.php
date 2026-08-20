@@ -113,6 +113,30 @@
             color: #475569;
             margin-left: 2px;
         }
+
+        /* Dark Mode Overrides */
+        html.dark .matrix-section-title {
+            color: #ffffff !important;
+        }
+
+        html.dark .matrix-item-card {
+            background: #08192e !important;
+            border-color: #14355a !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        html.dark .matrix-item-card:hover {
+            background: #0c2442 !important;
+            border-color: #00d4ff !important;
+        }
+
+        html.dark .matrix-count-row {
+            color: #ffffff !important;
+        }
+
+        html.dark .matrix-count-unit {
+            color: #94a3b8 !important;
+        }
     </style>
 
     <div class="matrix-page-wrapper">

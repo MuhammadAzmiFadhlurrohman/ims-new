@@ -332,6 +332,53 @@
             .ims-ticket-card:hover .ims-card-arrow {
                 transform: translateX(4px);
             }
+
+            /* ── DARK MODE OVERRIDES FOR TICKET PORTAL ── */
+            html.dark .ims-ticket-card {
+                background: #08192e !important;
+                border-color: #14355a !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+            }
+
+            html.dark .ims-ticket-card:hover {
+                background: #0c2442 !important;
+                border-color: #00d4ff !important;
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6) !important;
+            }
+
+            html.dark .ims-card-title {
+                color: #ffffff !important;
+            }
+
+            html.dark .ims-card-desc {
+                color: #94a3b8 !important;
+            }
+
+            html.dark .ims-card-bottom {
+                border-top-color: #14355a !important;
+                color: #cbd5e1 !important;
+            }
+
+            html.dark .ims-card-gangguan .ims-card-icon-wrap { background: rgba(225, 29, 72, 0.15) !important; color: #fb7185 !important; border-color: rgba(225, 29, 72, 0.3) !important; }
+            html.dark .ims-card-gangguan .ims-count-badge { background: rgba(225, 29, 72, 0.2) !important; color: #fda4af !important; border-color: rgba(225, 29, 72, 0.35) !important; }
+
+            html.dark .ims-card-password .ims-card-icon-wrap { background: rgba(99, 102, 241, 0.15) !important; color: #a5b4fc !important; border-color: rgba(99, 102, 241, 0.3) !important; }
+            html.dark .ims-card-password .ims-count-badge { background: rgba(99, 102, 241, 0.2) !important; color: #c7d2fe !important; border-color: rgba(99, 102, 241, 0.35) !important; }
+
+            html.dark .ims-card-coverage .ims-card-icon-wrap { background: rgba(16, 185, 129, 0.15) !important; color: #6ee7b7 !important; border-color: rgba(16, 185, 129, 0.3) !important; }
+            html.dark .ims-card-coverage .ims-count-badge { background: rgba(16, 185, 129, 0.2) !important; color: #a7f3d0 !important; border-color: rgba(16, 185, 129, 0.35) !important; }
+
+            html.dark .ims-card-psb .ims-card-icon-wrap { background: rgba(14, 165, 233, 0.15) !important; color: #7dd3fc !important; border-color: rgba(14, 165, 233, 0.3) !important; }
+            html.dark .ims-card-psb .ims-count-badge { background: rgba(14, 165, 233, 0.2) !important; color: #bae6fd !important; border-color: rgba(14, 165, 233, 0.35) !important; }
+
+            html.dark .ims-card-mutasi .ims-card-icon-wrap { background: rgba(168, 85, 247, 0.15) !important; color: #d8b4fe !important; border-color: rgba(168, 85, 247, 0.3) !important; }
+            html.dark .ims-card-mutasi .ims-count-badge { background: rgba(168, 85, 247, 0.2) !important; color: #e9d5ff !important; border-color: rgba(168, 85, 247, 0.35) !important; }
+
+            html.dark .ims-card-suspend .ims-card-icon-wrap { background: rgba(245, 158, 11, 0.15) !important; color: #fcd34d !important; border-color: rgba(245, 158, 11, 0.3) !important; }
+            html.dark .ims-card-suspend .ims-count-badge { background: rgba(245, 158, 11, 0.2) !important; color: #fde68a !important; border-color: rgba(245, 158, 11, 0.35) !important; }
+
+            html.dark .ims-card-terminasi .ims-card-icon-wrap { background: rgba(148, 163, 184, 0.15) !important; color: #cbd5e1 !important; border-color: rgba(148, 163, 184, 0.3) !important; }
+            html.dark .ims-card-terminasi .ims-count-badge { background: rgba(148, 163, 184, 0.2) !important; color: #e2e8f0 !important; border-color: rgba(148, 163, 184, 0.35) !important; }
         </style>
 
         <div class="ims-ticket-container">

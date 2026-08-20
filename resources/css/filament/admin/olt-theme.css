@@ -802,3 +802,206 @@
     border-top: 1px solid #f1f5f9;
     padding-top: 1rem;
 }
+
+/* ============================================================
+   ── 9. DARK MODE COMPREHENSIVE STYLING (IMS ONE DARK) ──
+   ============================================================ */
+
+html.dark .olt-top-header {
+    background: #08192e linear-gradient(135deg, #08192e 0%, #051324 100%) !important;
+    border-color: #14355a !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark .olt-title-text {
+    color: #ffffff !important;
+}
+
+html.dark .olt-title-subtitle {
+    color: #94a3b8 !important;
+}
+
+html.dark .olt-stat-pill {
+    background: #0d284a !important;
+    border-color: #1e4d80 !important;
+    color: #e2e8f0 !important;
+}
+
+html.dark .olt-stat-pill.cyan {
+    background: rgba(8, 145, 178, 0.2) !important;
+    border-color: rgba(8, 145, 178, 0.4) !important;
+    color: #38bdf8 !important;
+}
+
+html.dark .olt-stat-pill.blue {
+    background: rgba(37, 99, 235, 0.2) !important;
+    border-color: rgba(37, 99, 235, 0.4) !important;
+    color: #60a5fa !important;
+}
+
+html.dark .olt-select-switcher {
+    background-color: #08192e !important;
+    border-color: #1e4d80 !important;
+    color: #ffffff !important;
+}
+
+html.dark .olt-select-switcher option {
+    background-color: #08192e !important;
+    color: #ffffff !important;
+}
+
+html.dark .olt-breadcrumb-bar {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .olt-breadcrumb-link {
+    background: #0d284a !important;
+    border-color: #1e4d80 !important;
+    color: #94a3b8 !important;
+}
+
+html.dark .olt-breadcrumb-link:hover {
+    background: #143a66 !important;
+    color: #00d4ff !important;
+    border-color: #00d4ff !important;
+}
+
+html.dark .olt-card {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.dark .olt-card-header {
+    border-bottom-color: #14355a !important;
+}
+
+html.dark .olt-card-title {
+    color: #ffffff !important;
+}
+
+html.dark .olt-card-title-badge {
+    background: rgba(5, 150, 105, 0.2) !important;
+    border-color: rgba(5, 150, 105, 0.4) !important;
+    color: #34d399 !important;
+}
+
+html.dark .olt-field-label,
+html.dark .olt-card label,
+html.dark .olt-card label span {
+    color: #cbd5e1 !important;
+}
+
+html.dark .olt-input,
+html.dark .olt-select {
+    background-color: #051324 !important;
+    border-color: #1e4d80 !important;
+    color: #ffffff !important;
+}
+
+html.dark .olt-input:focus,
+html.dark .olt-select:focus {
+    background-color: #051324 !important;
+    border-color: #00d4ff !important;
+    box-shadow: 0 0 0 3.5px rgba(0, 212, 255, 0.2) !important;
+}
+
+html.dark .olt-input::placeholder {
+    color: #64748b !important;
+}
+
+html.dark .olt-select option {
+    background-color: #08192e !important;
+    color: #ffffff !important;
+}
+
+html.dark .olt-btn-back {
+    background: #0d284a !important;
+    border-color: #1e4d80 !important;
+    color: #e2e8f0 !important;
+}
+
+html.dark .olt-btn-back:hover {
+    background: #143a66 !important;
+    color: #ffffff !important;
+    border-color: #00d4ff !important;
+}
+
+html.dark .olt-table-container {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark .olt-table thead tr {
+    background: #051324 !important;
+}
+
+html.dark .olt-table thead th {
+    background: transparent !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid #00d4ff !important;
+}
+
+html.dark .olt-table tbody tr {
+    background: #08192e !important;
+    border-bottom: 1px solid #0d2748 !important;
+}
+
+html.dark .olt-table tbody tr:hover {
+    background: #0e2d52 !important;
+}
+
+html.dark .olt-table tbody td {
+    color: #e2e8f0 !important;
+    border-bottom: 1px solid #0d2748 !important;
+}
+
+html.dark .olt-item-name {
+    color: #ffffff !important;
+}
+
+html.dark .olt-item-sub {
+    color: #94a3b8 !important;
+}
+
+html.dark .olt-progress-track {
+    background: #0f2744 !important;
+}
+
+html.dark .olt-onu-sn-box {
+    background: rgba(220, 38, 38, 0.2) !important;
+    border-color: rgba(220, 38, 38, 0.4) !important;
+    color: #fca5a5 !important;
+}
+
+html.dark .olt-modal-card {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8) !important;
+}
+
+html.dark .olt-modal-header,
+html.dark .olt-modal-footer {
+    border-color: #14355a !important;
+}
+
+html.dark .olt-modal-title {
+    color: #ffffff !important;
+}
+
+html.dark .olt-modal-close-btn {
+    background: #0d284a !important;
+    border-color: #1e4d80 !important;
+    color: #cbd5e1 !important;
+}
+
+html.dark .olt-modal-close-btn:hover {
+    background: rgba(220, 38, 38, 0.25) !important;
+    border-color: #ef4444 !important;
+    color: #fca5a5 !important;
+}
+
