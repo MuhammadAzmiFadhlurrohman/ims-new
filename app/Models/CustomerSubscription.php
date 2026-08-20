@@ -92,10 +92,10 @@ class CustomerSubscription extends Model
                 \App\Models\SubscriptionLog::where('internet_number', $num)->delete();
                 \App\Models\Ticket::where('internet_number', $num)->delete();
 
-                if (\Illuminate\Support\Facades\Schema::hasTable('installation_pipelines')) {
+                if (\Illuminate\Support\Facades\Schema::hasTable('installation_pipelines') && \Illuminate\Support\Facades\Schema::hasColumn('installation_pipelines', 'internet_number')) {
                     \Illuminate\Support\Facades\DB::table('installation_pipelines')->where('internet_number', $num)->delete();
                 }
-                if (\Illuminate\Support\Facades\Schema::hasTable('whatsapp_logs')) {
+                if (\Illuminate\Support\Facades\Schema::hasTable('whatsapp_logs') && \Illuminate\Support\Facades\Schema::hasColumn('whatsapp_logs', 'internet_number')) {
                     \Illuminate\Support\Facades\DB::table('whatsapp_logs')->where('internet_number', $num)->delete();
                 }
             }
