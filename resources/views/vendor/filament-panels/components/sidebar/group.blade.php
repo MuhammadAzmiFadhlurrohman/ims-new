@@ -111,6 +111,7 @@
             <div
                 x-data="{
                     isHovered: false,
+                    isOpen: false,
                     timer: null,
                     showMenu() {
                         clearTimeout(this.timer);
@@ -119,18 +120,24 @@
                     hideMenu() {
                         this.timer = setTimeout(() => {
                             this.isHovered = false;
-                        }, 150);
+                        }, 200);
+                    },
+                    toggleMenu() {
+                        this.isOpen = !this.isOpen;
                     }
                 }"
                 x-show="! $store.sidebar.isOpen"
                 x-on:mouseenter="showMenu()"
                 x-on:mouseleave="hideMenu()"
+                @click.outside="isOpen = false"
                 class="relative w-full flex justify-center py-1 ims-flyout-trigger-wrap"
             >
                 <!-- Tombol Ikon Grup -->
                 <button
                     type="button"
+                    @click="toggleMenu()"
                     class="ims-collapsed-group-btn {{ $active ? 'active' : '' }}"
+                    title="{{ $label }}"
                 >
                     <x-filament::icon
                         :icon="$icon"
@@ -138,10 +145,9 @@
                     />
                 </button>
 
-
                 <!-- Menu Popout Submenu -->
                 <div
-                    x-show="isHovered"
+                    x-show="isHovered || isOpen"
                     x-cloak
                     x-transition:enter="transition ease-out duration-150"
                     x-transition:enter-start="opacity-0 translate-x-2"
@@ -150,7 +156,6 @@
                     x-transition:leave-start="opacity-100 translate-x-0"
                     x-transition:leave-end="opacity-0 translate-x-2"
                     class="ims-flyout-menu"
-                    style="position: absolute !important; left: calc(100% + 14px) !important; top: -6px !important; display: none;"
                 >
                     <div class="absolute -left-5 top-0 bottom-0 w-6 bg-transparent"></div>
 

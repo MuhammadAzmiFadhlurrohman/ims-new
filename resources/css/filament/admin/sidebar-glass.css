@@ -862,24 +862,85 @@ html.dark .ims-sidebar-footer-collapsed-dot {
 }
 
 /* ── 13. FLYOUT SUBMENUS (COLLAPSED STATE) ── */
-.ims-sidebar-flyout {
-    background: #ffffff !important;
+.ims-collapsed-group-btn {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 11px !important;
+    background: #f8fafc !important;
     border: 1px solid #e2e8f0 !important;
-    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12) !important;
-    border-radius: 16px !important;
-    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04) !important;
 }
 
+.ims-collapsed-group-btn:hover,
+.ims-collapsed-group-btn.active {
+    background: #eff6ff !important;
+    border-color: #93c5fd !important;
+    transform: scale(1.08) !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15) !important;
+}
+
+html.dark .ims-collapsed-group-btn {
+    background: #081d36 !important;
+    border: 1px solid #123d6b !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .ims-collapsed-group-btn:hover,
+html.dark .ims-collapsed-group-btn.active {
+    background: #0d2847 !important;
+    border-color: #00d4ff !important;
+    box-shadow: 0 0 14px rgba(0, 212, 255, 0.4) !important;
+    transform: scale(1.08) !important;
+}
+
+.ims-collapsed-group-icon {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    color: #475569 !important;
+}
+
+html.dark .ims-collapsed-group-icon {
+    color: #93c5fd !important;
+}
+
+.ims-flyout-menu,
+.ims-sidebar-flyout {
+    position: absolute !important;
+    left: calc(100% + 14px) !important;
+    top: -6px !important;
+    min-width: 14.5rem !important;
+    max-width: 18rem !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    z-index: 99999999 !important;
+    padding-bottom: 6px !important;
+    pointer-events: auto !important;
+}
+
+html.dark .ims-flyout-menu,
 html.dark .ims-sidebar-flyout {
     background: #041021 !important;
-    border: 1px solid #123456 !important;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7) !important;
+    border: 1px solid #143860 !important;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 212, 255, 0.25) !important;
 }
 
 .ims-flyout-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
     background: #f8fafc !important;
     border-bottom: 1px solid #f1f5f9 !important;
-    padding: 0.75rem 1rem !important;
+    padding: 0.65rem 0.95rem !important;
+    margin-bottom: 4px !important;
 }
 
 html.dark .ims-flyout-header {
@@ -889,24 +950,49 @@ html.dark .ims-flyout-header {
 
 .ims-flyout-title {
     color: #0f172a !important;
-    font-size: 0.85rem !important;
+    font-size: 0.82rem !important;
     font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
 }
 
 html.dark .ims-flyout-title {
     color: #ffffff !important;
 }
 
+.ims-flyout-badge {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #0284c7 !important;
+    background: #eff6ff !important;
+    padding: 2px 7px !important;
+    border-radius: 9999px !important;
+    border: 1px solid #bae6fd !important;
+}
+
+html.dark .ims-flyout-badge {
+    color: #38bdf8 !important;
+    background: #08294f !important;
+    border-color: #0c4d87 !important;
+}
+
+.ims-flyout-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    padding: 0 6px !important;
+}
+
 .ims-flyout-link {
     display: flex !important;
     align-items: center !important;
     gap: 0.65rem !important;
-    padding: 0.4rem 0.55rem !important;
-    border-radius: 9px !important;
+    padding: 0.45rem 0.65rem !important;
+    border-radius: 10px !important;
     color: #334155 !important;
     text-decoration: none !important;
     font-size: 0.82rem !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     background: transparent !important;
     border: 1px solid transparent !important;
     transition: all 0.15s ease !important;
@@ -914,7 +1000,7 @@ html.dark .ims-flyout-title {
 
 .ims-flyout-link:hover {
     background: #f1f5f9 !important;
-    color: #0f172a !important;
+    color: #0284c7 !important;
     transform: translateX(3px) !important;
 }
 
@@ -933,7 +1019,7 @@ html.dark .ims-flyout-link {
 html.dark .ims-flyout-link:hover {
     background: rgba(56, 189, 248, 0.12) !important;
     border-color: rgba(56, 189, 248, 0.25) !important;
-    color: #ffffff !important;
+    color: #00d4ff !important;
 }
 
 html.dark .ims-flyout-link.active {
@@ -944,8 +1030,8 @@ html.dark .ims-flyout-link.active {
 }
 
 .ims-flyout-icon-box {
-    width: 28px !important;
-    height: 28px !important;
+    width: 26px !important;
+    height: 26px !important;
     border-radius: 7px !important;
     background: #f8fafc !important;
     border: 1px solid #e2e8f0 !important;
@@ -957,8 +1043,8 @@ html.dark .ims-flyout-link.active {
 
 .ims-flyout-icon-box svg,
 .ims-flyout-link svg {
-    width: 15px !important;
-    height: 15px !important;
+    width: 14px !important;
+    height: 14px !important;
     color: #475569 !important;
 }
 
@@ -972,6 +1058,18 @@ html.dark .ims-flyout-link svg {
     color: #7dd3fc !important;
 }
 
+.ims-flyout-bullet {
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 50% !important;
+    background: #94a3b8 !important;
+}
+
+html.dark .ims-flyout-bullet {
+    background: #00d4ff !important;
+    box-shadow: 0 0 6px rgba(0, 212, 255, 0.8) !important;
+}
+
 /* ============================================================
    ── 14. MINIMIZED / COLLAPSED SIDEBAR RULES (PIXEL PERFECT) ──
    ============================================================ */
@@ -980,6 +1078,17 @@ html.dark .ims-flyout-link svg {
     width: 4.8rem !important;
     min-width: 4.8rem !important;
     max-width: 4.8rem !important;
+    overflow: visible !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) nav,
+.fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-nav {
+    overflow: visible !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-group {
+    overflow: visible !important;
+    position: relative !important;
 }
 
 .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header {
@@ -1077,4 +1186,5 @@ html.dark .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn {
     justify-content: center !important;
     padding: 6px !important;
 }
+
 
