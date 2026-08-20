@@ -52,3 +52,12 @@ Route::middleware(['web', 'auth'])->group(function () {
 Route::get('/invoices/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'monthlyInvoicePdf']);
 Route::get('/invoices/registration/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'registrationInvoicePdf']);
 
+// Safe migration & cache clearer helper for Hostinger
+Route::get('/admin/run-migrations', function () {
+    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+    $output = \Illuminate\Support\Facades\Artisan::output();
+    return response("<pre style='background: #0f172a; color: #38bdf8; padding: 20px; border-radius: 12px; font-family: monospace;'>Migrasi Berhasil Dijalankan:\n\n" . htmlspecialchars($output) . "\n\n<a href='/admin' style='color: #4ade80;'>➔ Kembali ke Panel Admin</a></pre>");
+})->middleware(['web', 'auth']);
+
+
