@@ -6,12 +6,12 @@ use App\Models\BandwidthCategory;
 use App\Models\BandwidthPackage;
 use App\Models\Customer;
 use App\Models\CustomerSubscription;
+use App\Models\Employee;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\MonthlyInvoice;
 use App\Models\Odp;
 use App\Models\Pop;
-
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 class MigrateLegacyDataCommand extends Command
 {
     protected $signature = 'ims:migrate-legacy';
+
     protected $description = 'Migrate legacy data from ims_v3 database connection (m_bandwith, m_barang, m_jns_bangunan, m_status, etc.) to IMS MSN modern schema';
 
     public function handle()
@@ -31,8 +32,9 @@ class MigrateLegacyDataCommand extends Command
             $legacyDb = DB::connection('legacy_mysql');
             $legacyDb->getPdo();
         } catch (Exception $e) {
-            $this->error('Gagal terhubung ke koneksi legacy_mysql: ' . $e->getMessage());
+            $this->error('Gagal terhubung ke koneksi legacy_mysql: '.$e->getMessage());
             $this->warn('Pastikan database ims_v3 aktif dan konfigurasi LEGACY_DB_* di .env sudah benar.');
+
             return 1;
         }
 
@@ -116,7 +118,7 @@ class MigrateLegacyDataCommand extends Command
             $packages = $legacyDb->table('m_bandwith')->get();
             foreach ($packages as $row) {
                 $catCode = $row->kode_kategori_bandwith ?? 'MSN-HOME';
-                if (!BandwidthCategory::where('code', $catCode)->exists()) {
+                if (! BandwidthCategory::where('code', $catCode)->exists()) {
                     $catCode = BandwidthCategory::first()->code ?? 'MSN-HOME';
                 }
 
@@ -127,7 +129,7 @@ class MigrateLegacyDataCommand extends Command
                     ['code' => $row->kode_bandwith],
                     [
                         'category_code' => $catCode,
-                        'name' => 'Paket ' . ($row->nominal_bandwith ?? '0') . ' Mbps (' . $row->kode_bandwith . ')',
+                        'name' => 'Paket '.($row->nominal_bandwith ?? '0').' Mbps ('.$row->kode_bandwith.')',
                         'speed_mbps' => (int) ($row->nominal_bandwith ?? 20),
                         'price' => $price,
                         'is_active' => $row->disable == '0',
@@ -154,7 +156,7 @@ class MigrateLegacyDataCommand extends Command
             $barangs = $legacyDb->table('m_barang')->get();
             foreach ($barangs as $br) {
                 $catCode = $br->kode_jns_barang ?? 'JB001';
-                if (!ItemCategory::where('code', $catCode)->exists()) {
+                if (! ItemCategory::where('code', $catCode)->exists()) {
                     $catCode = ItemCategory::first()->code ?? 'JB001';
                 }
 
@@ -162,7 +164,7 @@ class MigrateLegacyDataCommand extends Command
                     ['code' => $br->kode_barang],
                     [
                         'category_code' => $catCode,
-                        'name' => ($br->nama_barang ?? 'Barang') . ' ' . ($br->tipe_barang ?? ''),
+                        'name' => ($br->nama_barang ?? 'Barang').' '.($br->tipe_barang ?? ''),
                         'brand' => $br->nama_barang ?? null,
                         'unit' => 'PCS',
                         'stock' => 10,
@@ -178,8 +180,8 @@ class MigrateLegacyDataCommand extends Command
         if ($legacyDb->getSchemaBuilder()->hasTable('tb_m_karyawan')) {
             $employees = $legacyDb->table('tb_m_karyawan')->get();
             foreach ($employees as $emp) {
-                \App\Models\Employee::updateOrCreate(
-                    ['nik' => $emp->nik_karyawan ?? $emp->nik ?? ('EMP-' . rand(1000, 9999))],
+                Employee::updateOrCreate(
+                    ['nik' => $emp->nik_karyawan ?? $emp->nik ?? ('EMP-'.rand(1000, 9999))],
                     [
                         'name' => $emp->nama_karyawan ?? $emp->nama ?? 'Karyawan Legacy',
                         'phone_number' => $emp->nomor_hp ?? null,
@@ -197,7 +199,7 @@ class MigrateLegacyDataCommand extends Command
             $customers = $legacyDb->table('m_pelanggan')->get();
             $cCount = 0;
             foreach ($customers as $row) {
-                $nik = $row->nik_penduduk ?? $row->id_pelanggan ?? ('NIK-' . sprintf('%06d', ++$cCount));
+                $nik = $row->nik_penduduk ?? $row->id_pelanggan ?? ('NIK-'.sprintf('%06d', ++$cCount));
                 Customer::updateOrCreate(
                     ['nik' => $nik],
                     [
@@ -224,7 +226,7 @@ class MigrateLegacyDataCommand extends Command
             foreach ($subs as $row) {
                 $nik = $row->nik_penduduk ?? Customer::first()->nik ?? 'NIK-DEFAULT';
                 $pkg = $row->kode_bandwith ?? 'HOME-20M';
-                if (!BandwidthPackage::where('code', $pkg)->exists()) {
+                if (! BandwidthPackage::where('code', $pkg)->exists()) {
                     $pkg = BandwidthPackage::first()->code ?? 'HOME-20M';
                 }
 
@@ -271,10 +273,12 @@ class MigrateLegacyDataCommand extends Command
             $invoices = $legacyDb->table('trx_billing_layanan')->get();
             foreach ($invoices as $row) {
                 $subExists = CustomerSubscription::where('internet_number', $row->nomor_internet)->exists();
-                if (!$subExists) continue;
+                if (! $subExists) {
+                    continue;
+                }
 
                 $pkg = $row->kode_bandwith ?? 'HOME-20M';
-                if (!BandwidthPackage::where('code', $pkg)->exists()) {
+                if (! BandwidthPackage::where('code', $pkg)->exists()) {
                     $pkg = BandwidthPackage::first()->code ?? 'HOME-20M';
                 }
 
@@ -282,13 +286,13 @@ class MigrateLegacyDataCommand extends Command
                 $statusText = $statusBillMap[$billCode] ?? ($billCode == '15' ? 'PAID' : 'UNPAID');
 
                 MonthlyInvoice::updateOrCreate(
-                    ['invoice_number' => $row->no_invoice ?? ('INV/' . $row->nomor_internet . '/' . ($row->bulan ?? '01') . ($row->tahun ?? '2026'))],
+                    ['invoice_number' => $row->no_invoice ?? ('INV/'.$row->nomor_internet.'/'.($row->bulan ?? '01').($row->tahun ?? '2026'))],
                     [
                         'internet_number' => $row->nomor_internet,
                         'package_code' => $pkg,
                         'billing_month' => (int) ($row->bulan ?? 1),
                         'billing_year' => (int) ($row->tahun ?? 2026),
-                        'billing_period_text' => $row->periode_text ?? ('Periode ' . ($row->bulan ?? 1) . '/' . ($row->tahun ?? 2026)),
+                        'billing_period_text' => $row->periode_text ?? ('Periode '.($row->bulan ?? 1).'/'.($row->tahun ?? 2026)),
                         'subtotal' => (float) ($row->subtotal ?? $row->total ?? 0),
                         'discount' => (float) ($row->potongan ?? 0),
                         'ppn_amount' => (float) ($row->ppn ?? 0),
@@ -307,6 +311,7 @@ class MigrateLegacyDataCommand extends Command
         $this->info('==================================================');
         $this->info(' Legacy Migration Completed Successfully!         ');
         $this->info('==================================================');
+
         return 0;
     }
 }

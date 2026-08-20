@@ -20,7 +20,9 @@ class OltCoveragePage extends Page
     protected static string $view = 'filament.pages.olt-coverage';
 
     public string $coordinates = '-6.936988, 107.5904512';
+
     public bool $has_searched = false;
+
     public ?string $searched_coordinates = null;
 
     public function getHeading(): string

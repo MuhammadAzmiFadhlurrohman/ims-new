@@ -20,7 +20,9 @@ class OltUserSearchPage extends Page
     protected static string $view = 'filament.pages.olt-user-search';
 
     public string $search_type = 'all';
+
     public string $search_keyword = '';
+
     public bool $has_searched = false;
 
     public function getHeading(): string
@@ -40,7 +42,7 @@ class OltUserSearchPage extends Page
 
     public function getSearchResultsProperty()
     {
-        if (!$this->has_searched && empty($this->search_keyword)) {
+        if (! $this->has_searched && empty($this->search_keyword)) {
             return collect();
         }
 
@@ -58,7 +60,7 @@ class OltUserSearchPage extends Page
         } elseif ($this->search_type === 'odp') {
             $query->where(function ($sq) use ($q) {
                 $sq->where('odp_code', 'like', "%{$q}%")
-                   ->orWhereHas('odp', fn ($oq) => $oq->where('name', 'like', "%{$q}%"));
+                    ->orWhereHas('odp', fn ($oq) => $oq->where('name', 'like', "%{$q}%"));
             });
         } elseif ($this->search_type === 'gpon_onu') {
             $query->where('gpon_onu', 'like', "%{$q}%");
@@ -67,12 +69,12 @@ class OltUserSearchPage extends Page
         } else {
             $query->where(function ($sq) use ($q) {
                 $sq->where('internet_number', 'like', "%{$q}%")
-                   ->orWhere('customer_name', 'like', "%{$q}%")
-                   ->orWhere('phone_number', 'like', "%{$q}%")
-                   ->orWhere('odp_code', 'like', "%{$q}%")
-                   ->orWhere('gpon_onu', 'like', "%{$q}%")
-                   ->orWhere('installation_address', 'like', "%{$q}%")
-                   ->orWhereHas('odp', fn ($oq) => $oq->where('name', 'like', "%{$q}%"));
+                    ->orWhere('customer_name', 'like', "%{$q}%")
+                    ->orWhere('phone_number', 'like', "%{$q}%")
+                    ->orWhere('odp_code', 'like', "%{$q}%")
+                    ->orWhere('gpon_onu', 'like', "%{$q}%")
+                    ->orWhere('installation_address', 'like', "%{$q}%")
+                    ->orWhereHas('odp', fn ($oq) => $oq->where('name', 'like', "%{$q}%"));
             });
         }
 

@@ -11,7 +11,7 @@ class Dashboard extends BaseDashboard
         return 'Ringkasan performa bisnis dan operasional sistem.';
     }
 
-    public function getColumns(): int | string | array
+    public function getColumns(): int|string|array
     {
         return [
             'default' => 1,

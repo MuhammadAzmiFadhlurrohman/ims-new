@@ -3,11 +3,11 @@
 namespace App\Filament\Resources\InstallationPipelineResource\Pages;
 
 use App\Filament\Resources\InstallationPipelineResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
-
 use App\Models\CustomerSubscription;
+use Filament\Actions;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\View\View;
 
 class ListInstallationPipelines extends ListRecords
 {
@@ -24,7 +24,7 @@ class ListInstallationPipelines extends ListRecords
         ];
     }
 
-    public function getFooter(): ?\Illuminate\Contracts\View\View
+    public function getFooter(): ?View
     {
         return view('filament.components.status-type-modal');
     }

@@ -86,11 +86,11 @@ class BandwidthPackageResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('speed_mbps')
                     ->label('Kecepatan')
-                    ->formatStateUsing(fn ($state) => $state . ' Mbps')
+                    ->formatStateUsing(fn ($state) => $state.' Mbps')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
                     ->label('Harga Bulanan')
-                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) ($state ?? 0), 0, ',', '.'))
+                    ->formatStateUsing(fn ($state) => 'Rp '.number_format((float) ($state ?? 0), 0, ',', '.'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('category.buildingTypes.name')
                     ->label('Peruntukan Bangunan')
@@ -108,7 +108,7 @@ class BandwidthPackageResource extends Resource
                     ->label('Filter Jenis Bangunan')
                     ->options(fn () => BuildingType::pluck('name', 'code')->toArray())
                     ->query(function (Builder $query, array $data) {
-                        if (!empty($data['value'])) {
+                        if (! empty($data['value'])) {
                             $query->whereHas('category.buildingTypes', function ($q) use ($data) {
                                 $q->where('building_types.code', $data['value']);
                             });

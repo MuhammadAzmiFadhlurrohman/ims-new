@@ -3,7 +3,8 @@
 namespace App\Filament\Resources\CustomerSubscriptionResource\Pages;
 
 use App\Filament\Resources\CustomerSubscriptionResource;
-use App\Models\CustomerSubscription;
+use Carbon\Carbon;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewCustomerSubscription extends ViewRecord
@@ -31,10 +32,10 @@ class ViewCustomerSubscription extends ViewRecord
                 'status_type' => 'aktif',
                 'slot' => null,
                 'header' => null,
-                'description' => 'Tanggal Aktif : ' . ($record->activation_finished_at ? \Carbon\Carbon::parse($record->activation_finished_at)->translatedFormat('d F Y') : ($record->updated_at ? $record->updated_at->translatedFormat('d F Y') : '-')),
+                'description' => 'Tanggal Aktif : '.($record->activation_finished_at ? Carbon::parse($record->activation_finished_at)->translatedFormat('d F Y') : ($record->updated_at ? $record->updated_at->translatedFormat('d F Y') : '-')),
                 'team' => null,
                 'note' => null,
-                'date' => $record->updated_at ? $record->updated_at->translatedFormat('d F Y H:i') . ' WIB' : ($record->created_at ? $record->created_at->translatedFormat('d F Y H:i') . ' WIB' : '-'),
+                'date' => $record->updated_at ? $record->updated_at->translatedFormat('d F Y H:i').' WIB' : ($record->created_at ? $record->created_at->translatedFormat('d F Y H:i').' WIB' : '-'),
                 'user' => $record->admin_name ?? 'ADMIN SYSTEM',
             ];
         }
@@ -46,10 +47,10 @@ class ViewCustomerSubscription extends ViewRecord
                 'status_type' => 'done',
                 'slot' => null,
                 'header' => null,
-                'description' => $record->activation_finished_at ? 'Tanggal selesai : ' . \Carbon\Carbon::parse($record->activation_finished_at)->translatedFormat('Y-m-d') : 'Aktivasi selesai',
+                'description' => $record->activation_finished_at ? 'Tanggal selesai : '.Carbon::parse($record->activation_finished_at)->translatedFormat('Y-m-d') : 'Aktivasi selesai',
                 'team' => null,
-                'note' => $record->activation_finished_note ? 'Catatan Selesai : ' . $record->activation_finished_note : null,
-                'date' => $record->activation_finished_at ? \Carbon\Carbon::parse($record->activation_finished_at)->translatedFormat('d F Y H:i') . ' WIB' : ($record->updated_at ? $record->updated_at->translatedFormat('d F Y H:i') . ' WIB' : '-'),
+                'note' => $record->activation_finished_note ? 'Catatan Selesai : '.$record->activation_finished_note : null,
+                'date' => $record->activation_finished_at ? Carbon::parse($record->activation_finished_at)->translatedFormat('d F Y H:i').' WIB' : ($record->updated_at ? $record->updated_at->translatedFormat('d F Y H:i').' WIB' : '-'),
                 'user' => $record->admin_name ?? 'NOC',
             ];
         }
@@ -60,12 +61,12 @@ class ViewCustomerSubscription extends ViewRecord
             $logs[] = [
                 'status' => 'Jadwal Aktivasi Terbit',
                 'status_type' => 'step',
-                'slot' => \Carbon\Carbon::parse($record->activation_date)->translatedFormat('d F Y') . ($record->activation_time_slot ? ' ' . $record->activation_time_slot : ''),
+                'slot' => Carbon::parse($record->activation_date)->translatedFormat('d F Y').($record->activation_time_slot ? ' '.$record->activation_time_slot : ''),
                 'header' => 'POSTING AKTIVASI',
                 'description' => null,
-                'team' => $teamStr ? 'Team : ' . $teamStr : null,
-                'note' => $record->activation_note ? 'Catatan : ' . $record->activation_note : null,
-                'date' => $record->activation_date ? \Carbon\Carbon::parse($record->activation_date)->translatedFormat('d F Y H:i') . ' WIB' : '-',
+                'team' => $teamStr ? 'Team : '.$teamStr : null,
+                'note' => $record->activation_note ? 'Catatan : '.$record->activation_note : null,
+                'date' => $record->activation_date ? Carbon::parse($record->activation_date)->translatedFormat('d F Y H:i').' WIB' : '-',
                 'user' => $record->admin_name ?? 'ADMIN',
             ];
         }
@@ -77,10 +78,10 @@ class ViewCustomerSubscription extends ViewRecord
                 'status_type' => 'done',
                 'slot' => null,
                 'header' => null,
-                'description' => $record->installation_finished_at ? 'Tanggal selesai : ' . \Carbon\Carbon::parse($record->installation_finished_at)->translatedFormat('Y-m-d') : 'Instalasi selesai',
+                'description' => $record->installation_finished_at ? 'Tanggal selesai : '.Carbon::parse($record->installation_finished_at)->translatedFormat('Y-m-d') : 'Instalasi selesai',
                 'team' => null,
-                'note' => $record->installation_finished_note ? 'Catatan Selesai : ' . $record->installation_finished_note : null,
-                'date' => $record->installation_finished_at ? \Carbon\Carbon::parse($record->installation_finished_at)->translatedFormat('d F Y H:i') . ' WIB' : '-',
+                'note' => $record->installation_finished_note ? 'Catatan Selesai : '.$record->installation_finished_note : null,
+                'date' => $record->installation_finished_at ? Carbon::parse($record->installation_finished_at)->translatedFormat('d F Y H:i').' WIB' : '-',
                 'user' => $record->admin_name ?? 'TEKNISI',
             ];
         }
@@ -91,12 +92,12 @@ class ViewCustomerSubscription extends ViewRecord
             $logs[] = [
                 'status' => 'Jadwal Instalasi Terbit',
                 'status_type' => 'step',
-                'slot' => \Carbon\Carbon::parse($record->installation_date)->translatedFormat('d F Y') . ($record->installation_time_slot ? ' ' . $record->installation_time_slot : ''),
+                'slot' => Carbon::parse($record->installation_date)->translatedFormat('d F Y').($record->installation_time_slot ? ' '.$record->installation_time_slot : ''),
                 'header' => 'POSTING INSTALASI',
                 'description' => null,
-                'team' => $teamStr ? 'Team : ' . $teamStr : null,
-                'note' => $record->installation_note ? 'Catatan : ' . $record->installation_note : null,
-                'date' => $record->installation_date ? \Carbon\Carbon::parse($record->installation_date)->translatedFormat('d F Y H:i') . ' WIB' : '-',
+                'team' => $teamStr ? 'Team : '.$teamStr : null,
+                'note' => $record->installation_note ? 'Catatan : '.$record->installation_note : null,
+                'date' => $record->installation_date ? Carbon::parse($record->installation_date)->translatedFormat('d F Y H:i').' WIB' : '-',
                 'user' => $record->admin_name ?? 'ADMIN',
             ];
         }
@@ -108,10 +109,10 @@ class ViewCustomerSubscription extends ViewRecord
                 'status_type' => 'done',
                 'slot' => null,
                 'header' => null,
-                'description' => $record->survey_finished_at ? 'Tanggal selesai : ' . \Carbon\Carbon::parse($record->survey_finished_at)->translatedFormat('Y-m-d') : 'Survey selesai',
+                'description' => $record->survey_finished_at ? 'Tanggal selesai : '.Carbon::parse($record->survey_finished_at)->translatedFormat('Y-m-d') : 'Survey selesai',
                 'team' => null,
-                'note' => $record->survey_finished_note ? 'Catatan Selesai : ' . $record->survey_finished_note : null,
-                'date' => $record->survey_finished_at ? \Carbon\Carbon::parse($record->survey_finished_at)->translatedFormat('d F Y H:i') . ' WIB' : '-',
+                'note' => $record->survey_finished_note ? 'Catatan Selesai : '.$record->survey_finished_note : null,
+                'date' => $record->survey_finished_at ? Carbon::parse($record->survey_finished_at)->translatedFormat('d F Y H:i').' WIB' : '-',
                 'user' => $record->admin_name ?? 'SURVEYOR',
             ];
         }
@@ -122,12 +123,12 @@ class ViewCustomerSubscription extends ViewRecord
             $logs[] = [
                 'status' => 'Jadwal Survey Terbit',
                 'status_type' => 'step',
-                'slot' => \Carbon\Carbon::parse($record->survey_date)->translatedFormat('d F Y') . ($record->survey_time_slot ? ' ' . $record->survey_time_slot : ''),
+                'slot' => Carbon::parse($record->survey_date)->translatedFormat('d F Y').($record->survey_time_slot ? ' '.$record->survey_time_slot : ''),
                 'header' => 'POSTING SURVEY',
                 'description' => null,
-                'team' => $teamStr ? 'Team : ' . $teamStr : null,
-                'note' => $record->survey_note ? 'Catatan : ' . $record->survey_note : null,
-                'date' => $record->survey_date ? \Carbon\Carbon::parse($record->survey_date)->translatedFormat('d F Y H:i') . ' WIB' : '-',
+                'team' => $teamStr ? 'Team : '.$teamStr : null,
+                'note' => $record->survey_note ? 'Catatan : '.$record->survey_note : null,
+                'date' => $record->survey_date ? Carbon::parse($record->survey_date)->translatedFormat('d F Y H:i').' WIB' : '-',
                 'user' => $record->admin_name ?? 'ADMIN',
             ];
         }
@@ -138,10 +139,10 @@ class ViewCustomerSubscription extends ViewRecord
             'status_type' => 'step',
             'slot' => null,
             'header' => 'REGISTRASI PELANGGAN',
-            'description' => 'Paket Layanan : ' . ($record->package?->name ?? $record->package_code ?? '-'),
-            'team' => 'Sales : ' . ($record->sales_name ?? '-'),
-            'note' => $record->special_request ? 'Permintaan Khusus : ' . $record->special_request : null,
-            'date' => $record->created_at ? $record->created_at->translatedFormat('d F Y H:i') . ' WIB' : '-',
+            'description' => 'Paket Layanan : '.($record->package?->name ?? $record->package_code ?? '-'),
+            'team' => 'Sales : '.($record->sales_name ?? '-'),
+            'note' => $record->special_request ? 'Permintaan Khusus : '.$record->special_request : null,
+            'date' => $record->created_at ? $record->created_at->translatedFormat('d F Y H:i').' WIB' : '-',
             'user' => $record->admin_name ?? $record->sales_name ?? 'SALES',
         ];
 
@@ -151,7 +152,7 @@ class ViewCustomerSubscription extends ViewRecord
     public function getEquipmentList(): array
     {
         $equipment = $this->record->installation_equipment;
-        if (empty($equipment) || !is_array($equipment)) {
+        if (empty($equipment) || ! is_array($equipment)) {
             $equipment = [
                 ['name' => 'ONU', 'type' => 'BR013, ZTE F660', 'qty' => '1 UNIT', 'status' => $this->record->sales_name ?? 'NUNU NUGRAHA'],
                 ['name' => 'ROSET', 'type' => 'BR006, ROSET', 'qty' => '1 UNIT', 'status' => $this->record->sales_name ?? 'NUNU NUGRAHA'],
@@ -161,6 +162,7 @@ class ViewCustomerSubscription extends ViewRecord
             ];
             $this->record->update(['installation_equipment' => $equipment]);
         }
+
         return $equipment;
     }
 
@@ -174,7 +176,7 @@ class ViewCustomerSubscription extends ViewRecord
             'status' => $status,
         ];
         $this->record->update(['installation_equipment' => $equipment]);
-        \Filament\Notifications\Notification::make()
+        Notification::make()
             ->title('Perangkat berhasil ditambahkan')
             ->success()
             ->send();
@@ -187,7 +189,7 @@ class ViewCustomerSubscription extends ViewRecord
             unset($equipment[$index]);
             $equipment = array_values($equipment);
             $this->record->update(['installation_equipment' => $equipment]);
-            \Filament\Notifications\Notification::make()
+            Notification::make()
                 ->title('Perangkat berhasil dihapus')
                 ->success()
                 ->send();
@@ -200,7 +202,7 @@ class ViewCustomerSubscription extends ViewRecord
             'ont_username' => $username,
             'ont_password' => $password,
         ]);
-        \Filament\Notifications\Notification::make()
+        Notification::make()
             ->title('ID PPOE berhasil diperbarui')
             ->success()
             ->send();
@@ -224,7 +226,7 @@ class ViewCustomerSubscription extends ViewRecord
             'special_request' => $notes,
         ]);
 
-        \Filament\Notifications\Notification::make()
+        Notification::make()
             ->title('Data konfigurasi berhasil diperbarui')
             ->success()
             ->send();

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\InstallationPipelineResource\Pages;
 
 use App\Filament\Resources\InstallationPipelineResource;
+use App\Models\Customer;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateInstallationPipeline extends CreateRecord
@@ -18,9 +19,9 @@ class CreateInstallationPipeline extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        if (!empty($data['customer_nik'])) {
+        if (! empty($data['customer_nik'])) {
             $addr = $data['address_ktp'] ?? $data['installation_address'] ?? '-';
-            \App\Models\Customer::updateOrCreate(
+            Customer::updateOrCreate(
                 ['nik' => $data['customer_nik']],
                 [
                     'name' => $data['customer_name'] ?? 'Pelanggan Baru',
@@ -30,7 +31,7 @@ class CreateInstallationPipeline extends CreateRecord
                     'id_card_address' => $addr,
                     'gender' => $data['gender'] ?? 'male',
                     'birth_date' => $data['birth_date'] ?? null,
-                    'is_corporate' => !empty($data['is_corporate']),
+                    'is_corporate' => ! empty($data['is_corporate']),
                     'pic_name' => $data['pic_name'] ?? null,
                     'province' => $data['province_ktp'] ?? $data['province'] ?? null,
                     'city' => $data['city_ktp'] ?? $data['city'] ?? null,
@@ -45,9 +46,9 @@ class CreateInstallationPipeline extends CreateRecord
             $data['registration_status'] = 'Data Input';
         }
 
-        if (empty($data['ont_username']) && !empty($data['internet_number'])) {
+        if (empty($data['ont_username']) && ! empty($data['internet_number'])) {
             $cleanNum = preg_replace('/[^0-9]/', '', $data['internet_number']);
-            $data['ont_username'] = !empty($cleanNum) ? $cleanNum : $data['internet_number'];
+            $data['ont_username'] = ! empty($cleanNum) ? $cleanNum : $data['internet_number'];
         }
 
         if (empty($data['ont_password'])) {

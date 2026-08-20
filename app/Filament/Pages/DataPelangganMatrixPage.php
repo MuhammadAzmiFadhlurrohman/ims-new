@@ -18,6 +18,8 @@ class DataPelangganMatrixPage extends Page
 
     protected static ?int $navigationSort = 2;
 
+    protected static ?string $slug = 'data-pelanggan-matrix';
+
     protected static string $view = 'filament.pages.data-pelanggan-matrix-page';
 
     public function getViewData(): array
@@ -39,8 +41,8 @@ class DataPelangganMatrixPage extends Page
         $terminasiCounts = CustomerSubscription::join('bandwidth_packages', 'customer_subscriptions.package_code', '=', 'bandwidth_packages.code')
             ->where(function ($q) {
                 $q->where('customer_subscriptions.is_terminated', true)
-                  ->orWhere('customer_subscriptions.registration_status', '23')
-                  ->orWhere('customer_subscriptions.registration_status', 'Terminasi');
+                    ->orWhere('customer_subscriptions.registration_status', '23')
+                    ->orWhere('customer_subscriptions.registration_status', 'Terminasi');
             })
             ->selectRaw('bandwidth_packages.category_code, count(*) as total')
             ->groupBy('bandwidth_packages.category_code')
@@ -52,8 +54,8 @@ class DataPelangganMatrixPage extends Page
         $suspendCounts = CustomerSubscription::join('bandwidth_packages', 'customer_subscriptions.package_code', '=', 'bandwidth_packages.code')
             ->where(function ($q) {
                 $q->where('customer_subscriptions.is_isolated', true)
-                  ->orWhere('customer_subscriptions.registration_status', '21')
-                  ->orWhere('customer_subscriptions.registration_status', 'Suspend');
+                    ->orWhere('customer_subscriptions.registration_status', '21')
+                    ->orWhere('customer_subscriptions.registration_status', 'Suspend');
             })
             ->selectRaw('bandwidth_packages.category_code, count(*) as total')
             ->groupBy('bandwidth_packages.category_code')

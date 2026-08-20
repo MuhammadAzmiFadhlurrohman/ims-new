@@ -3,8 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomerSubscriptionResource\Pages;
+use App\Models\BandwidthCategory;
 use App\Models\BandwidthPackage;
+use App\Models\BuildingType;
 use App\Models\CustomerSubscription;
+use App\Models\MonthlyInvoice;
 use App\Models\PackageMutation;
 use App\Models\ServiceSuspension;
 use App\Models\ServiceTermination;
@@ -16,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 
 class CustomerSubscriptionResource extends Resource
 {
@@ -57,19 +61,19 @@ class CustomerSubscriptionResource extends Resource
             $status = request()->get('filter_status');
             if ($status === 'aktif') {
                 $query->whereIn('registration_status', ['LIVE', '20', 'Aktif', 'AKTIF', 'aktif', 'Active', 'ACTIVE', 'Selesai Aktivasi'])
-                      ->where('is_isolated', false)
-                      ->where('is_terminated', false);
+                    ->where('is_isolated', false)
+                    ->where('is_terminated', false);
             } elseif ($status === 'terminasi') {
                 $query->where(function ($q) {
                     $q->where('is_terminated', true)
-                      ->orWhere('registration_status', '23')
-                      ->orWhere('registration_status', 'Terminasi');
+                        ->orWhere('registration_status', '23')
+                        ->orWhere('registration_status', 'Terminasi');
                 });
             } elseif ($status === 'suspend') {
                 $query->where(function ($q) {
                     $q->where('is_isolated', true)
-                      ->orWhere('registration_status', '21')
-                      ->orWhere('registration_status', 'Suspend');
+                        ->orWhere('registration_status', '21')
+                        ->orWhere('registration_status', 'Suspend');
                 });
             } elseif ($status === 'gagal') {
                 $query->whereIn('registration_status', ['14', '15', 'Tidak Tercover Jaringan', 'Batal Pasang']);
@@ -77,7 +81,7 @@ class CustomerSubscriptionResource extends Resource
         } else {
             // Default Data Pelanggan Aktif: sembunyikan yang sudah terminasi
             $query->where('is_terminated', false)
-                  ->whereNotIn('registration_status', ['23', 'Terminasi']);
+                ->whereNotIn('registration_status', ['23', 'Terminasi']);
         }
 
         if (request()->has('filter_category')) {
@@ -211,11 +215,21 @@ class CustomerSubscriptionResource extends Resource
                     ->formatStateUsing(function (CustomerSubscription $record): string {
                         $building = strtoupper($record->building_type ?? 'RUMAH-PRIBADI');
                         $address = $record->installation_address ?? 'KP. BABAKAN CIBOLANG';
-                        if ($record->rt || $record->rw) $address .= ', RT.' . ($record->rt ?? '003') . '/' . ($record->rw ?? '019');
-                        if ($record->village_code) $address .= ' DES. ' . $record->village_code;
-                        if ($record->district) $address .= ' KEC. ' . $record->district;
-                        if ($record->city) $address .= ' KAB. ' . $record->city;
-                        if ($record->province) $address .= ', ' . $record->province;
+                        if ($record->rt || $record->rw) {
+                            $address .= ', RT.'.($record->rt ?? '003').'/'.($record->rw ?? '019');
+                        }
+                        if ($record->village_code) {
+                            $address .= ' DES. '.$record->village_code;
+                        }
+                        if ($record->district) {
+                            $address .= ' KEC. '.$record->district;
+                        }
+                        if ($record->city) {
+                            $address .= ' KAB. '.$record->city;
+                        }
+                        if ($record->province) {
+                            $address .= ', '.$record->province;
+                        }
 
                         $categoryName = $record->package?->category?->name ?? 'MediaNet FTTH';
 
@@ -238,7 +252,7 @@ class CustomerSubscriptionResource extends Resource
                     ->formatStateUsing(function (CustomerSubscription $record): string {
                         $isTerminated = $record->is_terminated || $record->registration_status === '23';
                         $isSuspended = $record->is_isolated || $record->registration_status === '21';
-                        
+
                         $statusBadge = $isTerminated
                             ? "<span class='inline-block px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-50 text-rose-700 border border-rose-100'>Terminasi</span>"
                             : ($isSuspended
@@ -263,7 +277,7 @@ class CustomerSubscriptionResource extends Resource
                     ->html()
                     ->alignLeft()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
-                        $dateStr = $record->created_at ? $record->created_at->translatedFormat('d F Y H:i') . ' WIB' : now()->translatedFormat('d F Y H:i') . ' WIB';
+                        $dateStr = $record->created_at ? $record->created_at->translatedFormat('d F Y H:i').' WIB' : now()->translatedFormat('d F Y H:i').' WIB';
                         $adminName = strtoupper($record->admin_name ?? 'NUNU NUGRAHA');
                         $salesName = $record->sales_name ?? 'Abdul Ghani';
 
@@ -421,7 +435,8 @@ class CustomerSubscriptionResource extends Resource
                                         ->label('Layanan saat ini')
                                         ->content(function (CustomerSubscription $record) {
                                             $packageName = $record->package->name ?? $record->package_code ?? 'BROADBAND 10 Mbps';
-                                            return new \Illuminate\Support\HtmlString("
+
+                                            return new HtmlString("
                                                 <div class='p-5 bg-white border border-slate-200 rounded-xl text-center shadow-sm'>
                                                     <span class='text-xl font-extrabold text-slate-800 uppercase tracking-wide'>{$packageName}</span>
                                                 </div>
@@ -449,7 +464,7 @@ class CustomerSubscriptionResource extends Resource
                                                 }
                                             }
 
-                                            return new \Illuminate\Support\HtmlString("
+                                            return new HtmlString("
                                                 <div class='overflow-hidden border border-slate-200 rounded-xl bg-white shadow-sm'>
                                                     <table class='w-full text-left text-xs'>
                                                         <thead class='bg-slate-50 text-slate-600 font-semibold border-b border-slate-200'>
@@ -470,7 +485,7 @@ class CustomerSubscriptionResource extends Resource
                                 Forms\Components\Group::make([
                                     Forms\Components\Placeholder::make('info_banner')
                                         ->label('')
-                                        ->content(new \Illuminate\Support\HtmlString("
+                                        ->content(new HtmlString("
                                             <div class='p-3.5 bg-cyan-500 text-white rounded-xl text-xs font-semibold leading-relaxed shadow-sm'>
                                                 Info! Setiap Perubahan Layanan Akan Efektif pada sistem setiap tanggal pertama awal bulan.
                                             </div>
@@ -488,10 +503,11 @@ class CustomerSubscriptionResource extends Resource
                                                 ->label('Layanan')
                                                 ->placeholder('Pilih Layanan / Kategori')
                                                 ->options(function (CustomerSubscription $record) {
-                                                    $building = \App\Models\BuildingType::where('name', $record->building_type)->orWhere('code', $record->building_type)->first();
-                                                    if (!$building) {
-                                                        return \App\Models\BandwidthCategory::where('is_active', true)->pluck('name', 'code')->toArray();
+                                                    $building = BuildingType::where('name', $record->building_type)->orWhere('code', $record->building_type)->first();
+                                                    if (! $building) {
+                                                        return BandwidthCategory::where('is_active', true)->pluck('name', 'code')->toArray();
                                                     }
+
                                                     return $building->bandwidthCategories()->where('bandwidth_categories.is_active', true)->pluck('bandwidth_categories.name', 'bandwidth_categories.code')->toArray();
                                                 })
                                                 ->live()
@@ -507,13 +523,15 @@ class CustomerSubscriptionResource extends Resource
                                                     if ($categoryCode) {
                                                         $query->where('category_code', $categoryCode);
                                                     } else {
-                                                        $building = \App\Models\BuildingType::where('name', $record->building_type)->orWhere('code', $record->building_type)->first();
+                                                        $building = BuildingType::where('name', $record->building_type)->orWhere('code', $record->building_type)->first();
                                                         if ($building) {
                                                             $query->whereHas('category.buildingTypes', fn ($q) => $q->where('building_types.code', $building->code));
                                                         }
                                                     }
+
                                                     return $query->get()->mapWithKeys(function ($pkg) {
                                                         $priceFormatted = number_format((float) $pkg->price, 0, ',', '.');
+
                                                         return [$pkg->code => "{$pkg->speed_mbps} Mbps - Rp {$priceFormatted}"];
                                                     })->toArray();
                                                 })
@@ -542,15 +560,15 @@ class CustomerSubscriptionResource extends Resource
                         ]);
 
                         // Otomatis Buat Tiket ke Tiket Masuk NOC
-                        $ticketNumber = 'TCK-' . date('Ymd') . '-' . rand(1000, 9999);
+                        $ticketNumber = 'TCK-'.date('Ymd').'-'.rand(1000, 9999);
                         Ticket::create([
                             'ticket_number' => $ticketNumber,
                             'internet_number' => $record->internet_number,
-                            'reporter_name' => 'Finance (' . (auth()->user()?->name ?? 'Finance') . ')',
+                            'reporter_name' => 'Finance ('.(auth()->user()?->name ?? 'Finance').')',
                             'reporter_phone' => $record->customer?->phone_number ?? '-',
                             'category' => 'UBAH_LAYANAN',
                             'priority' => 'MEDIUM',
-                            'description' => "Permohonan Mutasi / Ubah Paket ke: {$packageName}. Catatan: " . ($data['notes'] ?? '-'),
+                            'description' => "Permohonan Mutasi / Ubah Paket ke: {$packageName}. Catatan: ".($data['notes'] ?? '-'),
                             'status' => 'OPEN',
                         ]);
 
@@ -576,14 +594,14 @@ class CustomerSubscriptionResource extends Resource
                                 Forms\Components\Placeholder::make('payment_history')
                                     ->label('Riwayat Pembayaran')
                                     ->content(function (CustomerSubscription $record) {
-                                        $invoices = \App\Models\MonthlyInvoice::where('internet_number', $record->internet_number)->latest()->take(5)->get();
+                                        $invoices = MonthlyInvoice::where('internet_number', $record->internet_number)->latest()->take(5)->get();
                                         $rowsHtml = '';
                                         if ($invoices->isEmpty()) {
                                             $rowsHtml = "<tr><td colspan='3' class='px-4 py-4 text-center text-xs text-slate-400 font-medium'>No data available in table</td></tr>";
                                         } else {
                                             foreach ($invoices as $inv) {
                                                 $statusColor = $inv->status === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700';
-                                                $amountFormatted = 'Rp ' . number_format($inv->total_amount, 0, ',', '.');
+                                                $amountFormatted = 'Rp '.number_format($inv->total_amount, 0, ',', '.');
                                                 $rowsHtml .= "
                                                     <tr class='border-t border-slate-100 text-xs text-slate-700'>
                                                         <td class='px-3 py-2'>{$inv->billing_period}</td>
@@ -594,7 +612,7 @@ class CustomerSubscriptionResource extends Resource
                                             }
                                         }
 
-                                        return new \Illuminate\Support\HtmlString("
+                                        return new HtmlString("
                                             <div class='overflow-hidden border border-slate-200 rounded-xl bg-white shadow-sm mt-1'>
                                                 <table class='w-full text-left text-xs'>
                                                     <thead class='bg-slate-50 text-slate-600 font-semibold border-b border-slate-200'>
@@ -640,15 +658,15 @@ class CustomerSubscriptionResource extends Resource
                         ]);
 
                         // Otomatis Buat Tiket ke Tiket Masuk NOC
-                        $ticketNumber = 'TCK-' . date('Ymd') . '-' . rand(1000, 9999);
+                        $ticketNumber = 'TCK-'.date('Ymd').'-'.rand(1000, 9999);
                         Ticket::create([
                             'ticket_number' => $ticketNumber,
                             'internet_number' => $record->internet_number,
-                            'reporter_name' => 'Finance (' . (auth()->user()?->name ?? 'Finance') . ')',
+                            'reporter_name' => 'Finance ('.(auth()->user()?->name ?? 'Finance').')',
                             'reporter_phone' => $record->customer?->phone_number ?? '-',
                             'category' => 'SUSPEND',
                             'priority' => 'HIGH',
-                            'description' => "Permohonan Isolir (Suspend Layanan). Alasan: " . ($data['reason'] ?? 'Tunggakan') . ". Catatan: " . ($data['notes'] ?? '-'),
+                            'description' => 'Permohonan Isolir (Suspend Layanan). Alasan: '.($data['reason'] ?? 'Tunggakan').'. Catatan: '.($data['notes'] ?? '-'),
                             'status' => 'OPEN',
                         ]);
 
@@ -676,7 +694,8 @@ class CustomerSubscriptionResource extends Resource
                                         ->label('Layanan Saat Ini')
                                         ->content(function (CustomerSubscription $record) {
                                             $packageName = $record->package->name ?? $record->package_code ?? 'BROADBAND 10 Mbps';
-                                            return new \Illuminate\Support\HtmlString("
+
+                                            return new HtmlString("
                                                 <div class='p-5 bg-white border border-slate-200 rounded-xl text-center shadow-sm'>
                                                     <span class='text-xl font-extrabold text-slate-800 uppercase tracking-wide'>{$packageName}</span>
                                                 </div>
@@ -686,7 +705,7 @@ class CustomerSubscriptionResource extends Resource
                                     Forms\Components\Placeholder::make('pending_invoices')
                                         ->label('Riwayat Pending Tagihan')
                                         ->content(function (CustomerSubscription $record) {
-                                            $invoices = \App\Models\MonthlyInvoice::where('internet_number', $record->internet_number)
+                                            $invoices = MonthlyInvoice::where('internet_number', $record->internet_number)
                                                 ->where('status', 'UNPAID')
                                                 ->latest()
                                                 ->take(5)
@@ -697,7 +716,7 @@ class CustomerSubscriptionResource extends Resource
                                                 $rowsHtml = "<tr><td colspan='3' class='px-4 py-4 text-center text-xs text-slate-400 font-medium'>No data available in table</td></tr>";
                                             } else {
                                                 foreach ($invoices as $inv) {
-                                                    $amountFormatted = 'Rp ' . number_format($inv->total_amount, 0, ',', '.');
+                                                    $amountFormatted = 'Rp '.number_format($inv->total_amount, 0, ',', '.');
                                                     $rowsHtml .= "
                                                         <tr class='border-t border-slate-100 text-xs text-slate-700'>
                                                             <td class='px-3 py-2'>{$inv->billing_period}</td>
@@ -708,7 +727,7 @@ class CustomerSubscriptionResource extends Resource
                                                 }
                                             }
 
-                                            return new \Illuminate\Support\HtmlString("
+                                            return new HtmlString("
                                                 <div class='overflow-hidden border border-slate-200 rounded-xl bg-white shadow-sm mt-1'>
                                                     <table class='w-full text-left text-xs'>
                                                         <thead class='bg-slate-50 text-slate-600 font-semibold border-b border-slate-200'>
@@ -756,7 +775,7 @@ class CustomerSubscriptionResource extends Resource
                                                 ";
                                             }
 
-                                            return new \Illuminate\Support\HtmlString("
+                                            return new HtmlString("
                                                 <div class='overflow-hidden border border-slate-200 rounded-xl bg-white shadow-sm mt-1'>
                                                     <table class='w-full text-left text-xs'>
                                                         <thead class='bg-slate-50 text-slate-600 font-semibold border-b border-slate-200'>
@@ -775,7 +794,7 @@ class CustomerSubscriptionResource extends Resource
                             ]),
                     ])
                     ->action(function (CustomerSubscription $record, array $data) {
-                        $trCode = 'TR-' . $record->internet_number . rand(100, 999);
+                        $trCode = 'TR-'.$record->internet_number.rand(100, 999);
                         ServiceTermination::create([
                             'termination_code' => $trCode,
                             'internet_number' => $record->internet_number,
@@ -784,11 +803,11 @@ class CustomerSubscriptionResource extends Resource
                         ]);
 
                         // Otomatis Buat Tiket ke Tiket Masuk NOC
-                        $ticketNumber = 'TCK-' . date('Ymd') . '-' . rand(1000, 9999);
+                        $ticketNumber = 'TCK-'.date('Ymd').'-'.rand(1000, 9999);
                         Ticket::create([
                             'ticket_number' => $ticketNumber,
                             'internet_number' => $record->internet_number,
-                            'reporter_name' => 'Finance (' . (auth()->user()?->name ?? 'Finance') . ')',
+                            'reporter_name' => 'Finance ('.(auth()->user()?->name ?? 'Finance').')',
                             'reporter_phone' => $record->customer?->phone_number ?? '-',
                             'category' => 'TERMINASI',
                             'priority' => 'HIGH',

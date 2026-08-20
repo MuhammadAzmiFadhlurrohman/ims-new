@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\BandwidthPackageResource\Pages;
 
 use App\Filament\Resources\BandwidthPackageResource;
+use App\Models\BandwidthPackage;
 use App\Models\BuildingType;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
@@ -31,7 +32,7 @@ class ListBandwidthPackages extends ListRecords
         foreach ($buildings as $b) {
             $tabs[$b->code] = Tab::make($b->name)
                 ->badge(
-                    \App\Models\BandwidthPackage::whereHas('category.buildingTypes', fn ($q) => $q->where('building_types.code', $b->code))->count()
+                    BandwidthPackage::whereHas('category.buildingTypes', fn ($q) => $q->where('building_types.code', $b->code))->count()
                 )
                 ->modifyQueryUsing(function (Builder $query) use ($b) {
                     return $query->whereHas('category.buildingTypes', function ($q) use ($b) {

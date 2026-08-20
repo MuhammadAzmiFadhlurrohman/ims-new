@@ -7,10 +7,8 @@ use App\Models\CustomerSubscription;
 use App\Models\Odp;
 use App\Models\Olt;
 use App\Models\PonPort;
-use App\Models\SubscriptionLog;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Illuminate\Support\Facades\DB;
 
 class OltManagementPage extends Page
 {
@@ -21,44 +19,65 @@ class OltManagementPage extends Page
     protected static bool $shouldRegisterNavigation = false;
 
     public ?string $olt_code = null;
+
     public ?int $pon_id = null;
+
     public ?string $odp_code = null;
 
     // ── Forms: Tambah PON ──
     public string $new_pon_name = '';
+
     public int $new_pon_max_ports = 8;
 
     // ── Forms: Edit PON ──
     public bool $showEditPonModal = false;
+
     public ?int $editing_pon_id = null;
+
     public string $edit_pon_name = '';
+
     public int $edit_pon_max_ports = 8;
 
     // ── Forms: Tambah ODP ──
     public string $new_odp_name = '';
+
     public int $new_odp_max_user = 8;
+
     public string $new_odp_lat = '-6.92976';
+
     public string $new_odp_long = '107.5933';
 
     // ── Forms: Edit ODP ──
     public bool $showEditOdpModal = false;
+
     public ?string $editing_odp_code = null;
+
     public string $edit_odp_name = '';
+
     public int $edit_odp_max_user = 8;
+
     public string $edit_odp_lat = '';
+
     public string $edit_odp_long = '';
 
     // ── Forms: Tambah User ──
     public string $new_user_internet_number = '';
+
     public string $new_user_name = '';
+
     public string $new_user_notes = '';
 
     // ── Forms: Edit User ──
     public bool $showEditUserModal = false;
+
     public ?string $editing_user_internet_no = null;
+
     public string $edit_user_name = '';
+
     public string $edit_user_status = 'AKTIF';
+
     public string $edit_user_notes = '';
+
     public string $edit_user_gpon_onu = '';
 
     // ── Modal Riwayat ──
@@ -82,6 +101,7 @@ class OltManagementPage extends Page
     {
         $currentOlt = Olt::where('code', $this->olt_code)->first();
         $oltName = $currentOlt ? strtoupper($currentOlt->name) : 'OLT MSN';
+
         return "MANAJEMEN {$oltName}";
     }
 
@@ -192,10 +212,10 @@ class OltManagementPage extends Page
             'new_odp_max_user' => 'required|integer|min:1|max:128',
         ]);
 
-        $code = 'ODP-' . strtoupper(preg_replace('/[^A-Za-z0-9]/', '-', $this->new_odp_name));
+        $code = 'ODP-'.strtoupper(preg_replace('/[^A-Za-z0-9]/', '-', $this->new_odp_name));
         $existing = Odp::where('code', $code)->first();
         if ($existing) {
-            $code .= '-' . rand(10, 99);
+            $code .= '-'.rand(10, 99);
         }
 
         $currentOlt = Olt::where('code', $this->olt_code)->first();
@@ -283,13 +303,13 @@ class OltManagementPage extends Page
             'new_user_name' => 'required|string|max:150',
         ]);
 
-        $nik = '320' . rand(1000000000000, 9999999999999);
+        $nik = '320'.rand(1000000000000, 9999999999999);
         $customer = Customer::create([
             'nik' => $nik,
             'name' => $this->new_user_name,
-            'phone_number' => '081' . rand(10000000, 99999999),
+            'phone_number' => '081'.rand(10000000, 99999999),
             'id_card_address' => 'Bandung, Jawa Barat',
-            'email' => strtolower(str_replace(' ', '', $this->new_user_name)) . '@gmail.com',
+            'email' => strtolower(str_replace(' ', '', $this->new_user_name)).'@gmail.com',
         ]);
 
         $currentOlt = Olt::where('code', $this->olt_code)->first();
@@ -305,7 +325,7 @@ class OltManagementPage extends Page
             'installation_address' => 'Bandung, Jawa Barat',
             'registration_status' => 'AKTIF',
             'special_request' => $this->new_user_notes,
-            'gpon_onu' => 'gpon-onu_1/' . ($this->pon_id ?? 1) . '/' . rand(1, 16) . ':' . rand(1, 32) . ' sn RTEGC' . rand(1000000, 9999999),
+            'gpon_onu' => 'gpon-onu_1/'.($this->pon_id ?? 1).'/'.rand(1, 16).':'.rand(1, 32).' sn RTEGC'.rand(1000000, 9999999),
         ]);
 
         // update used ports in ODP
@@ -404,17 +424,19 @@ class OltManagementPage extends Page
 
     public function getOdpsProperty()
     {
-        if (!$this->pon_id) {
+        if (! $this->pon_id) {
             return collect();
         }
+
         return Odp::where('pon_port_id', $this->pon_id)->withCount('subscriptions')->get();
     }
 
     public function getUsersProperty()
     {
-        if (!$this->odp_code) {
+        if (! $this->odp_code) {
             return collect();
         }
+
         return CustomerSubscription::where('odp_code', $this->odp_code)->with(['package', 'customer'])->get();
     }
 }
