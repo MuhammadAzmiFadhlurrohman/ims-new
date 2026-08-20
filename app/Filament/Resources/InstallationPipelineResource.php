@@ -506,12 +506,43 @@ class InstallationPipelineResource extends Resource
                         $gender = $record->customer?->gender == 'female' ? 'P' : 'L';
                         $pkgName = strtoupper($record->package->name ?? $record->package_code ?? 'INTERNET STANDARD');
                         $phone = $record->customer?->phone_number ?? $record->phone_number ?? '';
+                        $group = strtoupper($record->group_service ?? 'MEDIANET');
+                        $status = $record->registration_status ?? 'Data Input';
+                        $statusType = strtoupper($record->status_type ?? 'TEMPORARY DELETE');
+                        $updated = $record->updated_at ? $record->updated_at->format('d M Y H:i') : '-';
                         $detailUrl = \App\Filament\Resources\CustomerSubscriptionResource::getUrl('view', ['record' => $record]);
 
-                        $phoneHtml = $phone ? "<span class='ims-cust-phone' style='font-size: 11px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>" : "";
+                        $key = $record->getKey();
+                        $safeKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $key);
+
+                        $slot = '10 Agust 2026 13:00-15:00 WIB';
+                        $isInstalasi = ($status === 'Jadwal Instalasi Terbit' || str_contains($status, 'Instalasi Terbit'));
+                        $isAktivasi = ($status === 'Jadwal Aktivasi Terbit' || $status === 'Proses Aktivasi' || str_contains($status, 'Aktivasi'));
+                        $isSurvey = ($status === 'Jadwal Survey Terbit' || str_contains($status, 'Survey'));
+
+                        if ($isInstalasi && $record->installation_date) {
+                            $slot = $record->installation_date->format('d M Y') . ' ' . ($record->installation_time_slot ?? '13:00-15:00 WIB');
+                        } elseif ($isAktivasi && $record->activation_date) {
+                            $slot = $record->activation_date->format('d M Y') . ' ' . ($record->activation_time_slot ?? '13:00-15:00 WIB');
+                        } elseif ($isSurvey && $record->survey_date) {
+                            $slot = $record->survey_date->format('d M Y') . ' ' . ($record->survey_time_slot ?? '13:00-15:00 WIB');
+                        }
+
+                        $pillClass = match ($status) {
+                            'Jadwal Survey Terbit' => 'ims-pill-survey',
+                            'Selesai Survey' => 'ims-pill-survey-done',
+                            'Jadwal Instalasi Terbit' => 'ims-pill-instalasi',
+                            'Selesai Instalasi' => 'ims-pill-instalasi-done',
+                            'Jadwal Aktivasi Terbit', 'Proses Aktivasi' => 'ims-pill-aktivasi',
+                            'Batal Pasang' => 'ims-pill-batal',
+                            default => 'ims-pill-survey',
+                        };
+
+                        $phoneHtml = $phone ? "<span class='ims-cust-phone' style='font-size: 11.5px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>" : "";
 
                         return "
-                            <div class='ims-cust-card'>
+                            <!-- DESKTOP VIEW (Visible on Desktop) -->
+                            <div class='ims-desktop-view ims-cust-card'>
                                 <div class='ims-cust-top-row'>
                                     <a href='{$detailUrl}' class='ims-cid-badge'>
                                         <span>{$internetNo}</span>
@@ -526,6 +557,53 @@ class InstallationPipelineResource extends Resource
                                     {$phoneHtml}
                                 </div>
                             </div>
+
+                            <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
+                            <div class='ims-standalone-card'>
+                                <div class='ims-card-head'>
+                                    <a href='{$detailUrl}' class='ims-cid-badge'>{$internetNo}</a>
+                                    <span class='ims-mobile-group-badge'>{$group}</span>
+                                </div>
+                                <div class='ims-card-cust-info'>
+                                    <div style='display: flex; align-items: center; gap: 6px;'>
+                                        <a href='{$detailUrl}' class='ims-cust-name' style='font-size: 14px; font-weight: 900; color: #0f172a;'>{$custName}</a>
+                                        <span style='font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px; background: #e2e8f0; color: #475569;'>{$gender}</span>
+                                    </div>
+                                    <div style='display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 3px;'>
+                                        <span class='ims-pkg-pill'>📦 {$pkgName}</span>
+                                        {$phoneHtml}
+                                    </div>
+                                </div>
+                                <div class='ims-card-sep'></div>
+                                <div class='ims-card-status-section'>
+                                    <div class='ims-schedule-pill {$pillClass}'>
+                                        <span>📌 {$status}</span>
+                                        <span class='ims-schedule-slot'>🕒 {$slot}</span>
+                                    </div>
+                                    <div style='display: flex; align-items: center; gap: 6px; margin-top: 4px;'>
+                                        <button
+                                            type='button'
+                                            onclick=\"document.querySelector('.ims-status-trigger-{$safeKey}')?.click()\"
+                                            class='ims-temp-badge'
+                                        >
+                                            {$statusType}
+                                        </button>
+                                        <span class='ims-updated-text'>Up: {$updated}</span>
+                                    </div>
+                                </div>
+                                <div class='ims-card-sep'></div>
+                                <button
+                                    type='button'
+                                    onclick=\"document.querySelector('.ims-detail-trigger-{$safeKey}')?.click()\"
+                                    class='ims-card-detail-btn'
+                                >
+                                    <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
+                                    </svg>
+                                    <span>Detail</span>
+                                </button>
+                            </div>
                         ";
                     })
                     ->searchable(['internet_number', 'customer_name'])
@@ -533,6 +611,7 @@ class InstallationPipelineResource extends Resource
 
                 Tables\Columns\TextColumn::make('group_service')
                     ->label('Group Layanan')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->formatStateUsing(fn ($state) => strtoupper($state ?? 'MEDIANET'))
                     ->badge()
                     ->color('info')
@@ -568,6 +647,7 @@ class InstallationPipelineResource extends Resource
 
                 Tables\Columns\TextColumn::make('registration_status')
                     ->label('Status Pipeline')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
                         $status = $record->registration_status ?? 'Data Input';
@@ -711,7 +791,9 @@ class InstallationPipelineResource extends Resource
                     ->label('Detail')
                     ->icon('heroicon-m-eye')
                     ->color('info')
-                    ->extraAttributes(['class' => 'ims-mobile-only-btn'])
+                    ->extraAttributes(fn (CustomerSubscription $record) => [
+                        'class' => 'ims-mobile-only-btn ims-detail-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey()),
+                    ])
                     ->modalHeading(fn (CustomerSubscription $record) => "Detail Lengkap Pendaftaran: {$record->internet_number}")
                     ->modalWidth('3xl')
                     ->modalSubmitAction(false)

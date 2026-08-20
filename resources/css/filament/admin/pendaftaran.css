@@ -338,8 +338,18 @@ html.dark .ims-temp-badge:hover {
     white-space: nowrap !important;
 }
 
+/* ── DESKTOP ISOLATION (≥ 1024px) ── */
 @media (min-width: 1024px) {
-    /* Sembunyikan Tombol Detail di Desktop */
+    /* Hide standalone mobile card on desktop */
+    .ims-standalone-card {
+        display: none !important;
+    }
+
+    .ims-desktop-view {
+        display: block !important;
+    }
+
+    /* Hide Mobile Detail Action Button on Desktop */
     .ims-mobile-only-btn,
     .fi-ta-actions .ims-mobile-only-btn,
     .fi-ta-actions [wire\:click*="detail_lengkap"] {
@@ -415,22 +425,26 @@ html.dark .ims-temp-badge:hover {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   6. PROFESSIONAL MOBILE TABLE-TO-CARD & 2-COLUMN FILTERS (< 1024px)
+   6. 100% STANDALONE MOBILE CARD & 2-COLUMN FILTERS (< 1024px)
    ══════════════════════════════════════════════════════════════════════ */
 @media (max-width: 1023px) {
 
-    /* ── A. 2-COLUMN MOBILE FILTERS (ABOVE & MODAL) ── */
+    /* ── Hide Desktop View on Mobile ── */
+    .ims-desktop-view {
+        display: none !important;
+    }
+
+    /* ── A. STANDALONE 2-COLUMN FILTERS CONTAINER ── */
     .fi-ta-filters,
     .fi-dropdown-panel .fi-ta-filters,
     .fi-ta-filters-above-content-ctn {
-        display: flex !important;
-        flex-direction: column !important;
+        display: block !important;
         width: 100% !important;
-        padding: 0.85rem 1rem !important;
-        border-radius: 16px !important;
-        margin-bottom: 0.85rem !important;
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
+        border-radius: 16px !important;
+        padding: 12px 14px !important;
+        margin-bottom: 12px !important;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
         box-sizing: border-box !important;
     }
@@ -444,21 +458,10 @@ html.dark .ims-temp-badge:hover {
 
     .fi-ta-filters-header {
         display: flex !important;
-        flex-direction: row !important;
         justify-content: space-between !important;
         align-items: center !important;
         width: 100% !important;
-        margin-bottom: 0.75rem !important;
-    }
-
-    .fi-ta-filters-header h3 {
-        font-size: 0.88rem !important;
-        font-weight: 800 !important;
-        color: #0f172a !important;
-    }
-
-    html.dark .fi-ta-filters-header h3 {
-        color: #f1f5f9 !important;
+        margin-bottom: 10px !important;
     }
 
     .fi-ta-filters-form,
@@ -467,6 +470,8 @@ html.dark .ims-temp-badge:hover {
     .fi-ta-filters-above-content-ctn form {
         display: block !important;
         width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     /* 2 Columns Grid on Mobile */
@@ -476,17 +481,17 @@ html.dark .ims-temp-badge:hover {
     .fi-dropdown-panel form > div,
     .fi-ta-filters-above-content-ctn form > div {
         display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 0.65rem !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
 
-    /* 5th filter (Wilayah) spans across 2 columns for symmetry */
+    /* 5th filter spans across 2 columns */
     .fi-ta-filters-form .grid > div:nth-child(5),
     .fi-dropdown-panel form .grid > div:nth-child(5),
     .fi-ta-filters-above-content-ctn form > div > div:nth-child(5) {
-        grid-column: span 2 !important;
+        grid-column: 1 / -1 !important;
     }
 
     .fi-fo-field-wrp {
@@ -494,19 +499,18 @@ html.dark .ims-temp-badge:hover {
         flex-direction: column !important;
         width: 100% !important;
         min-width: 0 !important;
-        margin-bottom: 0 !important;
+        margin: 0 !important;
     }
 
     .fi-fo-field-wrp-label,
     .fi-ta-filter label,
     .fi-fo-field-wrp label {
         display: block !important;
-        font-size: 0.7rem !important;
+        font-size: 10px !important;
         font-weight: 800 !important;
         color: #64748b !important;
         text-transform: uppercase !important;
-        letter-spacing: 0.03em !important;
-        margin-bottom: 0.25rem !important;
+        margin-bottom: 2px !important;
     }
 
     html.dark .fi-fo-field-wrp-label,
@@ -520,11 +524,11 @@ html.dark .ims-temp-badge:hover {
         align-items: center !important;
         width: 100% !important;
         min-width: 0 !important;
-        height: 2.75rem !important;
+        height: 38px !important;
         background: #f8fafc !important;
         border: 1.5px solid #cbd5e1 !important;
-        border-radius: 12px !important;
-        padding: 0 0.65rem !important;
+        border-radius: 10px !important;
+        padding: 0 8px !important;
         box-sizing: border-box !important;
     }
 
@@ -543,11 +547,10 @@ html.dark .ims-temp-badge:hover {
         height: 100% !important;
         border: none !important;
         background: transparent !important;
-        font-size: 0.78rem !important;
+        font-size: 11.5px !important;
         font-weight: 700 !important;
         color: #0f172a !important;
         outline: none !important;
-        box-shadow: none !important;
         padding: 0 !important;
     }
 
@@ -559,7 +562,7 @@ html.dark .ims-temp-badge:hover {
     }
 
 
-    /* ── B. TABLE CONTAINER RESET ── */
+    /* ── B. TABLE RESET (ONE CARD PER ROW) ── */
     .fi-ta-ctn {
         background: transparent !important;
         border: none !important;
@@ -574,7 +577,6 @@ html.dark .ims-temp-badge:hover {
         overflow: visible !important;
     }
 
-    /* Hide table header row completely */
     table.fi-ta-table thead,
     .fi-ta-header-cell,
     table.fi-ta-table th {
@@ -595,10 +597,37 @@ html.dark .ims-temp-badge:hover {
         width: 100% !important;
     }
 
-
-    /* ── C. EXECUTIVE MOBILE CARD ── */
-    .fi-ta-row,
     table.fi-ta-table tbody tr {
+        display: block !important;
+        width: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Sembunyikan semua kolom table lain di mobile, KECUALI Kolom 1 */
+    .ims-mobile-hide,
+    td:has(.ims-mobile-hide),
+    .fi-ta-cell:has(.ims-mobile-hide),
+    table.fi-ta-table tbody tr td:not(:first-child) {
+        display: none !important;
+    }
+
+    /* Kolom 1 membungkus seluruh kartu */
+    table.fi-ta-table tbody tr td:first-child {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        box-sizing: border-box !important;
+    }
+
+
+    /* ── C. STANDALONE MOBILE CARD DESIGN ── */
+    .ims-standalone-card {
         display: flex !important;
         flex-direction: column !important;
         background: #ffffff !important;
@@ -606,265 +635,127 @@ html.dark .ims-temp-badge:hover {
         border-left: 5px solid #0284c7 !important;
         border-radius: 16px !important;
         padding: 1rem 1.15rem !important;
-        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05) !important;
-        gap: 0.4rem !important;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+        gap: 0.45rem !important;
         width: 100% !important;
         box-sizing: border-box !important;
-        position: relative !important;
     }
 
-    .fi-ta-row:nth-child(even),
-    table.fi-ta-table tbody tr:nth-child(even) {
+    table.fi-ta-table tbody tr:nth-child(even) .ims-standalone-card {
         border-left-color: #059669 !important;
     }
 
-    .fi-ta-row:nth-child(3n),
-    table.fi-ta-table tbody tr:nth-child(3n) {
+    table.fi-ta-table tbody tr:nth-child(3n) .ims-standalone-card {
         border-left-color: #881337 !important;
     }
 
-    html.dark .fi-ta-row,
-    html.dark table.fi-ta-table tbody tr {
+    html.dark .ims-standalone-card {
         background: #08192e !important;
         border-color: #14355a !important;
         border-left-color: #00d4ff !important;
         box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45) !important;
     }
 
-    html.dark .fi-ta-row:nth-child(even),
-    html.dark table.fi-ta-table tbody tr:nth-child(even) {
+    html.dark table.fi-ta-table tbody tr:nth-child(even) .ims-standalone-card {
         border-left-color: #10b981 !important;
     }
 
-    html.dark .fi-ta-row:nth-child(3n),
-    html.dark table.fi-ta-table tbody tr:nth-child(3n) {
+    html.dark table.fi-ta-table tbody tr:nth-child(3n) .ims-standalone-card {
         border-left-color: #f43f5e !important;
     }
 
-
-    /* ── D. CARD CELL STRUCTURE (ROW BY ROW) ── */
-
-    /* Hide Location & Created At columns on mobile card */
-    .ims-mobile-hide,
-    td:has(.ims-mobile-hide),
-    .fi-ta-cell:has(.ims-mobile-hide) {
-        display: none !important;
-    }
-
-    /* Row 1: Identitas Pelanggan (Header Card) */
-    .fi-ta-cell:first-child,
-    table.fi-ta-table tbody tr td:first-child {
+    /* Card Head (ID & Group Layanan) */
+    .ims-card-head {
         display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-        padding: 0 0 0.65rem 0 !important;
-        border: none !important;
-        border-bottom: 1px dashed #e2e8f0 !important;
-        background: transparent !important;
-        box-sizing: border-box !important;
-    }
-
-    html.dark .fi-ta-cell:first-child,
-    html.dark table.fi-ta-table tbody tr td:first-child {
-        border-bottom-color: #14355a !important;
-    }
-
-    .ims-cust-card {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 0.3rem !important;
-        width: 100% !important;
-    }
-
-    .ims-cust-top-row {
-        display: flex !important;
-        width: 100% !important;
-        justify-content: flex-start !important;
-    }
-
-    .ims-cust-name-row {
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        width: 100% !important;
-    }
-
-    .ims-cust-name {
-        font-size: 0.92rem !important;
-        font-weight: 900 !important;
-        color: #0f172a !important;
-    }
-
-    html.dark .ims-cust-name {
-        color: #ffffff !important;
-    }
-
-    .ims-cust-meta-row {
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-        flex-wrap: wrap !important;
-        width: 100% !important;
-    }
-
-    /* Row 2: Group Layanan (Key - Value Row) */
-    .fi-ta-cell:nth-child(2),
-    table.fi-ta-table tbody tr td:nth-child(2) {
-        display: flex !important;
-        flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
         width: 100% !important;
-        padding: 0.55rem 0 !important;
-        border: none !important;
-        border-bottom: 1px dashed #e2e8f0 !important;
-        background: transparent !important;
-        box-sizing: border-box !important;
     }
 
-    html.dark .fi-ta-cell:nth-child(2),
-    html.dark table.fi-ta-table tbody tr td:nth-child(2) {
+    .ims-mobile-group-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        padding: 2px 8px !important;
+        border-radius: 6px !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        background: #e0f2fe !important;
+        color: #0284c7 !important;
+        border: 1px solid #bae6fd !important;
+    }
+
+    html.dark .ims-mobile-group-badge {
+        background: #09264a !important;
+        color: #38bdf8 !important;
+        border-color: #144e8c !important;
+    }
+
+    /* Customer Info */
+    .ims-card-cust-info {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 3px !important;
+        width: 100% !important;
+    }
+
+    /* Card Separator */
+    .ims-card-sep {
+        width: 100% !important;
+        height: 1px !important;
+        border-bottom: 1px dashed #e2e8f0 !important;
+        margin: 4px 0 !important;
+    }
+
+    html.dark .ims-card-sep {
         border-bottom-color: #14355a !important;
     }
 
-    .fi-ta-cell:nth-child(2)::before,
-    table.fi-ta-table tbody tr td:nth-child(2)::before {
-        content: 'GROUP LAYANAN';
-        font-size: 0.72rem !important;
-        font-weight: 800 !important;
-        color: #64748b !important;
-        letter-spacing: 0.03em !important;
-        text-transform: uppercase !important;
-    }
-
-    html.dark .fi-ta-cell:nth-child(2)::before,
-    html.dark table.fi-ta-table tbody tr td:nth-child(2)::before {
-        color: #94a3b8 !important;
-    }
-
-    /* Row 3: Status Pipeline (Schedule & Actions) */
-    .fi-ta-cell:nth-child(4),
-    table.fi-ta-table tbody tr td:nth-child(4) {
+    /* Status Section */
+    .ims-card-status-section {
         display: flex !important;
         flex-direction: column !important;
-        align-items: flex-start !important;
-        width: 100% !important;
-        padding: 0.55rem 0 !important;
-        border: none !important;
-        background: transparent !important;
-        box-sizing: border-box !important;
-    }
-
-    .ims-status-box {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 0.4rem !important;
+        gap: 4px !important;
         width: 100% !important;
     }
 
-    .ims-schedule-pill {
+    .ims-card-status-section .ims-schedule-pill {
         width: 100% !important;
         box-sizing: border-box !important;
-        padding: 0.45rem 0.75rem !important;
     }
 
-    /* Row 4: Card Action Footer (Detail Button) */
-    .fi-ta-cell:last-child,
-    table.fi-ta-table tbody tr td:last-child {
+    /* Standalone Detail Button */
+    .ims-card-detail-btn {
         display: flex !important;
-        width: 100% !important;
-        padding: 0.75rem 0 0 0 !important;
-        margin-top: 0.25rem !important;
-        border: none !important;
-        border-top: 1.5px solid #f1f5f9 !important;
-        background: transparent !important;
-        box-sizing: border-box !important;
-    }
-
-    html.dark .fi-ta-cell:last-child,
-    html.dark table.fi-ta-table tbody tr td:last-child {
-        border-top-color: rgba(255, 255, 255, 0.08) !important;
-    }
-
-    .fi-ta-actions {
-        width: 100% !important;
-        display: block !important;
-    }
-
-    /* Sembunyikan semua tombol aksi operasional di card KECUALI tombol Detail pada mobile */
-    .fi-ta-actions .fi-btn:not(.ims-mobile-only-btn):not(:first-child),
-    .fi-ta-actions button:not(.ims-mobile-only-btn):not(:first-child),
-    .fi-ta-actions a:not(.ims-mobile-only-btn):not(:first-child),
-    .fi-ta-actions > div:not(:first-child) {
-        display: none !important;
-    }
-
-    /* Tombol Detail Pastel Full-Width */
-    .fi-ta-actions .fi-btn.ims-mobile-only-btn,
-    .fi-ta-actions a.ims-mobile-only-btn,
-    .fi-ta-actions button.ims-mobile-only-btn,
-    .fi-ta-actions .fi-btn:first-child,
-    .fi-ta-actions button:first-child,
-    .fi-ta-actions a:first-child {
-        display: flex !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        justify-content: center !important;
         align-items: center !important;
-        gap: 0.5rem !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        width: 100% !important;
         padding: 0.65rem 1rem !important;
-        font-size: 0.84rem !important;
-        font-weight: 800 !important;
         border-radius: 12px !important;
         background: #e0f2fe !important;
         color: #0369a1 !important;
         border: 1.5px solid #bae6fd !important;
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        cursor: pointer !important;
         box-shadow: 0 2px 6px rgba(3, 105, 161, 0.12) !important;
         box-sizing: border-box !important;
-        margin: 0 !important;
-        cursor: pointer !important;
+        margin-top: 2px !important;
     }
 
-    .fi-ta-actions .fi-btn:first-child *,
-    .fi-ta-actions button:first-child *,
-    .fi-ta-actions a:first-child *,
-    .fi-ta-actions .ims-mobile-only-btn *,
-    .fi-ta-actions .fi-btn-label {
-        color: #0369a1 !important;
-        -webkit-text-fill-color: #0369a1 !important;
-        font-weight: 800 !important;
-    }
-
-    .fi-ta-actions .fi-btn:first-child svg,
-    .fi-ta-actions button:first-child svg,
-    .fi-ta-actions a:first-child svg,
-    .fi-ta-actions .ims-mobile-only-btn svg {
+    .ims-card-detail-btn svg {
         color: #0369a1 !important;
         stroke: #0369a1 !important;
-        width: 17px !important;
-        height: 17px !important;
     }
 
-    html.dark .fi-ta-actions .fi-btn:first-child,
-    html.dark .fi-ta-actions button:first-child,
-    html.dark .fi-ta-actions a:first-child {
+    html.dark .ims-card-detail-btn {
         background: #09264a !important;
+        color: #38bdf8 !important;
         border-color: #144e8c !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
     }
 
-    html.dark .fi-ta-actions .fi-btn:first-child *,
-    html.dark .fi-ta-actions button:first-child *,
-    html.dark .fi-ta-actions a:first-child * {
-        color: #38bdf8 !important;
-        -webkit-text-fill-color: #38bdf8 !important;
-    }
-
-    html.dark .fi-ta-actions .fi-btn:first-child svg {
+    html.dark .ims-card-detail-btn svg {
         color: #38bdf8 !important;
         stroke: #38bdf8 !important;
     }
