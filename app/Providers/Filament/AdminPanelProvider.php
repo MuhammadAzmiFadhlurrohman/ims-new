@@ -357,14 +357,43 @@ class AdminPanelProvider extends PanelProvider
                         'sm' => 2,
                     ]),
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->resources([
+                \App\Filament\Resources\ActivityLogResource::class,
+                \App\Filament\Resources\BandwidthPackageResource::class,
+                \App\Filament\Resources\CustomerResource::class,
+                \App\Filament\Resources\CustomerSubscriptionResource::class,
+                \App\Filament\Resources\DepartmentResource::class,
+                \App\Filament\Resources\EmployeeResource::class,
+                \App\Filament\Resources\InstallationPipelineResource::class,
+                \App\Filament\Resources\ItemCategoryResource::class,
+                \App\Filament\Resources\ItemResource::class,
+                \App\Filament\Resources\MonthlyInvoiceResource::class,
+                \App\Filament\Resources\OdpResource::class,
+                \App\Filament\Resources\OltResource::class,
+                \App\Filament\Resources\PackageMutationResource::class,
+                \App\Filament\Resources\PositionResource::class,
+                \App\Filament\Resources\RegistrationInvoiceResource::class,
+                \App\Filament\Resources\RouterHistoryResource::class,
+                \App\Filament\Resources\RouterResource::class,
+                \App\Filament\Resources\ServiceSuspensionResource::class,
+                \App\Filament\Resources\ServiceTerminationResource::class,
+                \App\Filament\Resources\TicketResource::class,
+                \App\Filament\Resources\UserResource::class,
+            ])
             ->pages([
                 Pages\Dashboard::class,
+                \App\Filament\Pages\DataPelangganMatrixPage::class,
+                \App\Filament\Pages\OltCoveragePage::class,
+                \App\Filament\Pages\OltManagementPage::class,
+                \App\Filament\Pages\OltUserSearchPage::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                //
+                \App\Filament\Widgets\StatsOverviewWidget::class,
+                \App\Filament\Widgets\BillingChartWidget::class,
+                \App\Filament\Widgets\CustomerStatusChartWidget::class,
+                \App\Filament\Widgets\CustomerStatusMatrixWidget::class,
+                \App\Filament\Widgets\OverdueInvoicesWidget::class,
+                \App\Filament\Widgets\TicketOverviewCardsWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
