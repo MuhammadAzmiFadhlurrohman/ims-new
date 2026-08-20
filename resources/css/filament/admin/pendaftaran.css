@@ -3,124 +3,172 @@
    File: resources/css/filament/admin/pendaftaran.css
    ========================================================================== */
 
-/* ── 1. FILTER BAR CONTAINER (DESKTOP) ── */
-@media (min-width: 1024px) {
-    .fi-ta-filters-above-content-ctn {
-        background: #ffffff !important;
-        border-radius: 18px !important;
-        border: 1px solid #e2e8f0 !important;
-        box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05) !important;
-        padding: 1.1rem 1.4rem !important;
-        margin-bottom: 1.25rem !important;
-    }
+/* ── 1. FILTER BAR CONTAINER (INLINE & CLEAN GRID) ── */
+.fi-ta-filters-above-content-ctn {
+    background: #ffffff !important;
+    border-radius: 18px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05) !important;
+    padding: 1.1rem 1.4rem !important;
+    margin-bottom: 1.25rem !important;
+}
 
-    html.dark .fi-ta-filters-above-content-ctn {
-        background: #08192e !important;
-        border-color: #14355a !important;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
-    }
+html.dark .fi-ta-filters-above-content-ctn {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
 
-    .fi-ta-filters-above-content-ctn > header {
-        display: none !important;
-    }
+.fi-ta-filters-above-content-ctn > header {
+    display: none !important;
+}
 
-    .fi-ta-filters-above-content-ctn form > div {
-        display: grid !important;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
-        gap: 1rem !important;
-        align-items: center !important;
-    }
+.fi-ta-filters-above-content-ctn form > div {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+    gap: 1rem !important;
+    align-items: center !important;
+}
 
-    /* ── 2. DESKTOP TABLE WRAPPER & ZEBRA HOVER ── */
-    .fi-ta-ctn {
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-        border-radius: 20px !important;
-        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
-        overflow: hidden !important;
-    }
+.fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label {
+    display: none !important;
+}
 
-    html.dark .fi-ta-ctn {
-        background: #08192e !important;
-        border-color: #14355a !important;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
-    }
+.fi-ta-filters-above-content-ctn .fi-fo-field-wrp {
+    margin-bottom: 0 !important;
+}
 
-    /* Header Table (th) */
-    .fi-ta-header-cell,
-    table.fi-ta-table th {
-        background: #f8fafc !important;
-        color: #0f172a !important;
-        font-size: 0.76rem !important;
-        font-weight: 900 !important;
-        letter-spacing: 0.04em !important;
-        text-transform: uppercase !important;
-        border-bottom: 2px solid #e2e8f0 !important;
-        padding: 1rem 1.1rem !important;
-    }
+.fi-ta-filters-above-content-ctn .fi-input-wrp {
+    background: #f8fafc !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    padding: 0.35rem 0.65rem !important;
+    transition: all 0.2s ease !important;
+}
 
-    .fi-ta-header-cell *,
-    .fi-ta-header-cell-label {
-        color: #0f172a !important;
-        font-weight: 900 !important;
-        text-transform: uppercase !important;
-    }
+html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp {
+    background: #051324 !important;
+    border-color: #1e3a5f !important;
+}
 
-    /* Table Rows & Cells (td) */
-    table.fi-ta-table tbody tr {
-        position: relative !important;
-        transition: all 0.2s ease !important;
-    }
+.fi-ta-filters-above-content-ctn .fi-input-wrp:focus-within {
+    background: #ffffff !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+}
 
-    table.fi-ta-table tbody tr td {
-        padding: 1rem 1.1rem !important;
-        border-bottom: 1px solid #f1f5f9 !important;
-        vertical-align: top !important;
-        font-size: 0.82rem !important;
-        transition: background-color 0.2s ease, border-left-color 0.2s ease !important;
-    }
+html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp:focus-within {
+    background: #092240 !important;
+    border-color: #00d4ff !important;
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.18) !important;
+}
 
-    /* Zebra striping */
-    table.fi-ta-table tbody tr:nth-child(even) td {
-        background-color: #fbfcfe !important;
-    }
+.fi-ta-filters-above-content-ctn select.fi-input,
+.fi-ta-filters-above-content-ctn input[type="text"].fi-input {
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    border: none !important;
+    background: transparent !important;
+}
 
-    html.dark table.fi-ta-table tbody tr:nth-child(even) td {
-        background-color: #0b1f38 !important;
-    }
+html.dark .fi-ta-filters-above-content-ctn select.fi-input,
+html.dark .fi-ta-filters-above-content-ctn input[type="text"].fi-input,
+html.dark .fi-ta-filters-above-content-ctn .fi-select-input {
+    color: #f1f5f9 !important;
+}
 
-    html.dark table.fi-ta-table tbody tr:nth-child(odd) td {
-        background-color: #08192e !important;
-    }
+html.dark .fi-ta-filters-above-content-ctn select.fi-input option {
+    background: #08192e !important;
+    color: #f1f5f9 !important;
+}
 
-    /* Hover Effect with Left Indicator Border */
-    table.fi-ta-table tbody tr:hover td {
-        background-color: #f0f7ff !important;
-    }
+html.dark .fi-ta-filters-above-content-ctn input[type="text"].fi-input::placeholder {
+    color: #64748b !important;
+}
 
-    html.dark table.fi-ta-table tbody tr:hover td {
-        background-color: #0e2d52 !important;
-    }
+/* ── 2. TABLE WRAPPER & ZEBRA HOVER ── */
+.fi-ta-ctn {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+    overflow: hidden !important;
+}
 
-    table.fi-ta-table tbody tr td:first-child {
-        border-left: 4px solid transparent !important;
-    }
+html.dark .fi-ta-ctn {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
 
-    table.fi-ta-table tbody tr:hover td:first-child {
-        border-left: 4px solid #2563eb !important;
-    }
+/* Header Table (th) */
+.fi-ta-header-cell,
+table.fi-ta-table th {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    font-size: 0.76rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    padding: 1rem 1.1rem !important;
+}
 
-    html.dark table.fi-ta-table tbody tr:hover td:first-child {
-        border-left: 4px solid #00d4ff !important;
-    }
+.fi-ta-header-cell *,
+.fi-ta-header-cell-label {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+}
 
-    .fi-ta-actions {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: flex-end !important;
-        gap: 0.45rem !important;
-        flex-wrap: nowrap !important;
-    }
+/* Table Rows & Cells (td) */
+table.fi-ta-table tbody tr {
+    position: relative !important;
+    transition: all 0.2s ease !important;
+}
+
+table.fi-ta-table tbody tr td {
+    padding: 1rem 1.1rem !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    vertical-align: top !important;
+    font-size: 0.82rem !important;
+    transition: background-color 0.2s ease, border-left-color 0.2s ease !important;
+}
+
+/* Zebra striping */
+table.fi-ta-table tbody tr:nth-child(even) td {
+    background-color: #fbfcfe !important;
+}
+
+html.dark table.fi-ta-table tbody tr:nth-child(even) td {
+    background-color: #0b1f38 !important;
+}
+
+html.dark table.fi-ta-table tbody tr:nth-child(odd) td {
+    background-color: #08192e !important;
+}
+
+/* ── Hover Effect with Left Indicator Border ── */
+table.fi-ta-table tbody tr:hover td {
+    background-color: #f0f7ff !important;
+}
+
+html.dark table.fi-ta-table tbody tr:hover td {
+    background-color: #0e2d52 !important;
+}
+
+table.fi-ta-table tbody tr td:first-child {
+    border-left: 4px solid transparent !important;
+}
+
+table.fi-ta-table tbody tr:hover td:first-child {
+    border-left: 4px solid #2563eb !important;
+}
+
+html.dark table.fi-ta-table tbody tr:hover td:first-child {
+    border-left: 4px solid #00d4ff !important;
 }
 
 /* ── 3. CUSTOM REGISTRATION UI COMPONENTS ── */
@@ -271,109 +319,97 @@ html.dark .ims-temp-badge:hover {
     font-weight: 600;
 }
 
+/* ── 5. ACTION BUTTONS ── */
+.fi-ta-actions {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0.45rem !important;
+    flex-wrap: nowrap !important;
+}
+
+.fi-ta-actions .fi-btn,
+.fi-ta-actions button,
+.fi-ta-actions a {
+    border-radius: 8px !important;
+    font-size: 0.74rem !important;
+    font-weight: 800 !important;
+    padding: 0.35rem 0.75rem !important;
+    transition: all 0.15s ease !important;
+    white-space: nowrap !important;
+}
+
+.fi-ta-actions .fi-btn *,
+.fi-ta-actions button *,
+.fi-ta-actions a *,
+.fi-btn-label {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+.fi-ta-actions .fi-btn:hover,
+.fi-ta-actions button:hover,
+.fi-ta-actions a:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ── STACK VERTICALLY ON INVOICE & BILLING TABLES (ATAS KE BAWAH) ── */
+.fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions,
+.fi-ta-table td:has([class*="paymethod-trigger"]) .fi-ta-actions,
+.fi-ta-table td:has([class*="paymethod-trigger"]) ~ td .fi-ta-actions,
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(3)),
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(4)),
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(3)),
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)),
+.fi-page-list-monthly-invoices .fi-ta-actions,
+.fi-page-list-registration-invoices .fi-ta-actions,
+[class*="monthly-invoices"] .fi-ta-actions,
+[class*="registration-invoices"] .fi-ta-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    gap: 0.22rem !important;
+    min-width: 112px !important;
+    max-width: 125px !important;
+    width: 100% !important;
+}
+
+.fi-page-list-monthly-invoices .fi-ta-actions .fi-btn,
+.fi-page-list-registration-invoices .fi-ta-actions .fi-btn,
+[class*="monthly-invoices"] .fi-ta-actions .fi-btn,
+[class*="registration-invoices"] .fi-ta-actions .fi-btn,
+.fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions .fi-btn,
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(3)) .fi-btn,
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(4)) .fi-btn,
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(3)) button,
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)) button {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.22rem 0.35rem !important;
+    font-size: 0.67rem !important;
+    border-radius: 6px !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+    gap: 3px !important;
+}
+
+.fi-page-list-monthly-invoices .fi-ta-actions .fi-btn-label,
+.fi-page-list-registration-invoices .fi-ta-actions .fi-btn-label,
+[class*="monthly-invoices"] .fi-ta-actions .fi-btn-label,
+[class*="registration-invoices"] .fi-ta-actions .fi-btn-label {
+    white-space: nowrap !important;
+    font-size: 0.67rem !important;
+    letter-spacing: -0.01em !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
 /* ══════════════════════════════════════════════════════════════════════
-   5. MOBILE TABLE-TO-CARD TRANSFORMATION & 2-COLUMN FILTERS (< 1024px)
+   6. MOBILE TABLE-TO-CARD TRANSFORMATION (< 1024px)
    ══════════════════════════════════════════════════════════════════════ */
 @media (max-width: 1023px) {
-    /* ── 2-Column Filters Layout (Both Inline and Dropdown/Modal) ── */
-    .fi-ta-filters-above-content-ctn {
-        padding: 0.75rem !important;
-        border-radius: 14px !important;
-        margin-bottom: 0.75rem !important;
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-    }
-
-    html.dark .fi-ta-filters-above-content-ctn {
-        background: #08192e !important;
-        border-color: #14355a !important;
-    }
-
-    .fi-ta-filters-above-content-ctn > header {
-        display: none !important;
-    }
-
-    /* Grid 2 Kolom untuk Semua Form Filter */
-    .fi-ta-filters-above-content-ctn form > div,
-    .fi-ta-filters-above-content-ctn .grid,
-    .fi-ta-filters-form > div,
-    .fi-ta-filters-form .grid,
-    .fi-ta-filters .grid,
-    .fi-ta-filters-dropdown form > div,
-    .fi-dropdown-panel form > div {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 0.6rem !important;
-        width: 100% !important;
-    }
-
-    /* Filter Wrapper & Input Styling */
-    .fi-ta-filter,
-    .fi-ta-filters-form .fi-fo-field-wrp,
-    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        margin: 0 !important;
-    }
-
-    .fi-ta-filters-above-content-ctn .fi-input-wrp,
-    .fi-ta-filters-form .fi-input-wrp,
-    .fi-ta-filter .fi-input-wrp,
-    .fi-ta-filters-dropdown .fi-input-wrp {
-        display: flex !important;
-        align-items: center !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        height: 2.65rem !important;
-        min-height: 2.65rem !important;
-        background: #f8fafc !important;
-        border: 1.5px solid #cbd5e1 !important;
-        border-radius: 12px !important;
-        padding: 0 0.65rem !important;
-        box-sizing: border-box !important;
-    }
-
-    html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp,
-    html.dark .fi-ta-filters-form .fi-input-wrp,
-    html.dark .fi-ta-filter .fi-input-wrp {
-        background: #051324 !important;
-        border-color: #1e3a5f !important;
-    }
-
-    .fi-ta-filters-above-content-ctn select,
-    .fi-ta-filters-above-content-ctn input,
-    .fi-ta-filters-form select,
-    .fi-ta-filters-form input,
-    .fi-ta-filter select,
-    .fi-ta-filter input,
-    .fi-ta-filters-dropdown select,
-    .fi-ta-filters-dropdown input {
-        display: block !important;
-        flex: 1 1 100% !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        height: 100% !important;
-        border: none !important;
-        background: transparent !important;
-        color: #0f172a !important;
-        font-size: 0.78rem !important;
-        font-weight: 700 !important;
-        padding: 0 !important;
-        outline: none !important;
-        box-shadow: none !important;
-    }
-
-    html.dark .fi-ta-filters-above-content-ctn select,
-    html.dark .fi-ta-filters-above-content-ctn input,
-    html.dark .fi-ta-filters-form select,
-    html.dark .fi-ta-filters-form input,
-    html.dark .fi-ta-filter select,
-    html.dark .fi-ta-filter input {
-        color: #f1f5f9 !important;
-    }
-
     /* ── Table-to-Card Container ── */
     .fi-ta-ctn {
         background: transparent !important;

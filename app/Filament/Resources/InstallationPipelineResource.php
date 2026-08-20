@@ -638,7 +638,7 @@ class InstallationPipelineResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('group_service')
-                    ->label('')
+                    ->label('Group Layanan')
                     ->placeholder('SEMUA LAYANAN')
                     ->options([
                         'MEDIANET' => 'MEDIANET',
@@ -648,12 +648,12 @@ class InstallationPipelineResource extends Resource
                 Tables\Filters\Filter::make('nama')
                     ->form([
                         Forms\Components\TextInput::make('nama')
-                            ->label('')
-                            ->placeholder('NAMA'),
+                            ->label('Nama / Nomor Layanan')
+                            ->placeholder('NAMA / NO LAYANAN'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
-                            $data['nama'],
+                            $data['nama'] ?? null,
                             fn (Builder $q, $nama) => $q->where('customer_name', 'like', "%{$nama}%")
                                 ->orWhereHas('customer', fn ($cq) => $cq->where('name', 'like', "%{$nama}%"))
                         );
@@ -662,18 +662,18 @@ class InstallationPipelineResource extends Resource
                 Tables\Filters\Filter::make('alamat')
                     ->form([
                         Forms\Components\TextInput::make('alamat')
-                            ->label('')
+                            ->label('Alamat Pemasangan')
                             ->placeholder('ALAMAT'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
-                            $data['alamat'],
+                            $data['alamat'] ?? null,
                             fn (Builder $q, $addr) => $q->where('installation_address', 'like', "%{$addr}%")
                         );
                     }),
 
                 Tables\Filters\SelectFilter::make('registration_status')
-                    ->label('')
+                    ->label('Status Pipeline')
                     ->placeholder('SEMUA STATUS')
                     ->options([
                         'Data Input' => 'Data Input',
@@ -688,7 +688,7 @@ class InstallationPipelineResource extends Resource
                     ]),
 
                 Tables\Filters\SelectFilter::make('city')
-                    ->label('')
+                    ->label('Wilayah')
                     ->placeholder('SEMUA WILAYAH')
                     ->options([
                         'KOTA BANDUNG' => 'KOTA BANDUNG',

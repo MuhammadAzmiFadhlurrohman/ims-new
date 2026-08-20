@@ -70,10 +70,10 @@
 </div>
 
 <script>
-    let currentImsRecordKey = '';
+    window.currentImsRecordKey = window.currentImsRecordKey || '';
 
     window.openImsStatusModal = function(key, status) {
-        currentImsRecordKey = key;
+        window.currentImsRecordKey = key;
         const radios = document.querySelectorAll('input[name="ims_status_radio"]');
         radios.forEach(r => {
             if (r.value.toLowerCase() === (status || '').toLowerCase()) {
@@ -104,7 +104,7 @@
         if (livewireEl && window.Livewire) {
             const component = window.Livewire.find(livewireEl.getAttribute('wire:id'));
             if (component && typeof component.call === 'function') {
-                component.call('updateStatusType', currentImsRecordKey, statusValue).then(() => {
+                component.call('updateStatusType', window.currentImsRecordKey, statusValue).then(() => {
                     if (saveText) saveText.textContent = 'Ubah';
                     closeImsStatusModal();
                 }).catch(() => {
@@ -127,7 +127,7 @@
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
             body: JSON.stringify({
-                key: currentImsRecordKey,
+                key: window.currentImsRecordKey,
                 status_type: statusValue
             })
         }).then(res => res.json()).then(data => {
