@@ -2,87 +2,506 @@
     @if(!request()->has('category'))
         @php
             $counts = $this->getCounts();
+            $totalActive = array_sum($counts);
         @endphp
 
-        {{-- ── PORTAL 7 KARTU TIKET (Instant Server Render - Tanpa Loading/Flicker) ── --}}
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; margin-top: 0.25rem;">
+        <style>
+            /* ── TICKET PORTAL EXECUTIVE STYLES ── */
+            .ims-ticket-container {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+                animation: imsTicketFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+            }
 
-            {{-- 1. Gangguan Layanan (Purple-Blue) --}}
-            <a href="{{ url('/admin/tickets?category=gangguan') }}" style="background: linear-gradient(135deg, #5870f5 0%, #6b82fa 100%); border-radius: 14px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(88, 112, 245, 0.22); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(88, 112, 245, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(88, 112, 245, 0.22)';">
-                <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                    <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Gangguan Layanan</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $counts['gangguan'] }} Tiket</span>
-                </div>
-                <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                </div>
-            </a>
+            @keyframes imsTicketFadeIn {
+                from { opacity: 0; transform: translateY(12px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
 
-            {{-- 2. Ubah Password (Pink-Red) --}}
-            <a href="{{ url('/admin/tickets?category=ubah_password') }}" style="background: linear-gradient(135deg, #ff5e73 0%, #ff788a 100%); border-radius: 14px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(255, 94, 115, 0.22); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(255, 94, 115, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(255, 94, 115, 0.22)';">
-                <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                    <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Ubah Password</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $counts['ubah_password'] }} Tiket</span>
-                </div>
-                <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-            </a>
+            @keyframes imsPulseGreen {
+                0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+                70% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+                100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+            }
 
-            {{-- 3. Cek Coverage Area (Golden Yellow) --}}
-            <a href="{{ url('/admin/tickets?category=coverage') }}" style="background: linear-gradient(135deg, #eeb037 0%, #f6c459 100%); border-radius: 14px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(238, 176, 55, 0.22); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(238, 176, 55, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(238, 176, 55, 0.22)';">
-                <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                    <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Cek Coverage Area</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $counts['coverage'] }} Tiket</span>
-                </div>
-                <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                </div>
-            </a>
+            /* ── HERO BANNER ── */
+            .ims-ticket-hero {
+                position: relative;
+                overflow: hidden;
+                border-radius: 20px;
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f172a 100%);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.25);
+                padding: 1.75rem 2rem;
+                color: #ffffff;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1.5rem;
+            }
 
-            {{-- 4. Terminasi (Purple-Blue) --}}
-            <a href="{{ url('/admin/service-terminations') }}" style="background: linear-gradient(135deg, #5870f5 0%, #6b82fa 100%); border-radius: 14px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(88, 112, 245, 0.22); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(88, 112, 245, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(88, 112, 245, 0.22)';">
-                <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                    <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Terminasi</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $counts['terminasi'] }} Tiket</span>
-                </div>
-                <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                </div>
-            </a>
+            .ims-ticket-hero::after {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -10%;
+                width: 380px;
+                height: 380px;
+                background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(56, 189, 248, 0) 70%);
+                pointer-events: none;
+            }
 
-            {{-- 5. Suspend Layanan (Pink-Red) --}}
-            <a href="{{ url('/admin/service-suspensions') }}" style="background: linear-gradient(135deg, #ff5e73 0%, #ff788a 100%); border-radius: 14px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(255, 94, 115, 0.22); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(255, 94, 115, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(255, 94, 115, 0.22)';">
-                <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                    <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Suspend Layanan</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $counts['suspend'] }} Tiket</span>
-                </div>
-                <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-            </a>
+            .ims-ticket-hero-left {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                z-index: 1;
+                max-width: 620px;
+            }
 
-            {{-- 6. Pemasangan Baru (Golden Yellow) --}}
-            <a href="{{ url('/admin/installation-pipelines') }}" style="background: linear-gradient(135deg, #eeb037 0%, #f6c459 100%); border-radius: 14px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(238, 176, 55, 0.22); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(238, 176, 55, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(238, 176, 55, 0.22)';">
-                <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                    <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Pemasangan Baru</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $counts['psb'] }} Tiket</span>
-                </div>
-                <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                </div>
-            </a>
+            .ims-ticket-live-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba(34, 197, 94, 0.15);
+                border: 1px solid rgba(34, 197, 94, 0.35);
+                color: #4ade80;
+                padding: 0.25rem 0.75rem;
+                border-radius: 9999px;
+                font-size: 0.72rem;
+                font-weight: 800;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+                width: fit-content;
+            }
 
-            {{-- 7. Ubah Layanan (Soft Cyan/Turquoise) --}}
-            <a href="{{ url('/admin/package-mutations') }}" style="background: linear-gradient(135deg, #22c9e2 0%, #46ddf2 100%); border-radius: 14px; padding: 1.4rem 1.6rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 14px rgba(34, 201, 226, 0.22); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(34, 201, 226, 0.35)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 14px rgba(34, 201, 226, 0.22)';">
-                <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                    <span style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.01em; color: #ffffff;">Ubah Layanan</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">{{ $counts['ubah_layanan'] }} Tiket</span>
+            .ims-live-dot {
+                width: 8px;
+                height: 8px;
+                background-color: #22c55e;
+                border-radius: 50%;
+                display: inline-block;
+                animation: imsPulseGreen 2s infinite;
+            }
+
+            .ims-ticket-hero-title {
+                font-size: 1.45rem;
+                font-weight: 900;
+                letter-spacing: -0.02em;
+                color: #ffffff;
+                margin: 0;
+                line-height: 1.25;
+            }
+
+            .ims-ticket-hero-desc {
+                font-size: 0.84rem;
+                color: #94a3b8;
+                line-height: 1.5;
+                margin: 0;
+            }
+
+            .ims-ticket-hero-right {
+                display: flex;
+                align-items: center;
+                gap: 0.85rem;
+                z-index: 1;
+                flex-wrap: wrap;
+            }
+
+            .ims-ticket-stat-box {
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                backdrop-filter: blur(8px);
+                border-radius: 14px;
+                padding: 0.75rem 1.25rem;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                min-width: 130px;
+            }
+
+            .ims-ticket-stat-val {
+                font-size: 1.75rem;
+                font-weight: 900;
+                color: #38bdf8;
+                line-height: 1;
+            }
+
+            .ims-ticket-stat-lbl {
+                font-size: 0.68rem;
+                font-weight: 700;
+                color: #cbd5e1;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-top: 0.2rem;
+            }
+
+            .ims-btn-action-all {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: linear-gradient(135deg, #0284c7 0%, #0050d8 100%);
+                color: #ffffff !important;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 12px;
+                padding: 0.75rem 1.25rem;
+                font-size: 0.82rem;
+                font-weight: 800;
+                text-decoration: none !important;
+                box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .ims-btn-action-all:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+                background: linear-gradient(135deg, #0369a1 0%, #003db3 100%);
+            }
+
+            /* ── GRID SYSTEM ── */
+            .ims-ticket-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+                gap: 1.25rem;
+            }
+
+            /* ── LUXURY EXECUTIVE TICKET CARDS ── */
+            .ims-ticket-card {
+                position: relative;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 18px;
+                padding: 1.4rem 1.5rem;
+                text-decoration: none !important;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                gap: 1.15rem;
+                box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
+                transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+                overflow: hidden;
+                cursor: pointer;
+            }
+
+            .ims-ticket-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                transition: height 0.25s ease;
+            }
+
+            .ims-ticket-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 16px 32px -4px rgba(15, 23, 42, 0.12);
+                border-color: #cbd5e1;
+            }
+
+            .ims-ticket-card:hover::before {
+                height: 6px;
+            }
+
+            /* Card Accents */
+            .ims-card-gangguan::before { background: linear-gradient(90deg, #e11d48, #f43f5e); }
+            .ims-card-gangguan:hover { border-color: #fca5a5; }
+            .ims-card-gangguan .ims-card-icon-wrap { background: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6; }
+            .ims-card-gangguan .ims-count-badge { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
+            .ims-card-gangguan:hover .ims-card-arrow { color: #e11d48; }
+
+            .ims-card-password::before { background: linear-gradient(90deg, #4f46e5, #6366f1); }
+            .ims-card-password:hover { border-color: #c7d2fe; }
+            .ims-card-password .ims-card-icon-wrap { background: #eef2ff; color: #4f46e5; border: 1px solid #e0e7ff; }
+            .ims-card-password .ims-count-badge { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+            .ims-card-password:hover .ims-card-arrow { color: #4f46e5; }
+
+            .ims-card-coverage::before { background: linear-gradient(90deg, #059669, #10b981); }
+            .ims-card-coverage:hover { border-color: #a7f3d0; }
+            .ims-card-coverage .ims-card-icon-wrap { background: #ecfdf5; color: #059669; border: 1px solid #d1fae5; }
+            .ims-card-coverage .ims-count-badge { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+            .ims-card-coverage:hover .ims-card-arrow { color: #059669; }
+
+            .ims-card-terminasi::before { background: linear-gradient(90deg, #475569, #64748b); }
+            .ims-card-terminasi:hover { border-color: #cbd5e1; }
+            .ims-card-terminasi .ims-card-icon-wrap { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
+            .ims-card-terminasi .ims-count-badge { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+            .ims-card-terminasi:hover .ims-card-arrow { color: #475569; }
+
+            .ims-card-suspend::before { background: linear-gradient(90deg, #d97706, #f59e0b); }
+            .ims-card-suspend:hover { border-color: #fde68a; }
+            .ims-card-suspend .ims-card-icon-wrap { background: #fffbeb; color: #d97706; border: 1px solid #fef3c7; }
+            .ims-card-suspend .ims-count-badge { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+            .ims-card-suspend:hover .ims-card-arrow { color: #d97706; }
+
+            .ims-card-psb::before { background: linear-gradient(90deg, #0284c7, #38bdf8); }
+            .ims-card-psb:hover { border-color: #bae6fd; }
+            .ims-card-psb .ims-card-icon-wrap { background: #f0f9ff; color: #0284c7; border: 1px solid #e0f2fe; }
+            .ims-card-psb .ims-count-badge { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
+            .ims-card-psb:hover .ims-card-arrow { color: #0284c7; }
+
+            .ims-card-mutasi::before { background: linear-gradient(90deg, #7c3aed, #8b5cf6); }
+            .ims-card-mutasi:hover { border-color: #ddd6fe; }
+            .ims-card-mutasi .ims-card-icon-wrap { background: #f5f3ff; color: #7c3aed; border: 1px solid #ede9fe; }
+            .ims-card-mutasi .ims-count-badge { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+            .ims-card-mutasi:hover .ims-card-arrow { color: #7c3aed; }
+
+            /* Card Content Layout */
+            .ims-card-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.75rem;
+            }
+
+            .ims-card-icon-wrap {
+                width: 46px;
+                height: 46px;
+                border-radius: 13px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                transition: transform 0.2s ease;
+            }
+
+            .ims-ticket-card:hover .ims-card-icon-wrap {
+                transform: scale(1.06);
+            }
+
+            .ims-count-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                padding: 0.3rem 0.75rem;
+                border-radius: 9999px;
+                font-size: 0.75rem;
+                font-weight: 800;
+                letter-spacing: -0.01em;
+            }
+
+            .ims-card-middle {
+                display: flex;
+                flex-direction: column;
+                gap: 0.35rem;
+            }
+
+            .ims-card-title {
+                font-size: 1.12rem;
+                font-weight: 900;
+                color: #0f172a;
+                letter-spacing: -0.02em;
+                margin: 0;
+                line-height: 1.25;
+            }
+
+            .ims-card-desc {
+                font-size: 0.78rem;
+                color: #64748b;
+                line-height: 1.45;
+                font-weight: 500;
+                margin: 0;
+            }
+
+            .ims-card-bottom {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: 0.85rem;
+                border-top: 1px solid #f1f5f9;
+                font-size: 0.78rem;
+                font-weight: 700;
+                color: #64748b;
+            }
+
+            .ims-card-arrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                font-weight: 800;
+                transition: transform 0.2s ease, color 0.2s ease;
+            }
+
+            .ims-ticket-card:hover .ims-card-arrow {
+                transform: translateX(4px);
+            }
+        </style>
+
+        <div class="ims-ticket-container">
+
+            {{-- ── HERO / DISPATCH HEADER ── --}}
+            <div class="ims-ticket-hero">
+                <div class="ims-ticket-hero-left">
+                    <div class="ims-ticket-live-pill">
+                        <span class="ims-live-dot"></span>
+                        NOC & Helpdesk Dispatch Portal
+                    </div>
+                    <h1 class="ims-ticket-hero-title">Portal Manajemen Tiket & Layanan</h1>
+                    <p class="ims-ticket-hero-desc">
+                        Monitoring antrian keluhan teknis, gangguan jaringan fiber optik, permohonan pelanggan, dan alur operasional lapangan secara terpusat.
+                    </p>
                 </div>
-                <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.22); border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <svg style="width: 24px; height: 24px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+
+                <div class="ims-ticket-hero-right">
+                    <div class="ims-ticket-stat-box">
+                        <span class="ims-ticket-stat-val">{{ $totalActive }}</span>
+                        <span class="ims-ticket-stat-lbl">Total Antrian</span>
+                    </div>
+
+                    <a href="{{ url('/admin/tickets?category=all') }}" class="ims-btn-action-all">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                        <span>Lihat Semua Tiket</span>
+                    </a>
                 </div>
-            </a>
+            </div>
+
+            {{-- ── GRID PORTAL KARTU TIKET ── --}}
+            <div class="ims-ticket-grid">
+
+                {{-- 1. Gangguan Layanan --}}
+                <a href="{{ url('/admin/tickets?category=gangguan') }}" class="ims-ticket-card ims-card-gangguan">
+                    <div class="ims-card-top">
+                        <div class="ims-card-icon-wrap">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                        <span class="ims-count-badge">{{ $counts['gangguan'] }} Tiket</span>
+                    </div>
+                    <div class="ims-card-middle">
+                        <h2 class="ims-card-title">Gangguan Layanan</h2>
+                        <p class="ims-card-desc">Laporan LOS (Red/Bending), kabel putus, redaman tinggi, koneksi lambat & penanganan helpdesk.</p>
+                    </div>
+                    <div class="ims-card-bottom">
+                        <span>Buka Helpdesk NOC</span>
+                        <span class="ims-card-arrow">&rarr;</span>
+                    </div>
+                </a>
+
+                {{-- 2. Ubah Password --}}
+                <a href="{{ url('/admin/tickets?category=ubah_password') }}" class="ims-ticket-card ims-card-password">
+                    <div class="ims-card-top">
+                        <div class="ims-card-icon-wrap">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                            </svg>
+                        </div>
+                        <span class="ims-count-badge">{{ $counts['ubah_password'] }} Tiket</span>
+                    </div>
+                    <div class="ims-card-middle">
+                        <h2 class="ims-card-title">Ubah Password</h2>
+                        <p class="ims-card-desc">Permintaan reset kata sandi WiFi / SSID, verifikasi data pelanggan, & konfigurasi ONT.</p>
+                    </div>
+                    <div class="ims-card-bottom">
+                        <span>Buka Permintaan</span>
+                        <span class="ims-card-arrow">&rarr;</span>
+                    </div>
+                </a>
+
+                {{-- 3. Cek Coverage Area --}}
+                <a href="{{ url('/admin/tickets?category=coverage') }}" class="ims-ticket-card ims-card-coverage">
+                    <div class="ims-card-top">
+                        <div class="ims-card-icon-wrap">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <span class="ims-count-badge">{{ $counts['coverage'] }} Tiket</span>
+                    </div>
+                    <div class="ims-card-middle">
+                        <h2 class="ims-card-title">Cek Coverage Area</h2>
+                        <p class="ims-card-desc">Survey jangkauan fiber optik, pengecekan ketersediaan port ODP & kelayakan pasang baru.</p>
+                    </div>
+                    <div class="ims-card-bottom">
+                        <span>Buka Survey Area</span>
+                        <span class="ims-card-arrow">&rarr;</span>
+                    </div>
+                </a>
+
+                {{-- 4. Pemasangan Baru (PSB) --}}
+                <a href="{{ url('/admin/installation-pipelines') }}" class="ims-ticket-card ims-card-psb">
+                    <div class="ims-card-top">
+                        <div class="ims-card-icon-wrap">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                        </div>
+                        <span class="ims-count-badge">{{ $counts['psb'] }} Antrian</span>
+                    </div>
+                    <div class="ims-card-middle">
+                        <h2 class="ims-card-title">Pemasangan Baru (PSB)</h2>
+                        <p class="ims-card-desc">Pipeline instalasi teknisi, penarikan kabel dropcore, aktivasi ONU/ONT & validasi billing.</p>
+                    </div>
+                    <div class="ims-card-bottom">
+                        <span>Pipeline Instalasi</span>
+                        <span class="ims-card-arrow">&rarr;</span>
+                    </div>
+                </a>
+
+                {{-- 5. Ubah Layanan --}}
+                <a href="{{ url('/admin/package-mutations') }}" class="ims-ticket-card ims-card-mutasi">
+                    <div class="ims-card-top">
+                        <div class="ims-card-icon-wrap">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                            </svg>
+                        </div>
+                        <span class="ims-count-badge">{{ $counts['ubah_layanan'] }} Tiket</span>
+                    </div>
+                    <div class="ims-card-middle">
+                        <h2 class="ims-card-title">Ubah Layanan</h2>
+                        <p class="ims-card-desc">Permohonan upgrade/downgrade bandwidth paket, mutasi profil speed, & penyesuaian tagihan.</p>
+                    </div>
+                    <div class="ims-card-bottom">
+                        <span>Buka Mutasi Paket</span>
+                        <span class="ims-card-arrow">&rarr;</span>
+                    </div>
+                </a>
+
+                {{-- 6. Suspend Layanan --}}
+                <a href="{{ url('/admin/service-suspensions') }}" class="ims-ticket-card ims-card-suspend">
+                    <div class="ims-card-top">
+                        <div class="ims-card-icon-wrap">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <span class="ims-count-badge">{{ $counts['suspend'] }} Tiket</span>
+                    </div>
+                    <div class="ims-card-middle">
+                        <h2 class="ims-card-title">Suspend Layanan</h2>
+                        <p class="ims-card-desc">Daftar isolir sementara pelanggan akibat keterlambatan pembayaran atau cuti berlangganan.</p>
+                    </div>
+                    <div class="ims-card-bottom">
+                        <span>Daftar Isolir</span>
+                        <span class="ims-card-arrow">&rarr;</span>
+                    </div>
+                </a>
+
+                {{-- 7. Terminasi Layanan --}}
+                <a href="{{ url('/admin/service-terminations') }}" class="ims-ticket-card ims-card-terminasi">
+                    <div class="ims-card-top">
+                        <div class="ims-card-icon-wrap">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                            </svg>
+                        </div>
+                        <span class="ims-count-badge">{{ $counts['terminasi'] }} Tiket</span>
+                    </div>
+                    <div class="ims-card-middle">
+                        <h2 class="ims-card-title">Terminasi Layanan</h2>
+                        <p class="ims-card-desc">Pemutusan layanan permanen, penyelesaian administrasi akhir, & penarikan perangkat ONT.</p>
+                    </div>
+                    <div class="ims-card-bottom">
+                        <span>Daftar Pencabutan</span>
+                        <span class="ims-card-arrow">&rarr;</span>
+                    </div>
+                </a>
+
+            </div>
 
         </div>
     @else
@@ -90,3 +509,4 @@
         {{ $this->table }}
     @endif
 </x-filament-panels::page>
+
