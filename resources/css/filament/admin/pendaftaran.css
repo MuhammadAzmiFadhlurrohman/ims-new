@@ -275,8 +275,8 @@ table.fi-ta-table tbody tr:hover td:first-child {
     align-items: stretch !important;
     justify-content: center !important;
     gap: 0.22rem !important;
-    min-width: 100px !important;
-    max-width: 110px !important;
+    min-width: 110px !important;
+    max-width: 120px !important;
     width: 100% !important;
 }
 
@@ -291,9 +291,20 @@ table.fi-ta-table tbody tr:hover td:first-child {
 .fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)) button {
     width: 100% !important;
     justify-content: center !important;
-    padding: 0.22rem 0.45rem !important;
-    font-size: 0.68rem !important;
+    padding: 0.22rem 0.4rem !important;
+    font-size: 0.67rem !important;
     border-radius: 6px !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+}
+
+.fi-page-list-monthly-invoices .fi-ta-actions .fi-btn-label,
+.fi-page-list-registration-invoices .fi-ta-actions .fi-btn-label,
+[class*="monthly-invoices"] .fi-ta-actions .fi-btn-label,
+[class*="registration-invoices"] .fi-ta-actions .fi-btn-label {
+    white-space: nowrap !important;
+    font-size: 0.67rem !important;
+    letter-spacing: -0.01em !important;
 }
 
 

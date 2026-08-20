@@ -480,8 +480,8 @@ body:has([class*="invoice"]) .fi-ta-actions,
     justify-content: center !important;
     gap: 0.22rem !important;
     width: 100% !important;
-    min-width: 98px !important;
-    max-width: 108px !important;
+    min-width: 110px !important;
+    max-width: 120px !important;
 }
 
 body:has([class*="monthly-invoices"]) .fi-ta-actions .fi-btn,
@@ -493,17 +493,29 @@ body:has([class*="invoice"]) .fi-ta-actions .fi-btn,
 .fi-page-list-registration-invoices .fi-ta-actions .fi-btn {
     width: 100% !important;
     justify-content: center !important;
-    padding: 0.2rem 0.45rem !important;
-    font-size: 0.68rem !important;
+    padding: 0.22rem 0.4rem !important;
+    font-size: 0.67rem !important;
     border-radius: 6px !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+}
+
+body:has([class*="monthly-invoices"]) .fi-ta-actions .fi-btn-label,
+body:has([class*="registration-invoices"]) .fi-ta-actions .fi-btn-label,
+body:has([class*="invoice"]) .fi-ta-actions .fi-btn-label,
+.fi-resource-monthly-invoices .fi-ta-actions .fi-btn-label,
+.fi-resource-registration-invoices .fi-ta-actions .fi-btn-label {
+    white-space: nowrap !important;
+    font-size: 0.67rem !important;
+    letter-spacing: -0.01em !important;
 }
 
 body:has([class*="monthly-invoices"]) .fi-ta-actions .fi-btn svg,
 body:has([class*="registration-invoices"]) .fi-ta-actions .fi-btn svg,
 .fi-resource-monthly-invoices .fi-ta-actions .fi-btn svg,
 .fi-page-list-monthly-invoices .fi-ta-actions .fi-btn svg {
-    width: 12px !important;
-    height: 12px !important;
+    width: 11px !important;
+    height: 11px !important;
 }
 
 /* Pagination Bar */

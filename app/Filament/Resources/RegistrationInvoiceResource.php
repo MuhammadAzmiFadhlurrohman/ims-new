@@ -104,12 +104,12 @@ class RegistrationInvoiceResource extends Resource
                         $custUrl = $sub ? CustomerSubscriptionResource::getUrl('view', ['record' => $sub]) : '#';
 
                         return "
-                            <div class='flex flex-col text-[11px] leading-tight space-y-0.5 py-1' style='max-width: 220px;'>
-                                <span class='text-slate-500 font-mono text-[10.5px]'>{$invNo}</span>
-                                <a href='{$custUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 transition-colors uppercase tracking-tight truncate'>
-                                    {$internetNo} / {$custName} ({$custName}) {$gender}
+                            <div class='flex flex-col text-[10.5px] leading-tight space-y-0.5 py-0.5' style='max-width: 170px;'>
+                                <span class='text-slate-500 font-mono text-[9.5px]'>{$invNo}</span>
+                                <a href='{$custUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 transition-colors uppercase tracking-tight truncate' title='{$custName}'>
+                                    {$internetNo} / {$custName} {$gender}
                                 </a>
-                                <a href='{$custUrl}' class='text-slate-800 underline font-semibold text-[10.5px] hover:text-indigo-600 transition-colors uppercase truncate'>
+                                <a href='{$custUrl}' class='text-slate-800 underline font-semibold text-[9.5px] hover:text-indigo-600 transition-colors uppercase truncate'>
                                     {$packageName}
                                 </a>
                             </div>
@@ -135,9 +135,9 @@ class RegistrationInvoiceResource extends Resource
 
                         if (!$isPaid) {
                             return "
-                                <div class='flex flex-col text-[11px] leading-snug space-y-0.5 py-1'>
+                                <div class='flex flex-col text-[10px] leading-snug space-y-0.5 py-0.5' style='max-width: 170px;'>
                                     <span class='text-slate-700 font-semibold'>Billing Belum diPublish</span>
-                                    <a href='{$pdfUrl}' target='_blank' class='text-blue-600 underline font-medium text-[10px] hover:text-blue-800 break-all truncate' title='Buka / Cetak Invoice Registrasi PDF'>
+                                    <a href='{$pdfUrl}' target='_blank' class='text-blue-600 underline font-medium text-[9.5px] hover:text-blue-800 break-all truncate' title='Buka / Cetak Invoice Registrasi PDF'>
                                         {$pdfName}
                                     </a>
                                 </div>
@@ -146,9 +146,9 @@ class RegistrationInvoiceResource extends Resource
 
                         $dateStr = $record->created_at ? $record->created_at->format('d M Y H:i') : '-';
                         return "
-                            <div class='flex flex-col text-[11px] leading-snug space-y-0.5 py-1'>
+                            <div class='flex flex-col text-[10px] leading-snug space-y-0.5 py-0.5' style='max-width: 170px;'>
                                 <span class='text-slate-900 font-semibold'>Terbit: {$dateStr}</span>
-                                <a href='{$pdfUrl}' target='_blank' class='text-blue-600 underline font-medium text-[10px] mt-0.5 hover:text-blue-800 break-all truncate' title='Buka / Cetak Invoice Registrasi PDF'>
+                                <a href='{$pdfUrl}' target='_blank' class='text-blue-600 underline font-medium text-[9.5px] mt-0.5 hover:text-blue-800 break-all truncate' title='Buka / Cetak Invoice Registrasi PDF'>
                                     {$pdfName}
                                 </a>
                             </div>
@@ -164,10 +164,10 @@ class RegistrationInvoiceResource extends Resource
                         $formatted = number_format($amount, 2, ',', '.');
                         $isPaid = ($record->payment_status === 'PAID');
 
-                        $lockIcon = !$isPaid ? "<span style='font-size: 11px; margin-left: 3px;'>🔒</span>" : "";
+                        $lockIcon = !$isPaid ? "<span style='font-size: 10.5px; margin-left: 2px;'>🔒</span>" : "";
 
                         return "
-                            <div class='text-[12px] font-black text-slate-900 whitespace-nowrap'>
+                            <div class='text-[11px] font-black text-slate-900 whitespace-nowrap'>
                                 Rp {$formatted} {$lockIcon}
                             </div>
                         ";
@@ -182,8 +182,8 @@ class RegistrationInvoiceResource extends Resource
                         $status = strtoupper($record->payment_status ?? 'UNPAID');
 
                         return match ($status) {
-                            'PAID' => "<span style='background: #dcfce7; color: #15803d; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;'>Paid</span>",
-                            default => "<span style='background: #eef2ff; color: #6366f1; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: 700;'>Draft Billing</span>",
+                            'PAID' => "<span style='background: #dcfce7; color: #15803d; padding: 2.5px 8px; border-radius: 9999px; font-size: 10px; font-weight: 700;'>Paid</span>",
+                            default => "<span style='background: #eef2ff; color: #6366f1; padding: 2.5px 8px; border-radius: 9999px; font-size: 10px; font-weight: 700;'>Draft Billing</span>",
                         };
                     }),
 
@@ -195,25 +195,25 @@ class RegistrationInvoiceResource extends Resource
                         $method = strtoupper($record->payment_method ?? 'MIDTRANS');
                         $badgeText = match ($method) {
                             'MANUAL TRANSFER', 'TRANSFER' => 'Manual Transfer',
-                            'CASH TO COLLECTOR', 'CASH', 'TUNAI' => 'Cash To Collector',
+                            'CASH TO COLLECTOR', 'CASH', 'TUNAI' => 'Cash Collector',
                             default => '▲ Midtrans',
                         };
 
                         $safeKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey());
 
                         return "
-                            <div class='flex flex-col items-start gap-1 py-1'>
+                            <div class='flex flex-col items-start gap-1 py-0.5'>
                                 <button
                                     type='button'
                                     onclick=\"document.querySelector('.ims-paymethod-trigger-{$safeKey}')?.click()\"
                                     title='Klik untuk mengubah metode pembayaran'
-                                    style='background: #6366f1; color: #ffffff; padding: 4px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 2px rgba(99,102,241,0.25); cursor: pointer; border: none; transition: transform 0.15s, opacity 0.15s;'
+                                    style='background: #6366f1; color: #ffffff; padding: 2.5px 8px; border-radius: 4px; font-size: 9.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 2px; box-shadow: 0 1px 2px rgba(99,102,241,0.25); cursor: pointer; border: none; transition: transform 0.15s, opacity 0.15s;'
                                     onmouseover='this.style.opacity=\"0.85\"; this.style.transform=\"translateY(-1px)\";'
                                     onmouseout='this.style.opacity=\"1\"; this.style.transform=\"none\";'
                                 >
                                     {$badgeText}
                                 </button>
-                                <div style='display: flex; align-items: center; gap: 6px; font-size: 10px; color: #f43f5e; font-weight: 600;'>
+                                <div style='display: flex; align-items: center; gap: 4px; font-size: 9px; color: #f43f5e; font-weight: 600;'>
                                     <span style='text-decoration: underline;'>🗲 UnSend</span>
                                     <span style='text-decoration: underline;'>✉ UnSend</span>
                                 </div>
@@ -299,7 +299,9 @@ class RegistrationInvoiceResource extends Resource
             ->actions([
                 // ── 0. CHANGE PAYMENT METHOD MODAL (Dipicu dari klik badge) ──
                 Tables\Actions\Action::make('change_payment_method')
-                    ->label('Change Payment Method')
+                    ->label('Change Payment')
+                    ->icon('heroicon-m-credit-card')
+                    ->color('primary')
                     ->modalHeading('Change Payment Method')
                     ->modalWidth('2xl')
                     ->modalSubmitActionLabel('Update')
