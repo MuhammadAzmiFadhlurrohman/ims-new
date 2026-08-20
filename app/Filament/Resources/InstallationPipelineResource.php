@@ -584,7 +584,7 @@ class InstallationPipelineResource extends Resource
                                     <div style='display: flex; align-items: center; gap: 6px; margin-top: 4px;'>
                                         <button
                                             type='button'
-                                            onclick=\"document.querySelector('.ims-status-trigger-{$safeKey}')?.click()\"
+                                            onclick=\"window.openImsStatusModal && window.openImsStatusModal('{$key}', '{$statusType}')\"
                                             class='ims-temp-badge'
                                         >
                                             {$statusType}
@@ -595,7 +595,7 @@ class InstallationPipelineResource extends Resource
                                 <div class='ims-card-sep'></div>
                                 <button
                                     type='button'
-                                    onclick=\"document.querySelector('.ims-detail-trigger-{$safeKey}')?.click()\"
+                                    wire:click=\"mountTableAction('detail_lengkap', '{$key}')\"
                                     class='ims-card-detail-btn'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -818,6 +818,7 @@ class InstallationPipelineResource extends Resource
                         $fullAddrStr = implode(', ', array_filter([$address, $rtrw, $kel, $kec, $city, $prov]));
                         $latLong = $record->lat_long ?? '-';
                         $mapsUrl = $record->maps_url ?? '';
+                        $mapsLink = $mapsUrl ? "<a href='{$mapsUrl}' target='_blank' style='color: #0284c7; font-weight: 700; text-decoration: underline; margin-left: 6px;'>🗺️ Buka Maps</a>" : '';
                         $status = $record->registration_status ?? 'Data Input';
                         $statusType = strtoupper($record->status_type ?? 'TEMPORARY DELETE');
                         $sales = strtoupper($record->sales_name ?? '-');
@@ -866,13 +867,13 @@ class InstallationPipelineResource extends Resource
                                 <div style='background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px;'>
                                     <div style='font-size: 11px; font-weight: 800; color: #0284c7; text-transform: uppercase; margin-bottom: 8px;'>⚡ Tindakan & Aksi Operasional</div>
                                     <div style='display: flex; flex-wrap: wrap; gap: 8px;'>
-                                        <button type='button' onclick=\"document.querySelector('.ims-status-trigger-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>✏️ Ubah Status Tipe</button>
-                                        <button type='button' onclick=\"document.querySelector('.ims-act-survey-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>📅 Jadwal Survey</button>
-                                        <button type='button' onclick=\"document.querySelector('.ims-act-repsurvey-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>📋 Report Survey</button>
-                                        <button type='button' onclick=\"document.querySelector('.ims-act-instalasi-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>🔧 Jadwal Instalasi</button>
-                                        <button type='button' onclick=\"document.querySelector('.ims-act-repinstalasi-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>✅ Report Instalasi</button>
-                                        <button type='button' onclick=\"document.querySelector('.ims-act-aktivasi-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>🚀 Posting Aktivasi</button>
-                                        <button type='button' onclick=\"document.querySelector('.ims-act-batal-{$safeKey}')?.click()\" style='padding: 6px 12px; background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>❌ Batal Pasang</button>
+                                        <button type='button' onclick=\"window.openImsStatusModal && window.openImsStatusModal('{$key}', '{$statusType}')\" style='padding: 6px 12px; background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>✏️ Ubah Status Tipe</button>
+                                        <button type='button' wire:click=\"mountTableAction('jadwal_survey', '{$key}')\" style='padding: 6px 12px; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>📅 Jadwal Survey</button>
+                                        <button type='button' wire:click=\"mountTableAction('report_survey', '{$key}')\" style='padding: 6px 12px; background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>📋 Report Survey</button>
+                                        <button type='button' wire:click=\"mountTableAction('jadwal_instalasi', '{$key}')\" style='padding: 6px 12px; background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>🔧 Jadwal Instalasi</button>
+                                        <button type='button' wire:click=\"mountTableAction('report_instalasi', '{$key}')\" style='padding: 6px 12px; background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>✅ Report Instalasi</button>
+                                        <button type='button' wire:click=\"mountTableAction('posting_aktivasi', '{$key}')\" style='padding: 6px 12px; background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>🚀 Posting Aktivasi</button>
+                                        <button type='button' wire:click=\"mountTableAction('batal_pasang', '{$key}')\" style='padding: 6px 12px; background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>❌ Batal Pasang</button>
                                     </div>
                                 </div>
                             </div>
