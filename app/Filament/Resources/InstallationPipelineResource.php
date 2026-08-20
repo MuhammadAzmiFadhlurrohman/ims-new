@@ -1587,8 +1587,8 @@ class InstallationPipelineResource extends Resource
                             ->send();
                     })
                     ->visible(fn (CustomerSubscription $record) =>
-                        in_array($record->registration_status, ['Proses Aktivasi', 'POSTING AKTIVASI', 'Jadwal Aktivasi Terbit', 'Jadwal Akt', 'Jadwal Aktivasi']) ||
-                        str_contains(strtolower($record->registration_status ?? ''), 'akt')
+                        in_array($record->registration_status, ['Proses Aktivasi', 'POSTING AKTIVASI']) ||
+                        str_contains(strtolower($record->registration_status ?? ''), 'proses akt')
                     ),
 
                 // ── 8. EDIT & HAPUS ──────────────────────────────────────────
