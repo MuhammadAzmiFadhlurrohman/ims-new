@@ -303,15 +303,15 @@
         <div class="ims-distribution-card">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
                 <div>
-                    <h3 style="font-size: 0.95rem; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                    <h3 class="ims-dist-title" style="font-size: 0.95rem; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                         <svg style="width: 18px; height: 18px; color: #2563eb;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                         GRAFIK DISTRIBUSI STATUS PELANGGAN
                     </h3>
-                    <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">
+                    <div class="ims-dist-sub" style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">
                         Rasio pelanggan Aktif (Live), Suspend (Isolir), dan Terminasi
                     </div>
                 </div>
-                <div style="font-size: 0.8rem; font-weight: 800; color: #475569;">
+                <div class="ims-dist-total" style="font-size: 0.8rem; font-weight: 800; color: #475569;">
                     Total Keseluruhan: <span style="color: #2563eb; font-weight: 900;" x-text="displayTotal"></span> User
                 </div>
             </div>
