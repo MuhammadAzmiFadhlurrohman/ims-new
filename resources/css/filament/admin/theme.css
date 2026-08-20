@@ -1023,7 +1023,7 @@ html.dark .fi-ta-header-cell-label {
     }
 
     /* ══════════════════════════════════════════════════════════════
-       MOBILE TABLE-TO-CARD TRANSFORMATION (< 1024px)
+       PREMIUM MOBILE TABLE-TO-CARD DESIGN SYSTEM (< 1024px)
        ══════════════════════════════════════════════════════════════ */
     .fi-ta-ctn {
         background: transparent !important;
@@ -1047,21 +1047,22 @@ html.dark .fi-ta-header-cell-label {
     /* Mobile Table Toolbar / Search */
     .fi-ta-header-toolbar,
     .fi-ta-header {
-        padding: 0.75rem 0.95rem !important;
+        padding: 0.85rem 1rem !important;
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 14px !important;
+        border-radius: 16px !important;
         margin-bottom: 0.85rem !important;
         flex-direction: column !important;
         align-items: stretch !important;
         gap: 0.5rem !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
     }
 
     html.dark .fi-ta-header-toolbar,
     html.dark .fi-ta-header {
         background: #08192e !important;
         border-color: #14355a !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
     }
 
     .fi-ta-search-field {
@@ -1070,15 +1071,16 @@ html.dark .fi-ta-header-cell-label {
 
     .fi-ta-search-field input {
         width: 100% !important;
-        height: 2.5rem !important;
-        font-size: 0.82rem !important;
-        border-radius: 10px !important;
+        height: 2.6rem !important;
+        font-size: 0.84rem !important;
+        border-radius: 12px !important;
     }
 
     .fi-ta-filter-trigger-btn {
         width: 100% !important;
         justify-content: center !important;
-        height: 2.4rem !important;
+        height: 2.5rem !important;
+        border-radius: 12px !important;
     }
 
     /* Convert Table & Tbody into Vertical Flex List */
@@ -1086,78 +1088,120 @@ html.dark .fi-ta-header-cell-label {
         display: block !important;
         width: 100% !important;
         background: transparent !important;
+        border: none !important;
     }
 
     table.fi-ta-table tbody {
         display: flex !important;
         flex-direction: column !important;
-        gap: 0.85rem !important;
+        gap: 1rem !important;
         width: 100% !important;
     }
 
-    /* Convert Table Rows into Modern Executive Cards */
+    /* ── EXECUTIVE MOBILE DATA CARD (MATCHING USER SPEC) ── */
     .fi-ta-row,
     table.fi-ta-table tbody tr {
         display: flex !important;
         flex-direction: column !important;
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 16px !important;
-        padding: 1rem 1.15rem !important;
-        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+        border-left: 5px solid #0284c7 !important;
+        border-radius: 18px !important;
+        padding: 1.15rem 1.25rem !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
         gap: 0.45rem !important;
         width: 100% !important;
         box-sizing: border-box !important;
-        transition: all 0.2s ease !important;
+        position: relative !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    }
+
+    /* Dynamic Alternating Left Accent Colors */
+    .fi-ta-row:nth-child(even),
+    table.fi-ta-table tbody tr:nth-child(even) {
+        border-left-color: #059669 !important;
+    }
+
+    .fi-ta-row:nth-child(3n),
+    table.fi-ta-table tbody tr:nth-child(3n) {
+        border-left-color: #881337 !important;
     }
 
     html.dark .fi-ta-row,
     html.dark table.fi-ta-table tbody tr {
         background: #08192e !important;
         border-color: #14355a !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+        border-left-color: #00d4ff !important;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45) !important;
     }
 
-    /* Table Cells inside Cards */
+    html.dark .fi-ta-row:nth-child(even),
+    html.dark table.fi-ta-table tbody tr:nth-child(even) {
+        border-left-color: #10b981 !important;
+    }
+
+    html.dark .fi-ta-row:nth-child(3n),
+    html.dark table.fi-ta-table tbody tr:nth-child(3n) {
+        border-left-color: #f43f5e !important;
+    }
+
+    /* ── Table Cell Rows Inside Card ── */
     .fi-ta-cell,
     table.fi-ta-table td {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        padding: 0.35rem 0 !important;
+        padding: 0.45rem 0 !important;
         border: none !important;
-        border-bottom: 1px dashed #f1f5f9 !important;
+        border-bottom: 1px solid #f1f5f9 !important;
         background: transparent !important;
-        font-size: 0.82rem !important;
+        font-size: 0.84rem !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
 
     html.dark .fi-ta-cell,
     html.dark table.fi-ta-table td {
-        border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+        border-bottom-color: rgba(255, 255, 255, 0.05) !important;
         background: transparent !important;
     }
 
-    /* First Data Cell (Card Title / Identifier) */
+    /* First Cell (Card Header / ID & Primary Title Highlight) */
     .fi-ta-cell:first-child,
     table.fi-ta-table tbody tr td:first-child {
-        padding-bottom: 0.6rem !important;
-        font-weight: 800 !important;
-        font-size: 0.94rem !important;
+        padding-bottom: 0.65rem !important;
+        font-weight: 900 !important;
+        font-size: 0.96rem !important;
+        color: #0f172a !important;
         border-bottom: 1.5px solid #e2e8f0 !important;
     }
 
     html.dark .fi-ta-cell:first-child,
     html.dark table.fi-ta-table tbody tr td:first-child {
+        color: #ffffff !important;
         border-bottom-color: #14355a !important;
     }
 
-    /* Last Data Cell (Card Action Buttons Footer) */
+    .fi-ta-cell-content,
+    .fi-ta-text,
+    .fi-ta-text-item,
+    .fi-ta-text-item-label {
+        font-size: 0.84rem !important;
+        color: #0f172a !important;
+    }
+
+    html.dark .fi-ta-cell-content,
+    html.dark .fi-ta-text,
+    html.dark .fi-ta-text-item,
+    html.dark .fi-ta-text-item-label {
+        color: #e2e8f0 !important;
+    }
+
+    /* Last Cell (Card Footer with Action Buttons) */
     .fi-ta-cell:last-child,
     table.fi-ta-table tbody tr td:last-child {
         border-bottom: none !important;
-        padding-top: 0.75rem !important;
+        padding-top: 0.85rem !important;
         margin-top: 0.35rem !important;
         border-top: 1.5px solid #f1f5f9 !important;
         width: 100% !important;
@@ -1168,22 +1212,15 @@ html.dark .fi-ta-header-cell-label {
         border-top-color: rgba(255, 255, 255, 0.08) !important;
     }
 
-    .fi-ta-cell-content,
-    .fi-ta-text,
-    .fi-ta-text-item,
-    .fi-ta-text-item-label {
-        font-size: 0.82rem !important;
-    }
-
-    /* Mobile Table Action Buttons inside Card */
+    /* ── Card Action Buttons Footer ── */
     .fi-ta-actions,
     table.fi-ta-table td:last-child .fi-ta-actions {
         width: 100% !important;
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
-        justify-content: stretch !important;
-        gap: 0.45rem !important;
+        justify-content: center !important;
+        gap: 0.55rem !important;
         flex-wrap: wrap !important;
         min-width: 0 !important;
         max-width: 100% !important;
@@ -1193,12 +1230,123 @@ html.dark .fi-ta-header-cell-label {
     .fi-ta-actions button,
     .fi-ta-actions a {
         flex: 1 1 auto !important;
-        font-size: 0.74rem !important;
-        padding: 0.45rem 0.85rem !important;
-        border-radius: 9px !important;
+        font-size: 0.76rem !important;
+        font-weight: 800 !important;
+        padding: 0.5rem 0.95rem !important;
+        border-radius: 12px !important;
         gap: 0.35rem !important;
         justify-content: center !important;
-        min-width: 75px !important;
+        min-width: 80px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        transition: all 0.15s ease !important;
+    }
+
+    .fi-ta-actions .fi-btn:hover,
+    .fi-ta-actions button:hover,
+    .fi-ta-actions a:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* Custom Pastel Pill Buttons like reference image */
+    /* 1. Detail / View (Soft Blue Pill) */
+    .fi-ta-actions [class*="color-info"],
+    .fi-ta-actions .fi-btn-color-info,
+    .fi-ta-actions a[class*="color-info"],
+    .fi-ta-actions [class*="view"] {
+        background: #e0f2fe !important;
+        color: #0369a1 !important;
+        -webkit-text-fill-color: #0369a1 !important;
+        border: 1.5px solid #bae6fd !important;
+    }
+
+    .fi-ta-actions [class*="color-info"] svg,
+    .fi-ta-actions [class*="color-info"] *,
+    .fi-ta-actions [class*="view"] svg {
+        color: #0369a1 !important;
+        stroke: #0369a1 !important;
+    }
+
+    /* 2. Edit (Soft Amber Pill) */
+    .fi-ta-actions [class*="color-warning"],
+    .fi-ta-actions .fi-btn-color-warning,
+    .fi-ta-actions a[class*="color-warning"],
+    .fi-ta-actions [class*="edit"] {
+        background: #fef3c7 !important;
+        color: #b45309 !important;
+        -webkit-text-fill-color: #b45309 !important;
+        border: 1.5px solid #fde68a !important;
+    }
+
+    .fi-ta-actions [class*="color-warning"] svg,
+    .fi-ta-actions [class*="color-warning"] *,
+    .fi-ta-actions [class*="edit"] svg {
+        color: #b45309 !important;
+        stroke: #b45309 !important;
+    }
+
+    /* 3. Delete / Hapus (Soft Rose Pill) */
+    .fi-ta-actions [class*="color-danger"],
+    .fi-ta-actions .fi-btn-color-danger,
+    .fi-ta-actions button[class*="color-danger"],
+    .fi-ta-actions [class*="delete"] {
+        background: #ffe4e6 !important;
+        color: #be123c !important;
+        -webkit-text-fill-color: #be123c !important;
+        border: 1.5px solid #fecdd3 !important;
+    }
+
+    .fi-ta-actions [class*="color-danger"] svg,
+    .fi-ta-actions [class*="color-danger"] *,
+    .fi-ta-actions [class*="delete"] svg {
+        color: #be123c !important;
+        stroke: #be123c !important;
+    }
+
+    /* Dark Mode Pastel Pill Overrides */
+    html.dark .fi-ta-actions [class*="color-info"],
+    html.dark .fi-ta-actions .fi-btn-color-info,
+    html.dark .fi-ta-actions a[class*="color-info"],
+    html.dark .fi-ta-actions [class*="view"] {
+        background: #09264a !important;
+        color: #38bdf8 !important;
+        -webkit-text-fill-color: #38bdf8 !important;
+        border-color: #144e8c !important;
+    }
+
+    html.dark .fi-ta-actions [class*="color-info"] svg {
+        color: #38bdf8 !important;
+        stroke: #38bdf8 !important;
+    }
+
+    html.dark .fi-ta-actions [class*="color-warning"],
+    html.dark .fi-ta-actions .fi-btn-color-warning,
+    html.dark .fi-ta-actions a[class*="color-warning"],
+    html.dark .fi-ta-actions [class*="edit"] {
+        background: #331f06 !important;
+        color: #fbbf24 !important;
+        -webkit-text-fill-color: #fbbf24 !important;
+        border-color: #78350f !important;
+    }
+
+    html.dark .fi-ta-actions [class*="color-warning"] svg {
+        color: #fbbf24 !important;
+        stroke: #fbbf24 !important;
+    }
+
+    html.dark .fi-ta-actions [class*="color-danger"],
+    html.dark .fi-ta-actions .fi-btn-color-danger,
+    html.dark .fi-ta-actions button[class*="color-danger"],
+    html.dark .fi-ta-actions [class*="delete"] {
+        background: #330b14 !important;
+        color: #fb7185 !important;
+        -webkit-text-fill-color: #fb7185 !important;
+        border-color: #881337 !important;
+    }
+
+    html.dark .fi-ta-actions [class*="color-danger"] svg {
+        color: #fb7185 !important;
+        stroke: #fb7185 !important;
     }
 
     .fi-ta-actions svg {
