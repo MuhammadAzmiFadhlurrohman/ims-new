@@ -1051,11 +1051,23 @@ html.dark table.fi-ta-table th {
     .fi-ta-filters {
         width: 100% !important;
         margin-bottom: 0.75rem !important;
+        box-sizing: border-box !important;
     }
 
-    .fi-ta-filters-form .grid,
-    .fi-ta-filters-above-content-ctn .grid,
+    /* CRITICAL FIX: .fi-ta-filters itself must remain a 1-column grid
+       so the header row (Filters|Reset) stacks ABOVE the form inputs.
+       Do NOT include .fi-ta-filters-above-content-ctn .grid here — that
+       accidentally matched .fi-ta-filters.grid (which IS a descendant
+       with class 'grid'), causing the header and form to go side-by-side. */
+    .fi-ta-filters {
+        display: grid !important;
+        grid-template-columns: 1fr !important;  /* single column = header + form stacked */
+        gap: 12px !important;
+    }
+
+    /* 2-column grid for the INNER filter fields container only */
     .fi-ta-filters .grid,
+    .fi-ta-filters-form .grid,
     .fi-ta-filters-above-content-ctn form,
     .fi-ta-filters-form form,
     .fi-ta-filters-above-content-ctn form > div,
@@ -1214,54 +1226,25 @@ html.dark table.fi-ta-table th {
         width: 100% !important;
     }
 
-    /* ── EXECUTIVE MOBILE DATA CARD (MATCHING USER SPEC) ── */
-    .fi-ta-row,
+    /* ── ROW: Transparent wrapper — the standalone card INSIDE handles its own style ── */
+    /* NOTE: These styles are intentionally minimal. The standalone card (.ims-standalone-card)
+       inside td:first-child is responsible for all visual card design.
+       pendaftaran.css has higher-specificity overrides (.fi-ta-row included) that take precedence. */
     table.fi-ta-table tbody tr {
-        display: flex !important;
-        flex-direction: column !important;
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-        border-left: 5px solid #0284c7 !important;
-        border-radius: 16px !important;
-        padding: 0.95rem 1rem !important;
-        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
-        gap: 0.4rem !important;
+        display: block !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
         width: 100% !important;
         box-sizing: border-box !important;
-        position: relative !important;
-        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-    }
-
-    /* Dynamic Alternating Left Accent Colors */
-    .fi-ta-row:nth-child(even),
-    table.fi-ta-table tbody tr:nth-child(even) {
-        border-left-color: #059669 !important;
-    }
-
-    .fi-ta-row:nth-child(3n),
-    table.fi-ta-table tbody tr:nth-child(3n) {
-        border-left-color: #881337 !important;
-    }
-
-    html.dark .fi-ta-row,
-    html.dark table.fi-ta-table tbody tr {
-        background: #08192e !important;
-        border-color: #14355a !important;
-        border-left-color: #00d4ff !important;
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45) !important;
-    }
-
-    html.dark .fi-ta-row:nth-child(even),
-    html.dark table.fi-ta-table tbody tr:nth-child(even) {
-        border-left-color: #10b981 !important;
-    }
-
-    html.dark .fi-ta-row:nth-child(3n),
-    html.dark table.fi-ta-table tbody tr:nth-child(3n) {
-        border-left-color: #f43f5e !important;
     }
 
     /* ── Table Cell Rows Inside Card ── */
+    /* NOTE: pendaftaran.css overrides td:first-child to display: block and
+       td:not(:first-child) to display: none for the pipeline card view.
+       The rules below are intentionally low-specificity to allow those overrides. */
     .fi-ta-cell,
     table.fi-ta-table td,
     table.fi-ta-table tbody tr td {
