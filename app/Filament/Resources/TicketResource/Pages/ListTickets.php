@@ -28,7 +28,7 @@ class ListTickets extends ListRecords
             'ubah_password' => 'Daftar Tiket: Ubah Password Wifi',
             'coverage' => 'Daftar Tiket: Cek Coverage Area',
             'all' => 'Daftar Semua Tiket Masuk',
-            default => 'Tiket',
+            default => '',
         };
     }
 

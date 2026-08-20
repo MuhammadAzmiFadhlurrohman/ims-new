@@ -6,6 +6,11 @@
         @endphp
 
         <style>
+            /* ── HIDE DEFAULT FILAMENT HEADER ON PORTAL ── */
+            .fi-header {
+                display: none !important;
+            }
+
             /* ── TICKET PORTAL EXECUTIVE STYLES ── */
             .ims-ticket-container {
                 display: flex;
