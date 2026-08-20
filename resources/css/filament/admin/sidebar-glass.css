@@ -971,3 +971,110 @@ html.dark .ims-flyout-icon-box svg,
 html.dark .ims-flyout-link svg {
     color: #7dd3fc !important;
 }
+
+/* ============================================================
+   ── 14. MINIMIZED / COLLAPSED SIDEBAR RULES (PIXEL PERFECT) ──
+   ============================================================ */
+
+.fi-sidebar:not(.fi-sidebar-open) {
+    width: 4.8rem !important;
+    min-width: 4.8rem !important;
+    max-width: 4.8rem !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header {
+    padding: 0.85rem 0.5rem !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .ims-brand-title,
+.fi-sidebar:not(.fi-sidebar-open) .ims-brand-subtitle,
+.fi-sidebar:not(.fi-sidebar-open) .ims-group-title,
+.fi-sidebar:not(.fi-sidebar-open) .ims-group-divider,
+.fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-item-label,
+.fi-sidebar:not(.fi-sidebar-open) .fi-badge,
+.fi-sidebar:not(.fi-sidebar-open) .ims-tree-line,
+.fi-sidebar:not(.fi-sidebar-open) .ims-tree-dot,
+.fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-group-label,
+.fi-sidebar:not(.fi-sidebar-open) .fi-dropdown-trigger-icon,
+.fi-sidebar:not(.fi-sidebar-open) .ims-sidebar-footer-status,
+.fi-sidebar:not(.fi-sidebar-open) .ims-sidebar-footer-version,
+.fi-sidebar:not(.fi-sidebar-open) .ims-sidebar-footer-copy,
+.fi-sidebar:not(.fi-sidebar-open) .ims-sidebar-footer-subcopy {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .ims-brand-container {
+    justify-content: center !important;
+    width: 100% !important;
+    gap: 0 !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 auto !important;
+    width: 2.1rem !important;
+    height: 2.1rem !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #475569 !important;
+}
+
+html.dark .fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-header .fi-icon-btn {
+    background: #07172c !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #8899ac !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-nav {
+    padding: 0.5rem 0.35rem !important;
+    align-items: center !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .ims-group-header {
+    justify-content: center !important;
+    padding: 0.55rem 0 !important;
+    margin: 0.2rem 0 !important;
+    width: 100% !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .ims-group-dashboard {
+    margin-bottom: 0.4rem !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .ims-group-dashboard .fi-sidebar-item-button,
+.fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-item-button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.25rem 0 !important;
+    justify-content: center !important;
+    width: 100% !important;
+    transform: none !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .fi-sidebar-item-icon-box,
+.fi-sidebar:not(.fi-sidebar-open) .ims-group-dashboard .fi-sidebar-item-icon-box {
+    margin: 0 auto !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 11px !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .ims-sidebar-footer {
+    padding: 8px 6px !important;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) .ims-sidebar-footer-card {
+    justify-content: center !important;
+    padding: 6px !important;
+}
+
