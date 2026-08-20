@@ -332,3 +332,21 @@ select.fi-input {
     font-weight: 700 !important;
     color: #0f172a !important;
 }
+
+/* ══════════════════════════════════════
+   HIDE TABLE BULK SELECTION CHECKBOXES
+   ══════════════════════════════════════ */
+.fi-ta-table th:has(.fi-ta-page-checkbox),
+.fi-ta-table td:has(.fi-ta-record-checkbox),
+.fi-ta-table th:has(.fi-ta-group-checkbox),
+.fi-ta-table td:has(.fi-ta-group-checkbox),
+.fi-ta-page-checkbox,
+.fi-ta-record-checkbox,
+.fi-ta-group-checkbox,
+.fi-ta-table th.fi-ta-header-cell:first-child:has(input[type="checkbox"]),
+.fi-ta-table td.fi-ta-cell:first-child:has(input[type="checkbox"]),
+.fi-ta-table th.fi-ta-header-cell:first-child:has(.fi-checkbox-input),
+.fi-ta-table td.fi-ta-cell:first-child:has(.fi-checkbox-input),
+.fi-ta-selection-cell {
+    display: none !important;
+}

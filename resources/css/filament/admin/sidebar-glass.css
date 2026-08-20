@@ -8,6 +8,7 @@
     min-height: 100vh !important;
     min-height: 125vh !important;
     align-items: stretch !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .fi-sidebar {
@@ -27,6 +28,11 @@
     flex-shrink: 0 !important;
     z-index: 30 !important;
     margin: 0 !important;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: width, min-width, max-width;
 }
 
 @media (min-width: 1024px) {
@@ -36,12 +42,23 @@
         max-width: 22vw !important;
     }
 
+    .fi-sidebar:not(.fi-sidebar-open) {
+        width: 4.5rem !important;
+        min-width: 4.5rem !important;
+        max-width: 4.5rem !important;
+    }
+
     .fi-main-ctn {
         flex: 1 1 auto !important;
         min-width: 0 !important;
         max-width: 100% !important;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    flex 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        will-change: width, margin-left;
     }
 }
+
 
 .fi-sidebar > div.overflow-x-clip {
     flex-shrink: 0 !important;
