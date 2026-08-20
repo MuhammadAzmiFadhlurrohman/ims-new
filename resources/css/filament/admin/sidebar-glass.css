@@ -6,7 +6,6 @@
 /* ── 1. GLOBAL LAYOUT & SIDEBAR FULL-HEIGHT STRETCH ── */
 .fi-layout {
     min-height: 100vh !important;
-    min-height: 125vh !important;
     align-items: stretch !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
@@ -15,18 +14,10 @@
     background: #ffffff linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
     border-right: 1px solid #e2e8f0 !important;
     box-shadow: 4px 0 24px rgba(15, 23, 42, 0.04) !important;
-    height: 125vh !important;
-    min-height: 125vh !important;
-    position: sticky !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    align-self: stretch !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
     overflow: hidden !important;
-    flex-shrink: 0 !important;
-    z-index: 30 !important;
     margin: 0 !important;
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -34,7 +25,6 @@
                 transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 background-color 0.25s ease,
                 border-color 0.25s ease !important;
-    will-change: width, min-width, max-width;
 }
 
 html.dark .fi-sidebar {
@@ -43,7 +33,19 @@ html.dark .fi-sidebar {
     box-shadow: 6px 0 28px rgba(0, 0, 0, 0.6) !important;
 }
 
+/* Desktop layout rules */
 @media (min-width: 1024px) {
+    .fi-sidebar {
+        height: 100vh !important;
+        min-height: 100vh !important;
+        position: sticky !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        align-self: stretch !important;
+        flex-shrink: 0 !important;
+        z-index: 30 !important;
+    }
+
     .fi-sidebar.fi-sidebar-open {
         width: 22vw !important;
         min-width: 22vw !important;
@@ -51,9 +53,9 @@ html.dark .fi-sidebar {
     }
 
     .fi-sidebar:not(.fi-sidebar-open) {
-        width: 4.5rem !important;
-        min-width: 4.5rem !important;
-        max-width: 4.5rem !important;
+        width: 4.8rem !important;
+        min-width: 4.8rem !important;
+        max-width: 4.8rem !important;
     }
 
     .fi-main-ctn {
@@ -64,6 +66,54 @@ html.dark .fi-sidebar {
                     margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                     flex 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         will-change: width, margin-left;
+    }
+}
+
+/* Mobile layout rules */
+@media (max-width: 1023px) {
+    .fi-layout {
+        display: block !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .fi-main-ctn,
+    .fi-main {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        flex: 1 1 100% !important;
+    }
+
+    .fi-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        max-height: 100vh !important;
+        z-index: 999999 !important;
+        margin: 0 !important;
+        width: 18.5rem !important;
+        min-width: 18.5rem !important;
+        max-width: 86vw !important;
+    }
+
+    .fi-sidebar:not(.fi-sidebar-open) {
+        transform: translateX(-100%) !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+    }
+
+    .fi-sidebar.fi-sidebar-open {
+        transform: translateX(0) !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
     }
 }
 
