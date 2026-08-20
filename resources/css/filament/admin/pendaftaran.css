@@ -225,21 +225,72 @@ table.fi-ta-table tbody tr:hover td:first-child {
 
 /* ── 5. ACTION BUTTONS ── */
 .fi-ta-actions {
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
-    gap: 0.4rem !important;
-    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+    gap: 0.45rem !important;
+    flex-wrap: nowrap !important;
 }
 
-.fi-ta-actions .fi-btn {
-    border-radius: 10px !important;
+.fi-ta-actions .fi-btn,
+.fi-ta-actions button,
+.fi-ta-actions a {
+    border-radius: 8px !important;
     font-size: 0.74rem !important;
     font-weight: 800 !important;
     padding: 0.35rem 0.75rem !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.15s ease !important;
+    white-space: nowrap !important;
 }
 
-.fi-ta-actions .fi-btn:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+.fi-ta-actions .fi-btn *,
+.fi-ta-actions button *,
+.fi-ta-actions a *,
+.fi-btn-label {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
 }
+
+.fi-ta-actions .fi-btn:hover,
+.fi-ta-actions button:hover,
+.fi-ta-actions a:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ── STACK VERTICALLY ON INVOICE & BILLING TABLES (ATAS KE BAWAH) ── */
+.fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions,
+.fi-ta-table td:has([class*="paymethod-trigger"]) .fi-ta-actions,
+.fi-ta-table td:has([class*="paymethod-trigger"]) ~ td .fi-ta-actions,
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(3)),
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(4)),
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(3)),
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)),
+.fi-page-list-monthly-invoices .fi-ta-actions,
+.fi-page-list-registration-invoices .fi-ta-actions,
+[class*="monthly-invoices"] .fi-ta-actions,
+[class*="registration-invoices"] .fi-ta-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    gap: 0.35rem !important;
+    min-width: 140px !important;
+    width: 100% !important;
+}
+
+.fi-page-list-monthly-invoices .fi-ta-actions .fi-btn,
+.fi-page-list-registration-invoices .fi-ta-actions .fi-btn,
+[class*="monthly-invoices"] .fi-ta-actions .fi-btn,
+[class*="registration-invoices"] .fi-ta-actions .fi-btn,
+.fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions .fi-btn,
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(3)) .fi-btn,
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(4)) .fi-btn,
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(3)) button,
+.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)) button {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.72rem !important;
+}
+

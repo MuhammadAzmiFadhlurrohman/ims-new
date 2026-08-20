@@ -390,16 +390,17 @@ class MonthlyInvoiceResource extends Resource
             ])
             ->actionsColumnLabel('Action')
             ->actions([
-                // ── 0. CHANGE PAYMENT METHOD MODAL (Dipicu dari klik badge) ──
+                // ── 0. CHANGE PAYMENT METHOD MODAL ──
                 Tables\Actions\Action::make('change_payment_method')
                     ->label('Change Payment Method')
+                    ->icon('heroicon-m-credit-card')
+                    ->color('primary')
                     ->modalHeading('Change Payment Method')
                     ->modalWidth('2xl')
                     ->modalSubmitActionLabel('Update')
                     ->modalCancelActionLabel('Batal')
                     ->extraAttributes(fn (MonthlyInvoice $record) => [
-                        'class' => 'ims-monthly-paymethod-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey()) . ' hidden opacity-0 pointer-events-none',
-                        'style' => 'display: none !important; width: 0 !important; height: 0 !important; padding: 0 !important; margin: 0 !important;',
+                        'class' => 'ims-monthly-paymethod-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey()),
                     ])
                     ->fillForm(fn (MonthlyInvoice $record): array => [
                         'payment_method' => match (strtoupper($record->payment_method ?? 'MIDTRANS')) {
