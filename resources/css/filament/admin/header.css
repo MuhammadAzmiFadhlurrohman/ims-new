@@ -234,7 +234,12 @@ html.dark .fi-user-menu-label {
         background: #051326 linear-gradient(90deg, #091e38 0%, #06162a 50%, #040e1c 100%) !important;
         border-bottom: 1.5px solid #00d4ff !important;
         box-shadow: 0 4px 18px rgba(0, 212, 255, 0.25) !important;
-        height: 4.4rem !important;
+        height: 3.8rem !important;
+    }
+
+    .fi-topbar nav {
+        padding: 0 0.65rem !important;
+        gap: 6px !important;
     }
 
     /* Mobile Hamburger Icon (Glowing Cyan) */
@@ -243,13 +248,21 @@ html.dark .fi-user-menu-label {
         background: rgba(255, 255, 255, 0.08) !important;
         border: 1px solid rgba(0, 212, 255, 0.35) !important;
         color: #00d4ff !important;
-        padding: 0.55rem !important;
+        padding: 0.45rem !important;
+        border-radius: 9px !important;
+        flex-shrink: 0 !important;
     }
 
     .fi-topbar-open-sidebar-btn svg,
     .fi-topbar-close-sidebar-btn svg {
         color: #00d4ff !important;
         filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.8)) !important;
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+    }
+
+    .ims-header-info-wrapper {
+        gap: 6px !important;
     }
 
     /* Mobile Live Clock Pill */
@@ -259,30 +272,77 @@ html.dark .fi-user-menu-label {
         backdrop-filter: blur(10px) !important;
         -webkit-backdrop-filter: blur(10px) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
-        padding: 6px 12px !important;
+        padding: 4px 8px !important;
+        border-radius: 9px !important;
+        gap: 5px !important;
     }
 
     .ims-live-clock-pill svg {
         color: #00d4ff !important;
+        width: 13px !important;
+        height: 13px !important;
     }
 
     #ims-live-clock {
         color: #ffffff !important;
         font-weight: 700 !important;
-        letter-spacing: 0.01em !important;
+        font-size: 11px !important;
+        white-space: nowrap !important;
     }
 
     /* Mobile User Button */
+    .fi-user-menu {
+        margin-left: 2px !important;
+    }
+
     .fi-user-menu button,
-    .fi-user-menu a {
+    .fi-user-menu a,
+    .fi-user-menu-trigger {
         background: rgba(255, 255, 255, 0.08) !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
         color: #ffffff !important;
+        padding: 4px 8px 4px 5px !important;
+        border-radius: 9px !important;
+        gap: 4px !important;
     }
 
-    .fi-user-menu button:hover,
-    .fi-user-menu a:hover {
-        background: rgba(255, 255, 255, 0.15) !important;
+    .fi-user-avatar,
+    .fi-avatar,
+    .fi-user-menu .fi-avatar {
+        width: 24px !important;
+        height: 24px !important;
+        min-width: 24px !important;
+        font-size: 10px !important;
+        margin-right: 2px !important;
+    }
+
+    .fi-user-menu span,
+    .fi-user-menu-label,
+    .fi-user-menu button > span {
+        color: #ffffff !important;
+        font-size: 11px !important;
+        max-width: 80px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .fi-user-menu svg,
+    .fi-user-menu .fi-dropdown-trigger-icon {
+        width: 12px !important;
+        height: 12px !important;
+    }
+
+    @media (max-width: 520px) {
+        .fi-user-menu span,
+        .fi-user-menu-label,
+        .fi-user-menu button > span {
+            display: none !important;
+        }
+        .fi-user-menu svg,
+        .fi-user-menu .fi-dropdown-trigger-icon {
+            display: none !important;
+        }
     }
 }
 

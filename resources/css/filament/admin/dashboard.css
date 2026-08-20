@@ -556,3 +556,53 @@ html.dark .ims-modal-content div[style*="background: #f8fafc"] {
 html.dark .ims-modal-content div[style*="color: #0f172a"] {
     color: #f1f5f9 !important;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE ENHANCEMENTS (< 768px)
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .ims-slider-banner {
+        border-radius: 16px !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .ims-slide-item {
+        padding: 1rem !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.85rem !important;
+    }
+
+    .ims-slide-left {
+        width: 100% !important;
+    }
+
+    .ims-slide-action {
+        width: 100% !important;
+    }
+
+    .ims-slide-action a,
+    .ims-slide-action button {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .ims-quick-kpi {
+        padding: 1rem !important;
+        border-radius: 16px !important;
+    }
+
+    .ims-kpi-counter {
+        font-size: 1.85rem !important;
+    }
+
+    .ims-status-card {
+        padding: 1rem !important;
+        border-radius: 16px !important;
+    }
+
+    .ims-distribution-card {
+        padding: 1rem !important;
+        border-radius: 16px !important;
+    }
+}
