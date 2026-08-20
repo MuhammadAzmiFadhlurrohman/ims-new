@@ -103,6 +103,8 @@ class AdminPanelProvider extends PanelProvider
                 fn () => Blade::render('
                     <script>
                         (function() {
+                            var isThemeToggling = false;
+
                             window.applyImsTheme = function() {
                                 try {
                                     var theme = localStorage.getItem("ims_theme") || localStorage.getItem("theme");
@@ -118,10 +120,13 @@ class AdminPanelProvider extends PanelProvider
                             };
 
                             window.toggleImsTheme = function(event) {
+                                if (isThemeToggling) return;
+                                isThemeToggling = true;
+
                                 var isDark = document.documentElement.classList.contains("dark");
                                 var targetTheme = isDark ? "light" : "dark";
 
-                                function applyToggle() {
+                                function applyDOMToggle() {
                                     if (targetTheme === "dark") {
                                         document.documentElement.classList.add("dark");
                                     } else {
@@ -136,42 +141,52 @@ class AdminPanelProvider extends PanelProvider
 
                                 // Check if View Transitions API is supported
                                 if (document.startViewTransition) {
+                                    var toggleBtn = document.getElementById("ims-theme-toggle");
+                                    var btnRect = toggleBtn ? toggleBtn.getBoundingClientRect() : null;
+
                                     var x = (event && typeof event.clientX === "number" && event.clientX > 0) 
                                         ? event.clientX 
-                                        : (window.innerWidth - 60);
+                                        : (btnRect ? (btnRect.left + btnRect.width / 2) : (window.innerWidth - 60));
                                     var y = (event && typeof event.clientY === "number" && event.clientY > 0) 
                                         ? event.clientY 
-                                        : 35;
+                                        : (btnRect ? (btnRect.top + btnRect.height / 2) : 35);
+
                                     var endRadius = Math.hypot(
                                         Math.max(x, window.innerWidth - x),
                                         Math.max(y, window.innerHeight - y)
                                     );
 
                                     var transition = document.startViewTransition(function() {
-                                        applyToggle();
+                                        applyDOMToggle();
                                     });
 
                                     transition.ready.then(function() {
-                                        var clipPath = [
-                                            "circle(0px at " + x + "px " + y + "px)",
-                                            "circle(" + endRadius + "px at " + x + "px " + y + "px)"
-                                        ];
-
-                                        document.documentElement.animate(
+                                        var animation = document.documentElement.animate(
                                             {
-                                                clipPath: targetTheme === "dark" ? clipPath : clipPath.slice().reverse()
+                                                clipPath: [
+                                                    "circle(0px at " + x + "px " + y + "px)",
+                                                    "circle(" + endRadius + "px at " + x + "px " + y + "px)"
+                                                ]
                                             },
                                             {
-                                                duration: 480,
-                                                easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-                                                pseudoElement: targetTheme === "dark" 
-                                                    ? "::view-transition-new(root)" 
-                                                    : "::view-transition-old(root)"
+                                                duration: 520,
+                                                easing: "cubic-bezier(0.2, 0.9, 0.3, 1)",
+                                                pseudoElement: "::view-transition-new(root)"
                                             }
                                         );
+
+                                        animation.onfinish = function() {
+                                            isThemeToggling = false;
+                                        };
+                                    }).catch(function() {
+                                        isThemeToggling = false;
                                     });
                                 } else {
-                                    applyToggle();
+                                    // Smooth CSS transition fallback
+                                    applyDOMToggle();
+                                    setTimeout(function() {
+                                        isThemeToggling = false;
+                                    }, 400);
                                 }
                             };
 
@@ -180,12 +195,15 @@ class AdminPanelProvider extends PanelProvider
                             document.addEventListener("livewire:navigated", window.applyImsTheme);
                             document.addEventListener("livewire:init", window.applyImsTheme);
 
-                            // Enforce dark class preservation against livewire re-renders
+                            // Enforce dark class preservation against livewire re-renders safely
                             try {
                                 var observer = new MutationObserver(function() {
-                                    var theme = localStorage.getItem("ims_theme") || localStorage.getItem("theme");
+                                    if (isThemeToggling) return;
+                                    var theme = localStorage.getItem("ims_theme");
                                     if (theme === "dark" && !document.documentElement.classList.contains("dark")) {
                                         document.documentElement.classList.add("dark");
+                                    } else if (theme === "light" && document.documentElement.classList.contains("dark")) {
+                                        document.documentElement.classList.remove("dark");
                                     }
                                 });
                                 observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });

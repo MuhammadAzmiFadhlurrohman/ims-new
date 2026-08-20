@@ -921,24 +921,21 @@ html.dark .fi-ta-header-cell-label {
 /* 1. View Transitions API CSS Overrides */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
+    animation: none !important;
+    mix-blend-mode: normal !important;
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
 }
 
 ::view-transition-old(root) {
-    z-index: 1;
+    z-index: 1 !important;
 }
 
 ::view-transition-new(root) {
-    z-index: 999999;
-}
-
-html.dark::view-transition-old(root) {
-    z-index: 999999;
-}
-
-html.dark::view-transition-new(root) {
-    z-index: 1;
+    z-index: 9999999 !important;
 }
 
 /* 2. Global Silky-Smooth Transitions Across All Elements & Pages */
