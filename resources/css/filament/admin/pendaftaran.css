@@ -142,9 +142,21 @@ table.fi-ta-table tbody tr:nth-child(even) td {
     background-color: #fbfcfe !important;
 }
 
+html.dark table.fi-ta-table tbody tr:nth-child(even) td {
+    background-color: #0b1f38 !important;
+}
+
+html.dark table.fi-ta-table tbody tr:nth-child(odd) td {
+    background-color: #08192e !important;
+}
+
 /* ── Hover Effect with Left Indicator Border ── */
 table.fi-ta-table tbody tr:hover td {
     background-color: #f0f7ff !important;
+}
+
+html.dark table.fi-ta-table tbody tr:hover td {
+    background-color: #0e2d52 !important;
 }
 
 table.fi-ta-table tbody tr td:first-child {
@@ -153,6 +165,10 @@ table.fi-ta-table tbody tr td:first-child {
 
 table.fi-ta-table tbody tr:hover td:first-child {
     border-left: 4px solid #2563eb !important;
+}
+
+html.dark table.fi-ta-table tbody tr:hover td:first-child {
+    border-left: 4px solid #00d4ff !important;
 }
 
 /* ── 3. CUSTOM REGISTRATION UI COMPONENTS ── */
@@ -178,9 +194,20 @@ table.fi-ta-table tbody tr:hover td:first-child {
     width: fit-content;
 }
 
+html.dark .ims-cid-badge {
+    background: #0d284a !important;
+    color: #38bdf8 !important;
+    border-color: #1e4d80 !important;
+}
+
 .ims-cid-badge:hover {
     background: #dbeafe;
     color: #1e40af;
+}
+
+html.dark .ims-cid-badge:hover {
+    background: #143a66 !important;
+    color: #00d4ff !important;
 }
 
 .ims-cust-name {
@@ -190,8 +217,16 @@ table.fi-ta-table tbody tr:hover td:first-child {
     text-decoration: none;
 }
 
+html.dark .ims-cust-name {
+    color: #ffffff !important;
+}
+
 .ims-cust-name:hover {
     color: #2563eb;
+}
+
+html.dark .ims-cust-name:hover {
+    color: #00d4ff !important;
 }
 
 .ims-pkg-pill {
@@ -205,6 +240,12 @@ table.fi-ta-table tbody tr:hover td:first-child {
     border-radius: 6px;
     width: fit-content;
     margin-top: 2px;
+}
+
+html.dark .ims-pkg-pill {
+    background: #0d284a !important;
+    color: #cbd5e1 !important;
+    border-color: #1e4d80 !important;
 }
 
 /* ── 4. STATUS PIPELINE BADGES ── */
@@ -231,6 +272,13 @@ table.fi-ta-table tbody tr:hover td:first-child {
 .ims-pill-aktivasi { background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff; }
 .ims-pill-batal { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
 
+html.dark .ims-pill-survey { background: rgba(3, 105, 161, 0.25) !important; color: #38bdf8 !important; border-color: rgba(56, 189, 248, 0.35) !important; }
+html.dark .ims-pill-survey-done { background: rgba(15, 118, 110, 0.25) !important; color: #2dd4bf !important; border-color: rgba(45, 212, 191, 0.35) !important; }
+html.dark .ims-pill-instalasi { background: rgba(67, 56, 202, 0.25) !important; color: #818cf8 !important; border-color: rgba(129, 140, 248, 0.35) !important; }
+html.dark .ims-pill-instalasi-done { background: rgba(21, 128, 61, 0.25) !important; color: #4ade80 !important; border-color: rgba(74, 222, 128, 0.35) !important; }
+html.dark .ims-pill-aktivasi { background: rgba(126, 34, 206, 0.25) !important; color: #c084fc !important; border-color: rgba(192, 132, 252, 0.35) !important; }
+html.dark .ims-pill-batal { background: rgba(190, 18, 60, 0.25) !important; color: #fb7185 !important; border-color: rgba(251, 113, 133, 0.35) !important; }
+
 .ims-schedule-slot {
     font-size: 0.68rem;
     font-weight: 600;
@@ -250,9 +298,19 @@ table.fi-ta-table tbody tr:hover td:first-child {
     transition: all 0.2s ease;
 }
 
+html.dark .ims-temp-badge {
+    background: rgba(225, 29, 72, 0.2) !important;
+    color: #fb7185 !important;
+    border-color: rgba(251, 113, 133, 0.35) !important;
+}
+
 .ims-temp-badge:hover {
     background: #ffe4e6;
     transform: scale(1.05);
+}
+
+html.dark .ims-temp-badge:hover {
+    background: rgba(225, 29, 72, 0.3) !important;
 }
 
 .ims-updated-text {

@@ -1,26 +1,26 @@
 <x-filament-widgets::widget>
-    <x-filament::section class="overflow-x-hidden max-w-full shadow-sm rounded-2xl border border-slate-200/80">
+    <x-filament::section class="overflow-x-hidden max-w-full shadow-sm rounded-2xl border border-slate-200/80 dark:border-slate-800 dark:bg-[#08192e]">
         <div class="space-y-8 overflow-x-hidden p-1">
             {{-- 1. AKTIF --}}
             <div>
                 <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-sm font-black text-slate-800 flex items-center gap-2">
+                    <h3 class="text-sm font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
                         <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-sm inline-block animate-pulse"></span>
                         PELANGGAN AKTIF (LIVE)
                     </h3>
-                    <a href="{{ url('/admin/customer-subscriptions?filter_status=aktif') }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-800 hover:underline flex items-center gap-1">
+                    <a href="{{ url('/admin/customer-subscriptions?filter_status=aktif') }}" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 hover:underline flex items-center gap-1">
                         Lihat Semua Aktif ({{ $totalAktif }}) &rarr;
                     </a>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 max-w-full">
                     @foreach($categories as $cat)
                         <a href="{{ url('/admin/customer-subscriptions?filter_status=aktif&filter_category=' . $cat->code) }}" 
-                           class="matrix-pill block p-3.5 bg-gradient-to-b from-white to-slate-50 border border-slate-200/90 hover:border-emerald-400 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 group">
-                            <span class="inline-block px-2.5 py-0.5 text-[10px] font-black text-emerald-800 bg-emerald-100/80 rounded-md uppercase tracking-wider group-hover:bg-emerald-600 group-hover:text-white transition-colors truncate max-w-full">
+                           class="matrix-pill block p-3.5 bg-gradient-to-b from-white to-slate-50 dark:from-[#0b1f38] dark:to-[#08192e] border border-slate-200/90 dark:border-slate-700/80 hover:border-emerald-400 dark:hover:border-emerald-500 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 group">
+                            <span class="inline-block px-2.5 py-0.5 text-[10px] font-black text-emerald-800 dark:text-emerald-300 bg-emerald-100/80 dark:bg-emerald-950/60 rounded-md uppercase tracking-wider group-hover:bg-emerald-600 group-hover:text-white transition-colors truncate max-w-full">
                                 {{ $cat->name }}
                             </span>
-                            <div class="text-lg font-black text-slate-800 mt-2 flex items-baseline gap-1">
-                                {{ $aktifCounts[$cat->code] ?? 0 }} <span class="text-xs font-semibold text-slate-400">User</span>
+                            <div class="text-lg font-black text-slate-800 dark:text-white mt-2 flex items-baseline gap-1">
+                                {{ $aktifCounts[$cat->code] ?? 0 }} <span class="text-xs font-semibold text-slate-400 dark:text-slate-400">User</span>
                             </div>
                         </a>
                     @endforeach
@@ -37,23 +37,23 @@
             {{-- 2. TERMINASI --}}
             <div>
                 <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-sm font-black text-slate-800 flex items-center gap-2">
+                    <h3 class="text-sm font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
                         <span class="w-3 h-3 rounded-full bg-rose-500 shadow-sm inline-block"></span>
                         PELANGGAN TERMINASI
                     </h3>
-                    <a href="{{ url('/admin/customer-subscriptions?filter_status=terminasi') }}" class="text-xs font-bold text-rose-600 hover:text-rose-800 hover:underline flex items-center gap-1">
+                    <a href="{{ url('/admin/customer-subscriptions?filter_status=terminasi') }}" class="text-xs font-bold text-rose-600 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 hover:underline flex items-center gap-1">
                         Lihat Semua Terminasi ({{ $totalTerminasi }}) &rarr;
                     </a>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 max-w-full">
                     @foreach($categories as $cat)
                         <a href="{{ url('/admin/customer-subscriptions?filter_status=terminasi&filter_category=' . $cat->code) }}" 
-                           class="matrix-pill block p-3.5 bg-gradient-to-b from-white to-slate-50 border border-slate-200/90 hover:border-rose-400 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 group">
-                            <span class="inline-block px-2.5 py-0.5 text-[10px] font-black text-rose-800 bg-rose-100/80 rounded-md uppercase tracking-wider group-hover:bg-rose-600 group-hover:text-white transition-colors truncate max-w-full">
+                           class="matrix-pill block p-3.5 bg-gradient-to-b from-white to-slate-50 dark:from-[#0b1f38] dark:to-[#08192e] border border-slate-200/90 dark:border-slate-700/80 hover:border-rose-400 dark:hover:border-rose-500 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 group">
+                            <span class="inline-block px-2.5 py-0.5 text-[10px] font-black text-rose-800 dark:text-rose-300 bg-rose-100/80 dark:bg-rose-950/60 rounded-md uppercase tracking-wider group-hover:bg-rose-600 group-hover:text-white transition-colors truncate max-w-full">
                                 {{ $cat->name }}
                             </span>
-                            <div class="text-lg font-black text-slate-800 mt-2 flex items-baseline gap-1">
-                                {{ $terminasiCounts[$cat->code] ?? 0 }} <span class="text-xs font-semibold text-slate-400">User</span>
+                            <div class="text-lg font-black text-slate-800 dark:text-white mt-2 flex items-baseline gap-1">
+                                {{ $terminasiCounts[$cat->code] ?? 0 }} <span class="text-xs font-semibold text-slate-400 dark:text-slate-400">User</span>
                             </div>
                         </a>
                     @endforeach
@@ -70,23 +70,23 @@
             {{-- 3. SUSPEND --}}
             <div>
                 <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-sm font-black text-slate-800 flex items-center gap-2">
+                    <h3 class="text-sm font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
                         <span class="w-3 h-3 rounded-full bg-amber-500 shadow-sm inline-block"></span>
                         PELANGGAN ISOLIR (SUSPEND)
                     </h3>
-                    <a href="{{ url('/admin/customer-subscriptions?filter_status=suspend') }}" class="text-xs font-bold text-amber-600 hover:text-amber-800 hover:underline flex items-center gap-1">
+                    <a href="{{ url('/admin/customer-subscriptions?filter_status=suspend') }}" class="text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 hover:underline flex items-center gap-1">
                         Lihat Semua Suspend ({{ $totalSuspend }}) &rarr;
                     </a>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 max-w-full">
                     @foreach($categories as $cat)
                         <a href="{{ url('/admin/customer-subscriptions?filter_status=suspend&filter_category=' . $cat->code) }}" 
-                           class="matrix-pill block p-3.5 bg-gradient-to-b from-white to-slate-50 border border-slate-200/90 hover:border-amber-400 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 group">
-                            <span class="inline-block px-2.5 py-0.5 text-[10px] font-black text-amber-800 bg-amber-100/80 rounded-md uppercase tracking-wider group-hover:bg-amber-600 group-hover:text-white transition-colors truncate max-w-full">
+                           class="matrix-pill block p-3.5 bg-gradient-to-b from-white to-slate-50 dark:from-[#0b1f38] dark:to-[#08192e] border border-slate-200/90 dark:border-slate-700/80 hover:border-amber-400 dark:hover:border-amber-500 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 group">
+                            <span class="inline-block px-2.5 py-0.5 text-[10px] font-black text-amber-800 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-950/60 rounded-md uppercase tracking-wider group-hover:bg-amber-600 group-hover:text-white transition-colors truncate max-w-full">
                                 {{ $cat->name }}
                             </span>
-                            <div class="text-lg font-black text-slate-800 mt-2 flex items-baseline gap-1">
-                                {{ $suspendCounts[$cat->code] ?? 0 }} <span class="text-xs font-semibold text-slate-400">User</span>
+                            <div class="text-lg font-black text-slate-800 dark:text-white mt-2 flex items-baseline gap-1">
+                                {{ $suspendCounts[$cat->code] ?? 0 }} <span class="text-xs font-semibold text-slate-400 dark:text-slate-400">User</span>
                             </div>
                         </a>
                     @endforeach

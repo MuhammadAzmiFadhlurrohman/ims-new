@@ -852,3 +852,64 @@ html.dark .fi-btn-link,
 html.dark button[type="reset"] {
     color: #f43f5e !important;
 }
+
+/* ── Dark Mode Matrix Pills & Overview Widgets ── */
+html.dark .matrix-pill,
+html.dark a.matrix-pill {
+    background: #08192e !important;
+    background-image: none !important;
+    border-color: #14355a !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .matrix-pill:hover,
+html.dark a.matrix-pill:hover {
+    background: #0d284a !important;
+    border-color: #00d4ff !important;
+}
+
+html.dark .matrix-pill .text-slate-800,
+html.dark .matrix-pill .text-slate-900,
+html.dark .matrix-pill div {
+    color: #ffffff !important;
+}
+
+html.dark .matrix-pill .text-slate-400 {
+    color: #94a3b8 !important;
+}
+
+/* ── Global Dark Mode Table Zebra Striping & Cell Styles ── */
+html.dark table.fi-ta-table td,
+html.dark table.fi-ta-table tbody tr td,
+html.dark .fi-ta-cell {
+    background-color: #08192e !important;
+    color: #e2e8f0 !important;
+    border-bottom-color: #0d2748 !important;
+}
+
+html.dark table.fi-ta-table tbody tr:nth-child(even) td,
+html.dark table.fi-ta-table tbody tr:nth-child(even) .fi-ta-cell {
+    background-color: #0b1f38 !important;
+}
+
+html.dark table.fi-ta-table tbody tr:nth-child(odd) td,
+html.dark table.fi-ta-table tbody tr:nth-child(odd) .fi-ta-cell {
+    background-color: #08192e !important;
+}
+
+html.dark table.fi-ta-table tbody tr:hover td,
+html.dark table.fi-ta-table tbody tr:hover .fi-ta-cell,
+html.dark .fi-ta-row:hover .fi-ta-cell {
+    background-color: #0e2d52 !important;
+}
+
+html.dark .fi-ta-header-cell,
+html.dark table.fi-ta-table th {
+    background-color: #051324 !important;
+    color: #94a3b8 !important;
+    border-bottom-color: #14355a !important;
+}
+
+html.dark .fi-ta-header-cell-label {
+    color: #cbd5e1 !important;
+}
