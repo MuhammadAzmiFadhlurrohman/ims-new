@@ -153,12 +153,39 @@ class AdminPanelProvider extends PanelProvider
                                 }
 
                                 if (document.startViewTransition) {
+                                    var endRadius = Math.hypot(
+                                        Math.max(x, window.innerWidth - x),
+                                        Math.max(y, window.innerHeight - y)
+                                    );
+
                                     var transition = document.startViewTransition(function() {
                                         applyDOMToggle();
                                     });
 
-                                    transition.finished.then(function() {
-                                        isThemeToggling = false;
+                                    transition.ready.then(function() {
+                                        var clipPath = [
+                                            "circle(0px at " + x + "px " + y + "px)",
+                                            "circle(" + endRadius + "px at " + x + "px " + y + "px)"
+                                        ];
+                                        try {
+                                            var anim = document.documentElement.animate(
+                                                { clipPath: clipPath },
+                                                {
+                                                    duration: 450,
+                                                    easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+                                                    pseudoElement: "::view-transition-new(root)"
+                                                }
+                                            );
+                                            anim.onfinish = function() {
+                                                isThemeToggling = false;
+                                            };
+                                        } catch(err) {
+                                            transition.finished.then(function() {
+                                                isThemeToggling = false;
+                                            }).catch(function() {
+                                                isThemeToggling = false;
+                                            });
+                                        }
                                     }).catch(function() {
                                         isThemeToggling = false;
                                     });
@@ -166,7 +193,7 @@ class AdminPanelProvider extends PanelProvider
                                     applyDOMToggle();
                                     setTimeout(function() {
                                         isThemeToggling = false;
-                                    }, 400);
+                                    }, 300);
                                 }
                             };
 

@@ -1299,7 +1299,7 @@ html.dark .fi-ta-header-cell-label {
 
 /* 1. View Transitions API CSS Overrides */
 ::view-transition-group(root) {
-    animation-duration: 1.6s !important;
+    animation-duration: 0.45s !important;
 }
 
 ::view-transition-image-pair(root) {
@@ -1323,7 +1323,7 @@ html.dark .fi-ta-header-cell-label {
 
 ::view-transition-new(root) {
     z-index: 9999999 !important;
-    animation: imsCircleReveal 1.6s cubic-bezier(0.2, 0.85, 0.35, 1) forwards !important;
+    animation: imsCircleReveal 0.45s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
 }
 
 @keyframes imsCircleReveal {
