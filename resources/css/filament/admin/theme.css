@@ -338,7 +338,7 @@ table.fi-ta-table tbody tr:last-child td {
     border-radius: 6px !important;
 }
 
-/* ── Table Action Buttons (Modern Horizontal Pill Buttons) ── */
+/* ── Table Action Buttons (Modern Pill Buttons) ── */
 .fi-ta-actions {
     display: inline-flex !important;
     flex-direction: row !important;
@@ -373,48 +373,98 @@ table.fi-ta-table tbody tr:last-child td {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
 }
 
+/* ── Enforce 100% Crisp White Text & Icons on ALL Action Buttons ── */
+.fi-ta-actions .fi-btn,
+.fi-ta-actions .fi-btn *,
+.fi-ta-actions button,
+.fi-ta-actions button *,
+.fi-ta-actions a,
+.fi-ta-actions a *,
+.fi-ta-actions .fi-btn-label,
+.fi-ta-actions span,
+.fi-btn .fi-btn-label {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
 /* Color theme mappings for action buttons */
 .fi-ta-actions [class*="color-info"],
-.fi-ta-actions .fi-btn-color-info {
+.fi-ta-actions .fi-btn-color-info,
+.fi-ta-actions a[class*="color-info"] {
     background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
-    color: #ffffff !important;
     border: none !important;
 }
 
 .fi-ta-actions [class*="color-warning"],
-.fi-ta-actions .fi-btn-color-warning {
+.fi-ta-actions .fi-btn-color-warning,
+.fi-ta-actions a[class*="color-warning"] {
     background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
-    color: #ffffff !important;
     border: none !important;
 }
 
 .fi-ta-actions [class*="color-danger"],
-.fi-ta-actions .fi-btn-color-danger {
+.fi-ta-actions .fi-btn-color-danger,
+.fi-ta-actions button[class*="color-danger"] {
     background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    color: #ffffff !important;
     border: none !important;
 }
 
 .fi-ta-actions [class*="color-primary"],
-.fi-ta-actions .fi-btn-color-primary {
+.fi-ta-actions .fi-btn-color-primary,
+.fi-ta-actions a[class*="color-primary"] {
     background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    color: #ffffff !important;
     border: none !important;
 }
 
 .fi-ta-actions [class*="color-success"],
-.fi-ta-actions .fi-btn-color-success {
+.fi-ta-actions .fi-btn-color-success,
+.fi-ta-actions button[class*="color-success"] {
     background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
-    color: #ffffff !important;
     border: none !important;
 }
 
 .fi-ta-actions svg {
     width: 14px !important;
     height: 14px !important;
-    stroke: currentColor !important;
-    color: inherit !important;
+    stroke: #ffffff !important;
+    color: #ffffff !important;
     flex-shrink: 0 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   INVOICE & BILLING PAGES: STACK ACTION BUTTONS VERTICALLY
+   ══════════════════════════════════════════════════════════════ */
+body:has([class*="monthly-invoices"]) .fi-ta-actions,
+body:has([class*="registration-invoices"]) .fi-ta-actions,
+body:has([class*="invoice"]) .fi-ta-actions,
+.fi-resource-monthly-invoices .fi-ta-actions,
+.fi-resource-registration-invoices .fi-ta-actions,
+.fi-page-list-monthly-invoices .fi-ta-actions,
+.fi-page-list-registration-invoices .fi-ta-actions,
+.fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions,
+.fi-ta-table th:last-child:has(span:contains("ACTION")) ~ tbody td:last-child .fi-ta-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+    min-width: 95px !important;
+    max-width: 115px !important;
+}
+
+body:has([class*="monthly-invoices"]) .fi-ta-actions .fi-btn,
+body:has([class*="registration-invoices"]) .fi-ta-actions .fi-btn,
+body:has([class*="invoice"]) .fi-ta-actions .fi-btn,
+.fi-resource-monthly-invoices .fi-ta-actions .fi-btn,
+.fi-resource-registration-invoices .fi-ta-actions .fi-btn,
+.fi-page-list-monthly-invoices .fi-ta-actions .fi-btn,
+.fi-page-list-registration-invoices .fi-ta-actions .fi-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.32rem 0.6rem !important;
+    font-size: 0.72rem !important;
 }
 
 /* Pagination Bar */

@@ -398,7 +398,8 @@ class MonthlyInvoiceResource extends Resource
                     ->modalSubmitActionLabel('Update')
                     ->modalCancelActionLabel('Batal')
                     ->extraAttributes(fn (MonthlyInvoice $record) => [
-                        'class' => 'ims-monthly-paymethod-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey()),
+                        'class' => 'ims-monthly-paymethod-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey()) . ' hidden opacity-0 pointer-events-none',
+                        'style' => 'display: none !important; width: 0 !important; height: 0 !important; padding: 0 !important; margin: 0 !important;',
                     ])
                     ->fillForm(fn (MonthlyInvoice $record): array => [
                         'payment_method' => match (strtoupper($record->payment_method ?? 'MIDTRANS')) {
