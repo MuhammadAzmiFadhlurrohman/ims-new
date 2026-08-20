@@ -433,8 +433,38 @@ table.fi-ta-table tbody tr:last-child td {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   INVOICE & BILLING PAGES: STACK ACTION BUTTONS VERTICALLY
+   INVOICE & BILLING PAGES: COMPACT FIT & NO HORIZONTAL OVERFLOW
    ══════════════════════════════════════════════════════════════ */
+body:has([class*="monthly-invoices"]) .fi-ta-table,
+body:has([class*="registration-invoices"]) .fi-ta-table,
+.fi-resource-monthly-invoices .fi-ta-table,
+.fi-resource-registration-invoices .fi-ta-table,
+.fi-page-list-monthly-invoices .fi-ta-table,
+.fi-page-list-registration-invoices .fi-ta-table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: auto !important;
+}
+
+body:has([class*="monthly-invoices"]) .fi-ta-cell,
+body:has([class*="registration-invoices"]) .fi-ta-cell,
+.fi-resource-monthly-invoices .fi-ta-cell,
+.fi-resource-registration-invoices .fi-ta-cell,
+.fi-page-list-monthly-invoices .fi-ta-cell,
+.fi-page-list-registration-invoices .fi-ta-cell {
+    padding: 0.5rem 0.55rem !important;
+}
+
+body:has([class*="monthly-invoices"]) .fi-ta-header-cell,
+body:has([class*="registration-invoices"]) .fi-ta-header-cell,
+.fi-resource-monthly-invoices .fi-ta-header-cell,
+.fi-resource-registration-invoices .fi-ta-header-cell,
+.fi-page-list-monthly-invoices .fi-ta-header-cell,
+.fi-page-list-registration-invoices .fi-ta-header-cell {
+    padding: 0.65rem 0.55rem !important;
+    font-size: 0.7rem !important;
+}
+
 body:has([class*="monthly-invoices"]) .fi-ta-actions,
 body:has([class*="registration-invoices"]) .fi-ta-actions,
 body:has([class*="invoice"]) .fi-ta-actions,
@@ -448,10 +478,10 @@ body:has([class*="invoice"]) .fi-ta-actions,
     flex-direction: column !important;
     align-items: stretch !important;
     justify-content: center !important;
-    gap: 0.35rem !important;
+    gap: 0.22rem !important;
     width: 100% !important;
-    min-width: 95px !important;
-    max-width: 115px !important;
+    min-width: 98px !important;
+    max-width: 108px !important;
 }
 
 body:has([class*="monthly-invoices"]) .fi-ta-actions .fi-btn,
@@ -463,8 +493,17 @@ body:has([class*="invoice"]) .fi-ta-actions .fi-btn,
 .fi-page-list-registration-invoices .fi-ta-actions .fi-btn {
     width: 100% !important;
     justify-content: center !important;
-    padding: 0.32rem 0.6rem !important;
-    font-size: 0.72rem !important;
+    padding: 0.2rem 0.45rem !important;
+    font-size: 0.68rem !important;
+    border-radius: 6px !important;
+}
+
+body:has([class*="monthly-invoices"]) .fi-ta-actions .fi-btn svg,
+body:has([class*="registration-invoices"]) .fi-ta-actions .fi-btn svg,
+.fi-resource-monthly-invoices .fi-ta-actions .fi-btn svg,
+.fi-page-list-monthly-invoices .fi-ta-actions .fi-btn svg {
+    width: 12px !important;
+    height: 12px !important;
 }
 
 /* Pagination Bar */

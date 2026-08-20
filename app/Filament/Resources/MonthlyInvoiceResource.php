@@ -132,12 +132,12 @@ class MonthlyInvoiceResource extends Resource
                         $custUrl = $sub ? CustomerSubscriptionResource::getUrl('view', ['record' => $sub]) : '#';
 
                         return "
-                            <div class='flex flex-col text-[11px] leading-tight space-y-0.5 py-1' style='max-width: 170px;'>
-                                <span class='text-slate-500 font-mono text-[10.5px]'>{$invNo}</span>
+                            <div class='flex flex-col text-[10.5px] leading-tight space-y-0.5 py-0.5' style='max-width: 140px;'>
+                                <span class='text-slate-500 font-mono text-[9.5px]'>{$invNo}</span>
                                 <a href='{$custUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 transition-colors uppercase tracking-tight truncate'>
                                     {$custName} {$gender}
                                 </a>
-                                <a href='{$custUrl}' class='text-slate-800 underline font-semibold text-[10.5px] hover:text-indigo-600 transition-colors uppercase truncate'>
+                                <a href='{$custUrl}' class='text-slate-800 underline font-semibold text-[9.5px] hover:text-indigo-600 transition-colors uppercase truncate'>
                                     {$packageName}
                                 </a>
                             </div>
@@ -166,9 +166,9 @@ class MonthlyInvoiceResource extends Resource
 
                         if (! $isPublished) {
                             return "
-                                <div class='flex flex-col text-[11px] leading-snug space-y-0.5 py-1' style='max-width: 200px;'>
+                                <div class='flex flex-col text-[10px] leading-tight space-y-0.5 py-0.5' style='max-width: 165px;'>
                                     <span class='text-slate-600 font-semibold'>Billing Belum diPublish</span>
-                                    <a href='{$pdfUrl}' target='_blank' class='text-blue-600 underline font-medium text-[10px] hover:text-blue-800 break-all truncate' title='Buka / Cetak Invoice PDF'>
+                                    <a href='{$pdfUrl}' target='_blank' class='text-blue-600 underline font-medium text-[9.5px] hover:text-blue-800 break-all truncate' title='Buka / Cetak Invoice PDF'>
                                         {$pdfName}
                                     </a>
                                 </div>
@@ -179,10 +179,10 @@ class MonthlyInvoiceResource extends Resource
                         $jatuhTempo = '2026-08-31 23:59:00';
 
                         return "
-                            <div class='flex flex-col text-[10.5px] leading-tight space-y-0.5 py-1 text-slate-700' style='max-width: 200px;'>
-                                <span><strong class='font-bold'>Terbit Invoice :</strong> {$terbit}</span>
-                                <span><strong class='font-bold'>Jatuh Tempo :</strong> {$jatuhTempo}</span>
-                                <a href='{$pdfUrl}' target='_blank' class='text-blue-600 underline font-medium text-[10px] mt-0.5 hover:text-blue-800 break-all truncate' title='Buka / Cetak Invoice PDF'>
+                            <div class='flex flex-col text-[10px] leading-tight space-y-0.5 py-0.5 text-slate-700' style='max-width: 165px;'>
+                                <span><strong class='font-bold'>Terbit :</strong> {$terbit}</span>
+                                <span><strong class='font-bold'>Tempo :</strong> {$jatuhTempo}</span>
+                                <a href='{$pdfUrl}' target='_blank' class='text-blue-600 underline font-medium text-[9.5px] mt-0.5 hover:text-blue-800 break-all truncate' title='Buka / Cetak Invoice PDF'>
                                     {$pdfName}
                                 </a>
                             </div>
@@ -194,7 +194,7 @@ class MonthlyInvoiceResource extends Resource
                     ->label('Periode')
                     ->html()
                     ->state(function (MonthlyInvoice $record): string {
-                        return "<span class='text-slate-800 font-bold text-[11px] whitespace-nowrap'>Aug 2026</span>";
+                        return "<span class='text-slate-800 font-bold text-[10.5px] whitespace-nowrap'>Aug 2026</span>";
                     }),
 
                 // ── 4. AMOUNT ──
@@ -205,11 +205,8 @@ class MonthlyInvoiceResource extends Resource
                         $amount = $record->total_amount ?? 200000;
                         $amountFormatted = number_format($amount, 2, ',', '.');
                         return "
-                            <div class='inline-flex items-center gap-1 font-bold text-slate-900 text-[11.5px] whitespace-nowrap'>
+                            <div class='inline-flex items-center gap-1 font-bold text-slate-900 text-[10.5px] whitespace-nowrap'>
                                 <span>Rp {$amountFormatted}</span>
-                                <svg class='w-3 h-3 text-slate-700 inline-block' fill='currentColor' viewBox='0 0 20 20'>
-                                    <path fill-rule='evenodd' d='M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z' clip-rule='evenodd' />
-                                </svg>
                             </div>
                         ";
                     }),
@@ -246,14 +243,14 @@ class MonthlyInvoiceResource extends Resource
                         }
 
                         $tempDeleteHtml = $isSuspend
-                            ? "<div class='mt-0.5'><span class='ims-temp-badge' style='background: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6; border-radius: 4px; padding: 1.5px 5px; font-size: 8.5px; font-weight: 800;'>TEMPORARY DELETE</span></div>"
+                            ? "<div class='mt-0.5'><span class='ims-temp-badge' style='background: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6; border-radius: 4px; padding: 1px 4.5px; font-size: 8px; font-weight: 800;'>TEMPORARY DELETE</span></div>"
                             : "";
 
                         return "
-                            <div class='flex flex-col text-[10.5px] leading-tight space-y-0.5 py-1' style='max-width: 170px;'>
-                                <span class='font-bold text-slate-700 text-[10.5px] truncate'>{$userState}</span>
+                            <div class='flex flex-col text-[10px] leading-tight space-y-0.5 py-0.5' style='max-width: 140px;'>
+                                <span class='font-bold text-slate-700 text-[10px] truncate'>{$userState}</span>
                                 <div>
-                                    <span style='background: {$badgeBg}; color: {$badgeColor}; font-weight: 700; font-size: 9px; padding: 1.5px 6px; border-radius: 4px; display: inline-block; white-space: nowrap;'>
+                                    <span style='background: {$badgeBg}; color: {$badgeColor}; font-weight: 700; font-size: 8.5px; padding: 1px 5px; border-radius: 4px; display: inline-block; white-space: nowrap;'>
                                         {$stateCode}
                                     </span>
                                 </div>
@@ -272,23 +269,23 @@ class MonthlyInvoiceResource extends Resource
                         $isCash = str_contains($method, 'CASH') || str_contains($method, 'COLLECTOR');
                         
                         $bg = $isCash ? 'background: #059669;' : ($isManual ? 'background: #3b82f6;' : 'background: #6366f1;');
-                        $label = $isCash ? 'Cash To Collector' : ($isManual ? 'Manual Transfer' : '▲ Midtrans');
+                        $label = $isCash ? 'Cash Collector' : ($isManual ? 'Manual Transfer' : '▲ Midtrans');
 
                         $safeKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey());
 
                         return "
-                            <div class='flex flex-col items-start py-1'>
+                            <div class='flex flex-col items-start py-0.5'>
                                 <button
                                     type='button'
                                     onclick=\"document.querySelector('.ims-monthly-paymethod-trigger-{$safeKey}')?.click()\"
                                     title='Klik untuk mengubah metode pembayaran'
-                                    style='{$bg} color: #ffffff; font-weight: 700; font-size: 10px; padding: 3.5px 10px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; box-shadow: 0 1px 2px rgba(0,0,0,0.15); white-space: nowrap; cursor: pointer; border: none; transition: transform 0.15s, opacity 0.15s;'
+                                    style='{$bg} color: #ffffff; font-weight: 700; font-size: 9.5px; padding: 2.5px 7px; border-radius: 4px; display: inline-flex; align-items: center; gap: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.15); white-space: nowrap; cursor: pointer; border: none; transition: transform 0.15s, opacity 0.15s;'
                                     onmouseover='this.style.opacity=\"0.85\"; this.style.transform=\"translateY(-1px)\";'
                                     onmouseout='this.style.opacity=\"1\"; this.style.transform=\"none\";'
                                 >
                                     {$label}
                                 </button>
-                                <span style='color: #ef4444; font-size: 9.5px; font-weight: 600; font-style: italic; text-decoration: line-through; margin-top: 3px; white-space: nowrap;'>
+                                <span style='color: #ef4444; font-size: 9px; font-weight: 600; font-style: italic; text-decoration: line-through; margin-top: 2px; white-space: nowrap;'>
                                     🚫 UnSend 🚫 UnSend
                                 </span>
                             </div>

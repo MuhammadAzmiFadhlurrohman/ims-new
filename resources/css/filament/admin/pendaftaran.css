@@ -274,8 +274,9 @@ table.fi-ta-table tbody tr:hover td:first-child {
     flex-direction: column !important;
     align-items: stretch !important;
     justify-content: center !important;
-    gap: 0.35rem !important;
-    min-width: 140px !important;
+    gap: 0.22rem !important;
+    min-width: 100px !important;
+    max-width: 110px !important;
     width: 100% !important;
 }
 
@@ -290,7 +291,9 @@ table.fi-ta-table tbody tr:hover td:first-child {
 .fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)) button {
     width: 100% !important;
     justify-content: center !important;
-    padding: 0.35rem 0.65rem !important;
-    font-size: 0.72rem !important;
+    padding: 0.22rem 0.45rem !important;
+    font-size: 0.68rem !important;
+    border-radius: 6px !important;
 }
+
 
