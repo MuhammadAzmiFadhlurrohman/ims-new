@@ -7,7 +7,6 @@
 .fi-layout {
     min-height: 125vh !important;
     align-items: stretch !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .fi-sidebar {
@@ -23,9 +22,7 @@
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                background-color 0.25s ease,
-                border-color 0.25s ease !important;
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 html.dark .fi-sidebar {
@@ -878,7 +875,6 @@ html.dark .fi-sidebar-nav::-webkit-scrollbar-thumb {
     flex-shrink: 0 !important;
     background: #f8fafc !important;
     border-top: 1px solid #e2e8f0 !important;
-    transition: all 0.25s ease !important;
 }
 
 html.dark .ims-sidebar-footer {
