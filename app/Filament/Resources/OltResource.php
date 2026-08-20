@@ -32,37 +32,49 @@ class OltResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Informasi Master OLT')
-                    ->description('Konfigurasi perangkat OLT (Optical Line Terminal) dan integrasi POP server.')
+                Forms\Components\Section::make('Informasi Perangkat OLT')
+                    ->description('Konfigurasi spesifikasi perangkat OLT (Optical Line Terminal) dan integrasi POP server FTTH.')
+                    ->icon('heroicon-o-server-stack')
                     ->schema([
                         Forms\Components\TextInput::make('code')
                             ->label('Kode OLT')
                             ->placeholder('Contoh: OLT-MSN')
+                            ->prefixIcon('heroicon-o-hashtag')
                             ->required()
                             ->maxLength(50)
                             ->unique(ignoreRecord: true),
+
                         Forms\Components\TextInput::make('name')
                             ->label('Nama OLT')
-                            ->placeholder('Contoh: OLT MSN')
+                            ->placeholder('Contoh: OLT MSN Pusat')
+                            ->prefixIcon('heroicon-o-server')
                             ->required()
                             ->maxLength(100),
+
                         Forms\Components\Select::make('pop_code')
-                            ->label('POP Server')
+                            ->label('POP Server / Lokasi')
                             ->relationship('pop', 'name')
+                            ->prefixIcon('heroicon-o-map-pin')
                             ->searchable()
                             ->preload(),
+
                         Forms\Components\TextInput::make('ip_address')
-                            ->label('IP Address')
+                            ->label('IP Address OLT')
                             ->placeholder('10.10.10.1')
+                            ->prefixIcon('heroicon-o-signal')
                             ->maxLength(45),
+
                         Forms\Components\TextInput::make('brand')
-                            ->label('Merk / Brand')
+                            ->label('Merk / Tipe Perangkat')
                             ->placeholder('ZTE C320, Huawei MA5608T, HSGQ, dll')
+                            ->prefixIcon('heroicon-o-cpu-chip')
                             ->maxLength(50),
+
                         Forms\Components\TextInput::make('total_pon_ports')
-                            ->label('Jumlah PON Port')
+                            ->label('Jumlah Port PON')
                             ->numeric()
                             ->default(8)
+                            ->prefixIcon('heroicon-o-bolt')
                             ->required(),
                     ])->columns(2),
             ]);
@@ -78,47 +90,49 @@ class OltResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->weight(FontWeight::Black)
-                    ->color('primary'),
+                    ->color('primary')
+                    ->copyable()
+                    ->copyMessage('Kode OLT disalin'),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('NAMA OLT')
                     ->searchable()
                     ->sortable()
-                    ->weight(FontWeight::Bold),
+                    ->weight(FontWeight::Bold)
+                    ->description(fn (Olt $record): string => $record->brand ? "Merk: {$record->brand}" : 'FTTH OLT Device'),
 
                 Tables\Columns\TextColumn::make('pop.name')
                     ->label('POP SERVER')
                     ->badge()
                     ->color('gray')
+                    ->icon('heroicon-o-map-pin')
                     ->default('-'),
 
                 Tables\Columns\TextColumn::make('ip_address')
                     ->label('IP ADDRESS')
                     ->icon('heroicon-o-signal')
                     ->fontFamily(FontFamily::Mono)
+                    ->badge()
+                    ->color('info')
                     ->copyable()
                     ->copyMessage('IP Address disalin')
                     ->default('-'),
 
-                Tables\Columns\TextColumn::make('brand')
-                    ->label('MERK OLT')
-                    ->badge()
-                    ->color('info')
-                    ->default('-'),
-
                 Tables\Columns\TextColumn::make('total_pon_ports')
-                    ->label('TOTAL PON')
+                    ->label('KAPASITAS')
                     ->badge()
                     ->color('success')
-                    ->formatStateUsing(fn ($state) => $state . ' Port')
+                    ->icon('heroicon-o-bolt')
+                    ->formatStateUsing(fn ($state) => $state . ' Port PON')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('pon_ports_count')
-                    ->label('PON TERDAFTAR')
+                    ->label('STATUS PON AKTIF')
                     ->counts('ponPorts')
                     ->badge()
                     ->color('warning')
-                    ->formatStateUsing(fn ($state) => $state . ' PON Aktif'),
+                    ->icon('heroicon-o-check-circle')
+                    ->formatStateUsing(fn ($state) => $state . ' Terdaftar'),
             ])
             ->actions([
                 Tables\Actions\Action::make('buka_manajemen')
@@ -133,11 +147,6 @@ class OltResource extends Resource
                 Tables\Actions\DeleteAction::make()
                     ->button()
                     ->color('danger'),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
