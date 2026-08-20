@@ -499,6 +499,7 @@ class InstallationPipelineResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('internet_number')
                     ->label('Pelanggan')
+                    ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
                         $internetNo = $record->internet_number ?? '-';

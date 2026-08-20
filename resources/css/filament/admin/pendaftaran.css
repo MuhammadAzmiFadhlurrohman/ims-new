@@ -677,15 +677,39 @@ html.dark .ims-temp-badge:hover {
     }
 
     /* Neutralize ALL Filament's TextColumn nested wrappers and max-w-max */
+    .fi-ta-cell-full-card,
+    .fi-ta-cell-full-card *,
+    .fi-table-cell-internet-number,
+    .fi-table-cell-internet-number *,
+    td.fi-table-cell-internet-number,
+    td.fi-table-cell-internet-number *,
+    table.fi-ta-table tbody tr td,
+    table.fi-ta-table tbody tr td * {
+        box-sizing: border-box !important;
+    }
+
+    .fi-ta-cell-full-card,
+    .fi-ta-cell-full-card > div,
+    .fi-ta-cell-full-card > div > div,
+    .fi-ta-cell-full-card > div > div > div,
+    .fi-ta-cell-full-card > div > div > div > span,
+    .fi-ta-cell-full-card .fi-ta-text,
+    .fi-ta-cell-full-card .fi-ta-text-item,
+    .fi-ta-cell-full-card .fi-ta-text-item-label,
+    .fi-table-cell-internet-number,
+    .fi-table-cell-internet-number > div,
+    .fi-table-cell-internet-number > div > div,
+    .fi-table-cell-internet-number > div > div > div,
+    .fi-table-cell-internet-number > div > div > div > span,
+    .fi-table-cell-internet-number .fi-ta-text,
+    .fi-table-cell-internet-number .fi-ta-text-item,
+    .fi-table-cell-internet-number .fi-ta-text-item-label,
+    table.fi-ta-table tbody tr td,
+    table.fi-ta-table tbody tr td:first-child,
     table.fi-ta-table tbody tr td .fi-ta-text,
-    table.fi-ta-table tbody tr td .fi-ta-text > div,
     table.fi-ta-table tbody tr td .fi-ta-text-item,
     table.fi-ta-table tbody tr td .fi-ta-text-item-label,
-    table.fi-ta-table tbody tr td .fi-ta-cell-content,
-    .fi-table-cell-internet-number .fi-ta-text,
-    .fi-table-cell-internet-number .fi-ta-text > div,
-    .fi-table-cell-internet-number .fi-ta-text-item,
-    .fi-table-cell-internet-number .fi-ta-text-item-label {
+    table.fi-ta-table tbody tr td .fi-ta-cell-content {
         display: block !important;
         width: 100% !important;
         min-width: 100% !important;
@@ -695,7 +719,6 @@ html.dark .ims-temp-badge:hover {
         margin: 0 !important;
         border: none !important;
         background: transparent !important;
-        box-sizing: border-box !important;
     }
 
 
