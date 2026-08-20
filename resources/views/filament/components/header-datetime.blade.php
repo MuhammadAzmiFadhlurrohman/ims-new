@@ -1,13 +1,10 @@
 <div class="ims-header-info-wrapper flex items-center gap-2 sm:gap-3">
     <!-- Live Date & Clock Pill -->
-    <div class="ims-live-clock-pill flex items-center gap-1.5 sm:gap-2">
-        <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <div class="ims-live-clock-pill">
+        <svg style="width: 15px; height: 15px; flex-shrink: 0; color: #0284c7;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span id="ims-live-clock" class="font-mono">
-            <span class="ims-clock-full hidden lg:inline">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y H:i:s') }} WIB</span>
-            <span class="ims-clock-mobile lg:hidden">{{ \Carbon\Carbon::now()->format('H:i') }} WIB</span>
-        </span>
+        <span id="ims-live-clock">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y H:i:s') }} WIB</span>
     </div>
 
     <!-- Dark / Light Mode Toggle Button -->
@@ -39,26 +36,21 @@
         const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
         
-        const day = days[now.getDay()];
-        const date = now.getDate();
-        const month = months[now.getMonth()];
-        const year = now.getFullYear();
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const seconds = String(now.getSeconds()).padStart(2, '0');
 
-        const timeFull = `${day}, ${date} ${month} ${year} ${hours}:${minutes}:${seconds} WIB`;
-        const timeShort = `${hours}:${minutes} WIB`;
-
-        const fullEl = el.querySelector('.ims-clock-full');
-        const mobileEl = el.querySelector('.ims-clock-mobile');
-        if (fullEl && mobileEl) {
-            fullEl.textContent = timeFull;
-            mobileEl.textContent = timeShort;
+        if (window.innerWidth >= 1024) {
+            const day = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            el.textContent = `${day}, ${date} ${month} ${year} ${hours}:${minutes}:${seconds} WIB`;
         } else {
-            el.textContent = window.innerWidth >= 1024 ? timeFull : timeShort;
+            el.textContent = `${hours}:${minutes} WIB`;
         }
     }
+    updateImsClock();
     setInterval(updateImsClock, 1000);
 
     // ── 2. SYNC THEME ICONS LOGIC ──

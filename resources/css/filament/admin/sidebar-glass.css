@@ -131,9 +131,18 @@ html.dark .fi-sidebar {
     }
 }
 
-.fi-sidebar > div.overflow-x-clip {
-    flex-shrink: 0 !important;
+.fi-sidebar > div,
+.fi-sidebar > div.overflow-x-clip,
+.fi-sidebar > div.h-full,
+.fi-sidebar > form {
+    height: 100% !important;
+    min-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    flex: 1 1 auto !important;
     width: 100% !important;
+    overflow: hidden !important;
 }
 
 /* ── 2. SIDEBAR HEADER & TOGGLE BUTTON ── */

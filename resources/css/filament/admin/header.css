@@ -70,10 +70,16 @@ html.fi body .fi-topbar,
 }
 
 #ims-live-clock {
-    color: #1e293b !important;
+    color: #0f172a !important;
     font-size: 12.5px !important;
     font-weight: 700 !important;
     font-family: 'Inter', ui-monospace, sans-serif !important;
+    display: inline-block !important;
+    white-space: nowrap !important;
+}
+
+html.dark #ims-live-clock {
+    color: #ffffff !important;
 }
 
 /* ── Dark / Light Mode Toggle Button ── */
