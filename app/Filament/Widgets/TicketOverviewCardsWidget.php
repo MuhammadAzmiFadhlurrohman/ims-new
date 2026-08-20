@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\InstallationPipeline;
+use App\Models\CustomerSubscription;
 use App\Models\PackageMutation;
 use App\Models\ServiceSuspension;
 use App\Models\ServiceTermination;
@@ -27,7 +27,12 @@ class TicketOverviewCardsWidget extends Widget
         $coverageCount = Ticket::where('category', 'COVERAGE')->count();
         $terminasiCount = ServiceTermination::where('status', '!=', 'DONE')->count() ?: Ticket::whereIn('category', ['TERMINASI', 'PUTUS'])->count();
         $suspendCount = ServiceSuspension::where('status', 'ISOLATED')->count() ?: Ticket::whereIn('category', ['SUSPEND', 'ISOLIR'])->count();
-        $psbCount = InstallationPipeline::where('status', '!=', 'LIVE')->count() ?: Ticket::whereIn('category', ['PSB', 'PEMASANGAN_BARU'])->count();
+        $psbCount = CustomerSubscription::where(function ($q) {
+            $q->whereNotIn('registration_status', [
+                'LIVE', '20', 'Aktif', 'AKTIF', 'aktif', 'Active', 'ACTIVE',
+                'Selesai Aktivasi', '21', 'Suspend', 'SUSPEND', '23', 'Terminasi', 'TERMINASI', 'REQ. TERMINASI'
+            ])->orWhereNull('registration_status');
+        })->count() ?: Ticket::whereIn('category', ['PSB', 'PEMASANGAN_BARU'])->count();
         $ubahLayananCount = PackageMutation::count() ?: Ticket::whereIn('category', ['UBAH_LAYANAN', 'MUTASI'])->count();
 
         return [
