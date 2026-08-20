@@ -63,9 +63,9 @@ html.dark .fi-sidebar {
     }
 
     .fi-sidebar.fi-sidebar-open {
-        width: 22vw !important;
-        min-width: 22vw !important;
-        max-width: 22vw !important;
+        width: 17.5rem !important;
+        min-width: 17.5rem !important;
+        max-width: 17.5rem !important;
     }
 
     .fi-sidebar:not(.fi-sidebar-open) {
@@ -141,16 +141,14 @@ html.dark .fi-sidebar {
     }
 }
 
-}
-
 /* ── 2. SIDEBAR HEADER & TOGGLE BUTTON ── */
 .fi-sidebar-header {
     background: transparent !important;
     border-bottom: 1px solid #f1f5f9 !important;
-    padding: 1rem 1.15rem !important;
-    height: 5.2rem !important;
-    min-height: 5.2rem !important;
-    max-height: 5.2rem !important;
+    padding: 0.75rem 1rem !important;
+    height: 4.4rem !important;
+    min-height: 4.4rem !important;
+    max-height: 4.4rem !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -174,15 +172,15 @@ html.dark .fi-sidebar-header {
 .ims-brand-container {
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 10px !important;
     overflow: visible !important;
     min-width: 0 !important;
 }
 
 .ims-brand-wifi-svg,
 .ims-brand-wifi svg {
-    width: 36px !important;
-    height: 36px !important;
+    width: 28px !important;
+    height: 28px !important;
     fill: #0284c7 !important;
     filter: drop-shadow(0 2px 8px rgba(2, 132, 199, 0.35)) !important;
     flex-shrink: 0 !important;
@@ -196,7 +194,7 @@ html.dark .ims-brand-wifi svg {
 }
 
 .ims-brand-title {
-    font-size: 1.22rem !important;
+    font-size: 1.05rem !important;
     font-weight: 800 !important;
     color: #0f172a !important;
     letter-spacing: -0.01em !important;

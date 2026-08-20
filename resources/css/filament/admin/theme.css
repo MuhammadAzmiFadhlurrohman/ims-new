@@ -20,7 +20,7 @@ html {
    SIDEBAR DIMENSIONS
    ══════════════════════════════════════ */
 :root {
-    --sidebar-width: 22vw;
+    --sidebar-width: 17.5rem;
     --collapsed-sidebar-width: 4.5rem;
 }
 
