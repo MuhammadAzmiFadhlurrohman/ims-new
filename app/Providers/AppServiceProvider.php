@@ -40,21 +40,49 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
-        // ── 2. LOGGING AKTIVITAS MENCURIGAKAN (FAILED LOGIN / BRUTE FORCE) ──
+        // ── 2. LOGGING AKTIVITAS MENCURIGAKAN (AGREGASI GAGAL LOGIN JADI 1 BARIS) ──
         Event::listen(Failed::class, function (Failed $event) {
             $email = $event->credentials['email'] ?? 'unknown';
             $ip = request()->ip();
             $userAgent = request()->userAgent();
 
-            activity('suspicious_activity')
-                ->event('failed_login')
-                ->withProperties([
-                    'email' => $email,
-                    'ip_address' => $ip,
-                    'user_agent' => $userAgent,
-                    'attempted_at' => now()->toDateTimeString(),
-                ])
-                ->log("Percobaan login gagal untuk email: {$email} dari IP: {$ip}");
+            // Cari log gagal login dari IP & Email yang sama dalam 15 menit terakhir
+            $recentLog = Activity::where('log_name', 'suspicious_activity')
+                ->where('event', 'failed_login')
+                ->where('created_at', '>=', now()->subMinutes(15))
+                ->latest()
+                ->get()
+                ->first(function ($log) use ($ip, $email) {
+                    $props = $log->properties;
+                    return isset($props['ip_address'], $props['email'])
+                        && $props['ip_address'] === $ip
+                        && $props['email'] === $email;
+                });
+
+            if ($recentLog) {
+                $props = $recentLog->properties ? $recentLog->properties->toArray() : [];
+                $count = (int) ($props['attempt_count'] ?? 1) + 1;
+                $props['attempt_count'] = $count;
+                $props['last_attempt_at'] = now()->toDateTimeString();
+
+                $recentLog->update([
+                    'description' => "Ada {$count}x percobaan login gagal untuk email: {$email} dari IP: {$ip}",
+                    'properties' => $props,
+                    'created_at' => now(), // update waktu ke percobaan terbaru
+                ]);
+            } else {
+                activity('suspicious_activity')
+                    ->event('failed_login')
+                    ->withProperties([
+                        'email' => $email,
+                        'ip_address' => $ip,
+                        'user_agent' => $userAgent,
+                        'attempt_count' => 1,
+                        'first_attempt_at' => now()->toDateTimeString(),
+                        'last_attempt_at' => now()->toDateTimeString(),
+                    ])
+                    ->log("Ada 1x percobaan login gagal untuk email: {$email} dari IP: {$ip}");
+            }
         });
 
         // ── 3. LOGGING AKTIVITAS LOGIN BERHASIL ──
