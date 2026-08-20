@@ -30,8 +30,6 @@ html.dark .fi-ta-filters-above-content-ctn {
     align-items: center !important;
 }
 
-/* NOTE: Label hiding for DESKTOP ONLY — moved to @media (min-width: 1024px) block below */
-
 .fi-ta-filters-above-content-ctn .fi-fo-field-wrp {
     margin-bottom: 0 !important;
 }
@@ -375,7 +373,7 @@ html.dark .ims-temp-badge:hover {
     }
 }
 
-/* ── STACK VERTICALLY ON INVOICE & BILLING TABLES (ATAS KE BAWAH) ── */
+/* ── STACK VERTICALLY ON INVOICE & BILLING TABLES ── */
 .fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions,
 .fi-ta-table td:has([class*="paymethod-trigger"]) .fi-ta-actions,
 .fi-ta-table td:has([class*="paymethod-trigger"]) ~ td .fi-ta-actions,
@@ -397,35 +395,6 @@ html.dark .ims-temp-badge:hover {
     width: 100% !important;
 }
 
-.fi-page-list-monthly-invoices .fi-ta-actions .fi-btn,
-.fi-page-list-registration-invoices .fi-ta-actions .fi-btn,
-[class*="monthly-invoices"] .fi-ta-actions .fi-btn,
-[class*="registration-invoices"] .fi-ta-actions .fi-btn,
-.fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions .fi-btn,
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(3)) .fi-btn,
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(4)) .fi-btn,
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(3)) button,
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)) button {
-    width: 100% !important;
-    justify-content: center !important;
-    padding: 0.22rem 0.35rem !important;
-    font-size: 0.67rem !important;
-    border-radius: 6px !important;
-    white-space: nowrap !important;
-    box-sizing: border-box !important;
-    gap: 3px !important;
-}
-
-.fi-page-list-monthly-invoices .fi-ta-actions .fi-btn-label,
-.fi-page-list-registration-invoices .fi-ta-actions .fi-btn-label,
-[class*="monthly-invoices"] .fi-ta-actions .fi-btn-label,
-[class*="registration-invoices"] .fi-ta-actions .fi-btn-label {
-    white-space: nowrap !important;
-    font-size: 0.67rem !important;
-    letter-spacing: -0.01em !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-}
 
 /* ══════════════════════════════════════════════════════════════════════
    6. 100% STANDALONE MOBILE CARD & 2-COLUMN FILTERS (< 1024px)
@@ -437,15 +406,14 @@ html.dark .ims-temp-badge:hover {
         display: none !important;
     }
 
-    /* ── A. STANDALONE 2-COLUMN FILTERS CONTAINER ── */
-    /* Ensure the outer container stacks header and form vertically */
+    /* ── A. 2-COLUMN MOBILE FILTERS CONTAINER ── */
     .fi-ta-filters-above-content-ctn {
         display: block !important;
         width: 100% !important;
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 16px !important;
-        padding: 12px 14px !important;
+        padding: 14px 16px !important;
         margin-bottom: 12px !important;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
         box-sizing: border-box !important;
@@ -456,17 +424,16 @@ html.dark .ims-temp-badge:hover {
         border-color: #14355a !important;
     }
 
-    /* .fi-ta-filters is the inner filter component (class="fi-ta-filters grid gap-y-4").
-       Force it to be a 1-column grid so header + form stack vertically. */
+    /* Outer Filter Component Container */
     .fi-ta-filters {
-        display: grid !important;
-        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
         gap: 10px !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
 
-    /* The filter header row ("Filters" label | "Reset" button) – leave as-is */
+    /* Filter Header: "Filters" title (left) | "Reset" button (right) */
     .fi-ta-filters > div:first-child {
         display: flex !important;
         justify-content: space-between !important;
@@ -474,18 +441,33 @@ html.dark .ims-temp-badge:hover {
         width: 100% !important;
     }
 
-    /* Inner fields: the grid with all filter inputs – force 2 columns */
-    .fi-ta-filters .grid,
-    .fi-ta-filters form > div,
-    .fi-ta-filters .fi-fo-component-ctn {
+    .fi-ta-filters > div:first-child h4 {
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        color: #0f172a !important;
+    }
+
+    html.dark .fi-ta-filters > div:first-child h4 {
+        color: #ffffff !important;
+    }
+
+    /* 2-Column Fields Grid */
+    .fi-ta-filters-above-content-ctn form,
+    .fi-ta-filters-above-content-ctn form > div {
         display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 8px !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px 8px !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
 
-    .fi-fo-field-wrp {
+    /* 5th filter (Wilayah) spans full width across 2 columns */
+    .fi-ta-filters-above-content-ctn form > div > .fi-fo-field-wrp:nth-child(5) {
+        grid-column: 1 / -1 !important;
+    }
+
+    /* Each Field Component */
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp {
         display: flex !important;
         flex-direction: column !important;
         width: 100% !important;
@@ -493,45 +475,82 @@ html.dark .ims-temp-badge:hover {
         margin: 0 !important;
     }
 
-    .fi-fo-field-wrp-label,
-    .fi-ta-filter label,
-    .fi-fo-field-wrp label {
-        display: block !important;
-        font-size: 10px !important;
-        font-weight: 800 !important;
-        color: #64748b !important;
-        text-transform: uppercase !important;
-        margin-bottom: 2px !important;
+    /* Reset the inner div inside each field wrapper so it's vertical */
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp > div,
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp .grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 3px !important;
+        width: 100% !important;
+        grid-template-columns: none !important;
     }
 
-    html.dark .fi-fo-field-wrp-label,
-    html.dark .fi-ta-filter label,
-    html.dark .fi-fo-field-wrp label {
+    /* Field Label: On top of input */
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label,
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp label {
+        display: block !important;
+        font-size: 10.5px !important;
+        font-weight: 800 !important;
+        color: #475569 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.02em !important;
+        margin: 0 0 2px 0 !important;
+        padding: 0 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    html.dark .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label,
+    html.dark .fi-ta-filters-above-content-ctn .fi-fo-field-wrp label {
         color: #94a3b8 !important;
     }
 
-    .fi-input-wrp {
+    /* Field Input Container */
+    .fi-ta-filters-above-content-ctn .fi-input-wrp {
         display: flex !important;
         align-items: center !important;
         width: 100% !important;
         min-width: 0 !important;
         height: 38px !important;
+        min-height: 38px !important;
         background: #f8fafc !important;
         border: 1.5px solid #cbd5e1 !important;
         border-radius: 10px !important;
         padding: 0 8px !important;
         box-sizing: border-box !important;
+        box-shadow: none !important;
     }
 
-    html.dark .fi-input-wrp {
+    html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp {
         background: #051324 !important;
         border-color: #1e3a5f !important;
     }
 
-    .fi-input-wrp select,
-    .fi-input-wrp input,
-    .fi-select-input,
-    .fi-input {
+    .fi-ta-filters-above-content-ctn .fi-input-wrp:focus-within {
+        border-color: #2563eb !important;
+        background: #ffffff !important;
+    }
+
+    html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp:focus-within {
+        border-color: #00d4ff !important;
+        background: #092240 !important;
+    }
+
+    .fi-ta-filters-above-content-ctn .fi-input-wrp > div,
+    .fi-ta-filters-above-content-ctn .fi-input-wrp .min-w-0 {
+        display: flex !important;
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        align-items: center !important;
+    }
+
+    .fi-ta-filters-above-content-ctn .fi-input-wrp select,
+    .fi-ta-filters-above-content-ctn .fi-input-wrp input,
+    .fi-ta-filters-above-content-ctn .fi-select-input,
+    .fi-ta-filters-above-content-ctn .fi-input {
         display: block !important;
         width: 100% !important;
         min-width: 0 !important;
@@ -543,17 +562,45 @@ html.dark .ims-temp-badge:hover {
         color: #0f172a !important;
         outline: none !important;
         padding: 0 !important;
+        margin: 0 !important;
     }
 
-    html.dark .fi-input-wrp select,
-    html.dark .fi-input-wrp input,
-    html.dark .fi-select-input,
-    html.dark .fi-input {
+    html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp select,
+    html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp input,
+    html.dark .fi-ta-filters-above-content-ctn .fi-select-input,
+    html.dark .fi-ta-filters-above-content-ctn .fi-input {
         color: #f1f5f9 !important;
     }
 
 
-    /* ── B. TABLE RESET (ONE CARD PER ROW) ── */
+    /* ── B. MOBILE SEARCH & TOOLBAR ── */
+    .fi-ta-header-toolbar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-direction: row !important;
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        padding: 8px 12px !important;
+        margin-bottom: 12px !important;
+        gap: 8px !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+        box-sizing: border-box !important;
+    }
+
+    html.dark .fi-ta-header-toolbar {
+        background: #08192e !important;
+        border-color: #14355a !important;
+    }
+
+    .fi-ta-header-toolbar .fi-ta-search-field {
+        flex: 1 1 auto !important;
+        width: 100% !important;
+    }
+
+
+    /* ── C. TABLE RESET & STANDALONE CARD RENDERING ── */
     .fi-ta-ctn {
         background: transparent !important;
         border: none !important;
@@ -568,28 +615,27 @@ html.dark .ims-temp-badge:hover {
         overflow: visible !important;
     }
 
+    /* Hide table header row */
     table.fi-ta-table thead,
     .fi-ta-header-cell,
     table.fi-ta-table th {
         display: none !important;
     }
 
-    table.fi-ta-table {
-        display: block !important;
-        width: 100% !important;
-        background: transparent !important;
-        border: none !important;
-    }
-
+    /* Table & Tbody as Vertical Flex Cards Container */
+    table.fi-ta-table,
     table.fi-ta-table tbody {
         display: flex !important;
         flex-direction: column !important;
-        gap: 0.85rem !important;
+        gap: 12px !important;
         width: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
 
-    /* Override .fi-ta-row (class specificity = 0-1-0) with a higher-specificity rule (0-1-4).
-       Theme.css's .fi-ta-row{display:flex} must be beaten here. */
+    /* Each Row is a Card Wrapper */
     table.fi-ta-table tbody tr,
     table.fi-ta-table tbody tr.fi-ta-row {
         display: block !important;
@@ -604,69 +650,52 @@ html.dark .ims-temp-badge:hover {
         box-sizing: border-box !important;
     }
 
-    /* Sembunyikan semua kolom table lain di mobile, KECUALI Kolom 1 */
+    /* Hide all other columns on mobile (except internet_number cell) */
     .ims-mobile-hide,
     td:has(.ims-mobile-hide),
     .fi-ta-cell:has(.ims-mobile-hide),
-    table.fi-ta-table tbody tr td:not(:first-child),
-    table.fi-ta-table tbody tr.fi-ta-row td:not(:first-child) {
+    table.fi-ta-table tbody tr td:not(.fi-table-cell-internet-number):not(:first-child),
+    table.fi-ta-table tbody tr.fi-ta-row td:not(.fi-table-cell-internet-number):not(:first-child) {
         display: none !important;
     }
 
-    /* Kolom 1 membungkus seluruh kartu */
+    /* Column 1 (internet_number) renders the entire Standalone Card */
+    table.fi-ta-table tbody tr td.fi-table-cell-internet-number,
+    table.fi-ta-table tbody tr.fi-ta-row td.fi-table-cell-internet-number,
     table.fi-ta-table tbody tr td:first-child,
     table.fi-ta-table tbody tr.fi-ta-row td:first-child {
         display: block !important;
         width: 100% !important;
         padding: 0 !important;
+        margin: 0 !important;
         border: none !important;
         background: transparent !important;
         box-sizing: border-box !important;
     }
 
-    /* ── CRITICAL: Override Filament TextColumn wrappers inside the first cell ──
-       Filament's TextColumn renders the HTML content inside several nested wrappers:
-         td > div.fi-ta-text.grid.px-3.py-4
-           > div.flex.max-w-max           ← max-w-max KILLS full-width cards!
-             > div.fi-ta-text-item.inline-flex
-               > span.fi-ta-text-item-label
-                 → Our HTML card renders here
-
-       We must override each wrapper to block + 100% width + zero restrictions. */
+    /* Neutralize Filament's TextColumn nested wrappers */
     table.fi-ta-table tbody tr td:first-child .fi-ta-text,
-    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 !important;
-        gap: 0 !important;
-        grid-template-columns: none !important;
-    }
-
+    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text,
     table.fi-ta-table tbody tr td:first-child .fi-ta-text > div,
-    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text > div {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        flex: none !important;
-    }
-
+    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text > div,
     table.fi-ta-table tbody tr td:first-child .fi-ta-text-item,
-    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text-item {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-
+    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text-item,
     table.fi-ta-table tbody tr td:first-child .fi-ta-text-item-label,
-    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text-item-label {
+    table.fi-ta-table tbody tr.fi-ta-row td:first-child .fi-ta-text-item-label,
+    table.fi-ta-table tbody tr td:first-child .fi-ta-cell-content {
         display: block !important;
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        box-sizing: border-box !important;
     }
 
 
-    /* ── C. STANDALONE MOBILE CARD DESIGN ── */
+    /* ── D. STANDALONE MOBILE CARD DESIGN ── */
     .ims-standalone-card {
         display: flex !important;
         flex-direction: column !important;
@@ -674,9 +703,9 @@ html.dark .ims-temp-badge:hover {
         border: 1px solid #e2e8f0 !important;
         border-left: 5px solid #0284c7 !important;
         border-radius: 16px !important;
-        padding: 1rem 1.15rem !important;
+        padding: 14px 16px !important;
         box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
-        gap: 0.45rem !important;
+        gap: 8px !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
@@ -704,7 +733,7 @@ html.dark .ims-temp-badge:hover {
         border-left-color: #f43f5e !important;
     }
 
-    /* Card Head (ID & Group Layanan) */
+    /* Card Head (Customer ID & Group Layanan Badge) */
     .ims-card-head {
         display: flex !important;
         align-items: center !important;
@@ -743,7 +772,7 @@ html.dark .ims-temp-badge:hover {
         width: 100% !important;
         height: 1px !important;
         border-bottom: 1px dashed #e2e8f0 !important;
-        margin: 4px 0 !important;
+        margin: 2px 0 !important;
     }
 
     html.dark .ims-card-sep {
@@ -763,7 +792,7 @@ html.dark .ims-temp-badge:hover {
         box-sizing: border-box !important;
     }
 
-    /* Standalone Detail Button */
+    /* Standalone Detail Button (Full Width Soft Blue) */
     .ims-card-detail-btn {
         display: flex !important;
         align-items: center !important;
@@ -798,5 +827,24 @@ html.dark .ims-temp-badge:hover {
     html.dark .ims-card-detail-btn svg {
         color: #38bdf8 !important;
         stroke: #38bdf8 !important;
+    }
+
+
+    /* ── E. PAGINATION CONTAINER ── */
+    .fi-ta-pagination {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        padding: 10px 14px !important;
+        margin-top: 12px !important;
+        box-sizing: border-box !important;
+    }
+
+    html.dark .fi-ta-pagination {
+        background: #08192e !important;
+        border-color: #14355a !important;
     }
 }

@@ -1054,32 +1054,26 @@ html.dark table.fi-ta-table th {
         box-sizing: border-box !important;
     }
 
-    /* CRITICAL FIX: .fi-ta-filters itself must remain a 1-column grid
-       so the header row (Filters|Reset) stacks ABOVE the form inputs.
-       Do NOT include .fi-ta-filters-above-content-ctn .grid here — that
-       accidentally matched .fi-ta-filters.grid (which IS a descendant
-       with class 'grid'), causing the header and form to go side-by-side. */
     .fi-ta-filters {
-        display: grid !important;
-        grid-template-columns: 1fr !important;  /* single column = header + form stacked */
-        gap: 12px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
     }
 
-    /* 2-column grid for the INNER filter fields container only */
-    .fi-ta-filters .grid,
-    .fi-ta-filters-form .grid,
-    .fi-ta-filters-above-content-ctn form,
-    .fi-ta-filters-form form,
-    .fi-ta-filters-above-content-ctn form > div,
-    .fi-ta-filters-form > div,
+    /* 2-column grid for the form's fields container */
+    .fi-ta-filters form > div,
+    .fi-ta-filters-form form > div,
     .fi-dropdown-panel form > div {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 0.6rem !important;
+        gap: 8px !important;
         width: 100% !important;
+        box-sizing: border-box !important;
     }
 
+    /* Each field wrapper */
     .fi-ta-filter,
+    .fi-ta-filters .fi-fo-field-wrp,
     .fi-ta-filters-form .fi-fo-field-wrp,
     .fi-ta-filters-above-content-ctn .fi-fo-field-wrp {
         display: flex !important;
@@ -1087,6 +1081,15 @@ html.dark table.fi-ta-table th {
         width: 100% !important;
         min-width: 0 !important;
         margin: 0 !important;
+    }
+
+    .fi-ta-filters .fi-fo-field-wrp > div,
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp > div {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2px !important;
+        width: 100% !important;
+        grid-template-columns: none !important;
     }
 
     .fi-ta-filter .fi-input-wrp,
@@ -1097,12 +1100,12 @@ html.dark table.fi-ta-table th {
         align-items: center !important;
         width: 100% !important;
         min-width: 0 !important;
-        height: 2.65rem !important;
-        min-height: 2.65rem !important;
+        height: 2.5rem !important;
+        min-height: 2.5rem !important;
         background: #f8fafc !important;
         border: 1.5px solid #cbd5e1 !important;
-        border-radius: 12px !important;
-        padding: 0 0.65rem !important;
+        border-radius: 10px !important;
+        padding: 0 0.5rem !important;
         box-sizing: border-box !important;
     }
 
@@ -1111,6 +1114,17 @@ html.dark table.fi-ta-table th {
     html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp {
         background: #051324 !important;
         border-color: #1e3a5f !important;
+    }
+
+    .fi-ta-filter .fi-input-wrp > div,
+    .fi-ta-filters-form .fi-input-wrp > div,
+    .fi-ta-filters-above-content-ctn .fi-input-wrp > div {
+        display: flex !important;
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        align-items: center !important;
     }
 
     .fi-ta-filter input,
@@ -1127,7 +1141,7 @@ html.dark table.fi-ta-table th {
         border: none !important;
         background: transparent !important;
         color: #0f172a !important;
-        font-size: 0.78rem !important;
+        font-size: 0.76rem !important;
         font-weight: 700 !important;
         padding: 0 !important;
         outline: none !important;
