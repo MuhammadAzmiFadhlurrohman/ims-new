@@ -18,9 +18,9 @@ class ActivityLogResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
 
-    protected static ?string $navigationGroup = 'Keamanan & Sistem';
+    protected static ?string $navigationGroup = 'Keamanan & Audit Sistem';
 
-    protected static ?int $navigationSort = 99;
+    protected static ?int $navigationSort = 999;
 
     protected static ?string $navigationLabel = 'Audit Log Keamanan';
 

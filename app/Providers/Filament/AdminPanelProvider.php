@@ -204,6 +204,9 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make('Manajemen Internal & System')
                     ->icon('heroicon-o-cog-6-tooth')
                     ->collapsed(true),
+                NavigationGroup::make('Keamanan & Audit Sistem')
+                    ->icon('heroicon-o-shield-check')
+                    ->collapsed(false),
             ])
             ->navigationItems((function () {
                 $items = [];

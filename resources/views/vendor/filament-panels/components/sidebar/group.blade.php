@@ -14,6 +14,7 @@
 
     $groupLower = strtolower($label ?? '');
     $groupThemeClass = match (true) {
+        str_contains($groupLower, 'keamanan') || str_contains($groupLower, 'audit') => 'ims-group-theme-keamanan',
         str_contains($groupLower, 'olt') => 'ims-group-theme-olt',
         str_contains($groupLower, 'manajemen') || str_contains($groupLower, 'system') => 'ims-group-theme-manajemen',
         str_contains($groupLower, 'pelanggan') || str_contains($groupLower, 'layanan') => 'ims-group-theme-pelanggan',
