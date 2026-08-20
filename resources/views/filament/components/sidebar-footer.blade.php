@@ -1,4 +1,4 @@
-<div class="ims-sidebar-footer" style="padding: 14px 16px; margin-top: auto; flex-shrink: 0; background: transparent;">
+<div class="ims-sidebar-footer" style="padding: 12px 14px; margin-top: auto; flex-shrink: 0; background: #030d1c; border-top: 1px solid rgba(255, 255, 255, 0.06);">
     {{-- Open State --}}
     <div x-show="$store.sidebar.isOpen" style="display: flex; flex-direction: column; gap: 10px;">
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 12px; background: #07172c; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);">
@@ -19,12 +19,15 @@
     </div>
 
     {{-- Collapsed State --}}
-    <div x-show="! $store.sidebar.isOpen" style="display: flex; align-items: center; justify-content: center; padding: 8px 0;">
-        <span style="position: relative; display: flex; width: 10px; height: 10px;" title="IMS ONE Online - v2.4.0">
-            <span style="position: absolute; display: inline-flex; width: 100%; height: 100%; border-radius: 50%; background: #10b981; opacity: 0.75; animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
-            <span style="position: relative; display: inline-flex; width: 10px; height: 10px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
-        </span>
+    <div x-show="! $store.sidebar.isOpen" style="display: flex; align-items: center; justify-content: center; padding: 4px 0;">
+        <div style="display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 9px; background: #07172c; border: 1px solid rgba(255, 255, 255, 0.08);" title="IMS ONE Online - v2.4.0">
+            <span style="position: relative; display: flex; width: 9px; height: 9px;">
+                <span style="position: absolute; display: inline-flex; width: 100%; height: 100%; border-radius: 50%; background: #10b981; opacity: 0.75; animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
+                <span style="position: relative; display: inline-flex; width: 9px; height: 9px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+            </span>
+        </div>
     </div>
 </div>
+
 
 
