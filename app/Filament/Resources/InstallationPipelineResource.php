@@ -596,6 +596,8 @@ class InstallationPipelineResource extends Resource
                                 <button
                                     type='button'
                                     wire:click=\"mountTableAction('detail_lengkap', '{$key}')\"
+                                    x-on:click=\"\$wire.mountTableAction('detail_lengkap', '{$key}')\"
+                                    onclick=\"if(window.Livewire){var el=this.closest('[wire\\\\:id]');if(el){Livewire.find(el.getAttribute('wire:id')).mountTableAction('detail_lengkap', '{$key}');}}\"
                                     class='ims-card-detail-btn'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
