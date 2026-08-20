@@ -88,7 +88,7 @@ html.dark .fi-ta-filters-above-content-ctn input[type="text"].fi-input::placehol
     color: #64748b !important;
 }
 
-/* ── 2. TABLE WRAPPER & ZEBRA HOVER ── */
+/* ── 2. TABLE WRAPPER & ZEBRA HOVER (DESKTOP) ── */
 .fi-ta-ctn {
     background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
@@ -319,7 +319,7 @@ html.dark .ims-temp-badge:hover {
     font-weight: 600;
 }
 
-/* ── 5. ACTION BUTTONS ── */
+/* ── 5. ACTION BUTTONS (DESKTOP) ── */
 .fi-ta-actions {
     display: inline-flex !important;
     align-items: center !important;
@@ -339,19 +339,28 @@ html.dark .ims-temp-badge:hover {
     white-space: nowrap !important;
 }
 
-.fi-ta-actions .fi-btn *,
-.fi-ta-actions button *,
-.fi-ta-actions a *,
-.fi-btn-label {
-    color: #ffffff !important;
-    -webkit-text-fill-color: #ffffff !important;
-}
+@media (min-width: 1024px) {
+    /* Sembunyikan Tombol Detail di Desktop */
+    .ims-mobile-only-btn,
+    .fi-ta-actions .ims-mobile-only-btn,
+    .fi-ta-actions [wire\:click*="detail_lengkap"] {
+        display: none !important;
+    }
 
-.fi-ta-actions .fi-btn:hover,
-.fi-ta-actions button:hover,
-.fi-ta-actions a:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+    .fi-ta-actions .fi-btn *,
+    .fi-ta-actions button *,
+    .fi-ta-actions a *,
+    .fi-btn-label {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+    }
+
+    .fi-ta-actions .fi-btn:hover,
+    .fi-ta-actions button:hover,
+    .fi-ta-actions a:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+    }
 }
 
 /* ── STACK VERTICALLY ON INVOICE & BILLING TABLES (ATAS KE BAWAH) ── */
@@ -407,9 +416,75 @@ html.dark .ims-temp-badge:hover {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   6. MOBILE TABLE-TO-CARD TRANSFORMATION (< 1024px)
+   6. MOBILE TABLE-TO-CARD & 2-COLUMN FILTERS TRANSFORMATION (< 1024px)
    ══════════════════════════════════════════════════════════════════════ */
 @media (max-width: 1023px) {
+    /* ── 2-Column Filters Layout on Mobile ── */
+    .fi-ta-filters-above-content-ctn {
+        padding: 0.75rem !important;
+        border-radius: 14px !important;
+        margin-bottom: 0.75rem !important;
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+
+    html.dark .fi-ta-filters-above-content-ctn {
+        background: #08192e !important;
+        border-color: #14355a !important;
+    }
+
+    .fi-ta-filters-above-content-ctn > header {
+        display: none !important;
+    }
+
+    .fi-ta-filters-above-content-ctn form > div,
+    .fi-ta-filters-form .grid,
+    .fi-ta-filters .grid,
+    .fi-ta-filters-above-content-ctn .grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+    }
+
+    .fi-ta-filters-above-content-ctn form > div > div:nth-child(5),
+    .fi-ta-filters-form .grid > div:nth-child(5) {
+        grid-column: span 2 !important;
+    }
+
+    .fi-ta-filters-above-content-ctn .fi-input-wrp,
+    .fi-ta-filters-form .fi-input-wrp,
+    .fi-ta-filter .fi-input-wrp {
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 2.65rem !important;
+        background: #f8fafc !important;
+        border: 1.5px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        padding: 0 0.65rem !important;
+        box-sizing: border-box !important;
+    }
+
+    .fi-ta-filters-above-content-ctn select.fi-input,
+    .fi-ta-filters-above-content-ctn input[type="text"].fi-input,
+    .fi-ta-filters-above-content-ctn select,
+    .fi-ta-filters-above-content-ctn input,
+    .fi-ta-filters-form select,
+    .fi-ta-filters-form input {
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        border: none !important;
+        background: transparent !important;
+        color: #0f172a !important;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        padding: 0 !important;
+        outline: none !important;
+    }
+
     /* ── Table-to-Card Container ── */
     .fi-ta-ctn {
         background: transparent !important;
@@ -539,6 +614,19 @@ html.dark .ims-temp-badge:hover {
         border-bottom-color: #14355a !important;
     }
 
+    /* Group Layanan Label Prefix on Mobile */
+    table.fi-ta-table tbody tr td:nth-child(2)::before {
+        content: 'GROUP LAYANAN';
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #64748b;
+        letter-spacing: 0.03em;
+    }
+
+    html.dark table.fi-ta-table tbody tr td:nth-child(2)::before {
+        color: #94a3b8;
+    }
+
     /* Last Cell (Card Footer with Actions) */
     .fi-ta-cell:last-child,
     table.fi-ta-table tbody tr td:last-child {
@@ -554,26 +642,27 @@ html.dark .ims-temp-badge:hover {
         border-top-color: rgba(255, 255, 255, 0.08) !important;
     }
 
-    /* ── Card Action Buttons Footer: HANYA TAMPILKAN TOMBOL DETAIL ── */
+    /* ── Card Action Buttons Footer: HANYA TAMPILKAN TOMBOL DETAIL PADA MOBILE CARD ── */
     .fi-ta-actions {
         width: 100% !important;
         display: block !important;
     }
 
-    /* Sembunyikan semua tombol aksi di card KECUALI tombol Detail (pertama) */
-    .fi-ta-actions .fi-btn:not(:first-child),
-    .fi-ta-actions button:not(:first-child),
-    .fi-ta-actions a:not(:first-child),
-    .fi-ta-actions > div:not(:first-child),
-    .fi-ta-actions .fi-action:not(:first-child) {
+    /* Sembunyikan semua tombol aksi di card KECUALI tombol Detail pada mobile */
+    .fi-ta-actions .fi-btn:not(.ims-mobile-only-btn):not(:first-child),
+    .fi-ta-actions button:not(.ims-mobile-only-btn):not(:first-child),
+    .fi-ta-actions a:not(.ims-mobile-only-btn):not(:first-child),
+    .fi-ta-actions > div:not(:first-child) {
         display: none !important;
     }
 
-    /* Tombol Detail Pastel Full-Width */
+    /* Tombol Detail Pastel Full-Width dengan Warna Teks Jelas (High Contrast) */
+    .fi-ta-actions .fi-btn.ims-mobile-only-btn,
+    .fi-ta-actions a.ims-mobile-only-btn,
+    .fi-ta-actions button.ims-mobile-only-btn,
     .fi-ta-actions .fi-btn:first-child,
     .fi-ta-actions button:first-child,
-    .fi-ta-actions a:first-child,
-    .fi-ta-actions .fi-action:first-child {
+    .fi-ta-actions a:first-child {
         display: flex !important;
         width: 100% !important;
         max-width: 100% !important;
@@ -586,30 +675,46 @@ html.dark .ims-temp-badge:hover {
         border-radius: 12px !important;
         background: #e0f2fe !important;
         color: #0369a1 !important;
-        -webkit-text-fill-color: #0369a1 !important;
         border: 1.5px solid #bae6fd !important;
         box-shadow: 0 2px 6px rgba(3, 105, 161, 0.12) !important;
         box-sizing: border-box !important;
         margin: 0 !important;
+        cursor: pointer !important;
+    }
+
+    .fi-ta-actions .fi-btn:first-child *,
+    .fi-ta-actions button:first-child *,
+    .fi-ta-actions a:first-child *,
+    .fi-ta-actions .ims-mobile-only-btn *,
+    .fi-ta-actions .fi-btn-label {
+        color: #0369a1 !important;
+        -webkit-text-fill-color: #0369a1 !important;
+        font-weight: 800 !important;
     }
 
     .fi-ta-actions .fi-btn:first-child svg,
     .fi-ta-actions button:first-child svg,
-    .fi-ta-actions a:first-child svg {
+    .fi-ta-actions a:first-child svg,
+    .fi-ta-actions .ims-mobile-only-btn svg {
         color: #0369a1 !important;
         stroke: #0369a1 !important;
-        width: 16px !important;
-        height: 16px !important;
+        width: 17px !important;
+        height: 17px !important;
     }
 
     html.dark .fi-ta-actions .fi-btn:first-child,
     html.dark .fi-ta-actions button:first-child,
     html.dark .fi-ta-actions a:first-child {
         background: #09264a !important;
-        color: #38bdf8 !important;
-        -webkit-text-fill-color: #38bdf8 !important;
         border-color: #144e8c !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    html.dark .fi-ta-actions .fi-btn:first-child *,
+    html.dark .fi-ta-actions button:first-child *,
+    html.dark .fi-ta-actions a:first-child * {
+        color: #38bdf8 !important;
+        -webkit-text-fill-color: #38bdf8 !important;
     }
 
     html.dark .fi-ta-actions .fi-btn:first-child svg {

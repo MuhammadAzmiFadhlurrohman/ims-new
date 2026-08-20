@@ -897,8 +897,13 @@ html.dark table.fi-ta-table th {
     border-bottom-color: #14355a !important;
 }
 
-html.dark .fi-ta-header-cell-label {
-    color: #cbd5e1 !important;
+/* ── Hide Mobile-Only Elements on Desktop ── */
+@media (min-width: 1024px) {
+    .ims-mobile-only-btn,
+    .fi-ta-actions .ims-mobile-only-btn,
+    .fi-ta-actions [wire\:click*="detail_lengkap"] {
+        display: none !important;
+    }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -1017,6 +1022,11 @@ html.dark .fi-ta-header-cell-label {
     .fi-tabs button,
     .fi-tabs a {
         padding: 0.4rem 0.75rem !important;
+        font-size: 0.72rem !important;
+        border-radius: 8px !important;
+        flex-shrink: 0 !important;
+    }
+
     /* ── Mobile Layout Horizontal Padding Reduction ── */
     .fi-main-ctn,
     .fi-main {

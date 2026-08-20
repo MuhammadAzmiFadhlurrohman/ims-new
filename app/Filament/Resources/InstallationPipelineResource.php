@@ -702,11 +702,12 @@ class InstallationPipelineResource extends Resource
 
             ->actionsColumnLabel('Aksi')
             ->actions([
-                // ── 0. DETAIL LENGKAP PENDAFTARAN (MODAL POPUP) ───────────────
+                // ── 0. DETAIL LENGKAP PENDAFTARAN (MODAL POPUP KHUSUS MOBILE) ──
                 Tables\Actions\Action::make('detail_lengkap')
                     ->label('Detail')
                     ->icon('heroicon-m-eye')
                     ->color('info')
+                    ->extraAttributes(['class' => 'ims-mobile-only-btn'])
                     ->modalHeading(fn (CustomerSubscription $record) => "Detail Lengkap Pendaftaran: {$record->internet_number}")
                     ->modalWidth('3xl')
                     ->modalSubmitAction(false)
