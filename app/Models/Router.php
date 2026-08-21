@@ -317,9 +317,11 @@ class Router extends Model
 
         $errorSummary = !empty($errors) ? implode(' | ', $errors) : "Koneksi timeout / ditolak";
 
+        $serverIp = $_SERVER['SERVER_ADDR'] ?? gethostbyname(gethostname());
+
         return [
             'connected' => false,
-            'error' => "Gagal terhubung ke {$this->ip_address}:{$port}.\n\nDetail diagnostik:\n" . implode("\n", array_map(fn($e, $i) => ($i + 1) . ". " . $e, $errors, array_keys($errors))) . "\n\nPastikan:\n• Port {$port} di MikroTik mengarah ke service API (bukan API-SSL jika tidak pakai SSL)\n• Username & Password sudah benar\n• IP server web ({$_SERVER['SERVER_ADDR'] ?? 'server'}) tidak terblokir di /ip service atau /ip firewall\n• Cek: /ip service print di MikroTik untuk memverifikasi port dan status service",
+            'error' => "Gagal terhubung ke {$this->ip_address}:{$port}.\n\nDetail diagnostik:\n" . implode("\n", array_map(fn($e, $i) => ($i + 1) . ". " . $e, $errors, array_keys($errors))) . "\n\nPastikan:\n• Port {$port} di MikroTik mengarah ke service API (bukan API-SSL jika tidak pakai SSL)\n• Username & Password sudah benar\n• IP server web ({$serverIp}) tidak terblokir di /ip service atau /ip firewall\n• Cek: /ip service print di MikroTik untuk memverifikasi port dan status service",
         ];
     }
 
