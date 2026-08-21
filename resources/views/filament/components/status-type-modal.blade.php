@@ -348,25 +348,69 @@
 
     window.openImsTableAction = function(action, key) {
         if (window.Livewire) {
-            if (typeof Livewire.first === 'function') {
-                const first = Livewire.first();
-                if (first && typeof first.mountTableAction === 'function') {
-                    first.mountTableAction(action, key);
+            try {
+                if (typeof Livewire.all === 'function') {
+                    const all = Livewire.all();
+                    for (let c of all) {
+                        if (c && c.$wire && typeof c.$wire.mountTableAction === 'function') {
+                            c.$wire.mountTableAction(action, key);
+                            return;
+                        }
+                        if (c && typeof c.call === 'function') {
+                            c.call('mountTableAction', action, key);
+                            return;
+                        }
+                        if (c && typeof c.mountTableAction === 'function') {
+                            c.mountTableAction(action, key);
+                            return;
+                        }
+                    }
+                }
+            } catch(e) {}
+
+            try {
+                const wireEls = document.querySelectorAll('[wire\\:id], [data-id]');
+                for (let el of wireEls) {
+                    const id = el.getAttribute('wire:id') || el.getAttribute('data-id');
+                    if (id && typeof Livewire.find === 'function') {
+                        const comp = Livewire.find(id);
+                        if (comp && comp.$wire && typeof comp.$wire.mountTableAction === 'function') {
+                            comp.$wire.mountTableAction(action, key);
+                            return;
+                        }
+                        if (comp && typeof comp.call === 'function') {
+                            comp.call('mountTableAction', action, key);
+                            return;
+                        }
+                        if (comp && typeof comp.mountTableAction === 'function') {
+                            comp.mountTableAction(action, key);
+                            return;
+                        }
+                    }
+                }
+            } catch(e) {}
+        }
+
+        try {
+            const tableEl = document.querySelector('.fi-ta, .fi-ta-ctn, [wire\\:id]');
+            if (tableEl && window.Alpine) {
+                const alpineData = window.Alpine.$data(tableEl);
+                if (alpineData && alpineData.$wire && typeof alpineData.$wire.mountTableAction === 'function') {
+                    alpineData.$wire.mountTableAction(action, key);
                     return;
                 }
             }
-            const wireEls = document.querySelectorAll('[wire\\:id], [data-id]');
-            for (let el of wireEls) {
-                const id = el.getAttribute('wire:id') || el.getAttribute('data-id');
-                if (id && typeof Livewire.find === 'function') {
-                    const comp = Livewire.find(id);
-                    if (comp && typeof comp.mountTableAction === 'function') {
-                        comp.mountTableAction(action, key);
-                        return;
-                    }
-                }
+        } catch(e) {}
+
+        try {
+            const safeKey = (key || '').replace(/[^a-zA-Z0-9_-]/g, '_');
+            const targetBtn = document.querySelector('.ims-monthly-paymethod-trigger-' + safeKey) ||
+                              document.querySelector('.ims-paymethod-trigger-' + safeKey);
+            if (targetBtn) {
+                targetBtn.click();
+                return;
             }
-        }
+        } catch(e) {}
     };
 
     // Delegated click handler for mobile card detail buttons (capture phase)

@@ -178,12 +178,12 @@ class RegistrationInvoiceResource extends Resource
 
                         return new \Illuminate\Support\HtmlString("
                             <!-- DESKTOP VIEW -->
-                            <div class='ims-desktop-view flex flex-col text-[10.5px] leading-tight space-y-0.5 py-0.5' style='max-width: 170px;'>
-                                <span class='text-slate-500 font-mono text-[9.5px]'>{$invNo}</span>
-                                <a href='{$custUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 transition-colors uppercase tracking-tight truncate' title='{$custName}'>
+                            <div class='ims-desktop-view' style='display: flex !important; flex-direction: column !important; gap: 2px !important; max-width: 170px;'>
+                                <span class='text-slate-500 font-mono text-[9.5px]' style='display: block !important; line-height: 1.2;'>{$invNo}</span>
+                                <a href='{$custUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 transition-colors uppercase tracking-tight truncate' style='display: block !important; line-height: 1.2; margin-top: 1px;' title='{$custName}'>
                                     {$internetNo} / {$custName} {$gender}
                                 </a>
-                                <a href='{$custUrl}' class='text-slate-800 underline font-semibold text-[9.5px] hover:text-indigo-600 transition-colors uppercase truncate'>
+                                <a href='{$custUrl}' class='text-slate-800 underline font-semibold text-[9.5px] hover:text-indigo-600 transition-colors uppercase truncate' style='display: block !important; line-height: 1.2; margin-top: 1px;' title='{$packageName}'>
                                     {$packageName}
                                 </a>
                             </div>
@@ -221,7 +221,9 @@ class RegistrationInvoiceResource extends Resource
                                     <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 4px;'>
                                         <button
                                             type='button'
-                                            onclick=\"const t = document.querySelector('.ims-paymethod-trigger-{$safeKey}'); if(t){ t.click(); } else if(window.openImsTableAction){ window.openImsTableAction('change_payment_method', '{$key}'); }\"
+                                            wire:click.stop=\"mountTableAction('change_payment_method', '{$key}')\"
+                                            x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
+                                            onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('change_payment_method', '{$key}')\"
                                             title='Klik untuk mengubah metode pembayaran'
                                             style='background: #6366f1; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(99,102,241,0.25);'
                                         >
@@ -238,7 +240,9 @@ class RegistrationInvoiceResource extends Resource
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
-                                        onclick=\"const t = document.querySelector('.ims-paymethod-trigger-{$safeKey}'); if(t){ t.click(); } else if(window.openImsTableAction){ window.openImsTableAction('change_payment_method', '{$key}'); }\"
+                                        wire:click.stop=\"mountTableAction('change_payment_method', '{$key}')\"
+                                        x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
+                                        onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('change_payment_method', '{$key}')\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -246,7 +250,9 @@ class RegistrationInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        onclick=\"window.openImsTableAction && window.openImsTableAction('accept', '{$key}')\"
+                                        wire:click.stop=\"mountTableAction('accept', '{$key}')\"
+                                        x-on:click.stop=\"\$wire.mountTableAction('accept', '{$key}')\"
+                                        onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('accept', '{$key}')\"
                                         class='ims-modal-act-btn ims-modal-act-green'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -256,7 +262,7 @@ class RegistrationInvoiceResource extends Resource
                                 <button
                                     type='button'
                                     data-detail-payload='{$encodedDetail}'
-                                    onclick=\"window.openImsDetailFromPayload && window.openImsDetailFromPayload('{$encodedDetail}')\"
+                                    onclick=\"window.openImsDetailFromPayload \u0026\u0026 window.openImsDetailFromPayload('{$encodedDetail}')\"
                                     class='ims-card-detail-btn'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>

@@ -342,7 +342,9 @@ html.dark .ims-temp-badge:hover {
     }
 
     .ims-desktop-view {
-        display: block !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
     }
 
     /* Hide label on desktop filter (labels take space in the clean horizontal filter bar) */
