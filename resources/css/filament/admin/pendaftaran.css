@@ -1125,19 +1125,6 @@ html.dark .ims-modal-card [style*="border: 1px solid #e2e8f0"] {
     background: #b45309 !important;
 }
 
-.ims-modal-act-green,
-.ims-modal-act-emerald,
-.ims-modal-act-success {
-    background: #059669 !important;
-    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4) !important;
-}
-
-.ims-modal-act-green:hover,
-.ims-modal-act-emerald:hover,
-.ims-modal-act-success:hover {
-    background: #047857 !important;
-}
-
 .ims-modal-act-dark,
 .ims-modal-act-gray,
 .ims-modal-act-slate {
@@ -1185,28 +1172,4 @@ html.dark .ims-desktop-view span {
 
 html.dark .ims-desktop-view span strong {
     color: #e2e8f0 !important;
-}
-
-/* ── Billing Summary Widget Responsive Grid (Mobile) ── */
-@media (max-width: 1023px) {
-    .ims-billing-summary-container {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 8px !important;
-        padding: 0 0.5rem !important;
-        margin: 6px 0 10px 0 !important;
-    }
-
-    .ims-billing-summary-container > div {
-        padding: 8px 10px !important;
-        border-radius: 8px !important;
-    }
-
-    .ims-billing-summary-container > div > div:first-child {
-        font-size: 10.5px !important;
-    }
-
-    .ims-billing-summary-container > div > div:last-child {
-        font-size: 11px !important;
-    }
 }
