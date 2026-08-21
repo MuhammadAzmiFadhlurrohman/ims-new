@@ -122,11 +122,11 @@ class RegistrationInvoiceResource extends Resource
                             : "<span style='background: #eef2ff; color: #6366f1; padding: 2px 7px; border-radius: 5px; font-size: 9.5px; font-weight: 800;'>Draft Billing</span>";
 
                         $method = strtoupper($record->payment_method ?? 'MIDTRANS');
-                        $badgeText = match ($method) {
-                            'MANUAL TRANSFER', 'TRANSFER' => 'Manual Transfer',
-                            'CASH TO COLLECTOR', 'CASH', 'TUNAI' => 'Cash Collector',
-                            default => '▲ Midtrans',
-                        };
+                        $isManual = str_contains($method, 'MANUAL') || str_contains($method, 'TRANSFER');
+                        $isCash = str_contains($method, 'CASH') || str_contains($method, 'COLLECTOR') || str_contains($method, 'TUNAI');
+                        $payBg = $isCash ? '#059669' : ($isManual ? '#3b82f6' : '#6366f1');
+                        $payLabel = $isCash ? 'Cash Collector' : ($isManual ? 'Manual Transfer' : '▲ Midtrans');
+                        $badgeText = $payLabel;
 
                         $dateStr = $record->created_at ? $record->created_at->format('d M Y H:i WIB') : 'Belum diPublish';
 
