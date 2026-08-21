@@ -1,5 +1,14 @@
 <x-filament-panels::page>
-    <div class="ims-ftth-compact-wrapper" style="display: flex; flex-direction: column; gap: 0.85rem; width: 100%; font-family: inherit;">
+    <div
+        x-data="{
+            zoom: 1.0,
+            zoomIn() { this.zoom = Math.min(+(this.zoom + 0.15).toFixed(2), 2.0) },
+            zoomOut() { this.zoom = Math.max(+(this.zoom - 0.15).toFixed(2), 0.45) },
+            resetZoom() { this.zoom = 1.0 }
+        }"
+        class="ims-ftth-compact-wrapper"
+        style="display: flex; flex-direction: column; gap: 0.85rem; width: 100%; font-family: inherit;"
+    >
 
         <!-- ══════════════════════════════════════════════════════════════════ -->
         <!-- 1. COMPACT TOOLBAR & MINI STATS -->
@@ -63,27 +72,42 @@
                     @endif
                 </div>
 
-                <!-- Global Expand / Collapse -->
-                <button
-                    wire:click="expandAll"
-                    type="button"
-                    title="Buka semua cabang"
-                    style="display: inline-flex; align-items: center; gap: 0.2rem; height: 32px; padding: 0 0.65rem; border-radius: 8px; font-size: 0.72rem; font-weight: 800; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; cursor: pointer;"
-                >
-                    ➕ Expand
-                </button>
-                <button
-                    wire:click="collapseAll"
-                    type="button"
-                    title="Tutup semua cabang"
-                    style="display: inline-flex; align-items: center; gap: 0.2rem; height: 32px; padding: 0 0.65rem; border-radius: 8px; font-size: 0.72rem; font-weight: 800; background: #fef2f2; color: #dc2626; border: 1px solid #fecdd3; cursor: pointer;"
-                >
-                    ➖ Collapse
-                </button>
+                <!-- Zoom In / Zoom Out Controls -->
+                <div style="display: inline-flex; align-items: center; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 2px; gap: 2px;">
+                    <button
+                        @click="zoomIn()"
+                        type="button"
+                        title="Zoom In (Perbesar Tampilan)"
+                        style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 26px; border-radius: 6px; font-size: 0.85rem; font-weight: 900; background: #ffffff; color: #0284c7; border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.15s ease;"
+                        class="ims-zoom-btn"
+                    >
+                        ➕
+                    </button>
+
+                    <button
+                        @click="resetZoom()"
+                        type="button"
+                        title="Reset Zoom ke 100%"
+                        style="display: inline-flex; align-items: center; justify-content: center; height: 26px; padding: 0 6px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; background: transparent; color: #475569; border: none; cursor: pointer; font-family: monospace;"
+                    >
+                        <span x-text="Math.round(zoom * 100) + '%'">100%</span>
+                    </button>
+
+                    <button
+                        @click="zoomOut()"
+                        type="button"
+                        title="Zoom Out (Perkecil Tampilan)"
+                        style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 26px; border-radius: 6px; font-size: 0.85rem; font-weight: 900; background: #ffffff; color: #dc2626; border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.15s ease;"
+                        class="ims-zoom-btn"
+                    >
+                        ➖
+                    </button>
+                </div>
 
                 @if($selectedOlt || $selectedPon || $selectedOdp || !empty($search) || $tracedUser)
                     <button
                         wire:click="resetFilters"
+                        @click="resetZoom()"
                         type="button"
                         style="height: 32px; padding: 0 0.65rem; border-radius: 8px; font-size: 0.72rem; font-weight: 800; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; cursor: pointer;"
                     >
@@ -148,8 +172,11 @@
                     <span style="color: #7c3aed;">4. Drop Line / ONT User</span>
                 </div>
 
-                <!-- Tree Roots Container -->
-                <div style="display: flex; flex-direction: column; gap: 2rem; min-width: 880px;">
+                <!-- Tree Roots Container with Zoom Binding -->
+                <div
+                    :style="'transform: scale(' + zoom + '); transform-origin: top left; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); width: ' + (100 / zoom) + '%;'"
+                    style="display: flex; flex-direction: column; gap: 2rem; min-width: 880px;"
+                >
                     @foreach($tree as $olt)
                         <div class="ims-tree-branch-olt" style="display: flex; align-items: stretch; gap: 0;">
                             
