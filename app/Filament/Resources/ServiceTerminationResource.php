@@ -140,7 +140,7 @@ class ServiceTerminationResource extends Resource
                             : "<span class='px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-50 text-rose-600 border border-rose-100'>Undone &empty;</span>";
 
                         // Cek apakah ada invoice pending
-                        $hasUnpaid = \App\Models\MonthlyInvoice::where('internet_number', $record->internet_number)->where('status', 'UNPAID')->exists();
+                        $hasUnpaid = \App\Models\MonthlyInvoice::where('internet_number', $record->internet_number)->where('payment_status', 'UNPAID')->exists();
                         $tagihanBadge = $hasUnpaid
                             ? "<span class='px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-50 text-rose-600 border border-rose-100'>Undone &empty;</span>"
                             : "<span class='px-2 py-0.5 text-[10px] font-bold rounded-md bg-indigo-50 text-indigo-700 border border-indigo-100'>Done &check;</span>";

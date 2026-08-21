@@ -25,7 +25,7 @@ class OverdueInvoicesWidget extends BaseWidget
         return $table
             ->query(
                 MonthlyInvoice::query()
-                    ->where('status', 'UNPAID')
+                    ->where('payment_status', 'UNPAID')
                     ->latest()
                     ->limit(5)
             )
