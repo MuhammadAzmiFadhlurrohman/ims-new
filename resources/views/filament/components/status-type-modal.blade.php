@@ -139,4 +139,43 @@
             if (saveText) saveText.textContent = 'Ubah';
         });
     }
+
+    window.openImsTableAction = function(action, key) {
+        if (window.Livewire) {
+            // 1. Try Livewire.first()
+            if (typeof Livewire.first === 'function') {
+                const first = Livewire.first();
+                if (first && typeof first.mountTableAction === 'function') {
+                    first.mountTableAction(action, key);
+                    return;
+                }
+            }
+            // 2. Try Livewire.all()
+            if (typeof Livewire.all === 'function') {
+                const all = Livewire.all();
+                for (let k in all) {
+                    if (all[k] && typeof all[k].mountTableAction === 'function') {
+                        all[k].mountTableAction(action, key);
+                        return;
+                    }
+                }
+            }
+            // 3. Try finding by elements with wire:id attribute
+            const wireEls = document.querySelectorAll('[wire\\:id], [data-id]');
+            for (let el of wireEls) {
+                const id = el.getAttribute('wire:id') || el.getAttribute('data-id');
+                if (id && typeof Livewire.find === 'function') {
+                    const comp = Livewire.find(id);
+                    if (comp && typeof comp.mountTableAction === 'function') {
+                        comp.mountTableAction(action, key);
+                        return;
+                    }
+                }
+            }
+        }
+    };
+
+    window.openImsDetailModal = function(key) {
+        window.openImsTableAction('detail_lengkap', key);
+    };
 </script>
