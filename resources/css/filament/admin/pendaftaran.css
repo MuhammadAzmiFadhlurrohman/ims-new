@@ -877,3 +877,37 @@ html.dark .ims-temp-badge:hover {
         border-color: #14355a !important;
     }
 }
+
+/* ── STANDALONE MOBILE DETAIL & STATUS MODAL (LIGHT & DARK MODE) ── */
+#ims-detail-modal,
+#ims-status-modal {
+    z-index: 99999999 !important;
+}
+
+html.dark #ims-detail-modal .ims-modal-card,
+html.dark #ims-status-modal .ims-modal-card {
+    background: #0b1528 !important;
+    border: 1px solid #1e3a8a !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 25px rgba(2, 132, 199, 0.2) !important;
+    color: #f8fafc !important;
+}
+
+html.dark #ims-detail-modal .ims-modal-section {
+    background: #0f1f38 !important;
+    border: 1px solid #17335c !important;
+    color: #f8fafc !important;
+}
+
+html.dark #ims-detail-modal .ims-modal-section div,
+html.dark #ims-detail-modal .ims-modal-section strong {
+    color: #f8fafc !important;
+}
+
+html.dark #ims-detail-modal .ims-modal-section .ims-modal-lbl {
+    color: #94a3b8 !important;
+}
+
+html.dark #ims-detail-modal #ims-detail-internet-no {
+    color: #38bdf8 !important;
+}
+

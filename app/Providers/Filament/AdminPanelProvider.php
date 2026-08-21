@@ -217,6 +217,7 @@ class AdminPanelProvider extends PanelProvider
                         })();
 
                         window.currentImsRecordKey = "";
+                        window.currentImsStatusType = "Temporary Delete";
 
                         window.openImsStatusModal = function(key, status) {
                             window.currentImsRecordKey = key;
@@ -229,8 +230,6 @@ class AdminPanelProvider extends PanelProvider
                             var modal = document.getElementById("ims-status-modal");
                             if (modal) {
                                 modal.style.setProperty("display", "flex", "important");
-                            } else {
-                                console.error("Modal ims-status-modal not found");
                             }
                         };
 
@@ -238,6 +237,86 @@ class AdminPanelProvider extends PanelProvider
                             var modal = document.getElementById("ims-status-modal");
                             if (modal) {
                                 modal.style.setProperty("display", "none", "important");
+                            }
+                        };
+
+                        window.openImsCardDetail = function(btn) {
+                            if (!btn) return;
+                            var d = btn.dataset;
+                            window.currentImsRecordKey = d.key || "";
+                            window.currentImsStatusType = d.statustype || "Temporary Delete";
+
+                            var setTxt = function(id, val) {
+                                var el = document.getElementById(id);
+                                if (el) el.textContent = val || "-";
+                            };
+
+                            setTxt("ims-detail-internet-no", d.no);
+                            setTxt("ims-detail-cust-name", d.name);
+                            setTxt("ims-detail-phone", d.phone);
+                            setTxt("ims-detail-nik", d.nik);
+                            setTxt("ims-detail-pkg", "📦 " + (d.pkg || "-"));
+                            setTxt("ims-detail-group", d.group);
+                            setTxt("ims-detail-building", d.building);
+                            setTxt("ims-detail-address", d.addr);
+                            setTxt("ims-detail-latlong", d.latlong);
+                            setTxt("ims-detail-status", "📌 " + (d.status || "-"));
+                            setTxt("ims-detail-status-type", d.statustype);
+                            setTxt("ims-detail-sales", "👤 " + (d.sales || "-"));
+                            setTxt("ims-detail-created", "📅 " + (d.created || "-"));
+
+                            var mapsLink = document.getElementById("ims-detail-maps-link");
+                            if (mapsLink) {
+                                if (d.maps && d.maps.trim() !== "") {
+                                    mapsLink.href = d.maps;
+                                    mapsLink.style.display = "inline-flex";
+                                } else {
+                                    mapsLink.style.display = "none";
+                                }
+                            }
+
+                            var modal = document.getElementById("ims-detail-modal");
+                            if (modal) {
+                                modal.style.setProperty("display", "flex", "important");
+                            }
+                        };
+
+                        window.closeImsDetailModal = function() {
+                            var modal = document.getElementById("ims-detail-modal");
+                            if (modal) {
+                                modal.style.setProperty("display", "none", "important");
+                            }
+                        };
+
+                        window.openImsTableAction = function(action, key) {
+                            if (window.Livewire) {
+                                if (typeof Livewire.first === "function") {
+                                    var first = Livewire.first();
+                                    if (first && typeof first.mountTableAction === "function") {
+                                        first.mountTableAction(action, key);
+                                        return;
+                                    }
+                                }
+                                var wireEls = document.querySelectorAll("[wire\\:id], [data-id]");
+                                for (var i = 0; i < wireEls.length; i++) {
+                                    var id = wireEls[i].getAttribute("wire:id") || wireEls[i].getAttribute("data-id");
+                                    if (id && typeof Livewire.find === "function") {
+                                        var comp = Livewire.find(id);
+                                        if (comp && typeof comp.mountTableAction === "function") {
+                                            comp.mountTableAction(action, key);
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+                        };
+
+                        window.triggerDetailAction = function(action) {
+                            window.closeImsDetailModal();
+                            if (action === "change_status_type") {
+                                window.openImsStatusModal(window.currentImsRecordKey, window.currentImsStatusType);
+                            } else {
+                                window.openImsTableAction(action, window.currentImsRecordKey);
                             }
                         };
 

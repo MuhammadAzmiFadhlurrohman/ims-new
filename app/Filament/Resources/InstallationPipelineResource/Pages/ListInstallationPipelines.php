@@ -24,10 +24,6 @@ class ListInstallationPipelines extends ListRecords
         ];
     }
 
-    public function getFooter(): ?View
-    {
-        return view('filament.components.status-type-modal');
-    }
 
     public function updateStatusType(string $key, string $statusType): void
     {
