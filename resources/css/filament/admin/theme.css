@@ -347,12 +347,15 @@ table.fi-ta-table tbody tr:last-child td {
 /* ── Table Action Buttons (Modern Pill Buttons) ── */
 .fi-ta-actions {
     display: inline-flex !important;
-    flex-direction: row !important;
+    flex-direction: column !important;
     align-items: center !important;
-    justify-content: flex-end !important;
-    gap: 0.45rem !important;
+    justify-content: center !important;
+    gap: 0.4rem !important;
     flex-wrap: nowrap !important;
-    min-width: max-content !important;
+    width: 100% !important;
+    min-width: 148px !important;
+    max-width: 165px !important;
+    margin: 0 auto !important;
 }
 
 .fi-ta-actions .fi-btn,
@@ -360,23 +363,28 @@ table.fi-ta-table tbody tr:last-child td {
 .fi-ta-actions a {
     font-size: 0.75rem !important;
     font-weight: 800 !important;
-    padding: 0.38rem 0.85rem !important;
+    padding: 0.38rem 0.75rem !important;
+    height: 32px !important;
     border-radius: 8px !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 0.4rem !important;
+    justify-content: center !important;
+    gap: 0.45rem !important;
     white-space: nowrap !important;
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
     text-decoration: none !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12) !important;
     cursor: pointer !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .fi-ta-actions .fi-btn:hover,
 .fi-ta-actions button:hover,
 .fi-ta-actions a:hover {
     transform: translateY(-1.5px) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    filter: brightness(1.08) !important;
 }
 
 /* ── Enforce 100% Crisp White Text & Icons on ALL Action Buttons ── */
@@ -397,37 +405,54 @@ table.fi-ta-table tbody tr:last-child td {
 /* Color theme mappings for action buttons */
 .fi-ta-actions [class*="color-info"],
 .fi-ta-actions .fi-btn-color-info,
-.fi-ta-actions a[class*="color-info"] {
+.fi-ta-actions a[class*="color-info"],
+.fi-ta-actions button[class*="color-info"] {
     background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
     border: none !important;
 }
 
 .fi-ta-actions [class*="color-warning"],
 .fi-ta-actions .fi-btn-color-warning,
-.fi-ta-actions a[class*="color-warning"] {
+.fi-ta-actions a[class*="color-warning"],
+.fi-ta-actions button[class*="color-warning"] {
     background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
     border: none !important;
 }
 
 .fi-ta-actions [class*="color-danger"],
 .fi-ta-actions .fi-btn-color-danger,
-.fi-ta-actions button[class*="color-danger"] {
+.fi-ta-actions button[class*="color-danger"],
+.fi-ta-actions a[class*="color-danger"] {
     background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
     border: none !important;
 }
 
 .fi-ta-actions [class*="color-primary"],
 .fi-ta-actions .fi-btn-color-primary,
-.fi-ta-actions a[class*="color-primary"] {
+.fi-ta-actions a[class*="color-primary"],
+.fi-ta-actions button[class*="color-primary"] {
     background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
     border: none !important;
 }
 
 .fi-ta-actions [class*="color-success"],
 .fi-ta-actions .fi-btn-color-success,
-.fi-ta-actions button[class*="color-success"] {
+.fi-ta-actions button[class*="color-success"],
+.fi-ta-actions a[class*="color-success"] {
     background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
     border: none !important;
+}
+
+.fi-ta-actions [class*="color-secondary"],
+.fi-ta-actions [class*="color-gray"],
+.fi-ta-actions .fi-btn-color-secondary,
+.fi-ta-actions .fi-btn-color-gray,
+.fi-ta-actions button[class*="color-secondary"],
+.fi-ta-actions button[class*="color-gray"],
+.fi-ta-actions a[class*="color-secondary"],
+.fi-ta-actions a[class*="color-gray"] {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    border: 1px solid rgba(148, 163, 184, 0.3) !important;
 }
 
 .fi-ta-actions svg {

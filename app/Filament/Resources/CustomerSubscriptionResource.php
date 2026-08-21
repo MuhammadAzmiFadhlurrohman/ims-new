@@ -552,7 +552,9 @@ class CustomerSubscriptionResource extends Resource
             ->actionsColumnLabel('Aksi')
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->label('Edit'),
+                    ->label('Edit')
+                    ->icon('heroicon-m-pencil-square')
+                    ->color('primary'),
 
                 // ── 1. Req. Up/Downgrade (Gambar 1: Form Request Up/Downgrade {Nama Pelanggan}) ──
                 Tables\Actions\Action::make('req_updowngrade')
