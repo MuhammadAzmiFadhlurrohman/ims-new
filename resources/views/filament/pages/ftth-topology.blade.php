@@ -8,9 +8,46 @@
             startX: 0,
             startY: 0,
 
+            init() {
+                this.$nextTick(() => {
+                    this.clampBounds();
+                });
+                this.$watch('$wire.selectedOlt', () => this.resetZoom());
+                this.$watch('$wire.search', () => this.resetZoom());
+            },
+
+            clampBounds() {
+                const vp = this.$refs.viewport;
+                const content = this.$refs.canvasContent;
+                if (!vp || !content) return;
+
+                const vpW = vp.clientWidth;
+                const vpH = vp.clientHeight;
+                const contentW = content.offsetWidth * this.zoom;
+                const contentH = content.offsetHeight * this.zoom;
+
+                // Horizontal Boundary
+                if (contentW <= vpW) {
+                    this.panX = 20;
+                } else {
+                    const minX = vpW - contentW - 30;
+                    const maxX = 20;
+                    this.panX = Math.max(minX, Math.min(maxX, this.panX));
+                }
+
+                // Vertical Boundary: Pastikan tidak bisa discroll ke bawah melewati batas akhir konten
+                if (contentH <= vpH) {
+                    this.panY = 20;
+                } else {
+                    const minY = vpH - contentH - 30;
+                    const maxY = 20;
+                    this.panY = Math.max(minY, Math.min(maxY, this.panY));
+                }
+            },
+
             changeZoom(delta) {
                 const oldZoom = this.zoom;
-                const newZoom = Math.min(Math.max(+(oldZoom + delta).toFixed(2), 0.4), 2.0);
+                const newZoom = Math.min(Math.max(+(oldZoom + delta).toFixed(2), 0.5), 1.8);
                 if (newZoom === oldZoom) return;
 
                 const vp = this.$refs.viewport;
@@ -23,6 +60,7 @@
                 this.panX = cx - (cx - this.panX) * (newZoom / oldZoom);
                 this.panY = cy - (cy - this.panY) * (newZoom / oldZoom);
                 this.zoom = newZoom;
+                this.$nextTick(() => this.clampBounds());
             },
 
             zoomIn() { this.changeZoom(0.15); },
@@ -31,6 +69,7 @@
                 this.zoom = 1.0;
                 this.panX = 20;
                 this.panY = 20;
+                this.$nextTick(() => this.clampBounds());
             },
 
             startDrag(e) {
@@ -49,9 +88,9 @@
                 if (clientX === undefined || clientY === undefined) return;
                 e.preventDefault();
 
-                // Geser bebas dan mulus tanpa tertahan
                 this.panX = clientX - this.startX;
                 this.panY = clientY - this.startY;
+                this.clampBounds();
             },
 
             stopDrag() {
@@ -68,9 +107,10 @@
                     }
                 } else {
                     e.preventDefault();
-                    // Scroll mouse menggeser kanvas dengan halus
-                    this.panX -= (e.deltaX || 0) * 0.9;
-                    this.panY -= (e.deltaY || 0) * 0.9;
+                    // Scroll mouse menggeser kanvas dan berhenti tepat di akhir konten
+                    this.panX -= (e.deltaX || 0) * 0.8;
+                    this.panY -= (e.deltaY || 0) * 0.8;
+                    this.clampBounds();
                 }
             }
         }"
