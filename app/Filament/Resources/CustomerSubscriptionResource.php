@@ -285,11 +285,20 @@ class CustomerSubscriptionResource extends Resource
 
                         return new \Illuminate\Support\HtmlString("
                             <!-- DESKTOP VIEW (Visible on Desktop) -->
-                            <div class='ims-desktop-view flex flex-col items-start text-left text-xs leading-snug py-1'>
-                                <a href='{$detailUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 tracking-tight'>{$internetNo}</a>
-                                <a href='{$detailUrl}' class='font-black text-slate-800 underline hover:text-indigo-600 mt-1'>{$custName} ({$gender})</a>
-                                <a href='{$detailUrl}' class='text-slate-600 underline hover:text-indigo-600 mt-0.5'>{$pkgName}</a>
-                                <span class='text-[11px] text-slate-500 mt-2.5'>Group Layanan : <strong class='text-slate-700 font-bold'>{$group}</strong></span>
+                            <div class='ims-desktop-view ims-cust-card'>
+                                <div class='ims-cust-top-row'>
+                                    <a href='{$detailUrl}' class='ims-cid-badge'>
+                                        <span>{$internetNo}</span>
+                                    </a>
+                                </div>
+                                <div class='ims-cust-name-row' style='display: flex; align-items: center; gap: 6px;'>
+                                    <a href='{$detailUrl}' class='ims-cust-name'>{$custName}</a>
+                                    <span style='font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px; background: #e2e8f0; color: #475569;'>{$gender}</span>
+                                </div>
+                                <div class='ims-cust-meta-row' style='display: flex; align-items: center; gap: 8px; flex-wrap: wrap;'>
+                                    <span class='ims-pkg-pill'>📦 {$pkgName}</span>
+                                    {$phoneHtml}
+                                </div>
                             </div>
 
                             <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
@@ -329,7 +338,16 @@ class CustomerSubscriptionResource extends Resource
                     ->searchable(['internet_number', 'customer_name'])
                     ->sortable(),
 
-                // 2. Kolom Lokasi Pemasangan
+                // 2. Kolom Group Layanan
+                Tables\Columns\TextColumn::make('group_service')
+                    ->label('Group Layanan')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
+                    ->formatStateUsing(fn ($state) => strtoupper($state ?? 'MEDIANET'))
+                    ->badge()
+                    ->color('info')
+                    ->searchable(),
+
+                // 3. Kolom Lokasi Pemasangan
                 Tables\Columns\TextColumn::make('installation_address')
                     ->label('Lokasi Pemasangan')
                     ->extraAttributes(['class' => 'ims-mobile-hide'])
@@ -337,30 +355,22 @@ class CustomerSubscriptionResource extends Resource
                     ->alignLeft()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
                         $building = strtoupper($record->building_type ?? 'RUMAH-PRIBADI');
-                        $address = $record->installation_address ?? 'KP. BABAKAN CIBOLANG';
-                        if ($record->rt || $record->rw) {
-                            $address .= ', RT.'.($record->rt ?? '003').'/'.($record->rw ?? '019');
-                        }
-                        if ($record->village_code) {
-                            $address .= ' DES. '.$record->village_code;
-                        }
-                        if ($record->district) {
-                            $address .= ' KEC. '.$record->district;
-                        }
-                        if ($record->city) {
-                            $address .= ' KAB. '.$record->city;
-                        }
-                        if ($record->province) {
-                            $address .= ', '.$record->province;
-                        }
+                        $address = strtoupper($record->installation_address ?? '-');
+                        $rt = $record->rt ? 'RT' . str_pad($record->rt, 2, '0', STR_PAD_LEFT) : '';
+                        $rw = $record->rw ? 'RW' . str_pad($record->rw, 2, '0', STR_PAD_LEFT) : '';
+                        $rtrw = trim("{$rt}/{$rw}", '/');
+                        $kel = $record->village_code ? 'KEL. ' . strtoupper($record->village_code) : '';
+                        $kec = $record->district ? 'KEC. ' . strtoupper($record->district) : '';
+                        $city = strtoupper($record->city ?? 'KABUPATEN BANDUNG');
+                        $prov = strtoupper($record->province ?? 'JAWA BARAT');
 
-                        $categoryName = $record->package?->category?->name ?? 'MediaNet FTTH';
+                        $parts = array_filter([$address, $rtrw, $kel, $kec, $city, $prov]);
+                        $fullAddrStr = implode(', ', $parts);
 
                         return "
-                            <div class='flex flex-col items-start text-left text-xs max-w-md leading-relaxed text-slate-500 py-1'>
-                                <span class='uppercase text-slate-400 font-bold text-[11px] mb-0.5'>{$building}</span>
-                                <span class='line-clamp-4 text-slate-500 font-medium'>{$address}</span>
-                                <span class='font-black text-slate-800 text-xs mt-2'>{$categoryName}</span>
+                            <div style='display: flex; flex-direction: column; gap: 3px; max-width: 260px;'>
+                                <span style='font-size: 11px; font-weight: 900; color: #1e293b; background: #ffffff; padding: 2px 6px; border-radius: 6px; width: fit-content; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; gap: 4px;'>🏢 {$building}</span>
+                                <span style='font-size: 11px; color: #64748b; line-height: 1.4;'>{$fullAddrStr}</span>
                             </div>
                         ";
                     })
