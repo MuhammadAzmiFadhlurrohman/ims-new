@@ -185,6 +185,7 @@ class CustomerSubscriptionResource extends Resource
                 // 1. Kolom Pelanggan
                 Tables\Columns\TextColumn::make('internet_number')
                     ->label('Pelanggan')
+                    ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
                     ->alignLeft()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
@@ -243,7 +244,7 @@ class CustomerSubscriptionResource extends Resource
                         ];
 
                         $recordActions[] = [
-                            'name' => 'adjust_data',
+                            'name' => 'adjust',
                             'label' => 'Penyesuaian Data',
                             'icon' => 'report',
                             'color' => 'amber',
@@ -282,7 +283,7 @@ class CustomerSubscriptionResource extends Resource
 
                         return "
                             <!-- DESKTOP VIEW (Visible on Desktop) -->
-                            <div class='hidden lg:flex flex-col items-start text-left text-xs leading-snug py-1'>
+                            <div class='ims-desktop-view flex flex-col items-start text-left text-xs leading-snug py-1'>
                                 <a href='{$detailUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 tracking-tight'>{$internetNo}</a>
                                 <a href='{$detailUrl}' class='font-black text-slate-800 underline hover:text-indigo-600 mt-1'>{$custName} ({$gender})</a>
                                 <a href='{$detailUrl}' class='text-slate-600 underline hover:text-indigo-600 mt-0.5'>{$pkgName}</a>
@@ -290,7 +291,7 @@ class CustomerSubscriptionResource extends Resource
                             </div>
 
                             <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
-                            <div class='ims-standalone-card flex lg:hidden'>
+                            <div class='ims-standalone-card'>
                                 <div class='ims-card-head'>
                                     <a href='{$detailUrl}' class='ims-cid-badge'>{$internetNo}</a>
                                     <span class='ims-mobile-group-badge'>{$group}</span>
@@ -326,7 +327,7 @@ class CustomerSubscriptionResource extends Resource
                                 <button
                                     type='button'
                                     data-detail-payload='{$encodedDetail}'
-                                    onclick=\"window.openImsDetailFromPayload && window.openImsDetailFromPayload('{$encodedDetail}')\"
+                                    onclick=\"if (window.openImsDetailFromPayload) { window.openImsDetailFromPayload('{$encodedDetail}'); } else { document.querySelector('.ims-detail-trigger-{$safeKey}')?.click(); }\"
                                     class='ims-card-detail-btn'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -552,6 +553,97 @@ class CustomerSubscriptionResource extends Resource
             ])
             ->actionsColumnLabel('Aksi')
             ->actions([
+                // ── 0. DETAIL LENGKAP PELANGGAN (MODAL POPUP KHUSUS MOBILE) ──
+                Tables\Actions\Action::make('detail_lengkap')
+                    ->label('Detail')
+                    ->icon('heroicon-m-eye')
+                    ->color('info')
+                    ->extraAttributes(fn (CustomerSubscription $record) => [
+                        'class' => 'ims-mobile-only-btn ims-detail-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey()),
+                    ])
+                    ->modalHeading(fn (CustomerSubscription $record) => "Detail Lengkap Pelanggan: {$record->internet_number}")
+                    ->modalWidth('3xl')
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Tutup')
+                    ->modalContent(function (CustomerSubscription $record) {
+                        $internetNo = $record->internet_number ?? '-';
+                        $custName = strtoupper($record->customer_name ?? $record->customer?->name ?? '-');
+                        $phone = $record->customer?->phone_number ?? $record->phone_number ?? '-';
+                        $nik = $record->customer?->nik ?? $record->customer_nik ?? '-';
+                        $pkgName = strtoupper($record->package->name ?? $record->package_code ?? 'INTERNET STANDARD');
+                        $group = strtoupper($record->group_service ?? 'MEDIANET');
+                        $building = strtoupper($record->building_type ?? 'RUMAH-PRIBADI');
+                        $address = strtoupper($record->installation_address ?? '-');
+                        $rt = $record->rt ? 'RT' . str_pad($record->rt, 2, '0', STR_PAD_LEFT) : '';
+                        $rw = $record->rw ? 'RW' . str_pad($record->rw, 2, '0', STR_PAD_LEFT) : '';
+                        $rtrw = trim("{$rt}/{$rw}", '/');
+                        $kel = $record->village_code ? 'KEL. ' . strtoupper($record->village_code) : '';
+                        $kec = $record->district ? 'KEC. ' . strtoupper($record->district) : '';
+                        $city = strtoupper($record->city ?? 'KABUPATEN BANDUNG');
+                        $prov = strtoupper($record->province ?? 'JAWA BARAT');
+                        $fullAddrStr = implode(', ', array_filter([$address, $rtrw, $kel, $kec, $city, $prov]));
+                        $latLong = $record->lat_long ?? '-';
+                        $mapsUrl = $record->maps_url ?? '';
+                        $mapsLink = $mapsUrl ? "<a href='{$mapsUrl}' target='_blank' style='color: #0284c7; font-weight: 700; text-decoration: underline; margin-left: 6px;'>🗺️ Buka Maps</a>" : '';
+                        $isTerminated = $record->is_terminated || $record->registration_status === '23' || str_contains(strtolower($record->registration_status ?? ''), 'terminasi');
+                        $isSuspended = $record->is_isolated || $record->registration_status === '21' || str_contains(strtolower($record->registration_status ?? ''), 'suspend') || str_contains(strtolower($record->registration_status ?? ''), 'isolir');
+                        $status = $isTerminated ? 'Terminasi' : ($isSuspended ? 'Suspend' : ($record->registration_status ?? 'Aktif'));
+                        $statusType = strtoupper($record->status_type ?? 'TEMPORARY DELETE');
+                        $sales = strtoupper($record->sales_name ?? '-');
+                        $created = $record->created_at ? $record->created_at->format('d M Y H:i WIB') : '-';
+
+                        $key = $record->getKey();
+
+                        return new \Illuminate\Support\HtmlString("
+                            <div style='display: flex; flex-direction: column; gap: 14px; font-size: 12.5px; line-height: 1.4;'>
+                                <!-- Section 1: Data Pelanggan & Paket -->
+                                <div style='background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px;'>
+                                    <div style='font-size: 11px; font-weight: 800; color: #0284c7; text-transform: uppercase; margin-bottom: 8px;'>👤 Identitas & Paket Layanan</div>
+                                    <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px;'>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Nomor Pelanggan:</span><div style='font-weight: 800; color: #0f172a; font-family: monospace;'>{$internetNo}</div></div>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Nama Pelanggan:</span><div style='font-weight: 800; color: #0f172a;'>{$custName}</div></div>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>No. WhatsApp/HP:</span><div style='font-weight: 700; color: #0f172a;'>{$phone}</div></div>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>NIK KTP:</span><div style='font-weight: 700; color: #0f172a;'>{$nik}</div></div>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Paket Bandwidth:</span><div style='font-weight: 800; color: #0284c7;'>📦 {$pkgName}</div></div>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Group Layanan:</span><div style='font-weight: 700; color: #0f172a;'>{$group}</div></div>
+                                    </div>
+                                </div>
+
+                                <!-- Section 2: Lokasi Pemasangan -->
+                                <div style='background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px;'>
+                                    <div style='font-size: 11px; font-weight: 800; color: #0284c7; text-transform: uppercase; margin-bottom: 8px;'>📍 Lokasi Pemasangan</div>
+                                    <div style='display: flex; flex-direction: column; gap: 6px;'>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Jenis Bangunan:</span> <strong style='color: #0f172a;'>{$building}</strong></div>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Alamat Lengkap:</span> <span style='color: #0f172a; font-weight: 600;'>{$fullAddrStr}</span></div>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Titik Koordinat:</span> <span style='font-family: monospace; color: #0f172a;'>{$latLong}</span> {$mapsLink}</div>
+                                    </div>
+                                </div>
+
+                                <!-- Section 3: Status & Administrasi -->
+                                <div style='background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px;'>
+                                    <div style='font-size: 11px; font-weight: 800; color: #0284c7; text-transform: uppercase; margin-bottom: 8px;'>⚙️ Status Layanan & Sales</div>
+                                    <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px;'>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Status Saat Ini:</span><div style='font-weight: 800; color: #0f172a;'>📌 {$status}</div></div>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Status Tipe:</span><div style='font-weight: 800; color: #d97706;'>{$statusType}</div></div>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Nama Sales PIC:</span><div style='font-weight: 700; color: #0f172a;'>👤 {$sales}</div></div>
+                                        <div><span style='color: #64748b; font-size: 10.5px;'>Tanggal SO:</span><div style='font-weight: 700; color: #0f172a;'>📅 {$created}</div></div>
+                                    </div>
+                                </div>
+
+                                <!-- Section 4: Aksi Lanjutan -->
+                                <div style='background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px;'>
+                                    <div style='font-size: 11px; font-weight: 800; color: #0284c7; text-transform: uppercase; margin-bottom: 8px;'>⚡ Tindakan & Aksi Operasional</div>
+                                    <div style='display: flex; flex-wrap: wrap; gap: 8px;'>
+                                        <button type='button' onclick=\"window.openImsStatusModal && window.openImsStatusModal('{$key}', '{$statusType}')\" style='padding: 6px 12px; background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>✏️ Ubah Status Tipe</button>
+                                        <button type='button' onclick=\"window.openImsTableAction('req_updowngrade', '{$key}')\" wire:click=\"mountTableAction('req_updowngrade', '{$key}')\" style='padding: 6px 12px; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>🔄 Req. Up/Downgrade</button>
+                                        <button type='button' onclick=\"window.openImsTableAction('adjust', '{$key}')\" wire:click=\"mountTableAction('adjust', '{$key}')\" style='padding: 6px 12px; background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; font-weight: 800; border-radius: 8px; font-size: 11.5px; cursor: pointer;'>⚙️ Penyesuaian Data</button>
+                                        <a href='" . static::getUrl('edit', ['record' => $record]) . "' style='padding: 6px 12px; background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; font-weight: 800; border-radius: 8px; font-size: 11.5px; text-decoration: none;'>✏️ Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        ");
+                    }),
+
                 Tables\Actions\EditAction::make()
                     ->label('Edit')
                     ->icon('heroicon-m-pencil-square')
