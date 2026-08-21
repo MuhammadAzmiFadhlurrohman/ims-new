@@ -516,8 +516,8 @@ class InstallationPipelineResource extends Resource
                         $key = $record->getKey();
                         $safeKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $key);
 
-                        $nik = htmlspecialchars($record->customer?->nik ?? $record->customer_nik ?? '-', ENT_QUOTES);
-                        $building = htmlspecialchars(strtoupper($record->building_type ?? 'RUKO'), ENT_QUOTES);
+                        $nik = $record->customer?->nik ?? $record->customer_nik ?? '-';
+                        $building = strtoupper($record->building_type ?? 'RUKO');
                         $address = strtoupper($record->installation_address ?? '-');
                         $rt = $record->rt ? 'RT' . str_pad($record->rt, 2, '0', STR_PAD_LEFT) : '';
                         $rw = $record->rw ? 'RW' . str_pad($record->rw, 2, '0', STR_PAD_LEFT) : '';
@@ -526,11 +526,30 @@ class InstallationPipelineResource extends Resource
                         $kec = $record->district ? 'KEC. ' . strtoupper($record->district) : '';
                         $city = strtoupper($record->city ?? 'KABUPATEN BANDUNG');
                         $prov = strtoupper($record->province ?? 'JAWA BARAT');
-                        $fullAddrStr = htmlspecialchars(implode(', ', array_filter([$address, $rtrw, $kel, $kec, $city, $prov])), ENT_QUOTES);
-                        $latLong = htmlspecialchars($record->lat_long ?? '-', ENT_QUOTES);
-                        $mapsUrl = htmlspecialchars($record->maps_url ?? '', ENT_QUOTES);
-                        $sales = htmlspecialchars(strtoupper($record->sales_name ?? '-'), ENT_QUOTES);
-                        $created = htmlspecialchars($record->created_at ? $record->created_at->format('d M Y H:i WIB') : '-', ENT_QUOTES);
+                        $fullAddrStr = implode(', ', array_filter([$address, $rtrw, $kel, $kec, $city, $prov]));
+                        $latLong = $record->lat_long ?? '-';
+                        $mapsUrl = $record->maps_url ?? '';
+                        $sales = strtoupper($record->sales_name ?? '-');
+                        $created = $record->created_at ? $record->created_at->format('d M Y H:i WIB') : '-';
+
+                        $detailPayload = [
+                            'key' => (string)$key,
+                            'no' => (string)$internetNo,
+                            'name' => (string)$custName,
+                            'phone' => (string)$phone,
+                            'nik' => (string)$nik,
+                            'pkg' => (string)$pkgName,
+                            'group' => (string)$group,
+                            'building' => (string)$building,
+                            'addr' => (string)$fullAddrStr,
+                            'latlong' => (string)$latLong,
+                            'maps' => (string)$mapsUrl,
+                            'status' => (string)$status,
+                            'statustype' => (string)$statusType,
+                            'sales' => (string)$sales,
+                            'created' => (string)$created,
+                        ];
+                        $encodedDetail = base64_encode(json_encode($detailPayload, JSON_UNESCAPED_UNICODE));
 
                         $slot = '10 Agust 2026 13:00-15:00 WIB';
                         $isInstalasi = ($status === 'Jadwal Instalasi Terbit' || str_contains($status, 'Instalasi Terbit'));
@@ -611,22 +630,7 @@ class InstallationPipelineResource extends Resource
                                 <div class='ims-card-sep'></div>
                                 <button
                                     type='button'
-                                    onclick='window.openImsCardDetail && window.openImsCardDetail(this)'
-                                    data-key='{$key}'
-                                    data-no='{$internetNo}'
-                                    data-name='{$custName}'
-                                    data-phone='{$phone}'
-                                    data-nik='{$nik}'
-                                    data-pkg='{$pkgName}'
-                                    data-group='{$group}'
-                                    data-building='{$building}'
-                                    data-addr='{$fullAddrStr}'
-                                    data-latlong='{$latLong}'
-                                    data-maps='{$mapsUrl}'
-                                    data-status='{$status}'
-                                    data-statustype='{$statusType}'
-                                    data-sales='{$sales}'
-                                    data-created='{$created}'
+                                    onclick=\"window.openImsDetailFromPayload && window.openImsDetailFromPayload('{$encodedDetail}')\"
                                     class='ims-card-detail-btn'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>

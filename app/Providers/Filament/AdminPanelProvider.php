@@ -240,6 +240,51 @@ class AdminPanelProvider extends PanelProvider
                             }
                         };
 
+                        window.openImsDetailFromPayload = function(b64) {
+                            try {
+                                var str = decodeURIComponent(escape(atob(b64)));
+                                var d = JSON.parse(str);
+                                window.currentImsRecordKey = d.key || "";
+                                window.currentImsStatusType = d.statustype || "Temporary Delete";
+
+                                var setTxt = function(id, val) {
+                                    var el = document.getElementById(id);
+                                    if (el) el.textContent = val || "-";
+                                };
+
+                                setTxt("ims-detail-internet-no", d.no);
+                                setTxt("ims-detail-cust-name", d.name);
+                                setTxt("ims-detail-phone", d.phone);
+                                setTxt("ims-detail-nik", d.nik);
+                                setTxt("ims-detail-pkg", "📦 " + (d.pkg || "-"));
+                                setTxt("ims-detail-group", d.group);
+                                setTxt("ims-detail-building", d.building);
+                                setTxt("ims-detail-address", d.addr);
+                                setTxt("ims-detail-latlong", d.latlong);
+                                setTxt("ims-detail-status", "📌 " + (d.status || "-"));
+                                setTxt("ims-detail-status-type", d.statustype);
+                                setTxt("ims-detail-sales", "👤 " + (d.sales || "-"));
+                                setTxt("ims-detail-created", "📅 " + (d.created || "-"));
+
+                                var mapsLink = document.getElementById("ims-detail-maps-link");
+                                if (mapsLink) {
+                                    if (d.maps && d.maps.trim() !== "") {
+                                        mapsLink.href = d.maps;
+                                        mapsLink.style.display = "inline-flex";
+                                    } else {
+                                        mapsLink.style.display = "none";
+                                    }
+                                }
+
+                                var modal = document.getElementById("ims-detail-modal");
+                                if (modal) {
+                                    modal.style.setProperty("display", "flex", "important");
+                                }
+                            } catch(e) {
+                                console.error("Failed to decode detail payload:", e);
+                            }
+                        };
+
                         window.openImsCardDetail = function(btn) {
                             if (!btn) return;
                             var d = btn.dataset;
