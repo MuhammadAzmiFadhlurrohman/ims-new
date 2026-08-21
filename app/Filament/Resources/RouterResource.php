@@ -119,11 +119,11 @@ class RouterResource extends Resource
                         $model = htmlspecialchars($record->model ?? 'Mikrotik RouterOS', ENT_QUOTES, 'UTF-8');
                         $ros = htmlspecialchars($record->ros_version ? "• {$record->ros_version}" : '', ENT_QUOTES, 'UTF-8');
                         $ip = htmlspecialchars("{$record->ip_address}:{$record->port}", ENT_QUOTES, 'UTF-8');
+                        $rawIp = htmlspecialchars("{$record->ip_address}:{$record->port}", ENT_QUOTES, 'UTF-8');
                         $popName = htmlspecialchars($record->pop?->name ?? 'Core Central', ENT_QUOTES, 'UTF-8');
-                        $sslBadge = $record->use_ssl 
-                            ? "<span class='px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300'>🔒 SSL</span>" 
-                            : "<span class='px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'>🔓 Non-SSL</span>";
-                        
+                        $username = htmlspecialchars($record->username ?: 'admin', ENT_QUOTES, 'UTF-8');
+                        $description = $record->description ? htmlspecialchars($record->description, ENT_QUOTES, 'UTF-8') : null;
+
                         $status = strtolower($record->status ?? 'unknown');
                         $statusBadge = match($status) {
                             'online' => "<span class='px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5 shadow-sm whitespace-nowrap'><span class='w-2 h-2 rounded-full bg-emerald-500 animate-pulse'></span>Online</span>",
@@ -132,8 +132,8 @@ class RouterResource extends Resource
                         };
 
                         $sslBadge = $record->use_ssl 
-                            ? "<span class='px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30'>🔒 SSL</span>" 
-                            : "<span class='px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-slate-500/15 text-slate-600 dark:text-slate-400 border border-slate-500/30'>🔓 Non-SSL</span>";
+                            ? "<span class='px-2 py-0.5 rounded text-[9.5px] font-bold bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30'>🔒 SSL</span>" 
+                            : "<span class='px-2 py-0.5 rounded text-[9.5px] font-bold bg-slate-500/15 text-slate-600 dark:text-slate-400 border border-slate-500/30'>🔓 Non-SSL</span>";
 
                         $lastChecked = $record->last_connected_at 
                             ? $record->last_connected_at->format('d M Y, H:i') 
@@ -146,6 +146,10 @@ class RouterResource extends Resource
                         $editUrl = static::getUrl('edit', ['record' => $record]);
                         $recordId = (int) $record->id;
 
+                        $descriptionHtml = $description 
+                            ? "<div style='font-size: 10px; color: #64748b; font-style: italic; margin-top: 2px; line-height: 1.3;'>📝 {$description}</div>" 
+                            : "";
+
                         return new \Illuminate\Support\HtmlString("
                             <!-- DESKTOP VIEW (Visible on Desktop) -->
                             <div class='ims-desktop-view'>
@@ -157,11 +161,12 @@ class RouterResource extends Resource
                             <div class='ims-standalone-card'>
                                 <!-- Header: Nama Router & Status Badge -->
                                 <div style='display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; width: 100%;'>
-                                    <div style='display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1;'>
-                                        <div style='display: flex; align-items: center; gap: 6px;'>
-                                            <span class='ims-cid-badge' style='background: #0284c7; color: #ffffff;'>📡 {$name}</span>
+                                    <div style='display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1;'>
+                                        <div style='display: flex; align-items: center; gap: 6px; flex-wrap: wrap;'>
+                                            <span class='ims-cid-badge' style='background: #0284c7; color: #ffffff; font-size: 12px; font-weight: 900; padding: 2px 8px; border-radius: 7px;'>📡 {$name}</span>
+                                            {$activeBadge}
                                         </div>
-                                        <div style='font-size: 11.5px; font-weight: 700; color: #38bdf8; margin-top: 3px; word-break: break-word;'>
+                                        <div class='text-xs font-bold text-slate-700 dark:text-sky-300' style='margin-top: 2px; word-break: break-word;'>
                                             ⚙️ {$model} {$ros}
                                         </div>
                                     </div>
@@ -172,22 +177,35 @@ class RouterResource extends Resource
 
                                 <div class='ims-card-sep'></div>
 
-                                <!-- Detail Konektivitas (IP, SSL, POP, Aktif) -->
-                                <div style='display: flex; flex-direction: column; gap: 6px; width: 100%;'>
-                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap;'>
-                                        <div style='display: inline-flex; align-items: center; gap: 5px; font-family: monospace; font-size: 11.5px; font-weight: 800; color: #0284c7;'>
+                                <!-- Detail Konektivitas (IP, SSL, POP, Kredensial, Waktu) -->
+                                <div style='display: flex; flex-direction: column; gap: 6px; width: 100%; font-size: 11px;'>
+                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; background: rgba(2, 132, 199, 0.06); padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(2, 132, 199, 0.15);'>
+                                        <div style='display: inline-flex; align-items: center; gap: 6px; font-family: ui-monospace, monospace; font-size: 11.5px; font-weight: 800; color: #0284c7;' class='dark:text-sky-400'>
                                             <span>🌐 {$ip}</span>
                                             {$sslBadge}
                                         </div>
-                                        <div>
-                                            {$activeBadge}
-                                        </div>
+                                        <button
+                                            type='button'
+                                            onclick=\"navigator.clipboard.writeText('{$rawIp}'); alert('IP & Port disalin: {$rawIp}');\"
+                                            title='Salin IP & Port'
+                                            style='font-size: 9.5px; font-weight: 800; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 2px 7px; border-radius: 6px; cursor: pointer;'
+                                            class='dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800'
+                                        >
+                                            📋 Salin IP
+                                        </button>
                                     </div>
 
-                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; font-size: 10.5px;'>
-                                        <span class='ims-mobile-group-badge'>📍 POP: {$popName}</span>
-                                        <span style='color: #94a3b8; font-weight: 600;'>🕒 {$lastChecked}</span>
+                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap;'>
+                                        <span class='ims-mobile-group-badge' style='font-size: 10.5px;'>📍 POP: {$popName}</span>
+                                        <span class='text-slate-500 dark:text-slate-400' style='font-size: 10.5px; font-weight: 700;'>
+                                            👤 User: <code class='text-slate-800 dark:text-slate-200 font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded'>{$username}</code>
+                                        </span>
                                     </div>
+
+                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; font-size: 10px;' class='text-slate-500 dark:text-slate-400'>
+                                        <span>🕒 Terakhir Dicek: <strong class='text-slate-700 dark:text-slate-200'>{$lastChecked}</strong></span>
+                                    </div>
+                                    {$descriptionHtml}
                                 </div>
 
                                 <div class='ims-card-sep'></div>
@@ -196,33 +214,33 @@ class RouterResource extends Resource
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
-                                        onclick=\"document.querySelector('.ims-act-detail-{$recordId}')?.click();\"
+                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-detail-{$recordId}'); ((el?.matches('button, a') ? el : el?.querySelector('button, a')) || el)?.click(); })()\"
                                         class='ims-modal-act-btn ims-modal-act-green'
-                                        style='font-size: 11px; padding: 7px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
+                                        style='font-size: 11.5px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         ⚡ Detail Live
                                     </button>
                                     <button
                                         type='button'
-                                        onclick=\"document.querySelector('.ims-act-test-{$recordId}')?.click();\"
+                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-test-{$recordId}'); ((el?.matches('button, a') ? el : el?.querySelector('button, a')) || el)?.click(); })()\"
                                         class='ims-modal-act-btn ims-modal-act-cyan'
-                                        style='font-size: 11px; padding: 7px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
+                                        style='font-size: 11.5px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         📶 Test Ping / API
                                     </button>
                                     <button
                                         type='button'
-                                        onclick=\"document.querySelector('.ims-act-edit-{$recordId}')?.click() || (window.location.href = '{$editUrl}');\"
+                                        onclick=\"window.location.href = '{$editUrl}';\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
-                                        style='font-size: 11px; padding: 7px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
+                                        style='font-size: 11.5px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         ✏️ Edit
                                     </button>
                                     <button
                                         type='button'
-                                        onclick=\"document.querySelector('.ims-act-delete-{$recordId}')?.click();\"
+                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-delete-{$recordId}'); ((el?.matches('button, a') ? el : el?.querySelector('button, a')) || el)?.click(); })()\"
                                         class='ims-modal-act-btn ims-modal-act-red'
-                                        style='font-size: 11px; padding: 7px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
+                                        style='font-size: 11.5px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         🗑️ Hapus
                                     </button>
