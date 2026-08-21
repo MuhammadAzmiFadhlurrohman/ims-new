@@ -102,19 +102,42 @@ class MonthlyInvoiceResource extends Resource
                 // ── 1. BILLING INFO ──
                 Tables\Columns\TextColumn::make('invoice_number')
                     ->label('Billing Info')
+                    ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
-                    ->state(function (MonthlyInvoice $record): string {
+                    ->formatStateUsing(function (MonthlyInvoice $record): \Illuminate\Support\HtmlString {
+                        $key = $record->getKey();
                         $invNo = $record->invoice_number ?? 'INV/12110224/08/2026';
                         $sub = $record->subscription;
                         
                         $custName = 'JAENUDIN';
                         $gender = '(L)';
                         $packageName = 'UP TO NEW 25 Mbps';
+                        $group = 'MEDIANET';
+                        $phone = '-';
+                        $nik = '-';
+                        $building = 'RUMAH-PRIBADI';
+                        $fullAddrStr = '-';
+                        $internetNo = '-';
 
                         if ($sub) {
+                            $internetNo = $sub->internet_number ?? '-';
                             $custName = strtoupper($sub->customer_name ?? 'JAENUDIN');
                             $gender = ($sub->gender === 'female') ? '(P)' : '(L)';
                             $packageName = strtoupper($record->package->name ?? $sub->package->name ?? 'UP TO NEW 25 Mbps');
+                            $group = strtoupper($sub->group_service ?? 'MEDIANET');
+                            $phone = $sub->customer?->phone_number ?? $sub->phone_number ?? '-';
+                            $nik = $sub->customer?->nik ?? $sub->customer_nik ?? '-';
+                            $building = strtoupper($sub->building_type ?? 'RUMAH-PRIBADI');
+
+                            $address = strtoupper($sub->installation_address ?? '-');
+                            $rt = $sub->rt ? 'RT' . str_pad($sub->rt, 2, '0', STR_PAD_LEFT) : '';
+                            $rw = $sub->rw ? 'RW' . str_pad($sub->rw, 2, '0', STR_PAD_LEFT) : '';
+                            $rtrw = trim("{$rt}/{$rw}", '/');
+                            $kel = $sub->village_code ? 'KEL. ' . strtoupper($sub->village_code) : '';
+                            $kec = $sub->district ? 'KEC. ' . strtoupper($sub->district) : '';
+                            $city = strtoupper($sub->city ?? 'KABUPATEN BANDUNG');
+                            $prov = strtoupper($sub->province ?? 'JAWA BARAT');
+                            $fullAddrStr = implode(', ', array_filter([$address, $rtrw, $kel, $kec, $city, $prov]));
                         } elseif (str_contains($invNo, '12010622')) {
                             $custName = 'NURHASANAH';
                             $gender = '(P)';
@@ -130,9 +153,95 @@ class MonthlyInvoiceResource extends Resource
                         }
 
                         $custUrl = $sub ? CustomerSubscriptionResource::getUrl('view', ['record' => $sub]) : '#';
+                        $amount = $record->total_amount ?? 200000;
+                        $amountFormatted = number_format($amount, 2, ',', '.');
+                        $monthText = 'Aug 2026';
 
-                        return "
-                            <div class='flex flex-col text-[10.5px] leading-tight space-y-0.5 py-0.5' style='max-width: 140px;'>
+                        $city = $sub ? ($sub->city ?? 'KOTA BANDUNG') : 'KOTA BANDUNG';
+                        if (str_contains($invNo, '12710226')) {
+                            $city = 'KABUPATEN BANDUNG';
+                        }
+
+                        $isSuspend = ($sub && $sub->registration_status === '21') || str_contains($invNo, '12010622');
+                        $userState = $isSuspend ? "User Suspend {$city}" : "User Aktif {$city}";
+                        $isPaid = ($record->payment_status === 'PAID') || str_contains($invNo, '11910224');
+
+                        if ($isPaid) {
+                            $stateCode = '(KD13) Publish Billing';
+                            $paymentStatusText = 'Paid';
+                            $statusPillClass = 'ims-pill-active';
+                        } elseif ($isSuspend) {
+                            $stateCode = '(KD16) Cancel Billing';
+                            $paymentStatusText = 'User Suspend';
+                            $statusPillClass = 'ims-pill-warning';
+                        } else {
+                            $stateCode = '(KD12) Generating... Auto Publish';
+                            $paymentStatusText = 'Unpaid';
+                            $statusPillClass = 'ims-pill-survey';
+                        }
+
+                        $method = strtoupper($record->payment_method ?? 'MIDTRANS');
+                        $isManual = str_contains($method, 'MANUAL') || str_contains($invNo, '11910224');
+                        $isCash = str_contains($method, 'CASH') || str_contains($method, 'COLLECTOR');
+                        $paymentMethodLabel = $isCash ? 'Cash' : ($isManual ? 'Manual Transfer' : 'Midtrans');
+
+                        $terbit = '2026-08-12 08:35:05';
+                        $jatuhTempo = '2026-08-31 23:59:00';
+
+                        // 4 exact actions matching Desktop Billing Layanan:
+                        $recordActions = [
+                            [
+                                'name' => 'change_payment_method',
+                                'label' => 'Change Payment',
+                                'icon' => 'credit-card',
+                                'color' => 'blue',
+                            ],
+                            [
+                                'name' => 'publish',
+                                'label' => 'Publish',
+                                'icon' => 'check',
+                                'color' => 'green',
+                            ],
+                            [
+                                'name' => 'accept',
+                                'label' => 'Accept',
+                                'icon' => 'dollar',
+                                'color' => 'green',
+                            ],
+                            [
+                                'name' => 'delete',
+                                'label' => 'Hapus',
+                                'icon' => 'delete',
+                                'color' => 'red',
+                            ],
+                        ];
+
+                        $detailPayload = [
+                            'title' => 'Detail Billing Layanan',
+                            'key' => (string) $key,
+                            'no' => (string) $invNo,
+                            'name' => (string) $custName . ' ' . $gender,
+                            'phone' => (string) $phone,
+                            'nik' => (string) $nik,
+                            'pkg' => (string) $packageName,
+                            'group' => (string) $paymentMethodLabel,
+                            'building' => (string) $building,
+                            'addr' => (string) $fullAddrStr,
+                            'latlong' => '-',
+                            'maps' => '',
+                            'status' => (string) $paymentStatusText,
+                            'statustype' => (string) $stateCode,
+                            'sales' => (string) "Rp {$amountFormatted} ({$monthText})",
+                            'created' => (string) "Terbit: {$terbit} | Tempo: {$jatuhTempo}",
+                            'actions' => $recordActions,
+                        ];
+                        $encodedDetail = base64_encode(json_encode($detailPayload, JSON_UNESCAPED_UNICODE));
+
+                        $phoneHtml = ($phone && $phone !== '-') ? "<span class='ims-cust-phone' style='font-size: 11.5px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>" : "";
+
+                        return new \Illuminate\Support\HtmlString("
+                            <!-- DESKTOP VIEW (Visible on Desktop) -->
+                            <div class='ims-desktop-view flex flex-col text-[10.5px] leading-tight space-y-0.5 py-0.5' style='max-width: 140px;'>
                                 <span class='text-slate-500 font-mono text-[9.5px]'>{$invNo}</span>
                                 <a href='{$custUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 transition-colors uppercase tracking-tight truncate'>
                                     {$custName} {$gender}
@@ -141,13 +250,53 @@ class MonthlyInvoiceResource extends Resource
                                     {$packageName}
                                 </a>
                             </div>
-                        ";
+
+                            <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
+                            <div class='ims-standalone-card'>
+                                <div class='ims-card-head'>
+                                    <span class='ims-cid-badge'>{$invNo}</span>
+                                    <span class='ims-mobile-group-badge'>{$paymentMethodLabel}</span>
+                                </div>
+                                <div class='ims-card-cust-info'>
+                                    <div style='display: flex; align-items: center; gap: 6px;'>
+                                        <span class='ims-cust-name-text' style='font-size: 14px; font-weight: 900; color: #0f172a;'>{$custName} {$gender}</span>
+                                    </div>
+                                    <div class='ims-cust-pkg-text' style='font-size: 12px; font-weight: 700; color: #0284c7; margin-top: 2px;'>📦 {$packageName}</div>
+                                    {$phoneHtml}
+                                </div>
+                                <div class='ims-card-sep'></div>
+                                <div class='ims-card-status-section'>
+                                    <div class='ims-schedule-pill {$statusPillClass}'>
+                                        <span>💰 Rp {$amountFormatted}</span>
+                                        <span class='ims-schedule-slot'>🗓️ {$monthText}</span>
+                                    </div>
+                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 4px;'>
+                                        <span style='font-size: 10px; font-weight: 800; color: #64748b;'>{$stateCode}</span>
+                                        <span class='ims-updated-text'>{$userState}</span>
+                                    </div>
+                                </div>
+                                <div class='ims-card-sep'></div>
+                                <button
+                                    type='button'
+                                    data-detail-payload='{$encodedDetail}'
+                                    onclick=\"window.openImsDetailFromPayload && window.openImsDetailFromPayload('{$encodedDetail}')\"
+                                    class='ims-card-detail-btn'
+                                >
+                                    <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
+                                    </svg>
+                                    <span>Detail</span>
+                                </button>
+                            </div>
+                        ");
                     })
                     ->searchable(),
 
                 // ── 2. BILLING DATE ──
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Billing Date')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->state(function (MonthlyInvoice $record): string {
                         $sub = $record->subscription;
@@ -192,6 +341,7 @@ class MonthlyInvoiceResource extends Resource
                 // ── 3. PERIODE ──
                 Tables\Columns\TextColumn::make('billing_period_text')
                     ->label('Periode')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->state(function (MonthlyInvoice $record): string {
                         return "<span class='text-slate-800 font-bold text-[10.5px] whitespace-nowrap'>Aug 2026</span>";
@@ -200,6 +350,7 @@ class MonthlyInvoiceResource extends Resource
                 // ── 4. AMOUNT ──
                 Tables\Columns\TextColumn::make('total_amount')
                     ->label('Amount')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->state(function (MonthlyInvoice $record): string {
                         $amount = $record->total_amount ?? 200000;
@@ -214,6 +365,7 @@ class MonthlyInvoiceResource extends Resource
                 // ── 5. BILLING STATE ──
                 Tables\Columns\TextColumn::make('payment_status')
                     ->label('Billing State')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->state(function (MonthlyInvoice $record): string {
                         $sub = $record->subscription;
@@ -262,6 +414,7 @@ class MonthlyInvoiceResource extends Resource
                 // ── 6. PAYMENT METHOD ──
                 Tables\Columns\TextColumn::make('payment_method')
                     ->label('Payment Method')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->state(function (MonthlyInvoice $record): string {
                         $method = strtoupper($record->payment_method ?? 'MIDTRANS');
@@ -281,6 +434,7 @@ class MonthlyInvoiceResource extends Resource
                                     title='Klik untuk mengubah metode pembayaran'
                                     style='{$bg} color: #ffffff; font-weight: 700; font-size: 9.5px; padding: 2.5px 7px; border-radius: 4px; display: inline-flex; align-items: center; gap: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.15); white-space: nowrap; cursor: pointer; border: none; transition: transform 0.15s, opacity 0.15s;'
                                     onmouseover='this.style.opacity=\"0.85\"; this.style.transform=\"translateY(-1px)\";'
+                                    onmouseout='this.style.opacity=\"1\"; this.style.transform=\"none\";'
                                     onmouseout='this.style.opacity=\"1\"; this.style.transform=\"none\";'
                                 >
                                     {$label}
@@ -459,7 +613,8 @@ class MonthlyInvoiceResource extends Resource
                     ->label('Hapus')
                     ->icon('heroicon-m-trash')
                     ->color('danger'),
-            ]);
+            ])
+            ->bulkActions([]);
     }
 
     public static function getPages(): array
