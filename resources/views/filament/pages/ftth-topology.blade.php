@@ -123,20 +123,10 @@
             },
 
             toggleFullScreen() {
-                if (!this.isFullScreen) {
-                    this.isFullScreen = true;
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen().catch(() => {});
-                    }
-                } else {
-                    this.isFullScreen = false;
-                    if (document.fullscreenElement && document.exitFullscreen) {
-                        document.exitFullscreen().catch(() => {});
-                    }
-                }
+                this.isFullScreen = !this.isFullScreen;
             }
         }"
-        @keydown.escape.window="if(isFullScreen) { if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); isFullScreen = false; }"
+        @keydown.escape.window="if(isFullScreen) isFullScreen = false"
         :class="isFullScreen ? 'ims-fullscreen-mode' : ''"
         class="ims-ftth-compact-wrapper"
         style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; max-width: 100%; overflow: hidden; isolation: isolate; font-family: inherit;"
@@ -147,40 +137,40 @@
         <!-- ══════════════════════════════════════════════════════════════════ -->
         <div
             class="ims-top-control-card"
-            style="position: relative; z-index: 50; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem; padding: 0.65rem 1rem; border-radius: 12px; background: #ffffff; border: 1.5px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);"
+            style="position: relative; z-index: 50; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; padding: 0.55rem 0.85rem; border-radius: 12px; background: #ffffff; border: 1.5px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);"
         >
             <!-- Left: Title & Quick Stats Pills -->
-            <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-                <div style="display: flex; align-items: center; gap: 0.4rem;">
-                    <span style="font-size: 1.1rem;">🌿</span>
-                    <span style="font-size: 0.9rem; font-weight: 900; color: #0f172a; letter-spacing: -0.01em;">
+            <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                    <span style="font-size: 1.05rem;">🌿</span>
+                    <span style="font-size: 0.88rem; font-weight: 900; color: #0f172a; letter-spacing: -0.01em;">
                         Topologi Skema FTTH
                     </span>
                 </div>
 
                 @php $stats = $this->stats; @endphp
-                <div style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; font-weight: 800;">
-                    <span style="padding: 2px 6px; border-radius: 6px; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0;">
+                <div style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.68rem; font-weight: 800;">
+                    <span style="padding: 2px 5px; border-radius: 5px; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0;">
                         🖥️ {{ $stats['total_olts'] }} OLT
                     </span>
-                    <span style="padding: 2px 6px; border-radius: 6px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;">
+                    <span style="padding: 2px 5px; border-radius: 5px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;">
                         ⚡ {{ $stats['total_pons'] }} PON
                     </span>
-                    <span style="padding: 2px 6px; border-radius: 6px; background: #fefce8; color: #854d0e; border: 1px solid #fef08a;">
+                    <span style="padding: 2px 5px; border-radius: 5px; background: #fefce8; color: #854d0e; border: 1px solid #fef08a;">
                         📦 {{ $stats['total_odps'] }} ODP
                     </span>
-                    <span style="padding: 2px 6px; border-radius: 6px; background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff;">
+                    <span style="padding: 2px 5px; border-radius: 5px; background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff;">
                         👥 {{ $stats['total_subs'] }} Pelanggan ({{ $stats['occupancy_rate'] }}%)
                     </span>
                 </div>
             </div>
 
             <!-- Right: Filters & Zoom Controls -->
-            <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
                 <!-- OLT Dropdown -->
                 <select
                     wire:model.live="selectedOlt"
-                    style="height: 30px; border-radius: 6px; border: 1.5px solid #cbd5e1; background: #f8fafc; font-size: 0.73rem; font-weight: 800; color: #0f172a; padding: 0 0.5rem; outline: none; cursor: pointer;"
+                    style="height: 28px; border-radius: 6px; border: 1.5px solid #cbd5e1; background: #f8fafc; font-size: 0.72rem; font-weight: 800; color: #0f172a; padding: 0 0.4rem; outline: none; cursor: pointer;"
                     class="ims-control-select"
                 >
                     <option value="">Semua OLT</option>
@@ -189,18 +179,25 @@
                     @endforeach
                 </select>
 
-                <!-- Full Size / Minimize Icon-Only Button -->
+                <!-- Full Size / Minimize Icon-Only Button with Clean SVG -->
                 <button
                     @click="toggleFullScreen()"
                     type="button"
-                    :title="isFullScreen ? 'Minimize (Kecilkan Layar)' : 'Full Size (Layar Penuh Browser)'"
-                    style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 6px; font-size: 0.95rem; font-weight: 900; cursor: pointer; transition: all 0.15s ease;"
+                    :title="isFullScreen ? 'Minimize (Kecilkan Layar Penuh)' : 'Full Size (Tampilkan Layar Penuh)'"
+                    style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease;"
                     :style="isFullScreen 
                         ? 'background: #fee2e2; color: #b91c1c; border: 1.5px solid #f87171;' 
                         : 'background: #eff6ff; color: #1d4ed8; border: 1.5px solid #93c5fd;'"
                     class="ims-control-fullscreen-btn"
                 >
-                    <span x-text="isFullScreen ? '🗗' : '⛶'"></span>
+                    <!-- Full Size Icon (Expand) -->
+                    <svg x-show="!isFullScreen" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                    </svg>
+                    <!-- Minimize Icon (Compress) -->
+                    <svg x-show="isFullScreen" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                        <path d="M4 14h6m0 0v6m0-6L3 21m17-7h-6m0 0v6m0-6l7 7M4 10h6m0 0V4m0 6L3 3m17 7h-6m0 0V4m0 6l7-7"/>
+                    </svg>
                 </button>
 
                 <!-- Search Input -->
@@ -209,24 +206,24 @@
                         wire:model.live.debounce.250ms="search"
                         type="text"
                         placeholder="🔍 Cari Pelanggan / ODP..."
-                        style="width: 190px; height: 30px; border-radius: 6px; border: 1.5px solid #cbd5e1; background: #f8fafc; padding: 0 20px 0 8px; font-size: 0.73rem; font-weight: 700; color: #0f172a; outline: none;"
+                        style="width: 155px; height: 28px; border-radius: 6px; border: 1.5px solid #cbd5e1; background: #f8fafc; padding: 0 18px 0 6px; font-size: 0.72rem; font-weight: 700; color: #0f172a; outline: none;"
                         class="ims-control-search"
                     />
                     @if(!empty($search))
                         <button
                             wire:click="$set('search', '')"
-                            style="position: absolute; right: 6px; top: 6px; background: none; border: none; font-size: 0.68rem; color: #94a3b8; cursor: pointer; padding: 0;"
+                            style="position: absolute; right: 5px; top: 5px; background: none; border: none; font-size: 0.65rem; color: #94a3b8; cursor: pointer; padding: 0;"
                         >✖</button>
                     @endif
                 </div>
 
                 <!-- Zoom In / Reset / Out -->
-                <div style="display: inline-flex; align-items: center; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 2px; gap: 2px;">
+                <div style="display: inline-flex; align-items: center; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 1px; gap: 1px;">
                     <button
                         @click="zoomIn()"
                         type="button"
                         title="Zoom In (Perbesar)"
-                        style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 24px; border-radius: 4px; font-size: 0.8rem; font-weight: 900; background: #ffffff; color: #0284c7; border: 1px solid #e2e8f0; cursor: pointer;"
+                        style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; background: #ffffff; color: #0284c7; border: 1px solid #e2e8f0; cursor: pointer;"
                     >
                         ➕
                     </button>
@@ -235,7 +232,7 @@
                         @click="resetZoom()"
                         type="button"
                         title="Pusatkan Posisi & Reset Zoom ke 100%"
-                        style="display: inline-flex; align-items: center; justify-content: center; height: 24px; padding: 0 5px; border-radius: 4px; font-size: 0.68rem; font-weight: 800; background: transparent; color: #475569; border: none; cursor: pointer; font-family: monospace;"
+                        style="display: inline-flex; align-items: center; justify-content: center; height: 24px; padding: 0 4px; border-radius: 4px; font-size: 0.65rem; font-weight: 800; background: transparent; color: #475569; border: none; cursor: pointer; font-family: monospace;"
                     >
                         <span x-text="Math.round(zoom * 100) + '%'">100%</span>
                     </button>
@@ -244,7 +241,7 @@
                         @click="zoomOut()"
                         type="button"
                         title="Zoom Out (Perkecil)"
-                        style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 24px; border-radius: 4px; font-size: 0.8rem; font-weight: 900; background: #ffffff; color: #dc2626; border: 1px solid #e2e8f0; cursor: pointer;"
+                        style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; background: #ffffff; color: #dc2626; border: 1px solid #e2e8f0; cursor: pointer;"
                     >
                         ➖
                     </button>
@@ -255,7 +252,7 @@
                         wire:click="resetFilters"
                         @click="resetZoom()"
                         type="button"
-                        style="height: 30px; padding: 0 0.55rem; border-radius: 6px; font-size: 0.7rem; font-weight: 800; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; cursor: pointer;"
+                        style="height: 28px; padding: 0 0.5rem; border-radius: 6px; font-size: 0.68rem; font-weight: 800; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; cursor: pointer;"
                     >
                         🔄 Reset
                     </button>
@@ -678,7 +675,7 @@
             bottom: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
-            z-index: 99999 !important;
+            z-index: 99999999 !important;
             background: #f1f5f9 !important;
             padding: 0.65rem !important;
             box-sizing: border-box !important;
