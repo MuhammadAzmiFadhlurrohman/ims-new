@@ -185,22 +185,79 @@ class CustomerSubscriptionResource extends Resource
                 // 1. Kolom Pelanggan
                 Tables\Columns\TextColumn::make('internet_number')
                     ->label('Pelanggan')
+                    ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
                     ->alignLeft()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
-                        $internetNo = $record->internet_number;
+                        $internetNo = $record->internet_number ?? '-';
                         $custName = strtoupper($record->customer_name ?? $record->customer?->name ?? '-');
                         $gender = ($record->customer?->gender ?? $record->gender) == 'female' ? 'P' : 'L';
-                        $pkgName = $record->package->name ?? $record->package_code ?? 'UP TO NEW 20 Mbps';
-                        $group = $record->group_service ?? 'MEDIANET';
+                        $pkgName = strtoupper($record->package->name ?? $record->package_code ?? 'UP TO NEW 20 Mbps');
+                        $group = strtoupper($record->group_service ?? 'MEDIANET');
+                        $phone = $record->customer?->phone_number ?? $record->phone_number ?? '';
                         $detailUrl = static::getUrl('view', ['record' => $record]);
 
+                        $isTerminated = $record->is_terminated || $record->registration_status === '23' || str_contains(strtolower($record->registration_status ?? ''), 'terminasi');
+                        $isSuspended = $record->is_isolated || $record->registration_status === '21' || str_contains(strtolower($record->registration_status ?? ''), 'suspend') || str_contains(strtolower($record->registration_status ?? ''), 'isolir');
+
+                        $statusLabel = $isTerminated ? 'Terminasi' : ($isSuspended ? 'Suspend' : ($record->registration_status ?? 'Aktif'));
+                        $statusPillClass = $isTerminated ? 'ims-pill-batal' : ($isSuspended ? 'ims-pill-aktivasi' : 'ims-pill-survey-done');
+                        $statusType = strtoupper($record->status_type ?? 'TEMPORARY DELETE');
+                        $updated = $record->updated_at ? $record->updated_at->format('d M Y H:i') : '-';
+                        $price = $record->package?->price ? number_format($record->package->price, 0, ',', '.') : ($record->monthly_fee ? number_format($record->monthly_fee, 0, ',', '.') : '200.000');
+
+                        $phoneHtml = $phone ? "<span class='ims-cust-phone' style='font-size: 11.5px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>" : "";
+
                         return "
-                            <div class='flex flex-col items-start text-left text-xs leading-snug py-1'>
+                            <!-- DESKTOP VIEW (Visible on Desktop) -->
+                            <div class='ims-desktop-view flex flex-col items-start text-left text-xs leading-snug py-1'>
                                 <a href='{$detailUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 tracking-tight'>{$internetNo}</a>
                                 <a href='{$detailUrl}' class='font-black text-slate-800 underline hover:text-indigo-600 mt-1'>{$custName} ({$gender})</a>
                                 <a href='{$detailUrl}' class='text-slate-600 underline hover:text-indigo-600 mt-0.5'>{$pkgName}</a>
                                 <span class='text-[11px] text-slate-500 mt-2.5'>Group Layanan : <strong class='text-slate-700 font-bold'>{$group}</strong></span>
+                            </div>
+
+                            <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
+                            <div class='ims-standalone-card'>
+                                <div class='ims-card-head'>
+                                    <a href='{$detailUrl}' class='ims-cid-badge'>{$internetNo}</a>
+                                    <span class='ims-mobile-group-badge'>{$group}</span>
+                                </div>
+                                <div class='ims-card-cust-info'>
+                                    <div style='display: flex; align-items: center; gap: 6px;'>
+                                        <a href='{$detailUrl}' class='ims-cust-name' style='font-size: 14px; font-weight: 900; color: #0f172a;'>{$custName}</a>
+                                        <span style='font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px; background: #e2e8f0; color: #475569;'>{$gender}</span>
+                                    </div>
+                                    <div style='display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 3px;'>
+                                        <span class='ims-pkg-pill'>📦 {$pkgName}</span>
+                                        {$phoneHtml}
+                                    </div>
+                                </div>
+                                <div class='ims-card-sep'></div>
+                                <div class='ims-card-status-section'>
+                                    <div class='ims-schedule-pill {$statusPillClass}'>
+                                        <span>📌 {$statusLabel}</span>
+                                        <span class='ims-schedule-slot'>🕒 Rp {$price} / Bln</span>
+                                    </div>
+                                    <div style='display: flex; align-items: center; gap: 6px; margin-top: 4px;'>
+                                        <span class='ims-temp-badge'>
+                                            {$statusType}
+                                        </span>
+                                        <span class='ims-updated-text'>Up: {$updated}</span>
+                                    </div>
+                                </div>
+                                <div class='ims-card-sep'></div>
+                                <a
+                                    href='{$detailUrl}'
+                                    class='ims-card-detail-btn'
+                                    style='text-decoration: none;'
+                                >
+                                    <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
+                                    </svg>
+                                    <span>Detail</span>
+                                </a>
                             </div>
                         ";
                     })
@@ -210,6 +267,7 @@ class CustomerSubscriptionResource extends Resource
                 // 2. Kolom Lokasi Pemasangan
                 Tables\Columns\TextColumn::make('installation_address')
                     ->label('Lokasi Pemasangan')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->alignLeft()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
@@ -247,6 +305,7 @@ class CustomerSubscriptionResource extends Resource
                 // 3. Kolom Status
                 Tables\Columns\TextColumn::make('registration_status')
                     ->label('Status')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->alignLeft()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
@@ -274,6 +333,7 @@ class CustomerSubscriptionResource extends Resource
                 // 4. Kolom Tanggal SO
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal SO')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->alignLeft()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
