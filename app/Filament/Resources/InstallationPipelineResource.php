@@ -516,6 +516,22 @@ class InstallationPipelineResource extends Resource
                         $key = $record->getKey();
                         $safeKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $key);
 
+                        $nik = htmlspecialchars($record->customer?->nik ?? $record->customer_nik ?? '-', ENT_QUOTES);
+                        $building = htmlspecialchars(strtoupper($record->building_type ?? 'RUKO'), ENT_QUOTES);
+                        $address = strtoupper($record->installation_address ?? '-');
+                        $rt = $record->rt ? 'RT' . str_pad($record->rt, 2, '0', STR_PAD_LEFT) : '';
+                        $rw = $record->rw ? 'RW' . str_pad($record->rw, 2, '0', STR_PAD_LEFT) : '';
+                        $rtrw = trim("{$rt}/{$rw}", '/');
+                        $kel = $record->village_code ? 'KEL. ' . strtoupper($record->village_code) : '';
+                        $kec = $record->district ? 'KEC. ' . strtoupper($record->district) : '';
+                        $city = strtoupper($record->city ?? 'KABUPATEN BANDUNG');
+                        $prov = strtoupper($record->province ?? 'JAWA BARAT');
+                        $fullAddrStr = htmlspecialchars(implode(', ', array_filter([$address, $rtrw, $kel, $kec, $city, $prov])), ENT_QUOTES);
+                        $latLong = htmlspecialchars($record->lat_long ?? '-', ENT_QUOTES);
+                        $mapsUrl = htmlspecialchars($record->maps_url ?? '', ENT_QUOTES);
+                        $sales = htmlspecialchars(strtoupper($record->sales_name ?? '-'), ENT_QUOTES);
+                        $created = htmlspecialchars($record->created_at ? $record->created_at->format('d M Y H:i WIB') : '-', ENT_QUOTES);
+
                         $slot = '10 Agust 2026 13:00-15:00 WIB';
                         $isInstalasi = ($status === 'Jadwal Instalasi Terbit' || str_contains($status, 'Instalasi Terbit'));
                         $isAktivasi = ($status === 'Jadwal Aktivasi Terbit' || $status === 'Proses Aktivasi' || str_contains($status, 'Aktivasi'));
@@ -595,9 +611,22 @@ class InstallationPipelineResource extends Resource
                                 <div class='ims-card-sep'></div>
                                 <button
                                     type='button'
-                                    wire:click=\"mountTableAction('detail_lengkap', '{$key}')\"
-                                    x-on:click=\"\$wire.mountTableAction('detail_lengkap', '{$key}')\"
-                                    onclick=\"window.openImsDetailModal ? window.openImsDetailModal('{$key}') : (window.Livewire?.first()?.mountTableAction('detail_lengkap', '{$key}'))\"
+                                    onclick='window.openImsCardDetail && window.openImsCardDetail(this)'
+                                    data-key='{$key}'
+                                    data-no='{$internetNo}'
+                                    data-name='{$custName}'
+                                    data-phone='{$phone}'
+                                    data-nik='{$nik}'
+                                    data-pkg='{$pkgName}'
+                                    data-group='{$group}'
+                                    data-building='{$building}'
+                                    data-addr='{$fullAddrStr}'
+                                    data-latlong='{$latLong}'
+                                    data-maps='{$mapsUrl}'
+                                    data-status='{$status}'
+                                    data-statustype='{$statusType}'
+                                    data-sales='{$sales}'
+                                    data-created='{$created}'
                                     class='ims-card-detail-btn'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
