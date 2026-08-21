@@ -861,6 +861,42 @@ html.dark .fi-modal-window table tbody td div.font-bold {
     color: #f1f5f9 !important;
 }
 
+/* ── Equipment Selector & Custom Inputs inside Modals (Dark Mode) ── */
+html.dark .ims-equipment-selector select,
+html.dark .ims-equipment-selector input,
+html.dark .fi-modal-window select,
+html.dark .fi-modal-window input[type="text"]:not(.fi-input),
+html.dark .fi-modal-window input[type="number"] {
+    background-color: #0b1e36 !important;
+    border-color: #1a3c66 !important;
+    color: #f1f5f9 !important;
+}
+
+html.dark .ims-equipment-selector select option,
+html.dark .fi-modal-window select option {
+    background-color: #0b1e36 !important;
+    color: #f1f5f9 !important;
+}
+
+html.dark .ims-equipment-selector div[style*="background: #ffffff"],
+html.dark .ims-equipment-selector div[style*="background:#ffffff"],
+html.dark .fi-modal-window div[style*="background: #ffffff"],
+html.dark .fi-modal-window div[style*="background:#ffffff"],
+html.dark .fi-modal-window div[style*="background: white"],
+html.dark .fi-modal-window div[style*="background:white"],
+html.dark .fi-modal-window select[style*="background: #ffffff"],
+html.dark .fi-modal-window input[style*="background: #ffffff"] {
+    background-color: #0b1e36 !important;
+    border-color: #1a3c66 !important;
+    color: #f1f5f9 !important;
+}
+
+html.dark .fi-modal-window tr[style*="background: #f1f5f9"],
+html.dark .fi-modal-window tr[style*="background:#f1f5f9"] {
+    background-color: #08172b !important;
+    border-color: #1a3c66 !important;
+}
+
 html.dark .fi-modal-window .bg-indigo-50 {
     background-color: rgba(99, 102, 241, 0.18) !important;
     border-color: rgba(99, 102, 241, 0.35) !important;
