@@ -111,11 +111,11 @@ class Router extends Model
                 'pass' => $this->password ?? '',
                 'port' => (int) ($this->port ?: 8728),
                 'ssl'  => (bool) ($this->use_ssl ?? false),
-                'timeout' => 3,
+                'timeout' => 6,
                 'legacy' => $legacy,
             ]);
         } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::info("RouterOS API connect [{$this->name}] legacy=" . ($legacy ? '1' : '0') . " failed: " . $e->getMessage());
+            \Illuminate\Support\Facades\Log::info("RouterOS API connect [{$this->name}:{$this->port}] legacy=" . ($legacy ? '1' : '0') . " failed: " . $e->getMessage());
             return null;
         }
     }
@@ -135,7 +135,7 @@ class Router extends Model
             'PROFILE-100M' => 'PROFILE 100 Mbps',
         ];
 
-        // 1. Try API (v7 then v6 legacy)
+        // 1. Try API on configured port (v7 then v6 legacy)
         foreach ([false, true] as $isLegacy) {
             try {
                 $client = $this->getClient($isLegacy);
@@ -157,10 +157,10 @@ class Router extends Model
             } catch (\Throwable $e) {}
         }
 
-        // 2. Try Telnet
+        // 2. Try Telnet on configured port
         try {
             $telnetService = new \App\Services\RouterTelnetService();
-            $info = $telnetService->getSystemInfo($this->ip_address, ($this->port === 23 ? 23 : 23), $this->username ?: 'admin', $this->password ?? '');
+            $info = $telnetService->getSystemInfo($this->ip_address, (int) ($this->port ?: 23), $this->username ?: 'admin', $this->password ?? '');
             if (!empty($info['profiles'])) {
                 $profiles = [];
                 foreach ($info['profiles'] as $p) {
@@ -245,15 +245,37 @@ class Router extends Model
     }
 
     /**
-     * Get complete live system info, hardware resources, and PPP profiles from MikroTik (Supports v7 API, v6 Legacy API, & Telnet)
+     * Get complete live system info, hardware resources, and PPP profiles from MikroTik (Supports custom port on v7 API, v6 Legacy API, & Telnet)
      */
     public function getSystemInfo(): array
     {
         $port = (int) ($this->port ?: 8728);
-        $isTelnetPort = ($port === 23);
+        $errors = [];
 
-        // 1. If Port 23 or Telnet requested, run Telnet service directly
-        if ($isTelnetPort) {
+        // 1. Try API on configured port ($port) - Modern v7 scheme
+        try {
+            $client = $this->getClient(false);
+            if ($client) {
+                $info = $this->extractApiSystemInfo($client, "RouterOS v7 API (Port {$port})");
+                if ($info) return $info;
+            }
+        } catch (\Throwable $e) {
+            $errors[] = "API v7: " . $e->getMessage();
+        }
+
+        // 2. Try API on configured port ($port) - Legacy v6 MD5 scheme
+        try {
+            $client = $this->getClient(true);
+            if ($client) {
+                $info = $this->extractApiSystemInfo($client, "RouterOS v6 API Legacy (Port {$port})");
+                if ($info) return $info;
+            }
+        } catch (\Throwable $e) {
+            $errors[] = "API v6: " . $e->getMessage();
+        }
+
+        // 3. Try Telnet CLI on configured custom port ($port)
+        try {
             $telnetService = new \App\Services\RouterTelnetService();
             $telnetInfo = $telnetService->getSystemInfo($this->ip_address, $port, $this->username ?: 'admin', $this->password ?? '');
             if ($telnetInfo['connected']) {
@@ -263,119 +285,129 @@ class Router extends Model
                     'model' => $telnetInfo['board_name'] ?? $this->model,
                     'ros_version' => $telnetInfo['version'] ?? $this->ros_version,
                 ]);
+                $telnetInfo['protocol'] = "Telnet CLI (Port {$port})";
                 return $telnetInfo;
             }
-            return $telnetInfo;
+            if (!empty($telnetInfo['error'])) {
+                $errors[] = "Telnet (:{$port}): " . $telnetInfo['error'];
+            }
+        } catch (\Throwable $e) {
+            $errors[] = "Telnet (:{$port}): " . $e->getMessage();
         }
 
-        // 2. Try RouterOS API Client: First Modern v7 API, then Legacy v6 API (MD5 auth scheme)
-        foreach ([false, true] as $isLegacy) {
+        // 4. Try Telnet on standard Port 23 if custom port failed
+        if ($port !== 23) {
             try {
-                $client = $this->getClient($isLegacy);
-                if ($client) {
-                    // Identity
-                    $identity = $this->name;
-                    try {
-                        $identityQuery = new \RouterOS\Query('/system/identity/print');
-                        $identityRes = $client->query($identityQuery)->read();
-                        if (!empty($identityRes[0]['name'])) {
-                            $identity = $identityRes[0]['name'];
-                        }
-                    } catch (\Throwable $e) {}
-
-                    // Resource
-                    $res = [];
-                    try {
-                        $resourceQuery = new \RouterOS\Query('/system/resource/print');
-                        $resourceRes = $client->query($resourceQuery)->read();
-                        $res = $resourceRes[0] ?? [];
-                    } catch (\Throwable $e) {}
-
-                    // Routerboard info
-                    $rb = [];
-                    try {
-                        $rbQuery = new \RouterOS\Query('/system/routerboard/print');
-                        $rbRes = $client->query($rbQuery)->read();
-                        $rb = $rbRes[0] ?? [];
-                    } catch (\Throwable $e) {}
-
-                    // PPP Profiles
-                    $profiles = [];
-                    try {
-                        $profileQuery = new \RouterOS\Query('/ppp/profile/print');
-                        $profileRes = $client->query($profileQuery)->read();
-                        if (is_array($profileRes)) {
-                            $profiles = $profileRes;
-                        }
-                    } catch (\Throwable $e) {}
-
-                    // Active PPP Sessions
-                    $actives = [];
-                    try {
-                        $activeQuery = new \RouterOS\Query('/ppp/active/print');
-                        $activeRes = $client->query($activeQuery)->read();
-                        if (is_array($activeRes)) {
-                            $actives = $activeRes;
-                        }
-                    } catch (\Throwable $e) {}
-
-                    $detectedModel = $res['board-name'] ?? ($rb['model'] ?? $this->model);
-                    $detectedVersion = $res['version'] ?? $this->ros_version;
-
+                $telnetService = new \App\Services\RouterTelnetService();
+                $telnetInfo = $telnetService->getSystemInfo($this->ip_address, 23, $this->username ?: 'admin', $this->password ?? '');
+                if ($telnetInfo['connected']) {
                     $this->update([
                         'status' => 'online',
                         'last_connected_at' => now(),
-                        'model' => $detectedModel ?: $this->model,
-                        'ros_version' => $detectedVersion ?: $this->ros_version,
+                        'model' => $telnetInfo['board_name'] ?? $this->model,
+                        'ros_version' => $telnetInfo['version'] ?? $this->ros_version,
                     ]);
-
-                    $protocolName = $isLegacy ? 'RouterOS v6 API (Legacy)' : 'RouterOS v7 API';
-
-                    return [
-                        'connected' => true,
-                        'protocol' => $protocolName,
-                        'identity' => $identity,
-                        'board_name' => $detectedModel ?: 'Mikrotik RouterOS',
-                        'version' => $detectedVersion ?: '-',
-                        'uptime' => $res['uptime'] ?? '-',
-                        'cpu_load' => isset($res['cpu-load']) ? $res['cpu-load'] . '%' : '0%',
-                        'cpu_count' => $res['cpu-count'] ?? 1,
-                        'cpu' => $res['cpu'] ?? '-',
-                        'cpu_frequency' => isset($res['cpu-frequency']) ? $res['cpu-frequency'] . ' MHz' : '-',
-                        'memory_total' => !empty($res['total-memory']) ? round($res['total-memory'] / 1024 / 1024, 1) . ' MB' : '-',
-                        'memory_free' => !empty($res['free-memory']) ? round($res['free-memory'] / 1024 / 1024, 1) . ' MB' : '-',
-                        'hdd_total' => !empty($res['total-hdd-space']) ? round($res['total-hdd-space'] / 1024 / 1024, 1) . ' MB' : '-',
-                        'hdd_free' => !empty($res['free-hdd-space']) ? round($res['free-hdd-space'] / 1024 / 1024, 1) . ' MB' : '-',
-                        'serial_number' => $rb['serial-number'] ?? '-',
-                        'firmware' => $rb['current-firmware'] ?? ($rb['upgrade-firmware'] ?? '-'),
-                        'profiles' => $profiles,
-                        'active_count' => count($actives),
-                    ];
+                    $telnetInfo['protocol'] = "Telnet CLI (Port 23 Fallback)";
+                    return $telnetInfo;
                 }
-            } catch (\Throwable $e) {
-                \Illuminate\Support\Facades\Log::info("API attempt (legacy=" . ($isLegacy ? '1' : '0') . ") failed on {$this->name}: " . $e->getMessage());
-            }
+            } catch (\Throwable $e) {}
         }
 
-        // 3. Fallback: Automatic Telnet attempt if API failed
-        try {
-            $telnetService = new \App\Services\RouterTelnetService();
-            $telnetInfo = $telnetService->getSystemInfo($this->ip_address, 23, $this->username ?: 'admin', $this->password ?? '');
-            if ($telnetInfo['connected']) {
-                $this->update([
-                    'status' => 'online',
-                    'last_connected_at' => now(),
-                    'model' => $telnetInfo['board_name'] ?? $this->model,
-                    'ros_version' => $telnetInfo['version'] ?? $this->ros_version,
-                ]);
-                return $telnetInfo;
-            }
-        } catch (\Throwable $e) {}
+        $errorSummary = !empty($errors) ? implode(' | ', $errors) : "Koneksi timeout / ditolak";
 
         return [
             'connected' => false,
-            'error' => "Gagal terhubung ke {$this->ip_address} via API v6/v7 (port {$port}) maupun Telnet (port 23). Pastikan IP, Username, dan Password sudah benar serta service API (8728) atau Telnet (23) aktif di MikroTik.",
+            'error' => "Gagal terhubung ke {$this->ip_address}:{$port}. [Detail: {$errorSummary}]. Pastikan port {$port} di MikroTik mengarah ke service API atau Telnet dan tidak terhalang firewall/IP restriction.",
         ];
+    }
+
+    /**
+     * Helper to query and extract live system info from RouterOS API
+     */
+    protected function extractApiSystemInfo(\RouterOS\Client $client, string $protocolName): ?array
+    {
+        try {
+            // Identity
+            $identity = $this->name;
+            try {
+                $identityQuery = new \RouterOS\Query('/system/identity/print');
+                $identityRes = $client->query($identityQuery)->read();
+                if (!empty($identityRes[0]['name'])) {
+                    $identity = $identityRes[0]['name'];
+                }
+            } catch (\Throwable $e) {}
+
+            // Resource
+            $resourceQuery = new \RouterOS\Query('/system/resource/print');
+            $resourceRes = $client->query($resourceQuery)->read();
+            $res = $resourceRes[0] ?? [];
+
+            if (empty($res)) {
+                return null;
+            }
+
+            // Routerboard info
+            $rb = [];
+            try {
+                $rbQuery = new \RouterOS\Query('/system/routerboard/print');
+                $rbRes = $client->query($rbQuery)->read();
+                $rb = $rbRes[0] ?? [];
+            } catch (\Throwable $e) {}
+
+            // PPP Profiles
+            $profiles = [];
+            try {
+                $profileQuery = new \RouterOS\Query('/ppp/profile/print');
+                $profileRes = $client->query($profileQuery)->read();
+                if (is_array($profileRes)) {
+                    $profiles = $profileRes;
+                }
+            } catch (\Throwable $e) {}
+
+            // Active PPP Sessions
+            $actives = [];
+            try {
+                $activeQuery = new \RouterOS\Query('/ppp/active/print');
+                $activeRes = $client->query($activeQuery)->read();
+                if (is_array($activeRes)) {
+                    $actives = $activeRes;
+                }
+            } catch (\Throwable $e) {}
+
+            $detectedModel = $res['board-name'] ?? ($rb['model'] ?? $this->model);
+            $detectedVersion = $res['version'] ?? $this->ros_version;
+
+            $this->update([
+                'status' => 'online',
+                'last_connected_at' => now(),
+                'model' => $detectedModel ?: $this->model,
+                'ros_version' => $detectedVersion ?: $this->ros_version,
+            ]);
+
+            return [
+                'connected' => true,
+                'protocol' => $protocolName,
+                'identity' => $identity,
+                'board_name' => $detectedModel ?: 'Mikrotik RouterOS',
+                'version' => $detectedVersion ?: '-',
+                'uptime' => $res['uptime'] ?? '-',
+                'cpu_load' => isset($res['cpu-load']) ? $res['cpu-load'] . '%' : '0%',
+                'cpu_count' => $res['cpu-count'] ?? 1,
+                'cpu' => $res['cpu'] ?? '-',
+                'cpu_frequency' => isset($res['cpu-frequency']) ? $res['cpu-frequency'] . ' MHz' : '-',
+                'memory_total' => !empty($res['total-memory']) ? round($res['total-memory'] / 1024 / 1024, 1) . ' MB' : '-',
+                'memory_free' => !empty($res['free-memory']) ? round($res['free-memory'] / 1024 / 1024, 1) . ' MB' : '-',
+                'hdd_total' => !empty($res['total-hdd-space']) ? round($res['total-hdd-space'] / 1024 / 1024, 1) . ' MB' : '-',
+                'hdd_free' => !empty($res['free-hdd-space']) ? round($res['free-hdd-space'] / 1024 / 1024, 1) . ' MB' : '-',
+                'serial_number' => $rb['serial-number'] ?? '-',
+                'firmware' => $rb['current-firmware'] ?? ($rb['upgrade-firmware'] ?? '-'),
+                'profiles' => $profiles,
+                'active_count' => count($actives),
+            ];
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning("Extract API system info failed on {$this->name}: " . $e->getMessage());
+            return null;
+        }
     }
 }
 
