@@ -299,7 +299,9 @@ class MonthlyInvoiceResource extends Resource
                                     <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 4px;'>
                                         <button
                                             type='button'
-                                            onclick=\"(function(){ var el = document.querySelector('.ims-act-change-payment-{$safeKey}') || document.querySelector('.ims-monthly-paymethod-trigger-{$safeKey}'); if(el){ ((el.matches('button, a') ? el : el.querySelector('button, a')) || el).click(); } })()\"
+                                            data-table-action='change_payment_method'
+                                            data-record-key='{$key}'
+                                            onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('change_payment_method', '{$key}');\"
                                             title='Klik untuk mengubah metode pembayaran'
                                             style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
                                         >
@@ -315,7 +317,9 @@ class MonthlyInvoiceResource extends Resource
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
-                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-change-payment-{$safeKey}') || document.querySelector('.ims-monthly-paymethod-trigger-{$safeKey}'); if(el){ ((el.matches('button, a') ? el : el.querySelector('button, a')) || el).click(); } })()\"
+                                        data-table-action='change_payment_method'
+                                        data-record-key='{$key}'
+                                        onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('change_payment_method', '{$key}');\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -323,7 +327,9 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-publish-{$safeKey}'); if(el){ ((el.matches('button, a') ? el : el.querySelector('button, a')) || el).click(); } })()\"
+                                        data-table-action='publish'
+                                        data-record-key='{$key}'
+                                        onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('publish', '{$key}');\"
                                         class='ims-modal-act-btn ims-modal-act-cyan'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -331,7 +337,9 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-accept-{$safeKey}'); if(el){ ((el.matches('button, a') ? el : el.querySelector('button, a')) || el).click(); } })()\"
+                                        data-table-action='accept'
+                                        data-record-key='{$key}'
+                                        onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('accept', '{$key}');\"
                                         class='ims-modal-act-btn ims-modal-act-green'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -339,7 +347,9 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-delete-{$safeKey}'); if(el){ ((el.matches('button, a') ? el : el.querySelector('button, a')) || el).click(); } })()\"
+                                        data-table-action='delete'
+                                        data-record-key='{$key}'
+                                        onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('delete', '{$key}');\"
                                         class='ims-modal-act-btn ims-modal-act-red'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >

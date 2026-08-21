@@ -356,6 +356,29 @@
     };
 
     window.openImsTableAction = function(action, key) {
+        const safeKey = (key || '').toString().replace(/[^a-zA-Z0-9_-]/g, '_');
+
+        // 1. Try DOM trigger buttons first
+        try {
+            const selectors = [
+                '.ims-act-' + action + '-' + safeKey,
+                '.ims-act-' + action + '-' + key,
+                '[class*="ims-act-' + action + '-' + safeKey + '"]',
+                '[class*="ims-act-' + action + '-' + key + '"]',
+                '.ims-monthly-paymethod-trigger-' + safeKey,
+                '.ims-paymethod-trigger-' + safeKey
+            ];
+            for (let sel of selectors) {
+                const targetBtn = document.querySelector(sel);
+                if (targetBtn) {
+                    const inner = (targetBtn.matches('button, a') ? targetBtn : targetBtn.querySelector('button, a')) || targetBtn;
+                    inner.click();
+                    return;
+                }
+            }
+        } catch(e) {}
+
+        // 2. Direct Livewire call
         if (window.Livewire) {
             try {
                 if (typeof Livewire.all === 'function') {
@@ -378,9 +401,9 @@
             } catch(e) {}
 
             try {
-                const wireEls = document.querySelectorAll('[wire\\:id], [data-id]');
+                const wireEls = document.querySelectorAll('[wire\\:id]');
                 for (let el of wireEls) {
-                    const id = el.getAttribute('wire:id') || el.getAttribute('data-id');
+                    const id = el.getAttribute('wire:id');
                     if (id && typeof Livewire.find === 'function') {
                         const comp = Livewire.find(id);
                         if (comp && comp.$wire && typeof comp.$wire.mountTableAction === 'function') {
@@ -399,28 +422,23 @@
                 }
             } catch(e) {}
         }
-
-        try {
-            const tableEl = document.querySelector('.fi-ta, .fi-ta-ctn, [wire\\:id]');
-            if (tableEl && window.Alpine) {
-                const alpineData = window.Alpine.$data(tableEl);
-                if (alpineData && alpineData.$wire && typeof alpineData.$wire.mountTableAction === 'function') {
-                    alpineData.$wire.mountTableAction(action, key);
-                    return;
-                }
-            }
-        } catch(e) {}
-
-        try {
-            const safeKey = (key || '').replace(/[^a-zA-Z0-9_-]/g, '_');
-            const targetBtn = document.querySelector('.ims-monthly-paymethod-trigger-' + safeKey) ||
-                              document.querySelector('.ims-paymethod-trigger-' + safeKey);
-            if (targetBtn) {
-                targetBtn.click();
-                return;
-            }
-        } catch(e) {}
     };
+
+    // Delegated click handler for mobile card action buttons
+    function handleActionBtnClick(e) {
+        const actBtn = e.target.closest('[data-table-action]');
+        if (actBtn) {
+            const action = actBtn.getAttribute('data-table-action');
+            const key = actBtn.getAttribute('data-record-key');
+            if (action && key) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.openImsTableAction(action, key);
+                return false;
+            }
+        }
+    }
+    document.addEventListener('click', handleActionBtnClick, true);
 
     // Delegated click handler for mobile card detail buttons (capture phase)
     function handleDetailBtnClick(e) {
@@ -445,7 +463,6 @@
                 e.preventDefault();
                 e.stopPropagation();
                 e.stopImmediatePropagation();
-                // Small delay to prevent double-firing from touch + click
                 setTimeout(function() {
                     window.openImsDetailFromPayload(payload);
                 }, 50);
