@@ -674,7 +674,9 @@ html.dark .ims-temp-badge:hover {
 
     /* Retain actions container in DOM for active Livewire/Alpine click listeners */
     table.fi-ta-table tbody tr td.fi-ta-actions-cell,
-    table.fi-ta-table tbody tr td:last-child:has(.fi-ta-actions) {
+    table.fi-ta-table tbody tr td:last-child:has(.fi-ta-actions),
+    table.fi-ta-table tbody tr:has(.ims-standalone-card) td.fi-ta-actions-cell,
+    table.fi-ta-table tbody tr:has(.ims-standalone-card) td:last-child {
         display: block !important;
         position: absolute !important;
         opacity: 0 !important;
