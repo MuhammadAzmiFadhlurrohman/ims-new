@@ -8,28 +8,6 @@
             startX: 0,
             startY: 0,
 
-            getBounds() {
-                const vp = this.$refs.viewport;
-                if (!vp) return { minX: -1000, maxX: 20, minY: -1000, maxY: 20 };
-
-                const board = vp.querySelector('.ims-topology-board');
-                const vpW = vp.clientWidth;
-                const vpH = vp.clientHeight;
-                const boardW = board ? (board.offsetWidth * this.zoom) : 800;
-                const boardH = board ? (board.offsetHeight * this.zoom) : 500;
-
-                const maxX = 20;
-                const minX = (boardW <= vpW) ? 20 : (vpW - boardW - 40);
-
-                const maxY = 20;
-                // Batas bawah dihitung presisi dari tinggi diagram aktual:
-                // Jika diagram muat di layar -> terkunci di 20px
-                // Jika diagram panjang -> scroll berhenti tepat di ujung kartu terbawah
-                const minY = (boardH <= vpH) ? 20 : (vpH - boardH - 40);
-
-                return { minX, maxX, minY, maxY };
-            },
-
             init() {
                 this.$watch('$wire.selectedOlt', () => this.resetZoom());
                 this.$watch('$wire.search', () => this.resetZoom());
@@ -37,7 +15,7 @@
                 const vp = this.$refs.viewport;
                 if (!vp) return;
 
-                // 1. Mousedown Handler
+                // 1. Mousedown Handler (Super responsif)
                 vp.addEventListener('mousedown', (e) => {
                     if (e.target.closest('button, input, select, a, [wire\\:click]')) return;
                     e.preventDefault();
@@ -46,18 +24,19 @@
                     this.startY = e.clientY - this.panY;
                 });
 
-                // 2. Window Mousemove Handler
+                // 2. Window Mousemove Handler (Bebas, mulus tanpa tertahan)
                 window.addEventListener('mousemove', (e) => {
                     if (!this.isDragging) return;
                     e.preventDefault();
                     
                     const rawX = e.clientX - this.startX;
                     const rawY = e.clientY - this.startY;
-                    const bounds = this.getBounds();
 
-                    // Batas geser terkunci tepat di ujung diagram (tidak bisa bablas ke ruang kosong)
-                    this.panX = Math.min(bounds.maxX, Math.max(bounds.minX, rawX));
-                    this.panY = Math.min(bounds.maxY, Math.max(bounds.minY, rawY));
+                    // Batas aman yang pas (tidak tertahan & tidak melayang jauh)
+                    const limitX = Math.round(-750 * this.zoom);
+                    const limitY = Math.round(-700 * this.zoom);
+                    this.panX = Math.min(20, Math.max(limitX, rawX));
+                    this.panY = Math.min(20, Math.max(limitY, rawY));
                 });
 
                 // 3. Window Mouseup Handler
@@ -79,17 +58,17 @@
                     if (!this.isDragging || e.touches.length !== 1) return;
                     const rawX = e.touches[0].clientX - this.startX;
                     const rawY = e.touches[0].clientY - this.startY;
-                    const bounds = this.getBounds();
-
-                    this.panX = Math.min(bounds.maxX, Math.max(bounds.minX, rawX));
-                    this.panY = Math.min(bounds.maxY, Math.max(bounds.minY, rawY));
+                    const limitX = Math.round(-750 * this.zoom);
+                    const limitY = Math.round(-700 * this.zoom);
+                    this.panX = Math.min(20, Math.max(limitX, rawX));
+                    this.panY = Math.min(20, Math.max(limitY, rawY));
                 }, { passive: true });
 
                 window.addEventListener('touchend', () => {
                     this.isDragging = false;
                 });
 
-                // 5. Wheel Handler: Mencegah scroll halaman web & geser kanvas presisi
+                // 5. Wheel Handler: Scroll halus & berhenti pas di batas diagram
                 vp.addEventListener('wheel', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -100,10 +79,10 @@
                     } else {
                         const newX = this.panX - (e.deltaX || 0) * 0.8;
                         const newY = this.panY - (e.deltaY || 0) * 0.8;
-                        const bounds = this.getBounds();
-
-                        this.panX = Math.min(bounds.maxX, Math.max(bounds.minX, newX));
-                        this.panY = Math.min(bounds.maxY, Math.max(bounds.minY, newY));
+                        const limitX = Math.round(-750 * this.zoom);
+                        const limitY = Math.round(-700 * this.zoom);
+                        this.panX = Math.min(20, Math.max(limitX, newX));
+                        this.panY = Math.min(20, Math.max(limitY, newY));
                     }
                 }, { passive: false });
             },
@@ -124,11 +103,10 @@
                 this.panY = cy - (cy - this.panY) * (newZoom / oldZoom);
                 this.zoom = newZoom;
 
-                this.$nextTick(() => {
-                    const bounds = this.getBounds();
-                    this.panX = Math.min(bounds.maxX, Math.max(bounds.minX, this.panX));
-                    this.panY = Math.min(bounds.maxY, Math.max(bounds.minY, this.panY));
-                });
+                const limitX = Math.round(-750 * this.zoom);
+                const limitY = Math.round(-700 * this.zoom);
+                this.panX = Math.min(20, Math.max(limitX, this.panX));
+                this.panY = Math.min(20, Math.max(limitY, this.panY));
             },
 
             zoomIn() { this.changeZoom(0.15); },
