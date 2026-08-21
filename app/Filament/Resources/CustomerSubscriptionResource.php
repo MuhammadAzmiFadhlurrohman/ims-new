@@ -189,13 +189,30 @@ class CustomerSubscriptionResource extends Resource
                     ->html()
                     ->alignLeft()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
+                        $key = $record->getKey();
+                        $safeKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $key);
+
                         $internetNo = $record->internet_number ?? '-';
                         $custName = strtoupper($record->customer_name ?? $record->customer?->name ?? '-');
                         $gender = ($record->customer?->gender ?? $record->gender) == 'female' ? 'P' : 'L';
                         $pkgName = strtoupper($record->package->name ?? $record->package_code ?? 'UP TO NEW 20 Mbps');
                         $group = strtoupper($record->group_service ?? 'MEDIANET');
-                        $phone = $record->customer?->phone_number ?? $record->phone_number ?? '';
-                        $detailUrl = static::getUrl('view', ['record' => $record]);
+                        $phone = $record->customer?->phone_number ?? $record->phone_number ?? '-';
+                        $nik = $record->customer?->nik ?? $record->customer_nik ?? '-';
+
+                        $building = strtoupper($record->building_type ?? 'RUMAH-PRIBADI');
+                        $address = strtoupper($record->installation_address ?? '-');
+                        $rt = $record->rt ? 'RT' . str_pad($record->rt, 2, '0', STR_PAD_LEFT) : '';
+                        $rw = $record->rw ? 'RW' . str_pad($record->rw, 2, '0', STR_PAD_LEFT) : '';
+                        $rtrw = trim("{$rt}/{$rw}", '/');
+                        $kel = $record->village_code ? 'KEL. ' . strtoupper($record->village_code) : '';
+                        $kec = $record->district ? 'KEC. ' . strtoupper($record->district) : '';
+                        $city = strtoupper($record->city ?? 'KABUPATEN BANDUNG');
+                        $prov = strtoupper($record->province ?? 'JAWA BARAT');
+                        $fullAddrStr = implode(', ', array_filter([$address, $rtrw, $kel, $kec, $city, $prov]));
+
+                        $latLong = $record->lat_long ?? '-';
+                        $mapsUrl = $record->maps_url ?? '';
 
                         $isTerminated = $record->is_terminated || $record->registration_status === '23' || str_contains(strtolower($record->registration_status ?? ''), 'terminasi');
                         $isSuspended = $record->is_isolated || $record->registration_status === '21' || str_contains(strtolower($record->registration_status ?? ''), 'suspend') || str_contains(strtolower($record->registration_status ?? ''), 'isolir');
@@ -203,10 +220,65 @@ class CustomerSubscriptionResource extends Resource
                         $statusLabel = $isTerminated ? 'Terminasi' : ($isSuspended ? 'Suspend' : ($record->registration_status ?? 'Aktif'));
                         $statusPillClass = $isTerminated ? 'ims-pill-batal' : ($isSuspended ? 'ims-pill-aktivasi' : 'ims-pill-survey-done');
                         $statusType = strtoupper($record->status_type ?? 'TEMPORARY DELETE');
+                        $sales = strtoupper($record->sales_name ?? 'ABDUL GHANI');
+                        $created = $record->created_at ? $record->created_at->format('d M Y H:i WIB') : '-';
                         $updated = $record->updated_at ? $record->updated_at->format('d M Y H:i') : '-';
                         $price = $record->package?->price ? number_format($record->package->price, 0, ',', '.') : ($record->monthly_fee ? number_format($record->monthly_fee, 0, ',', '.') : '200.000');
+                        $detailUrl = static::getUrl('view', ['record' => $record]);
 
-                        $phoneHtml = $phone ? "<span class='ims-cust-phone' style='font-size: 11.5px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>" : "";
+                        // Operational action buttons matching Desktop Data Pelanggan
+                        $recordActions = [];
+
+                        $recordActions[] = [
+                            'name' => 'change_status_type',
+                            'label' => 'Ubah Status Tipe',
+                            'icon' => 'status',
+                            'color' => 'blue',
+                        ];
+
+                        $recordActions[] = [
+                            'name' => 'req_updowngrade',
+                            'label' => 'Req. Up/Downgrade',
+                            'icon' => 'calendar',
+                            'color' => 'cyan',
+                        ];
+
+                        $recordActions[] = [
+                            'name' => 'adjust_data',
+                            'label' => 'Penyesuaian Data',
+                            'icon' => 'report',
+                            'color' => 'amber',
+                        ];
+
+                        $recordActions[] = [
+                            'name' => 'edit',
+                            'label' => 'Edit',
+                            'icon' => 'edit',
+                            'color' => 'blue',
+                            'url' => static::getUrl('edit', ['record' => $record]),
+                        ];
+
+                        $detailPayload = [
+                            'key' => (string) $key,
+                            'no' => (string) $internetNo,
+                            'name' => (string) $custName,
+                            'phone' => (string) $phone,
+                            'nik' => (string) $nik,
+                            'pkg' => (string) $pkgName,
+                            'group' => (string) $group,
+                            'building' => (string) $building,
+                            'addr' => (string) $fullAddrStr,
+                            'latlong' => (string) $latLong,
+                            'maps' => (string) $mapsUrl,
+                            'status' => (string) $statusLabel,
+                            'statustype' => (string) $statusType,
+                            'sales' => (string) $sales,
+                            'created' => (string) $created,
+                            'actions' => $recordActions,
+                        ];
+                        $encodedDetail = base64_encode(json_encode($detailPayload, JSON_UNESCAPED_UNICODE));
+
+                        $phoneHtml = ($phone && $phone !== '-') ? "<span class='ims-cust-phone' style='font-size: 11.5px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>" : "";
 
                         return "
                             <!-- DESKTOP VIEW (Visible on Desktop) -->
@@ -240,24 +312,28 @@ class CustomerSubscriptionResource extends Resource
                                         <span class='ims-schedule-slot'>🕒 Rp {$price} / Bln</span>
                                     </div>
                                     <div style='display: flex; align-items: center; gap: 6px; margin-top: 4px;'>
-                                        <span class='ims-temp-badge'>
+                                        <button
+                                            type='button'
+                                            onclick=\"window.openImsStatusModal && window.openImsStatusModal('{$key}', '{$statusType}')\"
+                                            class='ims-temp-badge'
+                                        >
                                             {$statusType}
-                                        </span>
+                                        </button>
                                         <span class='ims-updated-text'>Up: {$updated}</span>
                                     </div>
                                 </div>
                                 <div class='ims-card-sep'></div>
-                                <a
-                                    href='{$detailUrl}'
+                                <button
+                                    type='button'
+                                    onclick=\"window.openImsDetailFromPayload && window.openImsDetailFromPayload('{$encodedDetail}')\"
                                     class='ims-card-detail-btn'
-                                    style='text-decoration: none;'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                                         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
                                         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
                                     </svg>
                                     <span>Detail</span>
-                                </a>
+                                </button>
                             </div>
                         ";
                     })
