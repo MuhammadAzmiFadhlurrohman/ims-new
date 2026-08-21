@@ -13,9 +13,11 @@
                 this.$watch('$wire.selectedOlt', () => this.resetZoom());
                 this.$watch('$wire.search', () => this.resetZoom());
 
-                document.addEventListener('fullscreenchange', () => {
-                    this.isFullScreen = !!document.fullscreenElement;
-                });
+                const handleFsChange = () => {
+                    this.isFullScreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+                };
+                document.addEventListener('fullscreenchange', handleFsChange);
+                document.addEventListener('webkitfullscreenchange', handleFsChange);
 
                 const vp = this.$refs.viewport;
                 if (!vp) return;
@@ -123,10 +125,31 @@
             },
 
             toggleFullScreen() {
-                this.isFullScreen = !this.isFullScreen;
+                const elem = this.$el;
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                    if (elem.requestFullscreen) {
+                        elem.requestFullscreen().catch(() => { this.isFullScreen = true; });
+                    } else if (elem.webkitRequestFullscreen) {
+                        elem.webkitRequestFullscreen();
+                    } else if (elem.msRequestFullscreen) {
+                        elem.msRequestFullscreen();
+                    } else {
+                        this.isFullScreen = true;
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen().catch(() => { this.isFullScreen = false; });
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    } else {
+                        this.isFullScreen = false;
+                    }
+                }
             }
         }"
-        @keydown.escape.window="if(isFullScreen) isFullScreen = false"
+        @keydown.escape.window="if(isFullScreen) { if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); isFullScreen = false; }"
         :class="isFullScreen ? 'ims-fullscreen-mode' : ''"
         class="ims-ftth-compact-wrapper"
         style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; max-width: 100%; overflow: hidden; isolation: isolate; font-family: inherit;"
@@ -666,7 +689,9 @@
             overflow-x: hidden !important;
         }
 
-        /* ── Full Size Mode Styling ── */
+        /* ── Full Size Mode: Native Browser Fullscreen Support ── */
+        .ims-ftth-compact-wrapper:fullscreen,
+        .ims-ftth-compact-wrapper:-webkit-full-screen,
         .ims-fullscreen-mode {
             position: fixed !important;
             top: 0 !important;
@@ -676,19 +701,27 @@
             width: 100vw !important;
             height: 100vh !important;
             z-index: 99999999 !important;
-            background: #f1f5f9 !important;
-            padding: 0.65rem !important;
+            background: #f8fafc !important;
+            padding: 0.6rem !important;
+            margin: 0 !important;
+            overflow: hidden !important;
             box-sizing: border-box !important;
             display: flex !important;
             flex-direction: column !important;
             gap: 0.5rem !important;
         }
 
+        html.dark .ims-ftth-compact-wrapper:fullscreen,
+        html.dark .ims-ftth-compact-wrapper:-webkit-full-screen,
         html.dark .ims-fullscreen-mode {
             background: #020712 !important;
         }
 
+        .ims-ftth-compact-wrapper:fullscreen .ims-canvas-viewport,
+        .ims-ftth-compact-wrapper:-webkit-full-screen .ims-canvas-viewport,
         .ims-fullscreen-mode .ims-canvas-viewport {
+            flex: 1 !important;
+            width: 100% !important;
             height: calc(100vh - 65px) !important;
             max-height: calc(100vh - 65px) !important;
             border-radius: 10px !important;
