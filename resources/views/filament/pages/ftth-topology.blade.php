@@ -2,9 +2,51 @@
     <div
         x-data="{
             zoom: 1.0,
+            isDragging: false,
+            startX: 0,
+            startY: 0,
+            scrollLeft: 0,
+            scrollTop: 0,
+
             zoomIn() { this.zoom = Math.min(+(this.zoom + 0.15).toFixed(2), 2.0) },
             zoomOut() { this.zoom = Math.max(+(this.zoom - 0.15).toFixed(2), 0.45) },
-            resetZoom() { this.zoom = 1.0 }
+            resetZoom() {
+                this.zoom = 1.0;
+                const c = this.$refs.canvasScroll;
+                if (c) { c.scrollLeft = 0; c.scrollTop = 0; }
+            },
+
+            startDrag(e) {
+                // Ignore click on links, buttons, inputs, selects
+                if (e.target.closest('button, input, select, a')) return;
+                this.isDragging = true;
+                const c = this.$refs.canvasScroll;
+                const clientX = e.pageX || (e.touches && e.touches[0].pageX);
+                const clientY = e.pageY || (e.touches && e.touches[0].pageY);
+                this.startX = clientX - c.offsetLeft;
+                this.startY = clientY - c.offsetTop;
+                this.scrollLeft = c.scrollLeft;
+                this.scrollTop = c.scrollTop;
+            },
+
+            onDrag(e) {
+                if (!this.isDragging) return;
+                const clientX = e.pageX || (e.touches && e.touches[0].pageX);
+                const clientY = e.pageY || (e.touches && e.touches[0].pageY);
+                if (!clientX || !clientY) return;
+                e.preventDefault();
+                const c = this.$refs.canvasScroll;
+                const x = clientX - c.offsetLeft;
+                const y = clientY - c.offsetTop;
+                const walkX = (x - this.startX) * 1.3;
+                const walkY = (y - this.startY) * 1.3;
+                c.scrollLeft = this.scrollLeft - walkX;
+                c.scrollTop = this.scrollTop - walkY;
+            },
+
+            stopDrag() {
+                this.isDragging = false;
+            }
         }"
         class="ims-ftth-compact-wrapper"
         style="display: flex; flex-direction: column; gap: 0.85rem; width: 100%; font-family: inherit;"
@@ -162,7 +204,19 @@
                 </button>
             </div>
         @else
-            <div class="ims-canvas-scroll" style="width: 100%; overflow-x: auto; padding: 1rem 0.75rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);">
+            <div
+                x-ref="canvasScroll"
+                @mousedown="startDrag($event)"
+                @mousemove="onDrag($event)"
+                @mouseup="stopDrag()"
+                @mouseleave="stopDrag()"
+                @touchstart="startDrag($event)"
+                @touchmove="onDrag($event)"
+                @touchend="stopDrag()"
+                :style="isDragging ? 'cursor: grabbing !important; user-select: none;' : 'cursor: grab;'"
+                class="ims-canvas-scroll"
+                style="width: 100%; overflow: auto; padding: 1.25rem 1rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04); max-height: 78vh;"
+            >
                 
                 <!-- Stage Header Bar (Compact) -->
                 <div class="ims-stage-bar" style="display: grid; grid-template-columns: 180px 150px 210px minmax(240px, 1fr); gap: 1.25rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1.5px dashed #e2e8f0; font-size: 0.68rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em;">
