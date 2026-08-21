@@ -153,7 +153,8 @@ class RegistrationInvoiceResource extends Resource
                                 </a>
                             </div>
                         ";
-                    }),
+                    })
+                    ->hiddenOn('sm'),
 
                 // ── 3. AMOUNT ──
                 Tables\Columns\TextColumn::make('total_amount')
@@ -219,7 +220,8 @@ class RegistrationInvoiceResource extends Resource
                                 </div>
                             </div>
                         ";
-                    }),
+                    })
+                    ->hiddenOn('sm'),
             ])
             ->filters([
                 // 1. SEMUA LAYANAN
@@ -293,7 +295,12 @@ class RegistrationInvoiceResource extends Resource
                         return $query->whereHas('subscription', fn ($q) => $q->where('city', $data['value']));
                     }),
             ], layout: Tables\Enums\FiltersLayout::AboveContent)
-            ->filtersFormColumns(5)
+            ->filtersFormColumns([
+                'default' => 2,
+                'sm'      => 2,
+                'md'      => 5,
+                'lg'      => 5,
+            ])
 
             ->actionsColumnLabel('Action')
             ->actions([

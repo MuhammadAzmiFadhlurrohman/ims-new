@@ -100,6 +100,12 @@ class AdminPanelProvider extends PanelProvider
             )
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
+                fn () => file_exists(resource_path("css/filament/admin/billing-mobile.css"))
+                    ? Blade::render('<style>{!! file_get_contents(resource_path("css/filament/admin/billing-mobile.css")) !!}</style>')
+                    : ''
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
                 fn () => Blade::render('
                     <script>
                         (function() {
