@@ -91,20 +91,94 @@ class RegistrationInvoiceResource extends Resource
                 // ── 1. BILLING INFO ──
                 Tables\Columns\TextColumn::make('invoice_number')
                     ->label('Billing Info')
+                    ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
-                    ->state(function (RegistrationInvoice $record): string {
+                    ->state(function (RegistrationInvoice $record): \Illuminate\Support\HtmlString {
+                        $key = $record->getKey();
+                        $safeKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $key);
                         $invNo = $record->invoice_number ?? 'REG-' . substr(abs(crc32($record->internet_number ?? '11310826')), 0, 8);
                         $sub = $record->subscription;
 
                         $internetNo = $sub ? $sub->internet_number : ($record->internet_number ?? '11310826');
                         $custName = $sub ? strtoupper($sub->customer_name ?? 'DEA DWI') : 'DEA DWI';
                         $gender = ($sub && $sub->gender === 'female') ? '(P)' : '(L)';
+                        $genderCode = ($sub && $sub->gender === 'female') ? 'P' : 'L';
                         $packageName = $sub && $sub->package ? strtoupper($sub->package->name) : 'UP TO NEW 20 Mbps';
+                        $phone = $sub?->customer?->phone_number ?? $sub?->phone_number ?? '-';
+                        $city = strtoupper($sub?->city ?? 'KOTA BANDUNG');
+                        $fullAddress = strtoupper($sub?->installation_address ?? '-');
 
                         $custUrl = $sub ? CustomerSubscriptionResource::getUrl('view', ['record' => $sub]) : '#';
+                        $amount = (float) ($record->total_amount ?? 100000);
+                        $formatted = number_format($amount, 2, ',', '.');
+                        $isPaid = ($record->payment_status === 'PAID');
 
-                        return "
-                            <div class='flex flex-col text-[10.5px] leading-tight space-y-0.5 py-0.5' style='max-width: 170px;'>
+                        $custNameSafe = preg_replace('/[^A-Za-z0-9]/', '-', strtoupper($custName));
+                        $pdfName = "REG-{$custNameSafe}-{$record->invoice_number}.pdf";
+                        $pdfUrl = url("/admin/registration-invoices/{$record->invoice_number}/pdf");
+
+                        $statusBadge = $isPaid
+                            ? "<span style='background: #dcfce7; color: #15803d; padding: 2px 7px; border-radius: 5px; font-size: 9.5px; font-weight: 800;'>Paid</span>"
+                            : "<span style='background: #eef2ff; color: #6366f1; padding: 2px 7px; border-radius: 5px; font-size: 9.5px; font-weight: 800;'>Draft Billing</span>";
+
+                        $method = strtoupper($record->payment_method ?? 'MIDTRANS');
+                        $badgeText = match ($method) {
+                            'MANUAL TRANSFER', 'TRANSFER' => 'Manual Transfer',
+                            'CASH TO COLLECTOR', 'CASH', 'TUNAI' => 'Cash Collector',
+                            default => '▲ Midtrans',
+                        };
+
+                        $dateStr = $record->created_at ? $record->created_at->format('d M Y H:i WIB') : 'Belum diPublish';
+
+                        $phoneHtml = ($phone && $phone !== '-')
+                            ? "<span class='ims-cust-phone' style='font-size: 11px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>"
+                            : "";
+
+                        $recordActions = [
+                            [
+                                'name' => 'change_payment_method',
+                                'label' => 'Ubah Metode Bayar',
+                                'icon' => 'sliders',
+                                'color' => 'blue',
+                            ],
+                            [
+                                'name' => 'accept',
+                                'label' => 'Konfirmasi Pembayaran (Accept)',
+                                'icon' => 'clipboard',
+                                'color' => 'green',
+                            ],
+                            [
+                                'name' => 'delete',
+                                'label' => 'Hapus Invoice',
+                                'icon' => 'delete',
+                                'color' => 'red',
+                            ],
+                        ];
+
+                        $detailPayload = [
+                            'title' => 'Detail Invoice Registrasi',
+                            'key' => (string) $key,
+                            'no' => (string) $invNo,
+                            'name' => (string) "{$custName} {$gender}",
+                            'phone' => (string) $phone,
+                            'nik' => (string) ($sub?->customer?->nik ?? '-'),
+                            'pkg' => (string) "{$packageName} (Rp {$formatted})",
+                            'group' => (string) "No. Layanan: {$internetNo}",
+                            'building' => (string) "Registrasi | Status: " . ($isPaid ? 'Paid' : 'Draft'),
+                            'addr' => (string) $fullAddress,
+                            'latlong' => (string) "Metode: {$badgeText}",
+                            'maps' => (string) $pdfUrl,
+                            'status' => (string) ($isPaid ? 'Lunas / Paid' : 'Draft Billing'),
+                            'statustype' => (string) "Total: Rp {$formatted}",
+                            'sales' => (string) "Terbit: {$dateStr}",
+                            'created' => (string) $dateStr,
+                            'actions' => $recordActions,
+                        ];
+                        $encodedDetail = base64_encode(json_encode($detailPayload, JSON_UNESCAPED_UNICODE));
+
+                        return new \Illuminate\Support\HtmlString("
+                            <!-- DESKTOP VIEW -->
+                            <div class='ims-desktop-view flex flex-col text-[10.5px] leading-tight space-y-0.5 py-0.5' style='max-width: 170px;'>
                                 <span class='text-slate-500 font-mono text-[9.5px]'>{$invNo}</span>
                                 <a href='{$custUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 transition-colors uppercase tracking-tight truncate' title='{$custName}'>
                                     {$internetNo} / {$custName} {$gender}
@@ -113,7 +187,86 @@ class RegistrationInvoiceResource extends Resource
                                     {$packageName}
                                 </a>
                             </div>
-                        ";
+
+                            <!-- STANDALONE MOBILE CARD -->
+                            <div class='ims-standalone-card'>
+                                <div class='ims-card-head'>
+                                    <span class='ims-cid-badge'>{$invNo}</span>
+                                    <span class='ims-mobile-group-badge' style='background: #f0fdf4; color: #166534; border-color: #bbf7d0;'>⚡ REG</span>
+                                </div>
+                                <div class='ims-card-cust-info'>
+                                    <div style='display: flex; align-items: center; gap: 6px;'>
+                                        <a href='{$custUrl}' class='ims-cust-name-text' style='font-size: 13.5px; font-weight: 900; color: #0f172a; text-decoration: none;'>{$custName}</a>
+                                        <span style='font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px; background: #e2e8f0; color: #475569;'>{$genderCode}</span>
+                                    </div>
+                                    <div class='ims-cust-pkg-text' style='font-size: 11.5px; font-weight: 700; color: #0284c7;'>📦 {$packageName}</div>
+                                    <div style='font-size: 10.5px; font-weight: 700; color: #64748b;'>📍 {$internetNo} - {$city}</div>
+                                    {$phoneHtml}
+                                </div>
+                                <div class='ims-card-sep'></div>
+                                <div class='ims-card-status-section'>
+                                    <div class='ims-schedule-pill " . ($isPaid ? 'ims-pill-active' : 'ims-pill-warning') . "' style='display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; width: 100%; box-sizing: border-box;'>
+                                        <span style='font-weight: 800; font-size: 11px;'>💰 Biaya Registrasi:</span>
+                                        <span class='ims-schedule-slot' style='font-size: 12.5px; font-weight: 900;'>Rp {$formatted}</span>
+                                    </div>
+                                    <div style='display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; margin-top: 2px;'>
+                                        {$statusBadge}
+                                    </div>
+                                    <div style='display: flex; flex-direction: column; gap: 2px; font-size: 10px; color: #64748b; margin-top: 4px;'>
+                                        <div><strong class='font-bold text-slate-700'>Terbit :</strong> {$dateStr}</div>
+                                        <a href='{$pdfUrl}' target='_blank' style='display: inline-flex; align-items: center; gap: 4px; color: #2563eb; font-weight: 700; font-size: 10.5px; text-decoration: underline; margin-top: 2px;' title='Buka / Cetak Invoice Registrasi PDF'>
+                                            📄 {$pdfName}
+                                        </a>
+                                    </div>
+                                    <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 4px;'>
+                                        <button
+                                            type='button'
+                                            onclick=\"const t = document.querySelector('.ims-paymethod-trigger-{$safeKey}'); if(t){ t.click(); } else if(window.openImsTableAction){ window.openImsTableAction('change_payment_method', '{$key}'); }\"
+                                            title='Klik untuk mengubah metode pembayaran'
+                                            style='background: #6366f1; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(99,102,241,0.25);'
+                                        >
+                                            {$badgeText}
+                                        </button>
+                                        <div style='display: flex; align-items: center; gap: 4px; font-size: 9.5px; color: #f43f5e; font-weight: 700;'>
+                                            <span style='text-decoration: underline;'>🗲 UnSend</span>
+                                            <span style='text-decoration: underline;'>✉ UnSend</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='ims-card-sep'></div>
+                                <!-- QUICK ACTION BUTTONS -->
+                                <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
+                                    <button
+                                        type='button'
+                                        onclick=\"const t = document.querySelector('.ims-paymethod-trigger-{$safeKey}'); if(t){ t.click(); } else if(window.openImsTableAction){ window.openImsTableAction('change_payment_method', '{$key}'); }\"
+                                        class='ims-modal-act-btn ims-modal-act-blue'
+                                        style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                    >
+                                        💳 Ubah Bayar
+                                    </button>
+                                    <button
+                                        type='button'
+                                        onclick=\"window.openImsTableAction && window.openImsTableAction('accept', '{$key}')\"
+                                        class='ims-modal-act-btn ims-modal-act-green'
+                                        style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                    >
+                                        💵 Terima Bayar
+                                    </button>
+                                </div>
+                                <button
+                                    type='button'
+                                    data-detail-payload='{$encodedDetail}'
+                                    onclick=\"window.openImsDetailFromPayload && window.openImsDetailFromPayload('{$encodedDetail}')\"
+                                    class='ims-card-detail-btn'
+                                >
+                                    <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
+                                    </svg>
+                                    <span>Detail Lengkap & Opsi</span>
+                                </button>
+                            </div>
+                        ");
                     })
                     ->searchable(query: function (Builder $query, string $search): Builder {
                         return $query->where('invoice_number', 'like', "%{$search}%")
@@ -124,6 +277,7 @@ class RegistrationInvoiceResource extends Resource
                 // ── 2. BILLING DATE ──
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Billing Date')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->state(function (RegistrationInvoice $record): string {
                         $isPaid = ($record->payment_status === 'PAID');
@@ -153,12 +307,12 @@ class RegistrationInvoiceResource extends Resource
                                 </a>
                             </div>
                         ";
-                    })
-                    ->hiddenOn('sm'),
+                    }),
 
                 // ── 3. AMOUNT ──
                 Tables\Columns\TextColumn::make('total_amount')
                     ->label('Amount')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->state(function (RegistrationInvoice $record): string {
                         $amount = (float) ($record->total_amount ?? 100000);
@@ -178,6 +332,7 @@ class RegistrationInvoiceResource extends Resource
                 // ── 4. BILLING STATE ──
                 Tables\Columns\TextColumn::make('payment_status')
                     ->label('Billing State')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->state(function (RegistrationInvoice $record): string {
                         $status = strtoupper($record->payment_status ?? 'UNPAID');
@@ -191,6 +346,7 @@ class RegistrationInvoiceResource extends Resource
                 // ── 5. PAYMENT METHOD ──
                 Tables\Columns\TextColumn::make('payment_method')
                     ->label('Payment Method')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->state(function (RegistrationInvoice $record): string {
                         $method = strtoupper($record->payment_method ?? 'MIDTRANS');
@@ -220,8 +376,7 @@ class RegistrationInvoiceResource extends Resource
                                 </div>
                             </div>
                         ";
-                    })
-                    ->hiddenOn('sm'),
+                    }),
             ])
             ->filters([
                 // 1. SEMUA LAYANAN
@@ -295,12 +450,7 @@ class RegistrationInvoiceResource extends Resource
                         return $query->whereHas('subscription', fn ($q) => $q->where('city', $data['value']));
                     }),
             ], layout: Tables\Enums\FiltersLayout::AboveContent)
-            ->filtersFormColumns([
-                'default' => 2,
-                'sm'      => 2,
-                'md'      => 5,
-                'lg'      => 5,
-            ])
+            ->filtersFormColumns(5)
 
             ->actionsColumnLabel('Action')
             ->actions([

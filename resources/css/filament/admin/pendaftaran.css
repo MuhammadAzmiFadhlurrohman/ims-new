@@ -1125,6 +1125,19 @@ html.dark .ims-modal-card [style*="border: 1px solid #e2e8f0"] {
     background: #b45309 !important;
 }
 
+.ims-modal-act-green,
+.ims-modal-act-emerald,
+.ims-modal-act-success {
+    background: #059669 !important;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4) !important;
+}
+
+.ims-modal-act-green:hover,
+.ims-modal-act-emerald:hover,
+.ims-modal-act-success:hover {
+    background: #047857 !important;
+}
+
 .ims-modal-act-dark,
 .ims-modal-act-gray,
 .ims-modal-act-slate {
