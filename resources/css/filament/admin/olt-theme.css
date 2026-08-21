@@ -1005,3 +1005,208 @@ html.dark .olt-modal-close-btn:hover {
     color: #fca5a5 !important;
 }
 
+/* ============================================================
+   ── 10. MOBILE RESPONSIVE CARD VIEW (@media max-width: 768px) ──
+   Khusus tampilan Mobile (Card View) tanpa merubah Desktop
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Main wrapper spacing */
+    .olt-wrapper {
+        gap: 1rem !important;
+    }
+
+    /* 1. Header & Switcher */
+    .olt-top-header {
+        padding: 0.9rem 1rem !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+    }
+
+    .olt-top-title {
+        width: 100% !important;
+        gap: 0.75rem !important;
+    }
+
+    .olt-title-icon {
+        width: 2.4rem !important;
+        height: 2.4rem !important;
+    }
+
+    .olt-title-text {
+        font-size: 1.05rem !important;
+    }
+
+    .olt-header-actions {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+    }
+
+    .olt-select-switcher {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        height: 38px !important;
+        font-size: 0.76rem !important;
+        padding: 0.4rem 2rem 0.4rem 0.75rem !important;
+    }
+
+    /* 2. Breadcrumbs */
+    .olt-breadcrumb-bar {
+        padding: 0.55rem 0.85rem !important;
+        gap: 0.4rem !important;
+    }
+
+    .olt-breadcrumb-link,
+    .olt-breadcrumb-active {
+        font-size: 0.72rem !important;
+        padding: 0.3rem 0.6rem !important;
+    }
+
+    /* 3. Form Cards (Tambah PON, Tambah ODP, Tambah User) */
+    .olt-card {
+        padding: 1rem !important;
+        border-radius: 14px !important;
+    }
+
+    .olt-form-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.75rem !important;
+    }
+
+    .olt-field-group {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+    }
+
+    .olt-btn-add {
+        width: 100% !important;
+        height: 42px !important;
+        justify-content: center !important;
+    }
+
+    /* 4. TRANSFORM TABLES INTO CARDS */
+    .olt-table-container {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
+    .olt-table-wrapper {
+        overflow: visible !important;
+    }
+
+    .olt-table {
+        display: block !important;
+        width: 100% !important;
+        border: none !important;
+    }
+
+    .olt-table thead {
+        display: none !important;
+    }
+
+    .olt-table tbody {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.85rem !important;
+        width: 100% !important;
+    }
+
+    .olt-table tbody tr {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        padding: 1.1rem 1rem !important;
+        border-radius: 16px !important;
+        background: #ffffff !important;
+        border: 1.5px solid #e2e8f0 !important;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+    }
+
+    html.dark .olt-table tbody tr {
+        background: #08192e !important;
+        border-color: #14355a !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .olt-table tbody td {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 !important;
+        border: none !important;
+        text-align: left !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Action buttons in card view */
+    .olt-table tbody td:last-child {
+        padding-top: 0.75rem !important;
+        border-top: 1px dashed #e2e8f0 !important;
+        margin-top: 0.25rem !important;
+    }
+
+    html.dark .olt-table tbody td:last-child {
+        border-top-color: #14355a !important;
+    }
+
+    .olt-table tbody td:last-child div {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)) !important;
+        gap: 8px !important;
+        width: 100% !important;
+        justify-content: stretch !important;
+    }
+
+    .olt-table tbody td:last-child button {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 0.5rem 0.6rem !important;
+        font-size: 0.76rem !important;
+    }
+
+    /* Progress bar full width */
+    .olt-progress-box {
+        width: 100% !important;
+    }
+
+    .olt-item-row-box {
+        gap: 0.75rem !important;
+    }
+
+    /* Level 3 Pelanggan Card Details Spacing */
+    .olt-table tbody tr > td:not(:first-child):not(:last-child) {
+        padding: 0.15rem 0 !important;
+        font-size: 0.78rem !important;
+    }
+
+    .olt-table tbody tr > td .olt-badge-blue {
+        display: inline-flex !important;
+    }
+
+    /* Modals on mobile */
+    .olt-modal-card {
+        padding: 1.15rem !important;
+        border-radius: 14px !important;
+    }
+
+    .olt-modal-footer {
+        flex-direction: column-reverse !important;
+        gap: 0.5rem !important;
+    }
+
+    .olt-modal-footer button {
+        width: 100% !important;
+        justify-content: center !important;
+        height: 40px !important;
+    }
+}
+
+
