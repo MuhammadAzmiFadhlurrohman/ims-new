@@ -281,7 +281,7 @@ class CustomerSubscriptionResource extends Resource
 
                         $phoneHtml = ($phone && $phone !== '-') ? "<span class='ims-cust-phone' style='font-size: 11.5px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>" : "";
 
-                        return "
+                        return new \Illuminate\Support\HtmlString("
                             <!-- DESKTOP VIEW (Visible on Desktop) -->
                             <div class='ims-desktop-view flex flex-col items-start text-left text-xs leading-snug py-1'>
                                 <a href='{$detailUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 tracking-tight'>{$internetNo}</a>
@@ -327,7 +327,7 @@ class CustomerSubscriptionResource extends Resource
                                 <button
                                     type='button'
                                     data-detail-payload='{$encodedDetail}'
-                                    onclick=\"if (window.openImsDetailFromPayload) { window.openImsDetailFromPayload('{$encodedDetail}'); } else { document.querySelector('.ims-detail-trigger-{$safeKey}')?.click(); }\"
+                                    onclick=\"window.openImsDetailFromPayload && window.openImsDetailFromPayload('{$encodedDetail}')\"
                                     class='ims-card-detail-btn'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -337,7 +337,7 @@ class CustomerSubscriptionResource extends Resource
                                     <span>Detail</span>
                                 </button>
                             </div>
-                        ";
+                        ");
                     })
                     ->searchable(['internet_number', 'customer_name'])
                     ->sortable(),

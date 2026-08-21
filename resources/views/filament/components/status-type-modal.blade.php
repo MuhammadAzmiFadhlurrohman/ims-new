@@ -361,19 +361,48 @@
         }
     };
 
-    // Delegated click handler for mobile card detail buttons
-    document.addEventListener('click', function(e) {
+    // Delegated click handler for mobile card detail buttons (capture phase)
+    function handleDetailBtnClick(e) {
         const detailBtn = e.target.closest('.ims-card-detail-btn, [data-detail-payload]');
         if (detailBtn) {
             const payload = detailBtn.getAttribute('data-detail-payload');
             if (payload) {
                 e.preventDefault();
                 e.stopPropagation();
+                e.stopImmediatePropagation();
                 window.openImsDetailFromPayload(payload);
-                return;
+                return false;
+            }
+        }
+    }
+    document.addEventListener('click', handleDetailBtnClick, true);
+    document.addEventListener('touchend', function(e) {
+        const detailBtn = e.target.closest('.ims-card-detail-btn, [data-detail-payload]');
+        if (detailBtn) {
+            const payload = detailBtn.getAttribute('data-detail-payload');
+            if (payload) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                // Small delay to prevent double-firing from touch + click
+                setTimeout(function() {
+                    window.openImsDetailFromPayload(payload);
+                }, 50);
+                return false;
             }
         }
     }, true);
+
+    // Re-register handlers after Livewire SPA navigations
+    if (window.Livewire) {
+        document.addEventListener('livewire:navigated', function() {
+            // Functions on window persist, no need to re-register
+            // But ensure modal DOM elements are still present
+            if (!document.getElementById('ims-detail-modal')) {
+                console.warn('[IMS] Detail modal missing after navigation');
+            }
+        });
+    }
 
     // Auto-reopen detail modal when any Filament action modal is dismissed/cancelled
     document.addEventListener('click', function(e) {
