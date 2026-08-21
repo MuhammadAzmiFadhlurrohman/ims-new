@@ -72,7 +72,7 @@
         <!-- Modal Header -->
         <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(148, 163, 184, 0.2); padding-bottom: 10px; margin-bottom: 12px;">
             <div>
-                <div style="font-size: 10px; font-weight: 800; color: #0284c7; text-transform: uppercase; letter-spacing: 0.5px;">Detail Lengkap Pendaftaran</div>
+                <div id="ims-detail-title-label" style="font-size: 10px; font-weight: 800; color: #0284c7; text-transform: uppercase; letter-spacing: 0.5px;">Detail Lengkap Pelanggan</div>
                 <div id="ims-detail-internet-no" style="font-size: 15px; font-weight: 900; font-family: monospace;">-</div>
             </div>
             <button
@@ -229,7 +229,18 @@
     window.openImsDetailFromPayload = function(b64) {
         try {
             window.lastOpenedDetailPayload = b64;
-            const str = decodeURIComponent(escape(atob(b64)));
+            let str = '';
+            try {
+                const binString = atob(b64);
+                const bytes = Uint8Array.from(binString, (m) => m.codePointAt(0));
+                str = new TextDecoder().decode(bytes);
+            } catch(e1) {
+                try {
+                    str = decodeURIComponent(escape(atob(b64)));
+                } catch(e2) {
+                    str = atob(b64);
+                }
+            }
             const d = JSON.parse(str);
             window.currentImsRecordKey = d.key || '';
             window.currentImsStatusType = d.statustype || 'Temporary Delete';
@@ -239,6 +250,7 @@
                 if (el) el.textContent = val || '-';
             };
 
+            setTxt('ims-detail-title-label', d.title || 'Detail Lengkap Pelanggan');
             setTxt('ims-detail-internet-no', d.no);
             setTxt('ims-detail-cust-name', d.name);
             setTxt('ims-detail-phone', d.phone);
@@ -348,6 +360,20 @@
             }
         }
     };
+
+    // Delegated click handler for mobile card detail buttons
+    document.addEventListener('click', function(e) {
+        const detailBtn = e.target.closest('.ims-card-detail-btn, [data-detail-payload]');
+        if (detailBtn) {
+            const payload = detailBtn.getAttribute('data-detail-payload');
+            if (payload) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.openImsDetailFromPayload(payload);
+                return;
+            }
+        }
+    }, true);
 
     // Auto-reopen detail modal when any Filament action modal is dismissed/cancelled
     document.addEventListener('click', function(e) {

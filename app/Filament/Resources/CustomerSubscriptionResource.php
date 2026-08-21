@@ -185,7 +185,6 @@ class CustomerSubscriptionResource extends Resource
                 // 1. Kolom Pelanggan
                 Tables\Columns\TextColumn::make('internet_number')
                     ->label('Pelanggan')
-                    ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
                     ->alignLeft()
                     ->formatStateUsing(function (CustomerSubscription $record): string {
@@ -259,6 +258,7 @@ class CustomerSubscriptionResource extends Resource
                         ];
 
                         $detailPayload = [
+                            'title' => 'Detail Lengkap Pelanggan',
                             'key' => (string) $key,
                             'no' => (string) $internetNo,
                             'name' => (string) $custName,
@@ -282,7 +282,7 @@ class CustomerSubscriptionResource extends Resource
 
                         return "
                             <!-- DESKTOP VIEW (Visible on Desktop) -->
-                            <div class='ims-desktop-view flex flex-col items-start text-left text-xs leading-snug py-1'>
+                            <div class='hidden lg:flex flex-col items-start text-left text-xs leading-snug py-1'>
                                 <a href='{$detailUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 tracking-tight'>{$internetNo}</a>
                                 <a href='{$detailUrl}' class='font-black text-slate-800 underline hover:text-indigo-600 mt-1'>{$custName} ({$gender})</a>
                                 <a href='{$detailUrl}' class='text-slate-600 underline hover:text-indigo-600 mt-0.5'>{$pkgName}</a>
@@ -290,7 +290,7 @@ class CustomerSubscriptionResource extends Resource
                             </div>
 
                             <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
-                            <div class='ims-standalone-card'>
+                            <div class='ims-standalone-card flex lg:hidden'>
                                 <div class='ims-card-head'>
                                     <a href='{$detailUrl}' class='ims-cid-badge'>{$internetNo}</a>
                                     <span class='ims-mobile-group-badge'>{$group}</span>
@@ -325,6 +325,7 @@ class CustomerSubscriptionResource extends Resource
                                 <div class='ims-card-sep'></div>
                                 <button
                                     type='button'
+                                    data-detail-payload='{$encodedDetail}'
                                     onclick=\"window.openImsDetailFromPayload && window.openImsDetailFromPayload('{$encodedDetail}')\"
                                     class='ims-card-detail-btn'
                                 >
