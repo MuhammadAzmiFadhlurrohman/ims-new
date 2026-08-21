@@ -315,6 +315,8 @@ class MonthlyInvoiceResource extends Resource
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
+                                        data-table-action='change_payment_method'
+                                        data-record-key='{$key}'
                                         onclick=\"window.openImsTableAction('change_payment_method', '{$key}')\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
@@ -323,6 +325,8 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
+                                        data-table-action='publish'
+                                        data-record-key='{$key}'
                                         onclick=\"window.openImsTableAction('publish', '{$key}')\"
                                         class='ims-modal-act-btn ims-modal-act-cyan'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
@@ -331,6 +335,8 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
+                                        data-table-action='accept'
+                                        data-record-key='{$key}'
                                         onclick=\"window.openImsTableAction('accept', '{$key}')\"
                                         class='ims-modal-act-btn ims-modal-act-green'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
@@ -339,6 +345,8 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
+                                        data-table-action='delete'
+                                        data-record-key='{$key}'
                                         onclick=\"window.openImsTableAction('delete', '{$key}')\"
                                         class='ims-modal-act-btn ims-modal-act-red'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
@@ -620,7 +628,7 @@ class MonthlyInvoiceResource extends Resource
                     ->modalSubmitActionLabel('Update')
                     ->modalCancelActionLabel('Batal')
                     ->extraAttributes(fn (MonthlyInvoice $record) => [
-                        'class' => 'ims-act-change-payment-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()) . ' ims-monthly-paymethod-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
+                        'class' => 'ims-act-change-payment-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()) . ' ims-act-change-payment-method-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()) . ' ims-monthly-paymethod-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
                     ])
                     ->fillForm(fn (MonthlyInvoice $record): array => [
                         'payment_method' => match (strtoupper($record->payment_method ?? 'MIDTRANS')) {
