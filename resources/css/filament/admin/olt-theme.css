@@ -1020,11 +1020,17 @@ html.dark .olt-modal-close-btn:hover {
     color: #fca5a5 !important;
 }
 
+.olt-wrapper,
+.olt-card,
+.olt-table-container {
+    container-type: inline-size;
+}
+
 /* ============================================================
-   ── 10. MOBILE RESPONSIVE CARD VIEW (@media max-width: 768px) ──
-   Khusus tampilan Mobile (Card View) tanpa merubah Desktop
+   ── 10. MOBILE & TABLET RESPONSIVE CARD VIEW ──
+   Khusus tampilan Mobile & Tablet (Card View) tanpa merubah Desktop
    ============================================================ */
-@media (max-width: 768px) {
+@media (max-width: 991px) {
     /* Main wrapper spacing */
     .olt-wrapper {
         gap: 1rem !important;
@@ -1241,5 +1247,45 @@ html.dark .olt-modal-close-btn:hover {
         height: 40px !important;
     }
 }
+
+/* ── Container Query Fallback (When container width is under 650px) ── */
+@container (max-width: 650px) {
+    .olt-form-row {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.85rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .olt-field-group,
+    .olt-field-group-main,
+    .olt-field-group-sm,
+    .olt-field-group-btn {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 1 1 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .olt-form-row .olt-input,
+    .olt-form-row .olt-select,
+    .olt-card .olt-input,
+    .olt-card .olt-select {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .olt-btn-add {
+        width: 100% !important;
+        height: 42px !important;
+        justify-content: center !important;
+    }
+}
+
 
 
