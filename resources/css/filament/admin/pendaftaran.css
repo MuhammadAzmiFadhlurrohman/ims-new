@@ -883,7 +883,111 @@ html.dark .ims-temp-badge:hover {
     }
 }
 
-/* ── STANDALONE MOBILE DETAIL & STATUS MODAL (LIGHT & DARK MODE) ── */
+/* ══════════════════════════════════════════════════════════════════════
+   7. COMPREHENSIVE DARK MODE FOR MOBILE CARDS & MODALS
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Mobile Standalone Card (Dark Mode Overrides for Inline Styles) ── */
+html.dark .ims-standalone-card {
+    background: #08192e !important;
+    border-color: #14355a !important;
+    border-left-color: #00d4ff !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45) !important;
+    color: #f8fafc !important;
+}
+
+html.dark table.fi-ta-table tbody tr:nth-child(even) .ims-standalone-card {
+    border-left-color: #10b981 !important;
+}
+
+html.dark table.fi-ta-table tbody tr:nth-child(3n) .ims-standalone-card {
+    border-left-color: #f43f5e !important;
+}
+
+/* Customer Name Text (Mobile Card) */
+html.dark .ims-cust-name-text,
+html.dark .ims-standalone-card .ims-cust-name-text,
+html.dark .ims-standalone-card .ims-cust-name,
+html.dark .ims-standalone-card a.ims-cust-name,
+html.dark .ims-standalone-card .ims-card-cust-info a {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark .ims-standalone-card .ims-cust-name:hover,
+html.dark .ims-standalone-card a.ims-cust-name:hover,
+html.dark .ims-standalone-card .ims-card-cust-info a:hover {
+    color: #38bdf8 !important;
+    -webkit-text-fill-color: #38bdf8 !important;
+}
+
+/* Package Pill (Mobile Card) */
+html.dark .ims-cust-pkg-text,
+html.dark .ims-standalone-card .ims-cust-pkg-text {
+    color: #94a3b8 !important;
+}
+
+/* Phone Number (Mobile Card) */
+html.dark .ims-cust-phone,
+html.dark .ims-standalone-card .ims-cust-phone {
+    color: #64748b !important;
+}
+
+/* Gender Badge (Inline styled as background: #e2e8f0; color: #475569) */
+html.dark .ims-standalone-card span[style*="background: #e2e8f0"],
+html.dark .ims-standalone-card span[style*="background:#e2e8f0"] {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+    border: 1px solid #334155 !important;
+}
+
+/* Customer Name Row (Desktop card too) */
+html.dark .ims-cust-name-row .ims-cust-name {
+    color: #ffffff !important;
+}
+
+html.dark .ims-cust-name-row span[style*="background: #e2e8f0"] {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+}
+
+/* Inline phone text on desktop card */
+html.dark .ims-cust-meta-row .ims-cust-phone,
+html.dark span.ims-cust-phone {
+    color: #64748b !important;
+}
+
+/* Mobile Group Badge */
+html.dark .ims-mobile-group-badge {
+    background: #09264a !important;
+    color: #38bdf8 !important;
+    border-color: #144e8c !important;
+}
+
+/* Card Separator */
+html.dark .ims-card-sep {
+    border-bottom-color: #14355a !important;
+}
+
+/* Detail Button (Mobile) */
+html.dark .ims-card-detail-btn {
+    background: #09264a !important;
+    color: #38bdf8 !important;
+    border-color: #144e8c !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark .ims-card-detail-btn svg {
+    color: #38bdf8 !important;
+    stroke: #38bdf8 !important;
+}
+
+/* Updated Text */
+html.dark .ims-updated-text {
+    color: #64748b !important;
+}
+
+/* ── Mobile Detail & Status Modal (Dark Mode) ── */
 #ims-detail-modal,
 #ims-status-modal {
     z-index: 99999999 !important;
@@ -897,18 +1001,22 @@ html.dark #ims-status-modal .ims-modal-card {
     color: #f8fafc !important;
 }
 
-html.dark #ims-detail-modal .ims-modal-section {
+html.dark #ims-detail-modal .ims-modal-section,
+html.dark #ims-status-modal .ims-modal-section {
     background: #0f1f38 !important;
     border: 1px solid #17335c !important;
     color: #f8fafc !important;
 }
 
 html.dark #ims-detail-modal .ims-modal-section div,
-html.dark #ims-detail-modal .ims-modal-section strong {
+html.dark #ims-detail-modal .ims-modal-section strong,
+html.dark #ims-status-modal .ims-modal-section div,
+html.dark #ims-status-modal .ims-modal-section strong {
     color: #f8fafc !important;
 }
 
-html.dark #ims-detail-modal .ims-modal-section .ims-modal-lbl {
+html.dark #ims-detail-modal .ims-modal-section .ims-modal-lbl,
+html.dark #ims-status-modal .ims-modal-section .ims-modal-lbl {
     color: #94a3b8 !important;
 }
 
@@ -916,7 +1024,49 @@ html.dark #ims-detail-modal #ims-detail-internet-no {
     color: #38bdf8 !important;
 }
 
-/* Dynamic Modal Operational Action Buttons (Matching Desktop Table Actions) */
+/* Modal Backdrop Dark Mode */
+html.dark .ims-modal-backdrop {
+    background: rgba(0, 0, 0, 0.75) !important;
+}
+
+/* Modal Close Button Dark Mode */
+html.dark #ims-detail-modal button[onclick*="close"],
+html.dark #ims-status-modal button[onclick*="close"],
+html.dark .ims-modal-card button[style*="background: #f1f5f9"] {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+    border-color: #334155 !important;
+}
+
+/* Modal Header Text Dark Mode */
+html.dark .ims-modal-card h3,
+html.dark .ims-modal-card h4,
+html.dark .ims-modal-card [style*="color: #0f172a"],
+html.dark .ims-modal-card [style*="color:#0f172a"] {
+    color: #f8fafc !important;
+}
+
+html.dark .ims-modal-card [style*="color: #475569"],
+html.dark .ims-modal-card [style*="color:#475569"],
+html.dark .ims-modal-card [style*="color: #64748b"],
+html.dark .ims-modal-card [style*="color:#64748b"] {
+    color: #94a3b8 !important;
+}
+
+html.dark .ims-modal-card [style*="background: #f8fafc"],
+html.dark .ims-modal-card [style*="background:#f8fafc"],
+html.dark .ims-modal-card [style*="background: #f1f5f9"],
+html.dark .ims-modal-card [style*="background:#f1f5f9"] {
+    background: #0f1f38 !important;
+    border-color: #17335c !important;
+}
+
+html.dark .ims-modal-card [style*="border-color: #e2e8f0"],
+html.dark .ims-modal-card [style*="border: 1px solid #e2e8f0"] {
+    border-color: #17335c !important;
+}
+
+/* ── Dynamic Modal Operational Action Buttons ── */
 .ims-modal-act-btn {
     display: inline-flex !important;
     align-items: center !important;
@@ -989,4 +1139,37 @@ html.dark #ims-detail-modal #ims-detail-internet-no {
     background: #0f172a !important;
 }
 
+/* ── Desktop Dark Mode (Table Header & Rows) ── */
+html.dark .fi-ta-header-cell,
+html.dark table.fi-ta-table th {
+    background: #0b1f38 !important;
+    color: #94a3b8 !important;
+    border-bottom-color: #14355a !important;
+}
 
+html.dark .fi-ta-header-cell *,
+html.dark .fi-ta-header-cell-label {
+    color: #94a3b8 !important;
+}
+
+html.dark table.fi-ta-table tbody tr td {
+    border-bottom-color: #0e2240 !important;
+    color: #e2e8f0 !important;
+}
+
+/* Desktop View Text Dark Mode */
+html.dark .ims-desktop-view a {
+    color: #e2e8f0 !important;
+}
+
+html.dark .ims-desktop-view a:hover {
+    color: #38bdf8 !important;
+}
+
+html.dark .ims-desktop-view span {
+    color: #94a3b8 !important;
+}
+
+html.dark .ims-desktop-view span strong {
+    color: #e2e8f0 !important;
+}
