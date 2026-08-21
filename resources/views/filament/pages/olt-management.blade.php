@@ -90,7 +90,7 @@
                 </div>
 
                 <form wire:submit.prevent="addPon" class="olt-form-row">
-                    <div class="olt-field-group" style="flex: 1 1 300px; min-width: 200px;">
+                    <div class="olt-field-group olt-field-group-main">
                         <label class="olt-field-label">
                             <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
                             <span>Nama PON</span>
@@ -105,7 +105,7 @@
                         />
                     </div>
 
-                    <div class="olt-field-group" style="flex: 0 0 180px; min-width: 140px;">
+                    <div class="olt-field-group olt-field-group-sm">
                         <label class="olt-field-label">
                             <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                             <span>Port Maks</span>
@@ -124,7 +124,7 @@
                         </select>
                     </div>
 
-                    <div class="olt-field-group">
+                    <div class="olt-field-group olt-field-group-btn">
                         <button type="submit" class="olt-btn-add">
                             <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                             <span>Tambah PON</span>
@@ -263,7 +263,7 @@
 
                 <form wire:submit.prevent="addOdp" class="olt-form-row">
                     {{-- Input Nama ODP --}}
-                    <div class="olt-field-group" style="flex: 1 1 220px; min-width: 160px;">
+                    <div class="olt-field-group olt-field-group-main">
                         <label class="olt-field-label">
                             <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071a10 10 0 0114.142 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
                             <span>Nama ODP</span>
@@ -279,7 +279,7 @@
                     </div>
 
                     {{-- Dropdown Maks User --}}
-                    <div class="olt-field-group" style="flex: 0 0 150px; min-width: 120px;">
+                    <div class="olt-field-group olt-field-group-sm">
                         <label class="olt-field-label">
                             <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                             <span>Maks User</span>
@@ -297,7 +297,7 @@
                     </div>
 
                     {{-- Latitude --}}
-                    <div class="olt-field-group" style="flex: 0 0 150px; min-width: 120px;">
+                    <div class="olt-field-group olt-field-group-sm">
                         <label class="olt-field-label">
                             <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
                             <span>Latitude</span>
@@ -312,7 +312,7 @@
                     </div>
 
                     {{-- Longitude --}}
-                    <div class="olt-field-group" style="flex: 0 0 150px; min-width: 120px;">
+                    <div class="olt-field-group olt-field-group-sm">
                         <label class="olt-field-label">
                             <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
                             <span>Longitude</span>
@@ -327,7 +327,7 @@
                     </div>
 
                     {{-- Tombol Tambah ODP --}}
-                    <div class="olt-field-group">
+                    <div class="olt-field-group olt-field-group-btn">
                         <button type="submit" class="olt-btn-add">
                             <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                             <span>Tambah ODP</span>
@@ -479,7 +479,7 @@
 
                 <form wire:submit.prevent="addUser" class="olt-form-row">
                     {{-- Input Nomor Internet --}}
-                    <div class="olt-field-group" style="flex: 0 0 190px; min-width: 140px;">
+                    <div class="olt-field-group olt-field-group-sm">
                         <label class="olt-field-label">
                             <span style="font-weight: 900; color: #0284c7;">#</span>
                             <span>Nomor Internet</span>
@@ -495,7 +495,7 @@
                     </div>
 
                     {{-- Input Nama User --}}
-                    <div class="olt-field-group" style="flex: 1 1 220px; min-width: 160px;">
+                    <div class="olt-field-group olt-field-group-main">
                         <label class="olt-field-label">
                             <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                             <span>Nama User</span>
@@ -511,7 +511,7 @@
                     </div>
 
                     {{-- Input Keterangan --}}
-                    <div class="olt-field-group" style="flex: 1 1 220px; min-width: 160px;">
+                    <div class="olt-field-group olt-field-group-main">
                         <label class="olt-field-label">
                             <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                             <span>Keterangan</span>
@@ -526,7 +526,7 @@
                     </div>
 
                     {{-- Tombol Tambah User --}}
-                    <div class="olt-field-group">
+                    <div class="olt-field-group olt-field-group-btn">
                         <button type="submit" class="olt-btn-add">
                             <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                             <span>Tambah User</span>
