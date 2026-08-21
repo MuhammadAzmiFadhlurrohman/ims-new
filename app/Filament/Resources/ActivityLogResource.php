@@ -114,9 +114,7 @@ class ActivityLogResource extends Resource
                     ->button()
                     ->color('info'),
             ])
-            ->bulkActions([
-                // Disable bulk delete for audit trail integrity
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getPages(): array

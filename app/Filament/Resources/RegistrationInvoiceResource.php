@@ -401,11 +401,7 @@ class RegistrationInvoiceResource extends Resource
                 Tables\Actions\DeleteAction::make()
                     ->label('Hapus'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
