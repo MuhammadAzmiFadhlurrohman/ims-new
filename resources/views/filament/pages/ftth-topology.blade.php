@@ -13,9 +13,11 @@
                 this.$watch('$wire.selectedOlt', () => this.resetZoom());
                 this.$watch('$wire.search', () => this.resetZoom());
 
-                document.addEventListener('fullscreenchange', () => {
-                    this.isFullScreen = !!document.fullscreenElement;
-                });
+                const handleFsChange = () => {
+                    this.isFullScreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+                };
+                document.addEventListener('fullscreenchange', handleFsChange);
+                document.addEventListener('webkitfullscreenchange', handleFsChange);
 
                 const vp = this.$refs.viewport;
                 if (!vp) return;
@@ -123,10 +125,31 @@
             },
 
             toggleFullScreen() {
-                this.isFullScreen = !this.isFullScreen;
+                const elem = this.$el;
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                    if (elem.requestFullscreen) {
+                        elem.requestFullscreen().catch(() => { this.isFullScreen = true; });
+                    } else if (elem.webkitRequestFullscreen) {
+                        elem.webkitRequestFullscreen();
+                    } else if (elem.msRequestFullscreen) {
+                        elem.msRequestFullscreen();
+                    } else {
+                        this.isFullScreen = true;
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen().catch(() => { this.isFullScreen = false; });
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    } else {
+                        this.isFullScreen = false;
+                    }
+                }
             }
         }"
-        @keydown.escape.window="if(isFullScreen) isFullScreen = false"
+        @keydown.escape.window="if(isFullScreen) { if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); isFullScreen = false; }"
         :class="isFullScreen ? 'ims-fullscreen-mode' : ''"
         class="ims-ftth-compact-wrapper"
         style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; max-width: 100%; overflow: hidden; isolation: isolate; font-family: inherit;"
@@ -666,7 +689,9 @@
             overflow-x: hidden !important;
         }
 
-        /* ── Full Size Mode: Full 100% Screen Topology Area ── */
+        /* ── Full Size Mode: Native Browser Fullscreen Support ── */
+        .ims-ftth-compact-wrapper:fullscreen,
+        .ims-ftth-compact-wrapper:-webkit-full-screen,
         .ims-fullscreen-mode {
             position: fixed !important;
             top: 0 !important;
@@ -677,43 +702,29 @@
             height: 100vh !important;
             z-index: 99999999 !important;
             background: #f8fafc !important;
-            padding: 0 !important;
+            padding: 0.6rem !important;
             margin: 0 !important;
             overflow: hidden !important;
-            display: block !important;
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.5rem !important;
         }
 
+        html.dark .ims-ftth-compact-wrapper:fullscreen,
+        html.dark .ims-ftth-compact-wrapper:-webkit-full-screen,
         html.dark .ims-fullscreen-mode {
             background: #020712 !important;
         }
 
-        .ims-fullscreen-mode .ims-top-control-card {
-            position: absolute !important;
-            top: 12px !important;
-            left: 16px !important;
-            right: 16px !important;
-            z-index: 60 !important;
-            background: rgba(255, 255, 255, 0.94) !important;
-            backdrop-filter: blur(12px) !important;
-            border-radius: 12px !important;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
-        }
-
-        html.dark .ims-fullscreen-mode .ims-top-control-card {
-            background: rgba(3, 10, 20, 0.92) !important;
-            border-color: #1e3a5f !important;
-        }
-
+        .ims-ftth-compact-wrapper:fullscreen .ims-canvas-viewport,
+        .ims-ftth-compact-wrapper:-webkit-full-screen .ims-canvas-viewport,
         .ims-fullscreen-mode .ims-canvas-viewport {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            max-height: 100vh !important;
-            border-radius: 0 !important;
-            border: none !important;
-            box-shadow: none !important;
+            flex: 1 !important;
+            width: 100% !important;
+            height: calc(100vh - 65px) !important;
+            max-height: calc(100vh - 65px) !important;
+            border-radius: 10px !important;
         }
     </style>
 </x-filament-panels::page>
