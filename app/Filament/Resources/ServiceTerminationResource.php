@@ -338,18 +338,18 @@ class ServiceTerminationResource extends Resource
                                     $itemName = $eq['item_name'] ?? 'ONU ZTE F660';
                                     $qty = $eq['quantity'] ?? '1 UNIT';
                                     $rowsHtml .= "
-                                        <tr class='border-t border-slate-100 text-xs text-slate-700'>
-                                            <td class='px-4 py-3 font-bold text-slate-800'>{$itemName}</td>
-                                            <td class='px-4 py-3 font-semibold text-slate-600'>{$qty}</td>
-                                            <td class='px-4 py-3'><span class='px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700'>Ditarik</span></td>
+                                        <tr class='border-t border-slate-100 dark:border-[#132e50] text-xs text-slate-700 dark:text-slate-200'>
+                                            <td class='px-4 py-3 font-bold text-slate-800 dark:text-slate-100'>{$itemName}</td>
+                                            <td class='px-4 py-3 font-semibold text-slate-600 dark:text-slate-300'>{$qty}</td>
+                                            <td class='px-4 py-3'><span class='px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300'>Ditarik</span></td>
                                         </tr>
                                     ";
                                 }
 
                                 return new \Illuminate\Support\HtmlString("
-                                    <div class='overflow-hidden border border-slate-200 rounded-xl bg-white shadow-xs mt-2'>
+                                    <div class='overflow-hidden border border-slate-200 dark:border-[#1a3c66] rounded-xl bg-white dark:bg-[#0b1e36] shadow-xs mt-2'>
                                         <table class='w-full text-left text-xs'>
-                                            <thead class='bg-slate-50 text-slate-600 font-semibold border-b border-slate-200'>
+                                            <thead class='bg-slate-50 dark:bg-[#08172b] text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-[#1a3c66]'>
                                                 <tr>
                                                     <th class='px-4 py-2.5'>Perangkat</th>
                                                     <th class='px-4 py-2.5'>Quantity</th>

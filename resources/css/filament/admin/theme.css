@@ -803,6 +803,85 @@ html.dark .fi-modal-header-heading {
     color: #ffffff !important;
 }
 
+/* ── Modal Custom Content & Placeholders (Dark Mode) ── */
+html.dark .fi-modal-window .bg-white {
+    background-color: #0b1e36 !important;
+    border-color: #1a3c66 !important;
+    color: #e2e8f0 !important;
+}
+
+html.dark .fi-modal-window .bg-slate-50 {
+    background-color: #08172b !important;
+    color: #94a3b8 !important;
+    border-color: #1a3c66 !important;
+}
+
+html.dark .fi-modal-window .text-slate-800,
+html.dark .fi-modal-window .text-slate-700 {
+    color: #e2e8f0 !important;
+}
+
+html.dark .fi-modal-window .text-slate-600,
+html.dark .fi-modal-window .text-slate-500 {
+    color: #94a3b8 !important;
+}
+
+html.dark .fi-modal-window .text-slate-400 {
+    color: #64748b !important;
+}
+
+html.dark .fi-modal-window .border-slate-200,
+html.dark .fi-modal-window .border-slate-100 {
+    border-color: #1a3c66 !important;
+}
+
+html.dark .fi-modal-window table {
+    color: #e2e8f0 !important;
+}
+
+html.dark .fi-modal-window table thead {
+    background-color: #08172b !important;
+    border-color: #1a3c66 !important;
+}
+
+html.dark .fi-modal-window table thead th {
+    color: #94a3b8 !important;
+}
+
+html.dark .fi-modal-window table tbody tr {
+    border-color: #132e50 !important;
+}
+
+html.dark .fi-modal-window table tbody td {
+    color: #cbd5e1 !important;
+    border-color: #132e50 !important;
+}
+
+html.dark .fi-modal-window table tbody td div.font-bold {
+    color: #f1f5f9 !important;
+}
+
+html.dark .fi-modal-window .bg-indigo-50 {
+    background-color: rgba(99, 102, 241, 0.18) !important;
+    border-color: rgba(99, 102, 241, 0.35) !important;
+    color: #a5b4fc !important;
+}
+
+html.dark .fi-modal-window .bg-emerald-100 {
+    background-color: rgba(16, 185, 129, 0.2) !important;
+    color: #6ee7b7 !important;
+}
+
+html.dark .fi-modal-window .bg-rose-100 {
+    background-color: rgba(244, 63, 94, 0.2) !important;
+    color: #fda4af !important;
+}
+
+html.dark .fi-modal-window .bg-amber-100 {
+    background-color: rgba(245, 158, 11, 0.2) !important;
+    color: #fcd34d !important;
+}
+
 html.dark .fi-dropdown-panel {
     background: #08192e !important;
     border-color: #1a4270 !important;
