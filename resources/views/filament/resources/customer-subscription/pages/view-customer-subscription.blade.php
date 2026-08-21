@@ -318,6 +318,229 @@
             color: #94a3b8;
             margin-top: 2px;
         }
+
+        /* ═════════════════════════════════════════════════════════════════
+           DARK MODE STYLES FOR VIEW CUSTOMER SUBSCRIPTION
+           ═════════════════════════════════════════════════════════════════ */
+        html.dark .profile-tab-btn {
+            color: #94a3b8;
+        }
+
+        html.dark .profile-tab-btn:hover {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        html.dark .profile-tab-btn.active {
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        html.dark .profile-left-card,
+        html.dark .profile-right-card {
+            background: #0b1528 !important;
+            border: 1px solid #1e3a8a !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important;
+            color: #f8fafc !important;
+        }
+
+        /* Profile Left Card Dark Mode */
+        html.dark .profile-header-title {
+            color: #38bdf8 !important;
+        }
+
+        html.dark .profile-hero-number {
+            color: #38bdf8 !important;
+        }
+
+        html.dark .profile-hero-name {
+            color: #f8fafc !important;
+        }
+
+        html.dark .profile-hero-pkg {
+            color: #94a3b8 !important;
+        }
+
+        html.dark .profile-hero-sales {
+            color: #cbd5e1 !important;
+        }
+
+        html.dark .profile-info-row {
+            border-bottom: 1px solid #172a45 !important;
+        }
+
+        html.dark .profile-info-label {
+            color: #94a3b8 !important;
+        }
+
+        html.dark .profile-info-val {
+            color: #f8fafc !important;
+        }
+
+        html.dark .profile-section-label {
+            color: #38bdf8 !important;
+        }
+
+        html.dark .profile-section-text {
+            color: #f8fafc !important;
+        }
+
+        /* Profile Right Card Dark Mode */
+        html.dark .profile-right-card h3,
+        html.dark .profile-right-card h4 {
+            color: #f8fafc !important;
+        }
+
+        html.dark .profile-log-table th {
+            background: #0f1f38 !important;
+            color: #94a3b8 !important;
+            border-bottom: 1px solid #1e3a8a !important;
+        }
+
+        html.dark .profile-log-table td {
+            color: #f8fafc !important;
+            border-bottom: 1px solid #172a45 !important;
+        }
+
+        html.dark .profile-log-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02) !important;
+        }
+
+        html.dark .profile-log-table tr:hover td {
+            background-color: rgba(56, 189, 248, 0.05) !important;
+        }
+
+        html.dark .badge-aktif {
+            background-color: #1e3a8a !important;
+            color: #93c5fd !important;
+            border: 1px solid #2563eb !important;
+        }
+
+        html.dark .badge-step {
+            background-color: #172554 !important;
+            color: #60a5fa !important;
+            border: 1px solid #1d4ed8 !important;
+        }
+
+        html.dark .badge-done {
+            background-color: #2e1065 !important;
+            color: #c084fc !important;
+            border: 1px solid #7c3aed !important;
+        }
+
+        html.dark .profile-right-card .text-slate-800 {
+            color: #f8fafc !important;
+        }
+
+        html.dark .profile-right-card .text-slate-700 {
+            color: #e2e8f0 !important;
+        }
+
+        html.dark .profile-right-card .text-slate-600 {
+            color: #cbd5e1 !important;
+        }
+
+        html.dark .profile-right-card .text-slate-500 {
+            color: #94a3b8 !important;
+        }
+
+        html.dark .profile-right-card .text-slate-400 {
+            color: #64748b !important;
+        }
+
+        html.dark .profile-right-card .bg-slate-50 {
+            background-color: #0f1f38 !important;
+            border-color: #1e3a8a !important;
+        }
+
+        /* Arsip Grid Dark Mode */
+        html.dark .arsip-group-title {
+            color: #38bdf8 !important;
+        }
+
+        html.dark .arsip-card-item {
+            background: #0f1f38 !important;
+            border-color: #1e3a8a !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        html.dark .arsip-card-item:hover {
+            background: #132747 !important;
+            border-color: #38bdf8 !important;
+        }
+
+        html.dark .arsip-doc-title {
+            color: #f8fafc !important;
+        }
+
+        html.dark .arsip-doc-subtitle {
+            color: #38bdf8 !important;
+        }
+
+        html.dark .arsip-download-icon {
+            color: #94a3b8 !important;
+        }
+
+        /* Perangkat Tab Dark Mode */
+        html.dark .profile-right-card span[style*="color: #334155"],
+        html.dark .profile-right-card div[style*="color: #334155"] {
+            color: #38bdf8 !important;
+        }
+
+        html.dark .profile-right-card span[style*="color: #1e293b"],
+        html.dark .profile-right-card div[style*="color: #1e293b"] {
+            color: #f8fafc !important;
+        }
+
+        html.dark .profile-right-card div[style*="color: #475569"] {
+            color: #cbd5e1 !important;
+        }
+
+        html.dark .profile-right-card table thead tr {
+            border-bottom-color: #1e3a8a !important;
+            color: #94a3b8 !important;
+        }
+
+        html.dark .profile-right-card table tbody {
+            color: #f8fafc !important;
+        }
+
+        html.dark .profile-right-card table tbody tr {
+            border-bottom-color: #172a45 !important;
+        }
+
+        /* Modals Dark Mode */
+        html.dark .profile-page-container div[style*="background: #ffffff"] {
+            background: #0b1528 !important;
+            border: 1px solid #1e3a8a !important;
+            color: #f8fafc !important;
+        }
+
+        html.dark .profile-page-container div[style*="background: #f8fafc"] {
+            background: #0f1f38 !important;
+            border: 1px solid #1e3a8a !important;
+            color: #f8fafc !important;
+        }
+
+        html.dark .profile-page-container input {
+            background: #070e1c !important;
+            border-color: #1e3a8a !important;
+            color: #f8fafc !important;
+        }
+
+        html.dark .profile-page-container input::placeholder {
+            color: #475569 !important;
+        }
+
+        html.dark .profile-page-container label {
+            color: #94a3b8 !important;
+        }
+
+        html.dark .profile-page-container button[style*="background: #f1f5f9"] {
+            background: #1e293b !important;
+            color: #cbd5e1 !important;
+        }
     </style>
 
     <div
