@@ -54,108 +54,25 @@ class RouterHistoryResource extends Resource
         return $table
             ->defaultSort('created_at', 'desc')
             ->columns([
-                // 1. Tanggal & Waktu (Contains Mobile Card)
+                // 1. Tanggal & Waktu
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Waktu')
-                    ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
-                    ->formatStateUsing(function (RouterHistory $record): \Illuminate\Support\HtmlString {
-                        $key = $record->getKey();
+                    ->formatStateUsing(function (RouterHistory $record): string {
                         $date = $record->created_at ? $record->created_at->format('d/m/Y') : '-';
                         $time = $record->created_at ? $record->created_at->format('H:i') . ' WIB' : '-';
-                        $custName = strtoupper($record->customer_name ?? '-');
-                        $internetNo = $record->internet_number ?? '-';
-                        $actionType = $record->action_type ?? 'Aktivasi';
-                        $executor = $record->executor_name ?? 'Admin';
-                        $role = $record->executor_role ?? 'admin';
-                        $desc = $record->description ?? '-';
-                        $responseMsg = $record->response_message ?? 'Berhasil diproses';
-                        $isSuccess = $record->status === 'success';
-
-                        $statusLabel = $isSuccess ? 'SUCCESS' : 'FAILED';
-                        $statusPillClass = $isSuccess ? 'ims-pill-active' : 'ims-pill-danger';
-
-                        // Operational action buttons
-                        $recordActions = [
-                            [
-                                'name' => 'view',
-                                'label' => 'Detail Log Eksekusi',
-                                'icon' => 'info',
-                                'color' => 'blue',
-                            ],
-                        ];
-
-                        $detailPayload = [
-                            'title' => 'Detail Log History Router',
-                            'key' => (string) $key,
-                            'no' => (string) $internetNo,
-                            'name' => (string) $custName,
-                            'phone' => (string) "Eksekutor: {$executor} ({$role})",
-                            'nik' => (string) "Waktu: {$date} {$time}",
-                            'pkg' => (string) "Aksi: {$actionType}",
-                            'group' => (string) ($record->router?->name ?? 'Router Core'),
-                            'building' => (string) "Status: {$statusLabel}",
-                            'addr' => (string) "Deskripsi: {$desc}",
-                            'latlong' => '-',
-                            'maps' => '',
-                            'status' => (string) $statusLabel,
-                            'statustype' => (string) $actionType,
-                            'sales' => (string) $executor,
-                            'created' => (string) "{$date} {$time}",
-                            'actions' => $recordActions,
-                        ];
-                        $encodedDetail = base64_encode(json_encode($detailPayload, JSON_UNESCAPED_UNICODE));
-
-                        return new \Illuminate\Support\HtmlString("
-                            <!-- DESKTOP VIEW (Visible on Desktop) -->
-                            <div class='ims-desktop-view flex flex-col text-[12px] leading-tight'>
+                        return "
+                            <div class='flex flex-col text-[12px] leading-tight'>
                                 <span class='font-black text-slate-800 dark:text-white tracking-wide'>{$date}</span>
                                 <span class='text-slate-400 text-[10.5px] mt-0.5'>{$time}</span>
                             </div>
-
-                            <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
-                            <div class='ims-standalone-card'>
-                                <div class='ims-card-head'>
-                                    <span class='ims-cid-badge'>{$internetNo}</span>
-                                    <span class='ims-mobile-group-badge'>{$actionType}</span>
-                                </div>
-                                <div class='ims-card-cust-info'>
-                                    <div style='font-size: 14px; font-weight: 900; color: #0f172a;'>{$custName}</div>
-                                    <div style='font-size: 11.5px; font-weight: 700; color: #0284c7; margin-top: 2px;'>⚡ Eksekutor: {$executor} ({$role})</div>
-                                    <div style='font-size: 11px; font-weight: 600; color: #64748b; margin-top: 2px;'>📝 {$desc}</div>
-                                </div>
-                                <div class='ims-card-sep'></div>
-                                <div class='ims-card-status-section'>
-                                    <div class='ims-schedule-pill {$statusPillClass}'>
-                                        <span>{$statusLabel}</span>
-                                        <span class='ims-schedule-slot'>🗓️ {$date} {$time}</span>
-                                    </div>
-                                    <div style='font-size: 10.5px; color: #64748b; font-weight: 600; margin-top: 4px;'>
-                                        Respon: " . htmlspecialchars(mb_strimwidth($responseMsg, 0, 35, '...')) . "
-                                    </div>
-                                </div>
-                                <div class='ims-card-sep'></div>
-                                <button
-                                    type='button'
-                                    data-detail-payload='{$encodedDetail}'
-                                    onclick=\"window.openImsDetailFromPayload && window.openImsDetailFromPayload('{$encodedDetail}')\"
-                                    class='ims-card-detail-btn'
-                                >
-                                    <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
-                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
-                                    </svg>
-                                    <span>Detail</span>
-                                </button>
-                            </div>
-                        ");
+                        ";
                     })
                     ->sortable(),
 
                 // 2. User & Role
                 Tables\Columns\TextColumn::make('executor_name')
                     ->label('Eksekutor')
-                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->formatStateUsing(function (RouterHistory $record): string {
                         $name = e($record->executor_name ?? 'Admin');
@@ -172,7 +89,6 @@ class RouterHistoryResource extends Resource
                 // 3. ID & Nama Pelanggan
                 Tables\Columns\TextColumn::make('customer_name')
                     ->label('Pelanggan')
-                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->formatStateUsing(function (RouterHistory $record): string {
                         $id = e($record->internet_number ?? '-');
@@ -189,7 +105,6 @@ class RouterHistoryResource extends Resource
                 // 4. Jenis Aksi (Badge dengan dot)
                 Tables\Columns\TextColumn::make('action_type')
                     ->label('Aksi')
-                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->formatStateUsing(function (RouterHistory $record): string {
                         $type = $record->action_type ?? 'Aktivasi';
@@ -216,7 +131,6 @@ class RouterHistoryResource extends Resource
                 // 5. Perubahan Status / Deskripsi
                 Tables\Columns\TextColumn::make('description')
                     ->label('Detail Perubahan')
-                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->formatStateUsing(function (RouterHistory $record): string {
                         if ($record->old_status && $record->new_status) {
@@ -245,7 +159,6 @@ class RouterHistoryResource extends Resource
                 // 6. Respon / Status MikroTik
                 Tables\Columns\TextColumn::make('response_message')
                     ->label('Hasil Router')
-                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->html()
                     ->formatStateUsing(function (RouterHistory $record): string {
                         $msg = e($record->response_message ?? 'Berhasil diproses');
