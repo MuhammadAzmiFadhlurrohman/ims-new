@@ -1,4 +1,142 @@
 <x-filament-panels::page>
+    <style>
+        /* Mobile Card & Form Layout for OLT Management */
+        @media (max-width: 991px) {
+            .olt-wrapper {
+                gap: 1rem !important;
+            }
+            .olt-top-header {
+                padding: 0.9rem 1rem !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.75rem !important;
+            }
+            .olt-top-title {
+                width: 100% !important;
+                gap: 0.75rem !important;
+            }
+            .olt-header-actions {
+                width: 100% !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                gap: 0.5rem !important;
+            }
+            .olt-select-switcher {
+                flex: 1 1 auto !important;
+                min-width: 0 !important;
+                height: 38px !important;
+            }
+            .olt-card {
+                padding: 1rem !important;
+                border-radius: 14px !important;
+            }
+            .olt-form-row {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.85rem !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .olt-field-group,
+            .olt-field-group-main,
+            .olt-field-group-sm,
+            .olt-field-group-btn {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: 1 1 100% !important;
+                min-width: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                box-sizing: border-box !important;
+            }
+            .olt-input,
+            .olt-select,
+            .olt-btn-add {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                box-sizing: border-box !important;
+            }
+            .olt-btn-add {
+                height: 42px !important;
+                justify-content: center !important;
+            }
+            .olt-table-container {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+            }
+            .olt-table-wrapper {
+                overflow: visible !important;
+            }
+            .olt-table {
+                display: block !important;
+                width: 100% !important;
+                border: none !important;
+            }
+            .olt-table thead {
+                display: none !important;
+            }
+            .olt-table tbody {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0.85rem !important;
+                width: 100% !important;
+            }
+            .olt-table tbody tr {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0.75rem !important;
+                padding: 1.1rem 1rem !important;
+                border-radius: 16px !important;
+                background: #ffffff !important;
+                border: 1.5px solid #e2e8f0 !important;
+                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
+                box-sizing: border-box !important;
+                width: 100% !important;
+            }
+            html.dark .olt-table tbody tr {
+                background: #08192e !important;
+                border-color: #14355a !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+            }
+            .olt-table tbody td {
+                display: block !important;
+                width: 100% !important;
+                padding: 0 !important;
+                border: none !important;
+                text-align: left !important;
+                box-sizing: border-box !important;
+            }
+            .olt-table tbody td:last-child {
+                padding-top: 0.75rem !important;
+                border-top: 1px dashed #e2e8f0 !important;
+                margin-top: 0.25rem !important;
+            }
+            html.dark .olt-table tbody td:last-child {
+                border-top-color: #14355a !important;
+            }
+            .olt-table tbody td:last-child div {
+                display: grid !important;
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)) !important;
+                gap: 8px !important;
+                width: 100% !important;
+                justify-content: stretch !important;
+            }
+            .olt-table tbody td:last-child button {
+                width: 100% !important;
+                justify-content: center !important;
+                padding: 0.5rem 0.6rem !important;
+                font-size: 0.76rem !important;
+            }
+            .olt-progress-box {
+                width: 100% !important;
+            }
+        }
+    </style>
     <div class="olt-wrapper">
 
         {{-- ── 1. TOP HERO HEADER & OLT SWITCHER ── --}}
