@@ -5,6 +5,7 @@
             panX: 20,
             panY: 20,
             isDragging: false,
+            isFullScreen: false,
             startX: 0,
             startY: 0,
 
@@ -117,6 +118,8 @@
                 this.panY = 20;
             }
         }"
+        @keydown.escape.window="if(isFullScreen) isFullScreen = false"
+        :class="isFullScreen ? 'ims-fullscreen-mode' : ''"
         class="ims-ftth-compact-wrapper"
         style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; max-width: 100%; overflow: hidden; isolation: isolate; font-family: inherit;"
     >
@@ -167,6 +170,21 @@
                         <option value="{{ $olt->code }}">{{ $olt->name }}</option>
                     @endforeach
                 </select>
+
+                <!-- Full Size / Minimize Toggle Button -->
+                <button
+                    @click="isFullScreen = !isFullScreen"
+                    type="button"
+                    :title="isFullScreen ? 'Kembali ke Ukuran Standar (Minimize)' : 'Tampilkan Layar Penuh (Full Size)'"
+                    style="display: inline-flex; align-items: center; gap: 0.35rem; height: 30px; padding: 0 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease;"
+                    :style="isFullScreen 
+                        ? 'background: #fee2e2; color: #b91c1c; border: 1.5px solid #f87171;' 
+                        : 'background: #eff6ff; color: #1d4ed8; border: 1.5px solid #93c5fd;'"
+                    class="ims-control-fullscreen-btn"
+                >
+                    <span x-text="isFullScreen ? '🗗' : '⛶'" style="font-size: 0.85rem;"></span>
+                    <span x-text="isFullScreen ? 'Minimize' : 'Full Size'">Full Size</span>
+                </button>
 
                 <!-- Search Input -->
                 <div style="position: relative;">
@@ -632,6 +650,34 @@
         .fi-page:has(.ims-ftth-compact-wrapper) {
             overflow-y: clip !important;
             overflow-x: hidden !important;
+        }
+
+        /* ── Full Size Mode Styling ── */
+        .ims-fullscreen-mode {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 99999 !important;
+            background: #f1f5f9 !important;
+            padding: 0.65rem !important;
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+        }
+
+        html.dark .ims-fullscreen-mode {
+            background: #020712 !important;
+        }
+
+        .ims-fullscreen-mode .ims-canvas-viewport {
+            height: calc(100vh - 65px) !important;
+            max-height: calc(100vh - 65px) !important;
+            border-radius: 10px !important;
         }
     </style>
 </x-filament-panels::page>
