@@ -574,8 +574,8 @@ class CustomerSubscriptionResource extends Resource
                                             $packageName = $record->package->name ?? $record->package_code ?? 'BROADBAND 10 Mbps';
 
                                             return new HtmlString("
-                                                <div class='p-5 bg-white border border-slate-200 rounded-xl text-center shadow-sm'>
-                                                    <span class='text-xl font-extrabold text-slate-800 uppercase tracking-wide'>{$packageName}</span>
+                                                <div class='p-5 bg-white dark:bg-[#0b1e36] border border-slate-200 dark:border-[#1a3c66] rounded-xl text-center shadow-sm'>
+                                                    <span class='text-xl font-extrabold text-slate-800 dark:text-sky-400 uppercase tracking-wide'>{$packageName}</span>
                                                 </div>
                                             ");
                                         }),
@@ -586,25 +586,25 @@ class CustomerSubscriptionResource extends Resource
                                             $mutations = PackageMutation::where('internet_number', $record->internet_number)->latest()->take(5)->get();
                                             $rowsHtml = '';
                                             if ($mutations->isEmpty()) {
-                                                $rowsHtml = "<tr><td colspan='3' class='px-4 py-3 text-center text-xs text-slate-400 font-medium'>No data available in table</td></tr>";
+                                                $rowsHtml = "<tr><td colspan='3' class='px-4 py-3 text-center text-xs text-slate-400 dark:text-slate-500 font-medium'>No data available in table</td></tr>";
                                             } else {
                                                 foreach ($mutations as $m) {
                                                     $oldP = BandwidthPackage::find($m->old_package_code)?->name ?? $m->old_package_code;
                                                     $newP = BandwidthPackage::find($m->new_package_code)?->name ?? $m->new_package_code;
                                                     $rowsHtml .= "
-                                                        <tr class='border-t border-slate-100 text-xs text-slate-700'>
+                                                        <tr class='border-t border-slate-100 dark:border-[#132e50] text-xs text-slate-700 dark:text-slate-200'>
                                                             <td class='px-3 py-2'>{$oldP}</td>
-                                                            <td class='px-3 py-2 font-bold text-indigo-600'>{$newP}</td>
-                                                            <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700'>{$m->status}</span></td>
+                                                            <td class='px-3 py-2 font-bold text-indigo-600 dark:text-indigo-400'>{$newP}</td>
+                                                            <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300'>{$m->status}</span></td>
                                                         </tr>
                                                     ";
                                                 }
                                             }
 
                                             return new HtmlString("
-                                                <div class='overflow-hidden border border-slate-200 rounded-xl bg-white shadow-sm'>
+                                                <div class='overflow-hidden border border-slate-200 dark:border-[#1a3c66] rounded-xl bg-white dark:bg-[#0b1e36] shadow-sm'>
                                                     <table class='w-full text-left text-xs'>
-                                                        <thead class='bg-slate-50 text-slate-600 font-semibold border-b border-slate-200'>
+                                                        <thead class='bg-slate-50 dark:bg-[#08172b] text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-[#1a3c66]'>
                                                             <tr>
                                                                 <th class='px-3 py-2.5'>old</th>
                                                                 <th class='px-3 py-2.5'>New</th>
@@ -734,14 +734,14 @@ class CustomerSubscriptionResource extends Resource
                                         $invoices = MonthlyInvoice::where('internet_number', $record->internet_number)->latest()->take(5)->get();
                                         $rowsHtml = '';
                                         if ($invoices->isEmpty()) {
-                                            $rowsHtml = "<tr><td colspan='3' class='px-4 py-4 text-center text-xs text-slate-400 font-medium'>No data available in table</td></tr>";
+                                            $rowsHtml = "<tr><td colspan='3' class='px-4 py-4 text-center text-xs text-slate-400 dark:text-slate-500 font-medium'>No data available in table</td></tr>";
                                         } else {
                                             foreach ($invoices as $inv) {
-                                                $statusColor = $inv->payment_status === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700';
+                                                $statusColor = $inv->payment_status === 'PAID' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300' : 'bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300';
                                                 $period = $inv->billing_period_text ?? ($inv->billing_month ? $inv->billing_month . '/' . $inv->billing_year : '-');
                                                 $amountFormatted = 'Rp '.number_format($inv->total_amount, 0, ',', '.');
                                                 $rowsHtml .= "
-                                                    <tr class='border-t border-slate-100 text-xs text-slate-700'>
+                                                    <tr class='border-t border-slate-100 dark:border-[#132e50] text-xs text-slate-700 dark:text-slate-200'>
                                                         <td class='px-3 py-2'>{$period}</td>
                                                         <td class='px-3 py-2 font-medium'>{$amountFormatted}</td>
                                                         <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold {$statusColor}'>{$inv->payment_status}</span></td>
@@ -751,9 +751,9 @@ class CustomerSubscriptionResource extends Resource
                                         }
 
                                         return new HtmlString("
-                                            <div class='overflow-hidden border border-slate-200 rounded-xl bg-white shadow-sm mt-1'>
+                                            <div class='overflow-hidden border border-slate-200 dark:border-[#1a3c66] rounded-xl bg-white dark:bg-[#0b1e36] shadow-sm mt-1'>
                                                 <table class='w-full text-left text-xs'>
-                                                    <thead class='bg-slate-50 text-slate-600 font-semibold border-b border-slate-200'>
+                                                    <thead class='bg-slate-50 dark:bg-[#08172b] text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-[#1a3c66]'>
                                                         <tr>
                                                             <th class='px-3 py-2.5'>Bulan</th>
                                                             <th class='px-3 py-2.5'>Biaya</th>
@@ -834,8 +834,8 @@ class CustomerSubscriptionResource extends Resource
                                             $packageName = $record->package->name ?? $record->package_code ?? 'BROADBAND 10 Mbps';
 
                                             return new HtmlString("
-                                                <div class='p-5 bg-white border border-slate-200 rounded-xl text-center shadow-sm'>
-                                                    <span class='text-xl font-extrabold text-slate-800 uppercase tracking-wide'>{$packageName}</span>
+                                                <div class='p-5 bg-white dark:bg-[#0b1e36] border border-slate-200 dark:border-[#1a3c66] rounded-xl text-center shadow-sm'>
+                                                    <span class='text-xl font-extrabold text-slate-800 dark:text-sky-400 uppercase tracking-wide'>{$packageName}</span>
                                                 </div>
                                             ");
                                         }),
@@ -851,25 +851,25 @@ class CustomerSubscriptionResource extends Resource
 
                                             $rowsHtml = '';
                                             if ($invoices->isEmpty()) {
-                                                $rowsHtml = "<tr><td colspan='3' class='px-4 py-4 text-center text-xs text-slate-400 font-medium'>No data available in table</td></tr>";
+                                                $rowsHtml = "<tr><td colspan='3' class='px-4 py-4 text-center text-xs text-slate-400 dark:text-slate-500 font-medium'>No data available in table</td></tr>";
                                             } else {
                                                 foreach ($invoices as $inv) {
                                                     $period = $inv->billing_period_text ?? ($inv->billing_month ? $inv->billing_month . '/' . $inv->billing_year : '-');
                                                     $amountFormatted = 'Rp '.number_format($inv->total_amount, 0, ',', '.');
                                                     $rowsHtml .= "
-                                                        <tr class='border-t border-slate-100 text-xs text-slate-700'>
+                                                        <tr class='border-t border-slate-100 dark:border-[#132e50] text-xs text-slate-700 dark:text-slate-200'>
                                                             <td class='px-3 py-2'>{$period}</td>
                                                             <td class='px-3 py-2 font-medium'>{$amountFormatted}</td>
-                                                            <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700'>{$inv->payment_status}</span></td>
+                                                            <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300'>{$inv->payment_status}</span></td>
                                                         </tr>
                                                     ";
                                                 }
                                             }
 
                                             return new HtmlString("
-                                                <div class='overflow-hidden border border-slate-200 rounded-xl bg-white shadow-sm mt-1'>
+                                                <div class='overflow-hidden border border-slate-200 dark:border-[#1a3c66] rounded-xl bg-white dark:bg-[#0b1e36] shadow-sm mt-1'>
                                                     <table class='w-full text-left text-xs'>
-                                                        <thead class='bg-slate-50 text-slate-600 font-semibold border-b border-slate-200'>
+                                                        <thead class='bg-slate-50 dark:bg-[#08172b] text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-[#1a3c66]'>
                                                             <tr>
                                                                 <th class='px-3 py-2.5'>Periode</th>
                                                                 <th class='px-3 py-2.5'>jumlah</th>
@@ -903,21 +903,21 @@ class CustomerSubscriptionResource extends Resource
                                                 $name = $eq['item_name'] ?? 'ONU ZTE F660';
                                                 $qty = $eq['quantity'] ?? '1 UNIT';
                                                 $rowsHtml .= "
-                                                    <tr class='border-t border-slate-100 text-xs text-slate-700'>
+                                                    <tr class='border-t border-slate-100 dark:border-[#132e50] text-xs text-slate-700 dark:text-slate-200'>
                                                         <td class='px-3 py-2'>
-                                                            <div class='font-bold text-slate-800'>ONU</div>
-                                                            <span class='px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100'>{$name}</span>
+                                                            <div class='font-bold text-slate-800 dark:text-slate-100'>ONU</div>
+                                                            <span class='px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800/50'>{$name}</span>
                                                         </td>
                                                         <td class='px-3 py-2 font-medium'>{$qty}</td>
-                                                        <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700'>Aktif</span></td>
+                                                        <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300'>Aktif</span></td>
                                                     </tr>
                                                 ";
                                             }
 
                                             return new HtmlString("
-                                                <div class='overflow-hidden border border-slate-200 rounded-xl bg-white shadow-sm mt-1'>
+                                                <div class='overflow-hidden border border-slate-200 dark:border-[#1a3c66] rounded-xl bg-white dark:bg-[#0b1e36] shadow-sm mt-1'>
                                                     <table class='w-full text-left text-xs'>
-                                                        <thead class='bg-slate-50 text-slate-600 font-semibold border-b border-slate-200'>
+                                                        <thead class='bg-slate-50 dark:bg-[#08172b] text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-[#1a3c66]'>
                                                             <tr>
                                                                 <th class='px-3 py-2.5'>Perangkat</th>
                                                                 <th class='px-3 py-2.5'>jumlah</th>

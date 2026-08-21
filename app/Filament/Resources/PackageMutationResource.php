@@ -185,8 +185,8 @@ class PackageMutationResource extends Resource
                             ->content(function (PackageMutation $record) {
                                 $newPkg = BandwidthPackage::find($record->new_package_code)?->name ?? $record->new_package_code ?? 'BROADBAND 20 Mbps';
                                 return new \Illuminate\Support\HtmlString("
-                                    <div class='p-5 bg-white border border-slate-200 rounded-xl text-center shadow-xs'>
-                                        <span class='text-2xl font-black text-slate-800 tracking-wide'>{$newPkg}</span>
+                                    <div class='p-5 bg-white dark:bg-[#0b1e36] border border-slate-200 dark:border-[#1a3c66] rounded-xl text-center shadow-xs'>
+                                        <span class='text-2xl font-black text-slate-800 dark:text-sky-400 tracking-wide'>{$newPkg}</span>
                                     </div>
                                 ");
                             }),
@@ -234,10 +234,10 @@ class PackageMutationResource extends Resource
                                     ->content(function (PackageMutation $record) {
                                         $newPkg = BandwidthPackage::find($record->new_package_code)?->name ?? $record->new_package_code ?? 'BROADBAND 20 Mbps';
                                         return new \Illuminate\Support\HtmlString("
-                                            <div class='p-5 bg-white border border-slate-200 rounded-xl space-y-3 shadow-xs text-xs font-bold text-slate-700'>
-                                                <div class='text-slate-800 text-sm'>1. {$newPkg}</div>
-                                                <div class='text-slate-600'>2. Konfirmasi Hasil Speedtest Ke User</div>
-                                                <div class='text-slate-600'>3. Screenshot & Upload Bukti</div>
+                                            <div class='p-5 bg-white dark:bg-[#0b1e36] border border-slate-200 dark:border-[#1a3c66] rounded-xl space-y-3 shadow-xs text-xs font-bold text-slate-700 dark:text-slate-300'>
+                                                <div class='text-slate-800 dark:text-sky-400 text-sm font-extrabold'>1. {$newPkg}</div>
+                                                <div class='text-slate-600 dark:text-slate-300'>2. Konfirmasi Hasil Speedtest Ke User</div>
+                                                <div class='text-slate-600 dark:text-slate-300'>3. Screenshot & Upload Bukti</div>
                                             </div>
                                         ");
                                     }),

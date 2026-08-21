@@ -162,19 +162,19 @@ class ServiceSuspensionResource extends Resource
                                 $packageName = $sub?->package?->name ?? $sub?->package_code ?? 'BROADBAND 10 Mbps';
 
                                 return new \Illuminate\Support\HtmlString("
-                                    <div class='p-4 bg-white border border-slate-200 rounded-xl shadow-xs text-xs space-y-1.5'>
-                                        <div class='font-bold text-slate-700 mb-2'>Data Pelanggan</div>
-                                        <div class='flex items-center gap-2 text-slate-700'>
-                                            <span class='text-slate-400'>•</span>
+                                    <div class='p-4 bg-white dark:bg-[#0b1e36] border border-slate-200 dark:border-[#1a3c66] rounded-xl shadow-xs text-xs space-y-1.5'>
+                                        <div class='font-bold text-slate-700 dark:text-slate-200 mb-2'>Data Pelanggan</div>
+                                        <div class='flex items-center gap-2 text-slate-700 dark:text-slate-300'>
+                                            <span class='text-slate-400 dark:text-slate-500'>•</span>
                                             <span class='font-extrabold uppercase'>{$custName}</span>
                                         </div>
-                                        <div class='flex items-center gap-2 text-slate-700'>
-                                            <span class='text-slate-400'>•</span>
-                                            <span>Nomor Layanan <strong class='text-slate-900'>{$internetNo}</strong></span>
+                                        <div class='flex items-center gap-2 text-slate-700 dark:text-slate-300'>
+                                            <span class='text-slate-400 dark:text-slate-500'>•</span>
+                                            <span>Nomor Layanan <strong class='text-slate-900 dark:text-sky-400 font-bold'>{$internetNo}</strong></span>
                                         </div>
-                                        <div class='flex items-center gap-2 text-slate-700'>
-                                            <span class='text-slate-400'>•</span>
-                                            <span class='font-semibold text-indigo-600'>{$packageName}</span>
+                                        <div class='flex items-center gap-2 text-slate-700 dark:text-slate-300'>
+                                            <span class='text-slate-400 dark:text-slate-500'>•</span>
+                                            <span class='font-semibold text-indigo-600 dark:text-indigo-400'>{$packageName}</span>
                                         </div>
                                     </div>
                                 ");
