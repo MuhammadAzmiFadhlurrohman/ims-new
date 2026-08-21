@@ -1940,11 +1940,7 @@ class InstallationPipelineResource extends Resource
                         !in_array($record->registration_status, ['Selesai Instalasi', 'Jadwal Aktivasi Terbit', 'POSTING AKTIVASI', 'LIVE', '20', 'Aktif'])
                     ),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getPages(): array

@@ -622,9 +622,9 @@ select.fi-input:focus {
     color: #0f172a !important;
 }
 
-/* ══════════════════════════════════════
-   HIDE TABLE BULK SELECTION CHECKBOXES
-   ══════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   HIDE TABLE BULK SELECTION CHECKBOXES & BULK ACTIONS TRIGGERS
+   ══════════════════════════════════════════════════════════════ */
 .fi-ta-table th:has(.fi-ta-page-checkbox),
 .fi-ta-table td:has(.fi-ta-record-checkbox),
 .fi-ta-table th:has(.fi-ta-group-checkbox),
@@ -636,7 +636,18 @@ select.fi-input:focus {
 .fi-ta-table td.fi-ta-cell:first-child:has(input[type="checkbox"]),
 .fi-ta-table th.fi-ta-header-cell:first-child:has(.fi-checkbox-input),
 .fi-ta-table td.fi-ta-cell:first-child:has(.fi-checkbox-input),
-.fi-ta-selection-cell {
+.fi-ta-selection-cell,
+.fi-ta-bulk-actions,
+.fi-ta-bulk-actions-trigger,
+.fi-ta-bulk-action,
+.fi-ta-selection-bar,
+.fi-ta-selection-bar-actions,
+.fi-ta-selection-bar-actions-ctn,
+.fi-ta-actions-trigger-btn,
+button[aria-label*="Bulk"],
+button[aria-label*="bulk"],
+button[aria-label*="Actions"],
+button:has(svg.fi-icon-btn-icon):has(path[d*="M12 6.75a.75.75"]):only-child {
     display: none !important;
 }
 
