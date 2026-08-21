@@ -531,6 +531,122 @@ class InstallationPipelineResource extends Resource
                         $sales = strtoupper($record->sales_name ?? '-');
                         $created = $record->created_at ? $record->created_at->format('d M Y H:i WIB') : '-';
 
+                        // Calculate exact actions matching Desktop table actions
+                        $recordActions = [];
+
+                        // 1. Ubah Status Tipe
+                        $recordActions[] = [
+                            'name' => 'change_status_type',
+                            'label' => 'Ubah Status Tipe',
+                            'icon' => 'status',
+                            'color' => 'blue',
+                        ];
+
+                        // 2. Batal Pasang
+                        if (!in_array($status, ['Batal Pasang', 'LIVE', '20', 'Aktif'])) {
+                            $recordActions[] = [
+                                'name' => 'batal_pasang',
+                                'label' => 'Batal Pasang',
+                                'icon' => 'x',
+                                'color' => 'red',
+                            ];
+                        }
+
+                        // 3. Jadwal Survey
+                        if (empty($record->survey_date) && (in_array($status, ['Data Input', 'SUR', null, '']) || empty($status))) {
+                            $recordActions[] = [
+                                'name' => 'jadwal_survey',
+                                'label' => 'Jadwal Survey',
+                                'icon' => 'calendar',
+                                'color' => 'blue',
+                            ];
+                        }
+
+                        // 4. Report Survey
+                        if (in_array($status, ['Jadwal Survey Terbit', 'Jadwal Sur', 'POSTING SURVEY', 'Jadwal Survey']) ||
+                            (str_contains(strtolower($status), 'sur') && !str_contains(strtolower($status), 'selesai'))) {
+                            $recordActions[] = [
+                                'name' => 'report_survey',
+                                'label' => 'Report Survey',
+                                'icon' => 'report',
+                                'color' => 'cyan',
+                            ];
+                        }
+
+                        // 5. Jadwal Instalasi
+                        if (in_array($status, ['Selesai Survey', 'Survey Selesai', 'Penarikan kabel', 'Selesai Sur']) ||
+                            str_contains(strtolower($status), 'selesai sur')) {
+                            $recordActions[] = [
+                                'name' => 'jadwal_instalasi',
+                                'label' => 'Jadwal Instalasi',
+                                'icon' => 'calendar',
+                                'color' => 'blue',
+                            ];
+                        }
+
+                        // 6. Report Instalasi
+                        if (in_array($status, ['Jadwal Instalasi Terbit', 'Jadwal Ins', 'POSTING INSTALASI', 'Jadwal Instalasi']) ||
+                            (str_contains(strtolower($status), 'ins') && !str_contains(strtolower($status), 'selesai'))) {
+                            $recordActions[] = [
+                                'name' => 'report_instalasi',
+                                'label' => 'Report Instalasi',
+                                'icon' => 'report',
+                                'color' => 'cyan',
+                            ];
+                        }
+
+                        // 7. Jadwal Aktivasi
+                        if (in_array($status, ['Selesai Instalasi', 'Selesai Ins']) ||
+                            str_contains(strtolower($status), 'selesai ins')) {
+                            $recordActions[] = [
+                                'name' => 'jadwal_aktivasi',
+                                'label' => 'Jadwal Aktivasi',
+                                'icon' => 'calendar',
+                                'color' => 'blue',
+                            ];
+                        }
+
+                        // 8. Mulai Aktivasi
+                        if (in_array($status, ['Jadwal Aktivasi Terbit', 'Jadwal Akt', 'Jadwal Aktivasi']) ||
+                            (str_contains(strtolower($status), 'akt') && !str_contains(strtolower($status), 'proses') && !str_contains(strtolower($status), 'selesai'))) {
+                            $recordActions[] = [
+                                'name' => 'mulai_aktivasi',
+                                'label' => 'Mulai Aktivasi',
+                                'icon' => 'play',
+                                'color' => 'amber',
+                            ];
+                        }
+
+                        // 9. Report Aktivasi
+                        if (in_array($status, ['Proses Aktivasi', 'POSTING AKTIVASI']) ||
+                            str_contains(strtolower($status), 'proses akt')) {
+                            $recordActions[] = [
+                                'name' => 'report_aktivasi',
+                                'label' => 'Report Aktivasi',
+                                'icon' => 'report',
+                                'color' => 'cyan',
+                            ];
+                        }
+
+                        // 10. Edit
+                        $recordActions[] = [
+                            'name' => 'edit',
+                            'label' => 'Edit',
+                            'icon' => 'edit',
+                            'color' => 'blue',
+                            'url' => \App\Filament\Resources\InstallationPipelineResource::getUrl('edit', ['record' => $record]),
+                        ];
+
+                        // 11. Hapus
+                        if (!in_array($status, ['Selesai Instalasi', 'Jadwal Aktivasi Terbit', 'POSTING AKTIVASI', 'LIVE', '20', 'Aktif'])) {
+                            $recordActions[] = [
+                                'name' => 'delete',
+                                'label' => 'Hapus',
+                                'icon' => 'delete',
+                                'color' => 'red',
+                            ];
+                        }
+
                         $detailPayload = [
                             'key' => (string)$key,
                             'no' => (string)$internetNo,
@@ -547,6 +663,7 @@ class InstallationPipelineResource extends Resource
                             'statustype' => (string)$statusType,
                             'sales' => (string)$sales,
                             'created' => (string)$created,
+                            'actions' => $recordActions,
                         ];
                         $encodedDetail = base64_encode(json_encode($detailPayload, JSON_UNESCAPED_UNICODE));
 

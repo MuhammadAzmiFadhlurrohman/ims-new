@@ -124,14 +124,8 @@
         <!-- Section 4: Aksi Lanjutan Operasional -->
         <div class="ims-modal-section" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px;">
             <div style="font-size: 10.5px; font-weight: 800; color: #0284c7; text-transform: uppercase; margin-bottom: 8px;">⚡ Tindakan Operasional</div>
-            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                <button type="button" onclick="triggerDetailAction('change_status_type')" style="padding: 6px 11px; background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 800; border-radius: 6px; font-size: 11px; cursor: pointer;">✏️ Ubah Status Tipe</button>
-                <button type="button" onclick="triggerDetailAction('jadwal_survey')" style="padding: 6px 11px; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; font-weight: 800; border-radius: 6px; font-size: 11px; cursor: pointer;">📅 Jadwal Survey</button>
-                <button type="button" onclick="triggerDetailAction('report_survey')" style="padding: 6px 11px; background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4; font-weight: 800; border-radius: 6px; font-size: 11px; cursor: pointer;">📋 Report Survey</button>
-                <button type="button" onclick="triggerDetailAction('jadwal_instalasi')" style="padding: 6px 11px; background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; font-weight: 800; border-radius: 6px; font-size: 11px; cursor: pointer;">🔧 Jadwal Instalasi</button>
-                <button type="button" onclick="triggerDetailAction('report_instalasi')" style="padding: 6px 11px; background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; font-weight: 800; border-radius: 6px; font-size: 11px; cursor: pointer;">✅ Report Instalasi</button>
-                <button type="button" onclick="triggerDetailAction('posting_aktivasi')" style="padding: 6px 11px; background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; font-weight: 800; border-radius: 6px; font-size: 11px; cursor: pointer;">🚀 Posting Aktivasi</button>
-                <button type="button" onclick="triggerDetailAction('batal_pasang')" style="padding: 6px 11px; background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; font-weight: 800; border-radius: 6px; font-size: 11px; cursor: pointer;">❌ Batal Pasang</button>
+            <div id="ims-detail-actions-list" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <!-- DYNAMICALLY INJECTED FROM ACTIVE RECORD ACTIONS -->
             </div>
         </div>
 
@@ -147,3 +141,177 @@
         </div>
     </div>
 </div>
+
+<script>
+    window.currentImsRecordKey = window.currentImsRecordKey || '';
+    window.currentImsStatusType = window.currentImsStatusType || 'Temporary Delete';
+
+    window.openImsStatusModal = function(key, status) {
+        window.currentImsRecordKey = key;
+        const radios = document.querySelectorAll('input[name="ims_status_radio"]');
+        radios.forEach(r => {
+            if (r.value.toLowerCase() === (status || '').toLowerCase()) {
+                r.checked = true;
+            }
+        });
+        const modal = document.getElementById('ims-status-modal');
+        if (modal) {
+            modal.style.setProperty('display', 'flex', 'important');
+        }
+    };
+
+    window.closeImsStatusModal = function() {
+        const modal = document.getElementById('ims-status-modal');
+        if (modal) {
+            modal.style.setProperty('display', 'none', 'important');
+        }
+    };
+
+    window.submitImsStatusChange = function() {
+        const selectedRadio = document.querySelector('input[name="ims_status_radio"]:checked');
+        const statusValue = selectedRadio ? selectedRadio.value : 'Temporary Delete';
+        const saveText = document.getElementById('ims-btn-save-text');
+        if (saveText) saveText.textContent = 'Menyimpan...';
+
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrfToken = csrfMeta ? csrfMeta.content : '{{ csrf_token() }}';
+
+        fetch('/admin/update-status-type', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                key: window.currentImsRecordKey,
+                status_type: statusValue
+            })
+        }).then(res => res.json()).then(data => {
+            if (saveText) saveText.textContent = 'Simpan';
+            closeImsStatusModal();
+            window.location.reload();
+        }).catch(err => {
+            alert('Gagal mengubah status tipe: ' + err.message);
+            if (saveText) saveText.textContent = 'Simpan';
+        });
+    };
+
+    window.openImsDetailFromPayload = function(b64) {
+        try {
+            const str = decodeURIComponent(escape(atob(b64)));
+            const d = JSON.parse(str);
+            window.currentImsRecordKey = d.key || '';
+            window.currentImsStatusType = d.statustype || 'Temporary Delete';
+
+            const setTxt = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = val || '-';
+            };
+
+            setTxt('ims-detail-internet-no', d.no);
+            setTxt('ims-detail-cust-name', d.name);
+            setTxt('ims-detail-phone', d.phone);
+            setTxt('ims-detail-nik', d.nik);
+            setTxt('ims-detail-pkg', '📦 ' + (d.pkg || '-'));
+            setTxt('ims-detail-group', d.group);
+            setTxt('ims-detail-building', d.building);
+            setTxt('ims-detail-address', d.addr);
+            setTxt('ims-detail-latlong', d.latlong);
+            setTxt('ims-detail-status', '📌 ' + (d.status || '-'));
+            setTxt('ims-detail-status-type', d.statustype);
+            setTxt('ims-detail-sales', '👤 ' + (d.sales || '-'));
+            setTxt('ims-detail-created', '📅 ' + (d.created || '-'));
+
+            const mapsLink = document.getElementById('ims-detail-maps-link');
+            if (mapsLink) {
+                if (d.maps && d.maps.trim() !== '') {
+                    mapsLink.href = d.maps;
+                    mapsLink.style.display = 'inline-flex';
+                } else {
+                    mapsLink.style.display = 'none';
+                }
+            }
+
+            // Render Dynamic Operational Actions matching Desktop pipeline
+            const actionsContainer = document.getElementById('ims-detail-actions-list');
+            if (actionsContainer) {
+                actionsContainer.innerHTML = '';
+                if (d.actions && d.actions.length > 0) {
+                    d.actions.forEach(act => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'ims-modal-act-btn ims-modal-act-' + (act.color || 'blue');
+
+                        let iconHtml = '';
+                        if (act.icon === 'x') {
+                            iconHtml = '<span style="font-size: 13px; font-weight: 900;">✕</span>';
+                        } else if (act.icon === 'edit') {
+                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>';
+                        } else if (act.icon === 'delete') {
+                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>';
+                        } else if (act.icon === 'calendar') {
+                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>';
+                        } else if (act.icon === 'clipboard' || act.icon === 'report') {
+                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>';
+                        } else if (act.icon === 'play') {
+                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>';
+                        }
+
+                        btn.innerHTML = iconHtml + '<span>' + act.label + '</span>';
+
+                        btn.onclick = function() {
+                            window.closeImsDetailModal();
+                            if (act.url) {
+                                window.location.href = act.url;
+                            } else if (act.name === 'change_status_type') {
+                                window.openImsStatusModal(window.currentImsRecordKey, window.currentImsStatusType);
+                            } else {
+                                window.openImsTableAction(act.name, window.currentImsRecordKey);
+                            }
+                        };
+
+                        actionsContainer.appendChild(btn);
+                    });
+                }
+            }
+
+            const modal = document.getElementById('ims-detail-modal');
+            if (modal) {
+                modal.style.setProperty('display', 'flex', 'important');
+            }
+        } catch(e) {
+            console.error('Failed to decode detail payload:', e);
+        }
+    };
+
+    window.closeImsDetailModal = function() {
+        const modal = document.getElementById('ims-detail-modal');
+        if (modal) {
+            modal.style.setProperty('display', 'none', 'important');
+        }
+    };
+
+    window.openImsTableAction = function(action, key) {
+        if (window.Livewire) {
+            if (typeof Livewire.first === 'function') {
+                const first = Livewire.first();
+                if (first && typeof first.mountTableAction === 'function') {
+                    first.mountTableAction(action, key);
+                    return;
+                }
+            }
+            const wireEls = document.querySelectorAll('[wire\\:id], [data-id]');
+            for (let el of wireEls) {
+                const id = el.getAttribute('wire:id') || el.getAttribute('data-id');
+                if (id && typeof Livewire.find === 'function') {
+                    const comp = Livewire.find(id);
+                    if (comp && typeof comp.mountTableAction === 'function') {
+                        comp.mountTableAction(action, key);
+                        return;
+                    }
+                }
+            }
+        }
+    };
+</script>

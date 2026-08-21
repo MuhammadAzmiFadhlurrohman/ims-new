@@ -911,3 +911,63 @@ html.dark #ims-detail-modal #ims-detail-internet-no {
     color: #38bdf8 !important;
 }
 
+/* Dynamic Modal Operational Action Buttons (Matching Desktop Table Actions) */
+.ims-modal-act-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 7px 14px !important;
+    border-radius: 8px !important;
+    font-weight: 800 !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2) !important;
+    transition: transform 0.1s ease, filter 0.15s ease !important;
+    text-decoration: none !important;
+    user-select: none !important;
+}
+
+.ims-modal-act-btn:active {
+    transform: scale(0.96) !important;
+}
+
+.ims-modal-act-blue {
+    background: #1d4ed8 !important;
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4) !important;
+}
+
+.ims-modal-act-blue:hover {
+    background: #1e40af !important;
+}
+
+.ims-modal-act-red {
+    background: #dc2626 !important;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4) !important;
+}
+
+.ims-modal-act-red:hover {
+    background: #b91c1c !important;
+}
+
+.ims-modal-act-cyan {
+    background: #0284c7 !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4) !important;
+}
+
+.ims-modal-act-cyan:hover {
+    background: #0369a1 !important;
+}
+
+.ims-modal-act-amber {
+    background: #d97706 !important;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4) !important;
+}
+
+.ims-modal-act-amber:hover {
+    background: #b45309 !important;
+}
+
+
