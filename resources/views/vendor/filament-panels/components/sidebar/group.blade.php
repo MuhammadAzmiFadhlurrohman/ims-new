@@ -81,10 +81,12 @@
 
         {{-- HEADER GRUP STATIS (DENGAN IKON MENYALA & GARIS PEMBATAS KANAN) --}}
         <div
-            x-show="$store.sidebar.isOpen"
-            x-transition:enter="delay-100 lg:transition"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
+            @if ($sidebarCollapsible)
+                x-show="$store.sidebar.isOpen || (window.matchMedia('(max-width: 1023px)').matches)"
+                x-transition:enter="lg:transition lg:delay-100"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+            @endif
             class="ims-group-header flex items-center select-none"
         >
             <!-- Glowing Accent Icon -->
@@ -106,7 +108,7 @@
             <div class="ims-group-divider"></div>
         </div>
 
-        {{-- TAMPILAN SAAT SIDEBAR TERTUTUP (MINIMIZE / HOVER FLYOUT) --}}
+        {{-- TAMPILAN SAAT SIDEBAR TERTUTUP (MINIMIZE / HOVER FLYOUT - KHUSUS DESKTOP) --}}
         @if ($hasDropdown)
             <div
                 x-data="{
@@ -126,11 +128,11 @@
                         this.isOpen = !this.isOpen;
                     }
                 }"
-                x-show="! $store.sidebar.isOpen"
+                x-show="(! $store.sidebar.isOpen) && (window.matchMedia('(min-width: 1024px)').matches)"
                 x-on:mouseenter="showMenu()"
                 x-on:mouseleave="hideMenu()"
                 @click.outside="isOpen = false"
-                class="relative w-full flex justify-center py-1 ims-flyout-trigger-wrap"
+                class="relative w-full hidden lg:flex justify-center py-1 ims-flyout-trigger-wrap"
             >
                 <!-- Tombol Ikon Grup -->
                 <button
@@ -219,13 +221,10 @@
 
         {{-- LIST ITEM SAAT SIDEBAR TERBUKA (SELALU TAMPIL DENGAN CYAN TREE LINE) --}}
         <ul
-            x-show="$store.sidebar.isOpen"
-            x-transition:enter="transition ease-out duration-250"
-            x-transition:enter-start="opacity-0 -translate-x-2"
-            x-transition:enter-end="opacity-100 translate-x-0"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100 translate-x-0"
-            x-transition:leave-end="opacity-0 -translate-x-2"
+            x-show="$store.sidebar.isOpen || (window.matchMedia('(max-width: 1023px)').matches)"
+            x-transition:enter="lg:transition lg:ease-out lg:duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
             class="fi-sidebar-group-items ims-tree-line relative flex flex-col gap-y-1 my-1"
         >
             @foreach ($items as $item)

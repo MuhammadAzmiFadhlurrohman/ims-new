@@ -109,18 +109,25 @@ html.dark .fi-sidebar {
         width: 18.5rem !important;
         min-width: 18.5rem !important;
         max-width: 86vw !important;
+        will-change: transform !important;
+        -webkit-backface-visibility: hidden !important;
+        backface-visibility: hidden !important;
     }
 
     .fi-sidebar:not(.fi-sidebar-open) {
         transform: translateX(-100%) !important;
         pointer-events: none !important;
         visibility: hidden !important;
+        transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1),
+                    visibility 0s linear 0.28s !important;
     }
 
     .fi-sidebar.fi-sidebar-open {
         transform: translateX(0) !important;
         pointer-events: auto !important;
         visibility: visible !important;
+        transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1),
+                    visibility 0s linear 0s !important;
     }
 }
 
@@ -1442,6 +1449,22 @@ html.dark .ims-flyout-bullet {
 
     .fi-sidebar .ims-sidebar-footer-collapsed-dot {
         display: none !important;
+    }
+
+    /* Disable all internal transitions on mobile so everything moves as a single solid unit */
+    .fi-sidebar .fi-sidebar-nav,
+    .fi-sidebar .fi-sidebar-nav-groups,
+    .fi-sidebar .fi-sidebar-group,
+    .fi-sidebar .fi-sidebar-group-items,
+    .fi-sidebar .fi-sidebar-item,
+    .fi-sidebar .fi-sidebar-item-button,
+    .fi-sidebar .ims-group-header,
+    .fi-sidebar .fi-sidebar-item-label,
+    .fi-sidebar .ims-tree-line,
+    .fi-sidebar .ims-sidebar-footer,
+    .fi-sidebar .ims-sidebar-footer-card {
+        transition: none !important;
+        transform: none !important;
     }
 }
 

@@ -54,7 +54,7 @@
 
         <span
             @if ($sidebarCollapsible)
-                x-show="$store.sidebar.isOpen"
+                x-show="$store.sidebar.isOpen || (window.matchMedia('(max-width: 1023px)').matches)"
                 x-transition:enter="lg:transition lg:delay-100"
                 x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100"
@@ -67,7 +67,7 @@
         @if (filled($badge))
             <span
                 @if ($sidebarCollapsible)
-                x-show="$store.sidebar.isOpen"
+                    x-show="$store.sidebar.isOpen || (window.matchMedia('(max-width: 1023px)').matches)"
                 @endif
                 class="fi-badge"
             >
