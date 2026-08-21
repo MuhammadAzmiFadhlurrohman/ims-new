@@ -213,7 +213,7 @@
                 </button>
             </div>
         @else
-            <!-- Outer Viewport: STRICT OVERFLOW HIDDEN to isolate canvas from sidebar -->
+            <!-- Outer Viewport: STRICT OVERFLOW HIDDEN to isolate canvas completely -->
             <div
                 @mousedown="startDrag($event)"
                 @mousemove="onDrag($event)"
@@ -225,28 +225,28 @@
                 @wheel="handleWheel($event)"
                 :style="isDragging ? 'cursor: grabbing !important; user-select: none;' : 'cursor: grab;'"
                 class="ims-canvas-viewport"
-                style="position: relative; width: 100%; height: 74vh; min-height: 480px; overflow: hidden !important; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); z-index: 1; -webkit-mask-image: -webkit-radial-gradient(white, black);"
+                style="position: relative; width: 100%; height: 75vh; min-height: 520px; overflow: hidden !important; background: #fcfdfe; border: 1.5px solid #e2e8f0; border-radius: 16px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); z-index: 10; -webkit-mask-image: -webkit-radial-gradient(white, black);"
             >
                 <!-- Floating Canvas Drag Hint Badge -->
-                <div style="position: absolute; bottom: 12px; right: 14px; z-index: 20; display: inline-flex; align-items: center; gap: 0.35rem; padding: 4px 10px; border-radius: 8px; background: rgba(15, 23, 42, 0.75); color: #ffffff; font-size: 0.68rem; font-weight: 800; backdrop-filter: blur(4px); pointer-events: none; user-select: none;">
+                <div style="position: absolute; bottom: 12px; right: 14px; z-index: 30; display: inline-flex; align-items: center; gap: 0.35rem; padding: 4px 10px; border-radius: 8px; background: rgba(15, 23, 42, 0.75); color: #ffffff; font-size: 0.68rem; font-weight: 800; backdrop-filter: blur(4px); pointer-events: none; user-select: none;">
                     <span>🖱️ Tahan & Geser Kanvas</span>
                     <span>•</span>
                     <span>Scroll: Zoom</span>
                 </div>
 
-                <!-- Floating Stage Header Bar inside Canvas Viewport -->
-                <div class="ims-stage-bar" style="position: absolute; top: 0; left: 0; right: 0; z-index: 10; display: grid; grid-template-columns: 180px 150px 210px minmax(240px, 1fr); gap: 1.25rem; padding: 0.65rem 1.5rem; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px); border-bottom: 1.5px dashed #e2e8f0; font-size: 0.68rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; pointer-events: none;">
-                    <span style="color: #0284c7;">1. OLT Core</span>
-                    <span style="color: #0284c7;">2. PON Interface</span>
-                    <span style="color: #16a34a;">3. ODP Splitter</span>
-                    <span style="color: #7c3aed;">4. Drop Line / ONT User</span>
-                </div>
-
                 <!-- Inner Smooth Transform Surface (Translates and Scales) -->
                 <div
                     :style="'transform: translate(' + panX + 'px, ' + panY + 'px) scale(' + zoom + '); transform-origin: 0 0; will-change: transform; transition: ' + (isDragging ? 'none' : 'transform 0.1s ease-out') + ';'"
-                    style="position: absolute; top: 0; left: 0; padding: 3.5rem 1.5rem 2rem 1.5rem; min-width: 1200px; display: inline-block;"
+                    style="position: absolute; top: 0; left: 0; padding: 1.5rem 1.75rem 3rem 1.75rem; min-width: 1200px; display: inline-block;"
                 >
+                    <!-- Stage Header Bar (Moves with tree columns) -->
+                    <div class="ims-stage-bar" style="display: grid; grid-template-columns: 180px 150px 210px minmax(240px, 1fr); gap: 1.25rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1.5px dashed #cbd5e1; font-size: 0.68rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em;">
+                        <span style="color: #0284c7;">1. OLT Core</span>
+                        <span style="color: #0284c7;">2. PON Interface</span>
+                        <span style="color: #16a34a;">3. ODP Splitter</span>
+                        <span style="color: #7c3aed;">4. Drop Line / ONT User</span>
+                    </div>
+
                     <div style="display: flex; flex-direction: column; gap: 2rem;">
                         @foreach($tree as $olt)
                             <div class="ims-tree-branch-olt" style="display: flex; align-items: stretch; gap: 0;">
