@@ -975,4 +975,18 @@ html.dark #ims-detail-modal #ims-detail-internet-no {
     background: #b45309 !important;
 }
 
+.ims-modal-act-dark,
+.ims-modal-act-gray,
+.ims-modal-act-slate {
+    background: #1e293b !important;
+    box-shadow: 0 4px 12px rgba(30, 41, 59, 0.4) !important;
+    border: 1px solid #334155 !important;
+}
+
+.ims-modal-act-dark:hover,
+.ims-modal-act-gray:hover,
+.ims-modal-act-slate:hover {
+    background: #0f172a !important;
+}
+
 
