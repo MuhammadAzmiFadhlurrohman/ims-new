@@ -2,50 +2,61 @@
     <div
         x-data="{
             zoom: 1.0,
+            panX: 0,
+            panY: 0,
             isDragging: false,
             startX: 0,
             startY: 0,
-            scrollLeft: 0,
-            scrollTop: 0,
 
-            zoomIn() { this.zoom = Math.min(+(this.zoom + 0.15).toFixed(2), 2.0) },
-            zoomOut() { this.zoom = Math.max(+(this.zoom - 0.15).toFixed(2), 0.45) },
+            zoomIn() { 
+                this.zoom = Math.min(+(this.zoom + 0.15).toFixed(2), 2.0);
+            },
+            zoomOut() { 
+                this.zoom = Math.max(+(this.zoom - 0.15).toFixed(2), 0.45);
+            },
             resetZoom() {
                 this.zoom = 1.0;
-                const c = this.$refs.canvasScroll;
-                if (c) { c.scrollLeft = 0; c.scrollTop = 0; }
+                this.panX = 0;
+                this.panY = 0;
             },
 
             startDrag(e) {
-                // Ignore click on links, buttons, inputs, selects
-                if (e.target.closest('button, input, select, a')) return;
+                // Ignore clicks on buttons, inputs, selects, links
+                if (e.target.closest('button, input, select, a, [wire\\:click]')) return;
                 this.isDragging = true;
-                const c = this.$refs.canvasScroll;
-                const clientX = e.pageX || (e.touches && e.touches[0].pageX);
-                const clientY = e.pageY || (e.touches && e.touches[0].pageY);
-                this.startX = clientX - c.offsetLeft;
-                this.startY = clientY - c.offsetTop;
-                this.scrollLeft = c.scrollLeft;
-                this.scrollTop = c.scrollTop;
+                const clientX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
+                const clientY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
+                this.startX = clientX - this.panX;
+                this.startY = clientY - this.panY;
             },
 
             onDrag(e) {
                 if (!this.isDragging) return;
-                const clientX = e.pageX || (e.touches && e.touches[0].pageX);
-                const clientY = e.pageY || (e.touches && e.touches[0].pageY);
-                if (!clientX || !clientY) return;
+                const clientX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
+                const clientY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
+                if (clientX === undefined || clientY === undefined) return;
                 e.preventDefault();
-                const c = this.$refs.canvasScroll;
-                const x = clientX - c.offsetLeft;
-                const y = clientY - c.offsetTop;
-                const walkX = (x - this.startX) * 1.3;
-                const walkY = (y - this.startY) * 1.3;
-                c.scrollLeft = this.scrollLeft - walkX;
-                c.scrollTop = this.scrollTop - walkY;
+                this.panX = clientX - this.startX;
+                this.panY = clientY - this.startY;
             },
 
             stopDrag() {
                 this.isDragging = false;
+            },
+
+            handleWheel(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    if (e.deltaY < 0) {
+                        this.zoomIn();
+                    } else {
+                        this.zoomOut();
+                    }
+                } else {
+                    e.preventDefault();
+                    this.panX -= e.deltaX * 0.8;
+                    this.panY -= e.deltaY * 0.8;
+                }
             }
         }"
         class="ims-ftth-compact-wrapper"
@@ -83,7 +94,7 @@
                 </div>
             </div>
 
-            <!-- Right: Search, Filter, Expand/Collapse -->
+            <!-- Right: Search, Filter, Zoom In/Out -->
             <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                 <!-- OLT Dropdown -->
                 <select
@@ -114,14 +125,13 @@
                     @endif
                 </div>
 
-                <!-- Zoom In / Zoom Out Controls -->
+                <!-- Zoom Controls -->
                 <div style="display: inline-flex; align-items: center; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 2px; gap: 2px;">
                     <button
                         @click="zoomIn()"
                         type="button"
-                        title="Zoom In (Perbesar Tampilan)"
-                        style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 26px; border-radius: 6px; font-size: 0.85rem; font-weight: 900; background: #ffffff; color: #0284c7; border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.15s ease;"
-                        class="ims-zoom-btn"
+                        title="Zoom In (Perbesar)"
+                        style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 26px; border-radius: 6px; font-size: 0.85rem; font-weight: 900; background: #ffffff; color: #0284c7; border: 1px solid #e2e8f0; cursor: pointer;"
                     >
                         ➕
                     </button>
@@ -129,7 +139,7 @@
                     <button
                         @click="resetZoom()"
                         type="button"
-                        title="Reset Zoom ke 100%"
+                        title="Reset Tampilan & Zoom ke Tengah"
                         style="display: inline-flex; align-items: center; justify-content: center; height: 26px; padding: 0 6px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; background: transparent; color: #475569; border: none; cursor: pointer; font-family: monospace;"
                     >
                         <span x-text="Math.round(zoom * 100) + '%'">100%</span>
@@ -138,9 +148,8 @@
                     <button
                         @click="zoomOut()"
                         type="button"
-                        title="Zoom Out (Perkecil Tampilan)"
-                        style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 26px; border-radius: 6px; font-size: 0.85rem; font-weight: 900; background: #ffffff; color: #dc2626; border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.15s ease;"
-                        class="ims-zoom-btn"
+                        title="Zoom Out (Perkecil)"
+                        style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 26px; border-radius: 6px; font-size: 0.85rem; font-weight: 900; background: #ffffff; color: #dc2626; border: 1px solid #e2e8f0; cursor: pointer;"
                     >
                         ➖
                     </button>
@@ -188,7 +197,7 @@
         @endif
 
         <!-- ══════════════════════════════════════════════════════════════════ -->
-        <!-- 3. COMPACT HORIZONTAL ROOT TREE CANVAS -->
+        <!-- 3. DRAGGABLE & SCALABLE CANVAS VIEWPORT -->
         <!-- ══════════════════════════════════════════════════════════════════ -->
         @php $tree = $this->topologyTree; @endphp
 
@@ -204,155 +213,163 @@
                 </button>
             </div>
         @else
+            <!-- Outer Viewport: STRICT OVERFLOW HIDDEN to isolate canvas from sidebar -->
             <div
-                x-ref="canvasScroll"
                 @mousedown="startDrag($event)"
                 @mousemove="onDrag($event)"
                 @mouseup="stopDrag()"
                 @mouseleave="stopDrag()"
-                @touchstart="startDrag($event)"
+                @touchstart.passive="startDrag($event)"
                 @touchmove="onDrag($event)"
                 @touchend="stopDrag()"
+                @wheel="handleWheel($event)"
                 :style="isDragging ? 'cursor: grabbing !important; user-select: none;' : 'cursor: grab;'"
-                class="ims-canvas-scroll"
-                style="width: 100%; overflow: auto; padding: 1.25rem 1rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04); max-height: 78vh;"
+                class="ims-canvas-viewport"
+                style="position: relative; width: 100%; height: 74vh; min-height: 480px; overflow: hidden !important; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); z-index: 1; -webkit-mask-image: -webkit-radial-gradient(white, black);"
             >
-                
-                <!-- Stage Header Bar (Compact) -->
-                <div class="ims-stage-bar" style="display: grid; grid-template-columns: 180px 150px 210px minmax(240px, 1fr); gap: 1.25rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1.5px dashed #e2e8f0; font-size: 0.68rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em;">
+                <!-- Floating Canvas Drag Hint Badge -->
+                <div style="position: absolute; bottom: 12px; right: 14px; z-index: 20; display: inline-flex; align-items: center; gap: 0.35rem; padding: 4px 10px; border-radius: 8px; background: rgba(15, 23, 42, 0.75); color: #ffffff; font-size: 0.68rem; font-weight: 800; backdrop-filter: blur(4px); pointer-events: none; user-select: none;">
+                    <span>🖱️ Tahan & Geser Kanvas</span>
+                    <span>•</span>
+                    <span>Scroll: Zoom</span>
+                </div>
+
+                <!-- Floating Stage Header Bar inside Canvas Viewport -->
+                <div class="ims-stage-bar" style="position: absolute; top: 0; left: 0; right: 0; z-index: 10; display: grid; grid-template-columns: 180px 150px 210px minmax(240px, 1fr); gap: 1.25rem; padding: 0.65rem 1.5rem; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px); border-bottom: 1.5px dashed #e2e8f0; font-size: 0.68rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; pointer-events: none;">
                     <span style="color: #0284c7;">1. OLT Core</span>
                     <span style="color: #0284c7;">2. PON Interface</span>
                     <span style="color: #16a34a;">3. ODP Splitter</span>
                     <span style="color: #7c3aed;">4. Drop Line / ONT User</span>
                 </div>
 
-                <!-- Tree Roots Container with Zoom Binding -->
+                <!-- Inner Smooth Transform Surface (Translates and Scales) -->
                 <div
-                    :style="'transform: scale(' + zoom + '); transform-origin: top left; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); width: ' + (100 / zoom) + '%;'"
-                    style="display: flex; flex-direction: column; gap: 2rem; min-width: 880px;"
+                    :style="'transform: translate(' + panX + 'px, ' + panY + 'px) scale(' + zoom + '); transform-origin: 0 0; will-change: transform; transition: ' + (isDragging ? 'none' : 'transform 0.1s ease-out') + ';'"
+                    style="position: absolute; top: 0; left: 0; padding: 3.5rem 1.5rem 2rem 1.5rem; min-width: 1200px; display: inline-block;"
                 >
-                    @foreach($tree as $olt)
-                        <div class="ims-tree-branch-olt" style="display: flex; align-items: stretch; gap: 0;">
-                            
-                            <!-- ── 1. OLT NODE (Compact) ── -->
-                            <div style="width: 180px; min-width: 180px; display: flex; flex-direction: column; justify-content: center; position: relative;">
-                                <div class="ims-node-olt" style="padding: 0.75rem; border-radius: 12px; background: linear-gradient(145deg, #0b1e3b 0%, #030f24 100%); border: 1.5px solid #00d4ff; box-shadow: 0 4px 14px rgba(0, 212, 255, 0.2); color: #ffffff; display: flex; flex-direction: column; gap: 0.3rem; position: relative; z-index: 5;">
-                                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                                        <span style="font-size: 1rem;">🖥️</span>
-                                        <span style="font-size: 0.62rem; font-weight: 900; padding: 1px 5px; border-radius: 4px; background: rgba(0, 212, 255, 0.2); color: #00d4ff;">
-                                            OLT CORE
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <div style="font-size: 0.85rem; font-weight: 900; color: #ffffff; line-height: 1.1;">
-                                            {{ $olt->name }}
+                    <div style="display: flex; flex-direction: column; gap: 2rem;">
+                        @foreach($tree as $olt)
+                            <div class="ims-tree-branch-olt" style="display: flex; align-items: stretch; gap: 0;">
+                                
+                                <!-- ── 1. OLT NODE (Compact) ── -->
+                                <div style="width: 180px; min-width: 180px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                                    <div class="ims-node-olt" style="padding: 0.75rem; border-radius: 12px; background: linear-gradient(145deg, #0b1e3b 0%, #030f24 100%); border: 1.5px solid #00d4ff; box-shadow: 0 4px 14px rgba(0, 212, 255, 0.2); color: #ffffff; display: flex; flex-direction: column; gap: 0.3rem; position: relative; z-index: 5;">
+                                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                                            <span style="font-size: 1rem;">🖥️</span>
+                                            <span style="font-size: 0.62rem; font-weight: 900; padding: 1px 5px; border-radius: 4px; background: rgba(0, 212, 255, 0.2); color: #00d4ff;">
+                                                OLT CORE
+                                            </span>
                                         </div>
-                                        <span style="font-family: monospace; font-size: 0.65rem; color: #94a3b8; font-weight: 700;">
-                                            {{ $olt->code }}
-                                        </span>
+                                        <div>
+                                            <div style="font-size: 0.85rem; font-weight: 900; color: #ffffff; line-height: 1.1;">
+                                                {{ $olt->name }}
+                                            </div>
+                                            <span style="font-family: monospace; font-size: 0.65rem; color: #94a3b8; font-weight: 700;">
+                                                {{ $olt->code }}
+                                            </span>
+                                        </div>
+                                        <div style="font-size: 0.65rem; color: #cbd5e1; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 0.25rem; display: flex; flex-direction: column; gap: 1px;">
+                                            <span>IP: <strong style="color: #00d4ff; font-family: monospace;">{{ $olt->ip_address ?? '10.10.10.1' }}</strong></span>
+                                            <span>POP: <strong>{{ $olt->pop?->name ?? 'Central' }}</strong></span>
+                                            <span>Ports: <strong>{{ $olt->ponPorts->count() }} PON</strong></span>
+                                        </div>
                                     </div>
-                                    <div style="font-size: 0.65rem; color: #cbd5e1; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 0.25rem; display: flex; flex-direction: column; gap: 1px;">
-                                        <span>IP: <strong style="color: #00d4ff; font-family: monospace;">{{ $olt->ip_address ?? '10.10.10.1' }}</strong></span>
-                                        <span>POP: <strong>{{ $olt->pop?->name ?? 'Central' }}</strong></span>
-                                        <span>Ports: <strong>{{ $olt->ponPorts->count() }} PON</strong></span>
-                                    </div>
+
+                                    <!-- Trunk Line Output -->
+                                    <div style="position: absolute; right: -16px; top: 50%; width: 16px; height: 3px; background: #16a34a; z-index: 2;"></div>
                                 </div>
 
-                                <!-- Trunk Line Output -->
-                                <div style="position: absolute; right: -16px; top: 50%; width: 16px; height: 3px; background: #16a34a; z-index: 2;"></div>
-                            </div>
+                                <!-- ── 2. PON BRANCHES (Compact) ── -->
+                                <div style="flex: 1; display: flex; flex-direction: column; gap: 1.25rem; position: relative; padding-left: 16px; border-left: 3px solid #16a34a; margin-left: 16px;">
+                                    @if($olt->ponPorts->isEmpty())
+                                        <div style="padding: 1rem; color: #94a3b8; font-size: 0.72rem; font-style: italic;">
+                                            Belum ada PON Port.
+                                        </div>
+                                    @else
+                                        @foreach($olt->ponPorts as $pon)
+                                            @php
+                                                $isPonCollapsed = $this->isPonCollapsed($pon->id);
+                                                $odpCount = $pon->odps->count();
+                                                $subCountInPon = $pon->odps->sum(fn($o) => $o->subscriptions->count());
+                                            @endphp
+                                            <div class="ims-tree-branch-pon" style="display: flex; align-items: stretch; gap: 0; position: relative;">
+                                                
+                                                <!-- PON Port Node Card -->
+                                                <div style="width: 150px; min-width: 150px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                                                    <!-- Link from Feeder -->
+                                                    <div style="position: absolute; left: -16px; top: 50%; width: 16px; height: 2px; background: #16a34a;"></div>
 
-                            <!-- ── 2. PON BRANCHES (Compact) ── -->
-                            <div style="flex: 1; display: flex; flex-direction: column; gap: 1.25rem; position: relative; padding-left: 16px; border-left: 3px solid #16a34a; margin-left: 16px;">
-                                @if($olt->ponPorts->isEmpty())
-                                    <div style="padding: 1rem; color: #94a3b8; font-size: 0.72rem; font-style: italic;">
-                                        Belum ada PON Port.
-                                    </div>
-                                @else
-                                    @foreach($olt->ponPorts as $pon)
-                                        @php
-                                            $isPonCollapsed = $this->isPonCollapsed($pon->id);
-                                            $odpCount = $pon->odps->count();
-                                            $subCountInPon = $pon->odps->sum(fn($o) => $o->subscriptions->count());
-                                        @endphp
-                                        <div class="ims-tree-branch-pon" style="display: flex; align-items: stretch; gap: 0; position: relative;">
-                                            
-                                            <!-- PON Port Node Card -->
-                                            <div style="width: 150px; min-width: 150px; display: flex; flex-direction: column; justify-content: center; position: relative;">
-                                                <!-- Link from Feeder -->
-                                                <div style="position: absolute; left: -16px; top: 50%; width: 16px; height: 2px; background: #16a34a;"></div>
+                                                    <div
+                                                        wire:click="togglePon({{ $pon->id }})"
+                                                        class="ims-node-pon"
+                                                        style="padding: 0.55rem 0.65rem; border-radius: 10px; background: #f0fdf4; border: 1.5px solid #22c55e; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.1); display: flex; flex-direction: column; gap: 0.2rem; cursor: pointer; user-select: none; transition: all 0.15s ease; position: relative; z-index: 5;"
+                                                    >
+                                                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                                                            <span style="font-size: 0.62rem; font-weight: 900; color: #15803d; background: #dcfce7; padding: 1px 4px; border-radius: 4px;">
+                                                                PON #{{ $pon->port_number ?? 1 }}
+                                                            </span>
+                                                            <span style="font-size: 0.68rem; font-weight: 800; color: #16a34a;">
+                                                                {{ $isPonCollapsed ? '➕' : '➖' }}
+                                                            </span>
+                                                        </div>
+                                                        <div style="font-size: 0.78rem; font-weight: 900; color: #0f172a; line-height: 1.1;">
+                                                            ⚡ {{ $pon->name }}
+                                                        </div>
+                                                        <div style="font-size: 0.65rem; color: #475569; font-weight: 700;">
+                                                            {{ $odpCount }} ODP • {{ $subCountInPon }} Users
+                                                        </div>
+                                                    </div>
 
-                                                <div
-                                                    wire:click="togglePon({{ $pon->id }})"
-                                                    class="ims-node-pon"
-                                                    style="padding: 0.55rem 0.65rem; border-radius: 10px; background: #f0fdf4; border: 1.5px solid #22c55e; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.1); display: flex; flex-direction: column; gap: 0.2rem; cursor: pointer; user-select: none; transition: all 0.15s ease; position: relative; z-index: 5;"
-                                                >
-                                                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                                                        <span style="font-size: 0.62rem; font-weight: 900; color: #15803d; background: #dcfce7; padding: 1px 4px; border-radius: 4px;">
-                                                            PON #{{ $pon->port_number ?? 1 }}
-                                                        </span>
-                                                        <span style="font-size: 0.68rem; font-weight: 800; color: #16a34a;">
-                                                            {{ $isPonCollapsed ? '➕' : '➖' }}
-                                                        </span>
-                                                    </div>
-                                                    <div style="font-size: 0.78rem; font-weight: 900; color: #0f172a; line-height: 1.1;">
-                                                        ⚡ {{ $pon->name }}
-                                                    </div>
-                                                    <div style="font-size: 0.65rem; color: #475569; font-weight: 700;">
-                                                        {{ $odpCount }} ODP • {{ $subCountInPon }} Users
-                                                    </div>
+                                                    @if(!$isPonCollapsed && !$pon->odps->isEmpty())
+                                                        <div style="position: absolute; right: -16px; top: 50%; width: 16px; height: 2px; background: #16a34a;"></div>
+                                                    @endif
                                                 </div>
 
-                                                @if(!$isPonCollapsed && !$pon->odps->isEmpty())
-                                                    <div style="position: absolute; right: -16px; top: 50%; width: 16px; height: 2px; background: #16a34a;"></div>
-                                                @endif
-                                            </div>
+                                                <!-- ── 3. ODP SPLITTERS & USERS (Compact) ── -->
+                                                @if(!$isPonCollapsed)
+                                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 1rem; position: relative; padding-left: 16px; border-left: 2px solid #16a34a; margin-left: 16px;">
+                                                        @if($pon->odps->isEmpty())
+                                                            <div style="padding: 0.75rem; color: #94a3b8; font-size: 0.72rem; font-style: italic;">
+                                                                Belum ada ODP terpasang.
+                                                            </div>
+                                                        @else
+                                                            @foreach($pon->odps as $odp)
+                                                                @php
+                                                                    $isOdpCollapsed = $this->isOdpCollapsed($odp->code);
+                                                                    $subCount = $odp->subscriptions->count();
+                                                                    $maxPorts = $odp->total_ports ?: 8;
+                                                                    $isFull = $subCount >= $maxPorts;
+                                                                @endphp
+                                                                <div class="ims-tree-branch-odp" style="display: flex; align-items: stretch; gap: 0; position: relative;">
+                                                                    
+                                                                    <!-- ODP Splitter Node Card (Compact) -->
+                                                                    <div style="width: 210px; min-width: 210px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                                                                        <!-- Link from PON -->
+                                                                        <div style="position: absolute; left: -16px; top: 50%; width: 16px; height: 2px; background: #16a34a;"></div>
 
-                                            <!-- ── 3. ODP SPLITTERS & USERS (Compact) ── -->
-                                            @if(!$isPonCollapsed)
-                                                <div style="flex: 1; display: flex; flex-direction: column; gap: 1rem; position: relative; padding-left: 16px; border-left: 2px solid #16a34a; margin-left: 16px;">
-                                                    @if($pon->odps->isEmpty())
-                                                        <div style="padding: 0.75rem; color: #94a3b8; font-size: 0.72rem; font-style: italic;">
-                                                            Belum ada ODP terpasang.
-                                                        </div>
-                                                    @else
-                                                        @foreach($pon->odps as $odp)
-                                                            @php
-                                                                $isOdpCollapsed = $this->isOdpCollapsed($odp->code);
-                                                                $subCount = $odp->subscriptions->count();
-                                                                $maxPorts = $odp->total_ports ?: 8;
-                                                                $isFull = $subCount >= $maxPorts;
-                                                            @endphp
-                                                            <div class="ims-tree-branch-odp" style="display: flex; align-items: stretch; gap: 0; position: relative;">
-                                                                
-                                                                <!-- ODP Splitter Node Card (Compact) -->
-                                                                <div style="width: 210px; min-width: 210px; display: flex; flex-direction: column; justify-content: center; position: relative;">
-                                                                    <!-- Link from PON -->
-                                                                    <div style="position: absolute; left: -16px; top: 50%; width: 16px; height: 2px; background: #16a34a;"></div>
-
-                                                                    <div class="ims-node-odp" style="padding: 0.55rem 0.75rem; border-radius: 10px; background: #ffffff; border: 1.5px solid {{ $isFull ? '#ef4444' : '#10b981' }}; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 0.25rem; position: relative; z-index: 5;">
-                                                                        
-                                                                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                                                                            <div style="display: flex; align-items: center; gap: 0.3rem;">
-                                                                                <span style="font-size: 0.85rem;">📦</span>
-                                                                                <div>
-                                                                                    <div style="font-size: 0.78rem; font-weight: 900; color: #0f172a; line-height: 1.1;">
-                                                                                        {{ $odp->name }}
+                                                                        <div class="ims-node-odp" style="padding: 0.55rem 0.75rem; border-radius: 10px; background: #ffffff; border: 1.5px solid {{ $isFull ? '#ef4444' : '#10b981' }}; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 0.25rem; position: relative; z-index: 5;">
+                                                                            
+                                                                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                                                                <div style="display: flex; align-items: center; gap: 0.3rem;">
+                                                                                    <span style="font-size: 0.85rem;">📦</span>
+                                                                                    <div>
+                                                                                        <div style="font-size: 0.78rem; font-weight: 900; color: #0f172a; line-height: 1.1;">
+                                                                                            {{ $odp->name }}
+                                                                                        </div>
+                                                                                        <span style="font-family: monospace; font-size: 0.65rem; font-weight: 800; color: #0284c7;">
+                                                                                            {{ $odp->code }}
+                                                                                        </span>
                                                                                     </div>
-                                                                                    <span style="font-family: monospace; font-size: 0.65rem; font-weight: 800; color: #0284c7;">
-                                                                                        {{ $odp->code }}
-                                                                                    </span>
                                                                                 </div>
+
+                                                                                <span style="font-size: 0.62rem; font-weight: 900; padding: 1px 5px; border-radius: 4px; background: {{ $isFull ? '#fee2e2' : '#dcfce7' }}; color: {{ $isFull ? '#b91c1c' : '#15803d' }};">
+                                                                                    1:{{ $maxPorts }}
+                                                                                </span>
                                                                             </div>
 
-                                                                            <span style="font-size: 0.62rem; font-weight: 900; padding: 1px 5px; border-radius: 4px; background: {{ $isFull ? '#fee2e2' : '#dcfce7' }}; color: {{ $isFull ? '#b91c1c' : '#15803d' }};">
-                                                                                1:{{ $maxPorts }}
-                                                                            </span>
-                                                                        </div>
-
-                                                                        <!-- Mini Capacity Bar -->
-                                                                        <div style="display: flex; flex-direction: column; gap: 1px;">
-                                                                            <div style="display: flex; justify-content: space-between; font-size: 0.62rem; font-weight: 800; color: #64748b;">
+                                                                            <!-- Mini Capacity Bar -->
+                                                                            <div style="display: flex; flex-direction: column; gap: 1px;">
+                                                                                <div style="display: flex; justify-content: space-between; font-size: 0.62rem; font-weight: 800; color: #64748b;">
                                                                                 <span>Occupancy:</span>
                                                                                 <span>{{ $subCount }}/{{ $maxPorts }} ({{ round(($subCount/$maxPorts)*100) }}%)</span>
                                                                             </div>
@@ -486,13 +503,14 @@
             color: #f1f5f9 !important;
         }
 
-        html.dark .ims-canvas-scroll {
+        html.dark .ims-canvas-viewport {
             background: #040d1a !important;
             border-color: #14355a !important;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
         }
 
         html.dark .ims-stage-bar {
+            background: rgba(4, 13, 26, 0.92) !important;
             border-bottom-color: #14355a !important;
         }
 
