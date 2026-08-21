@@ -111,13 +111,118 @@ class RouterResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Router')
+                    ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
+                    ->html()
+                    ->formatStateUsing(function (Router $record): \Illuminate\Support\HtmlString {
+                        $key = $record->getKey();
+                        $name = $record->name ?? 'Router Core';
+                        $model = $record->model ?? 'MikroTik RouterOS';
+                        $ipPort = "{$record->ip_address}:{$record->port}";
+                        $popName = $record->pop?->name ?? 'Core Central';
+                        $status = $record->status ?? 'online';
+                        $statusLabel = match ($status) {
+                            'online' => '🟢 Online',
+                            'offline' => '🔴 Offline',
+                            default => '🟡 Belum Dicek',
+                        };
+                        $statusPillClass = match ($status) {
+                            'online' => 'ims-pill-active',
+                            'offline' => 'ims-pill-danger',
+                            default => 'ims-pill-warning',
+                        };
+                        $lastCheck = $record->last_connected_at ? $record->last_connected_at->format('d M Y, H:i') : 'Belum pernah';
+
+                        // Operational action buttons
+                        $recordActions = [
+                            [
+                                'name' => 'detailMikrotik',
+                                'label' => 'Live Info MikroTik',
+                                'icon' => 'info',
+                                'color' => 'blue',
+                            ],
+                            [
+                                'name' => 'testConnection',
+                                'label' => 'Test Ping / API',
+                                'icon' => 'signal',
+                                'color' => 'cyan',
+                            ],
+                            [
+                                'name' => 'edit',
+                                'label' => 'Edit Router',
+                                'icon' => 'edit',
+                                'color' => 'amber',
+                                'url' => static::getUrl('edit', ['record' => $record]),
+                            ],
+                        ];
+
+                        $detailPayload = [
+                            'title' => 'Detail Router MikroTik',
+                            'key' => (string) $key,
+                            'no' => (string) $ipPort,
+                            'name' => (string) $name,
+                            'phone' => (string) ($record->username ?? 'admin'),
+                            'nik' => (string) ($record->ros_version ?? 'RouterOS v7'),
+                            'pkg' => (string) $model,
+                            'group' => (string) $popName,
+                            'building' => (string) ($record->use_ssl ? 'API-SSL (Secure)' : 'API Standard'),
+                            'addr' => (string) ($record->description ?? 'Router Core Backbone Network MSN'),
+                            'latlong' => '-',
+                            'maps' => '',
+                            'status' => (string) $statusLabel,
+                            'statustype' => (string) "POP: {$popName}",
+                            'sales' => (string) "IP: {$ipPort}",
+                            'created' => (string) $lastCheck,
+                            'actions' => $recordActions,
+                        ];
+                        $encodedDetail = base64_encode(json_encode($detailPayload, JSON_UNESCAPED_UNICODE));
+
+                        return new \Illuminate\Support\HtmlString("
+                            <!-- DESKTOP VIEW (Visible on Desktop) -->
+                            <div class='ims-desktop-view flex flex-col text-xs leading-tight'>
+                                <span class='font-black text-slate-800 dark:text-slate-100 text-sm'>{$name}</span>
+                                <span class='text-slate-500 font-medium text-[11px] mt-0.5'>{$model}</span>
+                            </div>
+
+                            <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
+                            <div class='ims-standalone-card'>
+                                <div class='ims-card-head'>
+                                    <span class='ims-cid-badge'>{$name}</span>
+                                    <span class='ims-mobile-group-badge'>{$popName}</span>
+                                </div>
+                                <div class='ims-card-cust-info'>
+                                    <div style='font-size: 14px; font-weight: 900; color: #0f172a;'>{$model}</div>
+                                    <div style='font-size: 12px; font-family: monospace; font-weight: 700; color: #0284c7; margin-top: 2px;'>📡 {$ipPort}</div>
+                                    <div style='font-size: 11px; font-weight: 600; color: #64748b; margin-top: 2px;'>POP: {$popName}</div>
+                                </div>
+                                <div class='ims-card-sep'></div>
+                                <div class='ims-card-status-section'>
+                                    <div class='ims-schedule-pill {$statusPillClass}'>
+                                        <span>{$statusLabel}</span>
+                                        <span class='ims-schedule-slot'>⏱️ Cek: {$lastCheck}</span>
+                                    </div>
+                                </div>
+                                <div class='ims-card-sep'></div>
+                                <button
+                                    type='button'
+                                    data-detail-payload='{$encodedDetail}'
+                                    onclick=\"window.openImsDetailFromPayload && window.openImsDetailFromPayload('{$encodedDetail}')\"
+                                    class='ims-card-detail-btn'
+                                >
+                                    <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
+                                    </svg>
+                                    <span>Detail</span>
+                                </button>
+                            </div>
+                        ");
+                    })
                     ->searchable()
-                    ->sortable()
-                    ->weight(FontWeight::Bold)
-                    ->description(fn (Router $record): string => $record->model ?? 'Mikrotik RouterOS'),
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('ip_address')
                     ->label('IP Address & Port')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->fontFamily(FontFamily::Mono)
                     ->formatStateUsing(fn (Router $record): string => "{$record->ip_address}:{$record->port}")
                     ->copyable()
@@ -126,12 +231,14 @@ class RouterResource extends Resource
 
                 Tables\Columns\TextColumn::make('pop.name')
                     ->label('Lokasi POP')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->badge()
                     ->color('info')
                     ->default('Core Central'),
 
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'online' => 'success',
@@ -146,12 +253,14 @@ class RouterResource extends Resource
 
                 Tables\Columns\TextColumn::make('last_connected_at')
                     ->label('Terakhir Dicek')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->dateTime('d M Y, H:i')
                     ->placeholder('Belum pernah')
                     ->sortable(),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
+                    ->extraAttributes(['class' => 'ims-mobile-hide'])
                     ->boolean(),
             ])
             ->filters([
