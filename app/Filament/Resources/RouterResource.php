@@ -150,37 +150,49 @@ class RouterResource extends Resource
                             </div>
 
                             <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
-                            <div class='ims-standalone-card'>
-                                <div class='ims-card-head'>
-                                    <div style='display: flex; align-items: center; gap: 6px;'>
-                                        <span class='ims-cid-badge' style='background: #0284c7; color: #ffffff;'>📡 {$name}</span>
-                                    </div>
-                                    {$statusBadge}
-                                </div>
-                                <div class='ims-card-cust-info'>
-                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px;'>
-                                        <span style='font-size: 12px; font-weight: 700; color: #38bdf8;'>⚙️ {$model} {$ros}</span>
-                                        <span style='font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 6px; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd;'>📍 {$popName}</span>
-                                    </div>
-                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 4px;'>
-                                        <div style='display: flex; align-items: center; gap: 6px; font-family: monospace; font-size: 12px; font-weight: 800; color: #0284c7;'>
-                                            <span>🌐 {$ip}</span>
-                                            {$sslBadge}
+                            <div class='ims-standalone-card' style='display: flex; flex-direction: column; gap: 8px; width: 100%; box-sizing: border-box;'>
+                                <!-- Header: Nama Router & Status Badge -->
+                                <div style='display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; width: 100%; box-sizing: border-box;'>
+                                    <div style='display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1;'>
+                                        <div>
+                                            <span class='ims-cid-badge' style='background: #0284c7; color: #ffffff; font-size: 12px; font-weight: 800; padding: 3px 8px; border-radius: 6px; display: inline-block; word-break: break-word;'>📡 {$name}</span>
                                         </div>
-                                        {$activeBadge}
+                                        <div style='font-size: 11.5px; font-weight: 700; color: #38bdf8; margin-top: 3px;'>⚙️ {$model} {$ros}</div>
                                     </div>
-                                    <div style='font-size: 10.5px; color: #94a3b8; margin-top: 2px;'>
-                                        🕒 Terakhir Dicek: <strong style='color: #cbd5e1;'>{$lastChecked}</strong>
+                                    <div style='flex-shrink: 0;'>
+                                        {$statusBadge}
                                     </div>
                                 </div>
+
                                 <div class='ims-card-sep'></div>
-                                <!-- QUICK ACTION BUTTONS -->
+
+                                <!-- Detail Konektivitas (IP, SSL, POP, Aktif) -->
+                                <div style='display: flex; flex-direction: column; gap: 6px; width: 100%; box-sizing: border-box;'>
+                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap;'>
+                                        <div style='display: inline-flex; align-items: center; gap: 4px; font-family: monospace; font-size: 11.5px; font-weight: 800; color: #0284c7; background: #e0f2fe; padding: 2px 7px; border-radius: 5px; border: 1px solid #bae6fd;'>
+                                            <span>🌐 {$ip}</span>
+                                        </div>
+                                        <div style='display: inline-flex; align-items: center; gap: 4px;'>
+                                            {$sslBadge}
+                                            {$activeBadge}
+                                        </div>
+                                    </div>
+
+                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap;'>
+                                        <span style='font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 5px; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1;'>📍 {$popName}</span>
+                                        <span style='font-size: 10px; color: #94a3b8; font-weight: 600;'>🕒 {$lastChecked}</span>
+                                    </div>
+                                </div>
+
+                                <div class='ims-card-sep'></div>
+
+                                <!-- 2x2 Quick Action Buttons Grid -->
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
                                         onclick=\"document.querySelector('.ims-act-detail-{$recordId}')?.click();\"
                                         class='ims-modal-act-btn ims-modal-act-green'
-                                        style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                        style='font-size: 11px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         ⚡ Detail Live
                                     </button>
@@ -188,22 +200,23 @@ class RouterResource extends Resource
                                         type='button'
                                         onclick=\"document.querySelector('.ims-act-test-{$recordId}')?.click();\"
                                         class='ims-modal-act-btn ims-modal-act-cyan'
-                                        style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                        style='font-size: 11px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         📶 Test Ping / API
                                     </button>
-                                    <a
-                                        href='{$editUrl}'
+                                    <button
+                                        type='button'
+                                        onclick=\"document.querySelector('.ims-act-edit-{$recordId}')?.click() || (window.location.href = '{$editUrl}');\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
-                                        style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box; text-decoration: none;'
+                                        style='font-size: 11px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         ✏️ Edit
-                                    </a>
+                                    </button>
                                     <button
                                         type='button'
                                         onclick=\"document.querySelector('.ims-act-delete-{$recordId}')?.click();\"
                                         class='ims-modal-act-btn ims-modal-act-red'
-                                        style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                        style='font-size: 11px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         🗑️ Hapus
                                     </button>
