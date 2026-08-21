@@ -106,9 +106,9 @@ html.dark .fi-sidebar {
         max-height: 100dvh !important;
         z-index: 999999 !important;
         margin: 0 !important;
-        width: 18.5rem !important;
-        min-width: 18.5rem !important;
-        max-width: 86vw !important;
+        width: 50vw !important;
+        min-width: 50vw !important;
+        max-width: 50vw !important;
         will-change: transform !important;
         -webkit-backface-visibility: hidden !important;
         backface-visibility: hidden !important;
@@ -124,6 +124,9 @@ html.dark .fi-sidebar {
 
     .fi-sidebar.fi-sidebar-open {
         transform: translateX(0) !important;
+        width: 50vw !important;
+        min-width: 50vw !important;
+        max-width: 50vw !important;
         pointer-events: auto !important;
         visibility: visible !important;
         transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1),
