@@ -210,4 +210,103 @@ class Router extends Model
             'message' => "PPPoE Secret tersimpan di database lokal. (Router sedang offline)",
         ];
     }
+
+    /**
+     * Get complete live system info, hardware resources, and PPP profiles from MikroTik
+     */
+    public function getSystemInfo(): array
+    {
+        try {
+            $client = $this->getClient();
+            if (! $client) {
+                return [
+                    'connected' => false,
+                    'error' => "Gagal terhubung ke {$this->ip_address}:{$this->port}. Periksa IP, Port, Username, dan Password API MikroTik.",
+                ];
+            }
+
+            // 1. Identity
+            $identity = $this->name;
+            try {
+                $identityQuery = new \RouterOS\Query('/system/identity/print');
+                $identityRes = $client->query($identityQuery)->read();
+                if (!empty($identityRes[0]['name'])) {
+                    $identity = $identityRes[0]['name'];
+                }
+            } catch (\Throwable $e) {}
+
+            // 2. Resource
+            $res = [];
+            try {
+                $resourceQuery = new \RouterOS\Query('/system/resource/print');
+                $resourceRes = $client->query($resourceQuery)->read();
+                $res = $resourceRes[0] ?? [];
+            } catch (\Throwable $e) {}
+
+            // 3. Routerboard info
+            $rb = [];
+            try {
+                $rbQuery = new \RouterOS\Query('/system/routerboard/print');
+                $rbRes = $client->query($rbQuery)->read();
+                $rb = $rbRes[0] ?? [];
+            } catch (\Throwable $e) {}
+
+            // 4. PPP Profiles
+            $profiles = [];
+            try {
+                $profileQuery = new \RouterOS\Query('/ppp/profile/print');
+                $profileRes = $client->query($profileQuery)->read();
+                if (is_array($profileRes)) {
+                    $profiles = $profileRes;
+                }
+            } catch (\Throwable $e) {}
+
+            // 5. Active PPP Sessions
+            $actives = [];
+            try {
+                $activeQuery = new \RouterOS\Query('/ppp/active/print');
+                $activeRes = $client->query($activeQuery)->read();
+                if (is_array($activeRes)) {
+                    $actives = $activeRes;
+                }
+            } catch (\Throwable $e) {}
+
+            // Auto-update model & ros_version if available
+            $detectedModel = $res['board-name'] ?? ($rb['model'] ?? $this->model);
+            $detectedVersion = $res['version'] ?? $this->ros_version;
+
+            $this->update([
+                'status' => 'online',
+                'last_connected_at' => now(),
+                'model' => $detectedModel ?: $this->model,
+                'ros_version' => $detectedVersion ?: $this->ros_version,
+            ]);
+
+            return [
+                'connected' => true,
+                'identity' => $identity,
+                'board_name' => $detectedModel ?: 'Mikrotik RouterOS',
+                'version' => $detectedVersion ?: '-',
+                'uptime' => $res['uptime'] ?? '-',
+                'cpu_load' => isset($res['cpu-load']) ? $res['cpu-load'] . '%' : '0%',
+                'cpu_count' => $res['cpu-count'] ?? 1,
+                'cpu' => $res['cpu'] ?? '-',
+                'cpu_frequency' => isset($res['cpu-frequency']) ? $res['cpu-frequency'] . ' MHz' : '-',
+                'memory_total' => !empty($res['total-memory']) ? round($res['total-memory'] / 1024 / 1024, 1) . ' MB' : '-',
+                'memory_free' => !empty($res['free-memory']) ? round($res['free-memory'] / 1024 / 1024, 1) . ' MB' : '-',
+                'hdd_total' => !empty($res['total-hdd-space']) ? round($res['total-hdd-space'] / 1024 / 1024, 1) . ' MB' : '-',
+                'hdd_free' => !empty($res['free-hdd-space']) ? round($res['free-hdd-space'] / 1024 / 1024, 1) . ' MB' : '-',
+                'serial_number' => $rb['serial-number'] ?? '-',
+                'firmware' => $rb['current-firmware'] ?? ($rb['upgrade-firmware'] ?? '-'),
+                'profiles' => $profiles,
+                'active_count' => count($actives),
+            ];
+        } catch (\Throwable $e) {
+            return [
+                'connected' => false,
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
 }
+
