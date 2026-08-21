@@ -1,7 +1,70 @@
 <x-filament-panels::page>
     <style>
-        /* Mobile Card & Form Layout for OLT Management */
-        @media (max-width: 991px) {
+        /* Mobile-First Form & Card Layout for OLT Management */
+        .olt-form-row {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.85rem !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        .olt-field-group,
+        .olt-field-group-main,
+        .olt-field-group-sm,
+        .olt-field-group-btn {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 1 1 100% !important;
+            min-width: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            box-sizing: border-box !important;
+        }
+        .olt-input,
+        .olt-select,
+        .olt-btn-add {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+        }
+        .olt-btn-add {
+            height: 42px !important;
+            justify-content: center !important;
+        }
+
+        /* Desktop Only Layout (> 1024px) */
+        @media (min-width: 1024px) {
+            .olt-form-row {
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
+                align-items: flex-end !important;
+                gap: 1rem !important;
+            }
+            .olt-field-group-main {
+                flex: 1 1 240px !important;
+                width: auto !important;
+                min-width: 160px !important;
+            }
+            .olt-field-group-sm {
+                flex: 0 0 160px !important;
+                width: auto !important;
+                min-width: 120px !important;
+            }
+            .olt-field-group-btn {
+                flex: 0 0 auto !important;
+                width: auto !important;
+                min-width: auto !important;
+            }
+            .olt-btn-add {
+                width: auto !important;
+                height: 42px !important;
+            }
+        }
+
+        /* Mobile Card View for Tables */
+        @media (max-width: 1023px) {
             .olt-wrapper {
                 gap: 1rem !important;
             }
@@ -30,38 +93,6 @@
             .olt-card {
                 padding: 1rem !important;
                 border-radius: 14px !important;
-            }
-            .olt-form-row {
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: stretch !important;
-                gap: 0.85rem !important;
-                width: 100% !important;
-                box-sizing: border-box !important;
-            }
-            .olt-field-group,
-            .olt-field-group-main,
-            .olt-field-group-sm,
-            .olt-field-group-btn {
-                width: 100% !important;
-                max-width: 100% !important;
-                flex: 1 1 100% !important;
-                min-width: 0 !important;
-                display: flex !important;
-                flex-direction: column !important;
-                box-sizing: border-box !important;
-            }
-            .olt-input,
-            .olt-select,
-            .olt-btn-add {
-                width: 100% !important;
-                max-width: 100% !important;
-                min-width: 0 !important;
-                box-sizing: border-box !important;
-            }
-            .olt-btn-add {
-                height: 42px !important;
-                justify-content: center !important;
             }
             .olt-table-container {
                 background: transparent !important;
