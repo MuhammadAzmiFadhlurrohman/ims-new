@@ -726,7 +726,7 @@ class DummyDataSeeder extends Seeder
             ],
             [
                 'ticket_number' => 'TKT-202608-006',
-                'internet_number' => 'MS6331420201008',
+                'internet_number' => 'MSN-2026-0001',
                 'reporter_name' => 'Dadang Purnama',
                 'reporter_phone' => '081572110618',
                 'category' => 'COVERAGE',
