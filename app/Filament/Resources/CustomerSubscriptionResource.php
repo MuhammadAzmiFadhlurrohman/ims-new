@@ -186,9 +186,8 @@ class CustomerSubscriptionResource extends Resource
                 Tables\Columns\TextColumn::make('internet_number')
                     ->label('Pelanggan')
                     ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
-                    ->html()
                     ->alignLeft()
-                    ->formatStateUsing(function (CustomerSubscription $record): string {
+                    ->formatStateUsing(function (CustomerSubscription $record): \Illuminate\Support\HtmlString {
                         $key = $record->getKey();
                         $safeKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $key);
 
@@ -218,12 +217,12 @@ class CustomerSubscriptionResource extends Resource
                         $isSuspended = $record->is_isolated || $record->registration_status === '21' || str_contains(strtolower($record->registration_status ?? ''), 'suspend') || str_contains(strtolower($record->registration_status ?? ''), 'isolir');
 
                         $statusLabel = $isTerminated ? 'Terminasi' : ($isSuspended ? 'Suspend' : ($record->registration_status ?? 'Aktif'));
-                        $statusPillClass = $isTerminated ? 'ims-pill-batal' : ($isSuspended ? 'ims-pill-aktivasi' : 'ims-pill-survey-done');
+                        $statusPillClass = $isTerminated ? 'ims-pill-danger' : ($isSuspended ? 'ims-pill-warning' : 'ims-pill-active');
                         $statusType = strtoupper($record->status_type ?? 'TEMPORARY DELETE');
-                        $sales = strtoupper($record->sales_name ?? 'ABDUL GHANI');
+                        $sales = strtoupper($record->sales_name ?? '-');
                         $created = $record->created_at ? $record->created_at->format('d M Y H:i WIB') : '-';
-                        $updated = $record->updated_at ? $record->updated_at->format('d M Y H:i') : '-';
-                        $price = $record->package?->price ? number_format($record->package->price, 0, ',', '.') : ($record->monthly_fee ? number_format($record->monthly_fee, 0, ',', '.') : '200.000');
+                        $updated = $record->updated_at ? $record->updated_at->format('d/m/y H:i') : '-';
+                        $price = number_format($record->package->price ?? 165000, 0, ',', '.');
                         $detailUrl = static::getUrl('view', ['record' => $record]);
 
                         // Operational action buttons matching Desktop Data Pelanggan
@@ -281,7 +280,7 @@ class CustomerSubscriptionResource extends Resource
 
                         $phoneHtml = ($phone && $phone !== '-') ? "<span class='ims-cust-phone' style='font-size: 11.5px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>" : "";
 
-                        return "
+                        return new \Illuminate\Support\HtmlString("
                             <!-- DESKTOP VIEW (Visible on Desktop) -->
                             <div class='ims-desktop-view flex flex-col items-start text-left text-xs leading-snug py-1'>
                                 <a href='{$detailUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 tracking-tight'>{$internetNo}</a>
@@ -298,32 +297,17 @@ class CustomerSubscriptionResource extends Resource
                                 </div>
                                 <div class='ims-card-cust-info'>
                                     <div style='display: flex; align-items: center; gap: 6px;'>
-                                        <a href='{$detailUrl}' class='ims-cust-name' style='font-size: 14px; font-weight: 900; color: #0f172a;'>{$custName}</a>
-                                        <span style='font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px; background: #e2e8f0; color: #475569;'>{$gender}</span>
+                                        <a href='{$detailUrl}' class='ims-cust-name-text'>{$custName} ({$gender})</a>
                                     </div>
-                                    <div style='display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 3px;'>
-                                        <span class='ims-pkg-pill'>📦 {$pkgName}</span>
-                                        {$phoneHtml}
-                                    </div>
+                                    <div class='ims-cust-pkg-text'>📦 {$pkgName}</div>
+                                    {$phoneHtml}
                                 </div>
-                                <div class='ims-card-sep'></div>
                                 <div class='ims-card-status-section'>
                                     <div class='ims-schedule-pill {$statusPillClass}'>
                                         <span>📌 {$statusLabel}</span>
                                         <span class='ims-schedule-slot'>🕒 Rp {$price} / Bln</span>
                                     </div>
-                                    <div style='display: flex; align-items: center; gap: 6px; margin-top: 4px;'>
-                                        <button
-                                            type='button'
-                                            onclick=\"window.openImsStatusModal && window.openImsStatusModal('{$key}', '{$statusType}')\"
-                                            class='ims-temp-badge'
-                                        >
-                                            {$statusType}
-                                        </button>
-                                        <span class='ims-updated-text'>Up: {$updated}</span>
-                                    </div>
                                 </div>
-                                <div class='ims-card-sep'></div>
                                 <button
                                     type='button'
                                     data-detail-payload='{$encodedDetail}'
@@ -337,7 +321,7 @@ class CustomerSubscriptionResource extends Resource
                                     <span>Detail</span>
                                 </button>
                             </div>
-                        ";
+                        ");
                     })
                     ->searchable(['internet_number', 'customer_name'])
                     ->sortable(),
