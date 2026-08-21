@@ -126,18 +126,22 @@ class RouterResource extends Resource
                         
                         $status = strtolower($record->status ?? 'unknown');
                         $statusBadge = match($status) {
-                            'online' => "<span class='px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 flex items-center gap-1.5 shadow-sm'><span class='w-2 h-2 rounded-full bg-emerald-500 animate-pulse'></span>🟢 Online</span>",
-                            'offline' => "<span class='px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-300 dark:border-rose-700/60 flex items-center gap-1.5 shadow-sm'><span class='w-2 h-2 rounded-full bg-rose-500'></span>🔴 Offline</span>",
-                            default => "<span class='px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60 flex items-center gap-1.5 shadow-sm'><span class='w-2 h-2 rounded-full bg-amber-500'></span>🟡 Belum Dicek</span>",
+                            'online' => "<span class='px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5 shadow-sm whitespace-nowrap'><span class='w-2 h-2 rounded-full bg-emerald-500 animate-pulse'></span>Online</span>",
+                            'offline' => "<span class='px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 flex items-center gap-1.5 shadow-sm whitespace-nowrap'><span class='w-2 h-2 rounded-full bg-rose-500'></span>Offline</span>",
+                            default => "<span class='px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center gap-1.5 shadow-sm whitespace-nowrap'><span class='w-2 h-2 rounded-full bg-amber-500'></span>Belum Dicek</span>",
                         };
+
+                        $sslBadge = $record->use_ssl 
+                            ? "<span class='px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30'>🔒 SSL</span>" 
+                            : "<span class='px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-slate-500/15 text-slate-600 dark:text-slate-400 border border-slate-500/30'>🔓 Non-SSL</span>";
 
                         $lastChecked = $record->last_connected_at 
                             ? $record->last_connected_at->format('d M Y, H:i') 
                             : 'Belum pernah';
 
                         $activeBadge = $record->is_active
-                            ? "<span class='px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'>⚡ Aktif</span>"
-                            : "<span class='px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700'>⏸️ Non-Aktif</span>";
+                            ? "<span class='px-2 py-0.5 rounded text-[9.5px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'>⚡ Aktif</span>"
+                            : "<span class='px-2 py-0.5 rounded text-[9.5px] font-extrabold bg-slate-500/15 text-slate-500 dark:text-slate-400 border border-slate-500/30'>⏸️ Non-Aktif</span>";
 
                         $editUrl = static::getUrl('edit', ['record' => $record]);
                         $recordId = (int) $record->id;
@@ -150,14 +154,16 @@ class RouterResource extends Resource
                             </div>
 
                             <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
-                            <div class='ims-standalone-card' style='display: flex; flex-direction: column; gap: 8px; width: 100%; box-sizing: border-box;'>
+                            <div class='ims-standalone-card'>
                                 <!-- Header: Nama Router & Status Badge -->
-                                <div style='display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; width: 100%; box-sizing: border-box;'>
+                                <div style='display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; width: 100%;'>
                                     <div style='display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1;'>
-                                        <div>
-                                            <span class='ims-cid-badge' style='background: #0284c7; color: #ffffff; font-size: 12px; font-weight: 800; padding: 3px 8px; border-radius: 6px; display: inline-block; word-break: break-word;'>📡 {$name}</span>
+                                        <div style='display: flex; align-items: center; gap: 6px;'>
+                                            <span class='ims-cid-badge' style='background: #0284c7; color: #ffffff;'>📡 {$name}</span>
                                         </div>
-                                        <div style='font-size: 11.5px; font-weight: 700; color: #38bdf8; margin-top: 3px;'>⚙️ {$model} {$ros}</div>
+                                        <div style='font-size: 11.5px; font-weight: 700; color: #38bdf8; margin-top: 3px; word-break: break-word;'>
+                                            ⚙️ {$model} {$ros}
+                                        </div>
                                     </div>
                                     <div style='flex-shrink: 0;'>
                                         {$statusBadge}
@@ -167,32 +173,32 @@ class RouterResource extends Resource
                                 <div class='ims-card-sep'></div>
 
                                 <!-- Detail Konektivitas (IP, SSL, POP, Aktif) -->
-                                <div style='display: flex; flex-direction: column; gap: 6px; width: 100%; box-sizing: border-box;'>
+                                <div style='display: flex; flex-direction: column; gap: 6px; width: 100%;'>
                                     <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap;'>
-                                        <div style='display: inline-flex; align-items: center; gap: 4px; font-family: monospace; font-size: 11.5px; font-weight: 800; color: #0284c7; background: #e0f2fe; padding: 2px 7px; border-radius: 5px; border: 1px solid #bae6fd;'>
+                                        <div style='display: inline-flex; align-items: center; gap: 5px; font-family: monospace; font-size: 11.5px; font-weight: 800; color: #0284c7;'>
                                             <span>🌐 {$ip}</span>
-                                        </div>
-                                        <div style='display: inline-flex; align-items: center; gap: 4px;'>
                                             {$sslBadge}
+                                        </div>
+                                        <div>
                                             {$activeBadge}
                                         </div>
                                     </div>
 
-                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap;'>
-                                        <span style='font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 5px; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1;'>📍 {$popName}</span>
-                                        <span style='font-size: 10px; color: #94a3b8; font-weight: 600;'>🕒 {$lastChecked}</span>
+                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; font-size: 10.5px;'>
+                                        <span class='ims-mobile-group-badge'>📍 POP: {$popName}</span>
+                                        <span style='color: #94a3b8; font-weight: 600;'>🕒 {$lastChecked}</span>
                                     </div>
                                 </div>
 
                                 <div class='ims-card-sep'></div>
 
-                                <!-- 2x2 Quick Action Buttons Grid -->
+                                <!-- 4 Tombol Aksi Sesuai Desktop (Grid 2x2) -->
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
                                         onclick=\"document.querySelector('.ims-act-detail-{$recordId}')?.click();\"
                                         class='ims-modal-act-btn ims-modal-act-green'
-                                        style='font-size: 11px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
+                                        style='font-size: 11px; padding: 7px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         ⚡ Detail Live
                                     </button>
@@ -200,7 +206,7 @@ class RouterResource extends Resource
                                         type='button'
                                         onclick=\"document.querySelector('.ims-act-test-{$recordId}')?.click();\"
                                         class='ims-modal-act-btn ims-modal-act-cyan'
-                                        style='font-size: 11px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
+                                        style='font-size: 11px; padding: 7px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         📶 Test Ping / API
                                     </button>
@@ -208,7 +214,7 @@ class RouterResource extends Resource
                                         type='button'
                                         onclick=\"document.querySelector('.ims-act-edit-{$recordId}')?.click() || (window.location.href = '{$editUrl}');\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
-                                        style='font-size: 11px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
+                                        style='font-size: 11px; padding: 7px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         ✏️ Edit
                                     </button>
@@ -216,7 +222,7 @@ class RouterResource extends Resource
                                         type='button'
                                         onclick=\"document.querySelector('.ims-act-delete-{$recordId}')?.click();\"
                                         class='ims-modal-act-btn ims-modal-act-red'
-                                        style='font-size: 11px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
+                                        style='font-size: 11px; padding: 7px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
                                     >
                                         🗑️ Hapus
                                     </button>
