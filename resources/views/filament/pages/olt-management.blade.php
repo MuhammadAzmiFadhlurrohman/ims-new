@@ -63,7 +63,7 @@
             }
         }
 
-        /* Mobile Card View for Tables */
+        /* Mobile Card View for Tables & Headers */
         @media (max-width: 1023px) {
             .olt-wrapper {
                 gap: 1rem !important;
@@ -93,6 +93,47 @@
             .olt-card {
                 padding: 1rem !important;
                 border-radius: 14px !important;
+            }
+            .olt-card-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.75rem !important;
+                width: 100% !important;
+            }
+            .olt-card-title {
+                width: 100% !important;
+                font-size: 0.92rem !important;
+                line-height: 1.35 !important;
+            }
+            .olt-card-header-actions,
+            .olt-card-header > div:last-child {
+                width: 100% !important;
+                display: flex !important;
+                gap: 8px !important;
+                align-items: center !important;
+            }
+            .olt-btn-back,
+            .olt-btn-history {
+                flex: 1 1 auto !important;
+                justify-content: center !important;
+                padding: 0.5rem 0.75rem !important;
+            }
+            .olt-breadcrumb-bar {
+                overflow-x: auto !important;
+                flex-wrap: nowrap !important;
+                white-space: nowrap !important;
+                -webkit-overflow-scrolling: touch !important;
+                padding: 0.5rem 0.6rem !important;
+                gap: 0.4rem !important;
+                scrollbar-width: none !important;
+            }
+            .olt-breadcrumb-bar::-webkit-scrollbar {
+                display: none !important;
+            }
+            .olt-breadcrumb-link {
+                font-size: 0.76rem !important;
+                padding: 0.35rem 0.65rem !important;
+                flex-shrink: 0 !important;
             }
             .olt-table-container {
                 background: transparent !important;
@@ -165,6 +206,32 @@
             }
             .olt-progress-box {
                 width: 100% !important;
+            }
+        }
+
+        /* Smaller mobile adjustments (<= 480px) */
+        @media (max-width: 480px) {
+            .olt-wrapper {
+                gap: 0.75rem !important;
+            }
+            .olt-card {
+                padding: 0.85rem !important;
+            }
+            .olt-top-header {
+                padding: 0.75rem !important;
+            }
+            .olt-title-text {
+                font-size: 0.95rem !important;
+            }
+            .olt-title-subtitle {
+                font-size: 0.72rem !important;
+            }
+            .olt-table tbody tr {
+                padding: 0.85rem 0.75rem !important;
+                border-radius: 12px !important;
+            }
+            .olt-table tbody td:last-child div {
+                grid-template-columns: 1fr 1fr !important;
             }
         }
 
