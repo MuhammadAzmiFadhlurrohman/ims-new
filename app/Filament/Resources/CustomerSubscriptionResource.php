@@ -737,13 +737,14 @@ class CustomerSubscriptionResource extends Resource
                                             $rowsHtml = "<tr><td colspan='3' class='px-4 py-4 text-center text-xs text-slate-400 font-medium'>No data available in table</td></tr>";
                                         } else {
                                             foreach ($invoices as $inv) {
-                                                $statusColor = $inv->status === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700';
+                                                $statusColor = $inv->payment_status === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700';
+                                                $period = $inv->billing_period_text ?? ($inv->billing_month ? $inv->billing_month . '/' . $inv->billing_year : '-');
                                                 $amountFormatted = 'Rp '.number_format($inv->total_amount, 0, ',', '.');
                                                 $rowsHtml .= "
                                                     <tr class='border-t border-slate-100 text-xs text-slate-700'>
-                                                        <td class='px-3 py-2'>{$inv->billing_period}</td>
+                                                        <td class='px-3 py-2'>{$period}</td>
                                                         <td class='px-3 py-2 font-medium'>{$amountFormatted}</td>
-                                                        <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold {$statusColor}'>{$inv->status}</span></td>
+                                                        <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold {$statusColor}'>{$inv->payment_status}</span></td>
                                                     </tr>
                                                 ";
                                             }
@@ -843,7 +844,7 @@ class CustomerSubscriptionResource extends Resource
                                         ->label('Riwayat Pending Tagihan')
                                         ->content(function (CustomerSubscription $record) {
                                             $invoices = MonthlyInvoice::where('internet_number', $record->internet_number)
-                                                ->where('status', 'UNPAID')
+                                                ->where('payment_status', 'UNPAID')
                                                 ->latest()
                                                 ->take(5)
                                                 ->get();
@@ -853,12 +854,13 @@ class CustomerSubscriptionResource extends Resource
                                                 $rowsHtml = "<tr><td colspan='3' class='px-4 py-4 text-center text-xs text-slate-400 font-medium'>No data available in table</td></tr>";
                                             } else {
                                                 foreach ($invoices as $inv) {
+                                                    $period = $inv->billing_period_text ?? ($inv->billing_month ? $inv->billing_month . '/' . $inv->billing_year : '-');
                                                     $amountFormatted = 'Rp '.number_format($inv->total_amount, 0, ',', '.');
                                                     $rowsHtml .= "
                                                         <tr class='border-t border-slate-100 text-xs text-slate-700'>
-                                                            <td class='px-3 py-2'>{$inv->billing_period}</td>
+                                                            <td class='px-3 py-2'>{$period}</td>
                                                             <td class='px-3 py-2 font-medium'>{$amountFormatted}</td>
-                                                            <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700'>UNPAID</span></td>
+                                                            <td class='px-3 py-2'><span class='px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700'>{$inv->payment_status}</span></td>
                                                         </tr>
                                                     ";
                                                 }
