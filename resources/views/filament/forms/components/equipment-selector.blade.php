@@ -30,55 +30,49 @@
             this.items.splice(index, 1);
         }
     }"
-    class="w-full"
+    class="w-full ims-equipment-selector"
     style="font-family: inherit;"
 >
     {{-- Header --}}
-    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
-        <div style="width: 3px; height: 18px; background: #38bdf8; border-radius: 2px;"></div>
-        <span style="font-size: 13px; font-weight: 700; color: #1e293b; letter-spacing: 0.01em;">Perangkat/ Peralatan Yang Digunakan</span>
+    <div class="flex items-center gap-2 mb-3.5">
+        <div class="w-1 h-4.5 bg-sky-400 rounded-sm"></div>
+        <span class="text-xs font-bold text-slate-800 dark:text-slate-100 tracking-wide">Perangkat/ Peralatan Yang Digunakan</span>
     </div>
 
     {{-- Top Inputs Row (Perangkat, Jumlah, Action Add) --}}
-    <div style="display: grid; grid-template-columns: 2.2fr 1fr auto; gap: 12px; align-items: flex-end; margin-bottom: 16px;">
+    <div class="grid grid-cols-[2.2fr_1fr_auto] gap-3 items-end mb-4">
         {{-- Perangkat --}}
         <div>
-            <label style="display: block; font-size: 11.5px; font-weight: 600; color: #475569; margin-bottom: 4px;">Perangkat</label>
+            <label class="block text-[11.5px] font-semibold text-slate-600 dark:text-slate-300 mb-1">Perangkat</label>
             <select
                 x-model="selectedItem"
-                style="width: 100%; height: 38px; padding: 0 10px; font-size: 12px; color: #1e293b; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; transition: border-color 0.2s;"
-                onfocus="this.style.borderColor='#38bdf8'"
-                onblur="this.style.borderColor='#cbd5e1'"
+                class="w-full h-[38px] px-2.5 text-xs text-slate-900 dark:text-slate-100 bg-white dark:bg-[#0b1e36] border border-slate-300 dark:border-[#1a3c66] rounded-md outline-none focus:border-sky-400 dark:focus:border-sky-400 transition-colors"
             >
-                <option value="">Pilih Perangkat</option>
+                <option value="" class="dark:bg-[#0b1e36] dark:text-slate-100">Pilih Perangkat</option>
                 @foreach ($items as $key => $name)
-                    <option value="{{ $key }}">{{ $name }}</option>
+                    <option value="{{ $key }}" class="dark:bg-[#0b1e36] dark:text-slate-100">{{ $name }}</option>
                 @endforeach
             </select>
         </div>
 
         {{-- Jumlah --}}
         <div>
-            <label style="display: block; font-size: 11.5px; font-weight: 600; color: #475569; margin-bottom: 4px;">Jumlah</label>
+            <label class="block text-[11.5px] font-semibold text-slate-600 dark:text-slate-300 mb-1">Jumlah</label>
             <input
                 type="text"
                 x-model="quantity"
                 placeholder="1"
-                style="width: 100%; height: 38px; padding: 0 10px; font-size: 12px; color: #1e293b; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; transition: border-color 0.2s;"
-                onfocus="this.style.borderColor='#38bdf8'"
-                onblur="this.style.borderColor='#cbd5e1'"
+                class="w-full h-[38px] px-2.5 text-xs text-slate-900 dark:text-slate-100 bg-white dark:bg-[#0b1e36] border border-slate-300 dark:border-[#1a3c66] rounded-md outline-none focus:border-sky-400 dark:focus:border-sky-400 transition-colors"
             />
         </div>
 
         {{-- Action Add Button --}}
         <div>
-            <label style="display: block; font-size: 11.5px; font-weight: 600; color: #475569; margin-bottom: 4px;">action</label>
+            <label class="block text-[11.5px] font-semibold text-slate-600 dark:text-slate-300 mb-1">action</label>
             <button
                 type="button"
                 @click="addItem()"
-                style="height: 38px; padding: 0 20px; font-size: 13px; font-weight: 800; color: #ffffff; background: #00c49f; border: none; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 196, 159, 0.35); transition: transform 0.15s, background-color 0.15s;"
-                onmouseover="this.style.transform='translateY(-1px)'; this.style.backgroundColor='#00b390';"
-                onmouseout="this.style.transform='none'; this.style.backgroundColor='#00c49f';"
+                class="h-[38px] px-5 text-[13px] font-extrabold text-white bg-[#00c49f] hover:bg-[#00b390] border-none rounded-md cursor-pointer shadow-md transition-all hover:-translate-y-0.5"
             >
                 Add
             </button>
@@ -86,20 +80,20 @@
     </div>
 
     {{-- Data Table --}}
-    <div style="border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
-        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+    <div class="border border-slate-200 dark:border-[#1a3c66] rounded-md overflow-hidden bg-white dark:bg-[#0b1e36] shadow-xs">
+        <table class="w-full border-collapse text-left">
             <thead>
-                <tr style="background: #f1f5f9; border-bottom: 1px solid #e2e8f0;">
-                    <th style="padding: 10px 14px; font-size: 11.5px; font-weight: 700; color: #334155; width: 60%;">
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                <tr class="bg-slate-100 dark:bg-[#08172b] border-b border-slate-200 dark:border-[#1a3c66]">
+                    <th class="py-2.5 px-3.5 text-[11.5px] font-bold text-slate-700 dark:text-slate-300 w-[60%]">
+                        <div class="flex items-center justify-between">
                             <span>Barang</span>
-                            <span style="color: #94a3b8; font-size: 10px;">⇅</span>
+                            <span class="text-slate-400 dark:text-slate-500 text-[10px]">⇅</span>
                         </div>
                     </th>
-                    <th style="padding: 10px 14px; font-size: 11.5px; font-weight: 700; color: #334155; width: 25%;">
+                    <th class="py-2.5 px-3.5 text-[11.5px] font-bold text-slate-700 dark:text-slate-300 w-[25%]">
                         Jumlah
                     </th>
-                    <th style="padding: 10px 14px; font-size: 11.5px; font-weight: 700; color: #334155; width: 15%; text-align: center;">
+                    <th class="py-2.5 px-3.5 text-[11.5px] font-bold text-slate-700 dark:text-slate-300 w-[15%] text-center">
                         Action
                     </th>
                 </tr>
@@ -108,7 +102,7 @@
                 {{-- Empty State --}}
                 <template x-if="!items || items.length === 0">
                     <tr>
-                        <td colspan="3" style="text-align: center; padding: 22px 14px; font-size: 11.5px; font-weight: 600; color: #94a3b8;">
+                        <td colspan="3" class="text-center py-5 px-3.5 text-[11.5px] font-semibold text-slate-400 dark:text-slate-500">
                             No data available in table
                         </td>
                     </tr>
@@ -116,17 +110,15 @@
 
                 {{-- Populated Items --}}
                 <template x-for="(item, index) in items" :key="index">
-                    <tr style="border-bottom: 1px solid #f1f5f9; transition: background-color 0.15s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
-                        <td style="padding: 10px 14px; font-size: 12px; font-weight: 600; color: #1e293b;" x-text="item.item_name"></td>
-                        <td style="padding: 10px 14px; font-size: 12px; font-weight: 700; color: #0284c7;" x-text="item.quantity"></td>
-                        <td style="padding: 10px 14px; text-align: center;">
+                    <tr class="border-b border-slate-100 dark:border-[#132e50] hover:bg-slate-50 dark:hover:bg-[#0e2544] transition-colors">
+                        <td class="py-2.5 px-3.5 text-xs font-semibold text-slate-800 dark:text-slate-200" x-text="item.item_name"></td>
+                        <td class="py-2.5 px-3.5 text-xs font-bold text-sky-600 dark:text-sky-400" x-text="item.quantity"></td>
+                        <td class="py-2.5 px-3.5 text-center">
                             <button
                                 type="button"
                                 @click="removeItem(index)"
                                 title="Hapus Barang"
-                                style="background: transparent; border: none; color: #ef4444; cursor: pointer; padding: 4px 8px; border-radius: 4px; font-size: 11.5px; font-weight: 700; transition: background 0.15s;"
-                                onmouseover="this.style.backgroundColor='#fee2e2'"
-                                onmouseout="this.style.backgroundColor='transparent'"
+                                class="bg-transparent border-none text-rose-500 hover:text-rose-400 cursor-pointer py-1 px-2 rounded text-[11.5px] font-bold hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-colors"
                             >
                                 ✕
                             </button>
