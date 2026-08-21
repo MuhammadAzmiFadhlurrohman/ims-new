@@ -2,85 +2,61 @@
     <div
         x-data="{
             zoom: 1.0,
-            panX: 20,
-            panY: 20,
             isDragging: false,
             startX: 0,
             startY: 0,
+            initialScrollLeft: 0,
+            initialScrollTop: 0,
 
             init() {
                 this.$watch('$wire.selectedOlt', () => this.resetZoom());
                 this.$watch('$wire.search', () => this.resetZoom());
             },
 
-            changeZoom(delta) {
-                const oldZoom = this.zoom;
-                const newZoom = Math.min(Math.max(+(oldZoom + delta).toFixed(2), 0.4), 2.0);
-                if (newZoom === oldZoom) return;
-
-                const vp = this.$refs.viewport;
-                const vpW = vp ? vp.clientWidth : 800;
-                const vpH = vp ? vp.clientHeight : 500;
-                const cx = vpW / 2;
-                const cy = vpH / 2;
-
-                // Zoom berpusat di tengah kanvas
-                this.panX = cx - (cx - this.panX) * (newZoom / oldZoom);
-                this.panY = cy - (cy - this.panY) * (newZoom / oldZoom);
-                this.zoom = newZoom;
+            zoomIn() {
+                this.zoom = Math.min(+(this.zoom + 0.15).toFixed(2), 1.8);
             },
-
-            zoomIn() { this.changeZoom(0.15); },
-            zoomOut() { this.changeZoom(-0.15); },
+            zoomOut() {
+                this.zoom = Math.max(+(this.zoom - 0.15).toFixed(2), 0.5);
+            },
             resetZoom() {
                 this.zoom = 1.0;
-                this.panX = 20;
-                this.panY = 20;
+                const c = this.$refs.viewport;
+                if (c) {
+                    c.scrollLeft = 0;
+                    c.scrollTop = 0;
+                }
             },
 
             startDrag(e) {
                 if (e.target.closest('button, input, select, a, [wire\\:click]')) return;
+                const c = this.$refs.viewport;
+                if (!c) return;
                 this.isDragging = true;
-                const clientX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
-                const clientY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
-                this.startX = clientX - this.panX;
-                this.startY = clientY - this.panY;
+                this.startX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
+                this.startY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
+                this.initialScrollLeft = c.scrollLeft;
+                this.initialScrollTop = c.scrollTop;
             },
 
             onDrag(e) {
                 if (!this.isDragging) return;
+                const c = this.$refs.viewport;
+                if (!c) return;
                 const clientX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
                 const clientY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
                 if (clientX === undefined || clientY === undefined) return;
                 e.preventDefault();
 
-                // Gerakan geser mulus tanpa tertahan
-                const rawX = clientX - this.startX;
-                const rawY = clientY - this.startY;
-                this.panX = Math.min(100, Math.max(-2000, rawX));
-                this.panY = Math.min(80, Math.max(-2500, rawY));
+                // Menggeser secara presisi mengikuti batas kanvas aktual (tidak bisa kebablasan)
+                const deltaX = clientX - this.startX;
+                const deltaY = clientY - this.startY;
+                c.scrollLeft = this.initialScrollLeft - deltaX;
+                c.scrollTop = this.initialScrollTop - deltaY;
             },
 
             stopDrag() {
                 this.isDragging = false;
-            },
-
-            handleWheel(e) {
-                if (e.ctrlKey || e.metaKey) {
-                    e.preventDefault();
-                    if (e.deltaY < 0) {
-                        this.zoomIn();
-                    } else {
-                        this.zoomOut();
-                    }
-                } else {
-                    e.preventDefault();
-                    // Scroll mouse halus
-                    const newX = this.panX - (e.deltaX || 0) * 0.9;
-                    const newY = this.panY - (e.deltaY || 0) * 0.9;
-                    this.panX = Math.min(100, Math.max(-2000, newX));
-                    this.panY = Math.min(80, Math.max(-2500, newY));
-                }
             }
         }"
         class="ims-ftth-compact-wrapper"
@@ -166,7 +142,7 @@
                         @click="resetZoom()"
                         type="button"
                         title="Pusatkan Posisi & Reset Zoom ke 100%"
-                        style="display: inline-flex; align-items: center; justify-content: center; height: 24px; padding: 0 6px; border-radius: 4px; font-size: 0.68rem; font-weight: 800; background: transparent; color: #475569; border: none; cursor: pointer; font-family: monospace;"
+                        style="display: inline-flex; align-items: center; justify-content: center; height: 24px; padding: 0 5px; border-radius: 4px; font-size: 0.68rem; font-weight: 800; background: transparent; color: #475569; border: none; cursor: pointer; font-family: monospace;"
                     >
                         <span x-text="Math.round(zoom * 100) + '%'">100%</span>
                     </button>
@@ -239,36 +215,33 @@
                 </button>
             </div>
         @else
-            <!-- Canvas Viewport Frame (Strictly bounded with overflow:hidden and isolation) -->
+            <!-- Canvas Viewport Frame: Scroll container with strictly bounded limits -->
             <div
                 x-ref="viewport"
                 @mousedown="startDrag($event)"
                 @mousemove="onDrag($event)"
                 @mouseup="stopDrag()"
                 @mouseleave="stopDrag()"
-                @touchstart.passive="startDrag($event)"
+                @touchstart="startDrag($event)"
                 @touchmove="onDrag($event)"
                 @touchend="stopDrag()"
-                @wheel="handleWheel($event)"
                 :style="isDragging ? 'cursor: grabbing !important; user-select: none;' : 'cursor: grab;'"
                 class="ims-canvas-viewport"
-                style="position: relative; width: 100%; max-width: 100%; height: 600px; max-height: 72vh; overflow: hidden !important; contain: paint layout; isolation: isolate; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); z-index: 1;"
+                style="position: relative; width: 100%; max-width: 100%; height: 600px; max-height: 72vh; overflow: auto !important; scrollbar-width: thin; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); z-index: 1;"
             >
                 <!-- Floating Canvas Drag Hint Badge -->
-                <div style="position: absolute; bottom: 10px; right: 12px; z-index: 30; display: inline-flex; align-items: center; gap: 0.3rem; padding: 3px 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 0.65rem; font-weight: 800; backdrop-filter: blur(4px); pointer-events: none; user-select: none;">
+                <div style="position: sticky; top: 10px; float: right; margin-right: 12px; z-index: 30; display: inline-flex; align-items: center; gap: 0.3rem; padding: 3px 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 0.65rem; font-weight: 800; backdrop-filter: blur(4px); pointer-events: none; user-select: none;">
                     <span>🖱️ Tahan & Geser</span>
                     <span>•</span>
-                    <span>Scroll: Pan / Zoom</span>
+                    <span>Scroll: Pan</span>
                 </div>
 
-                <!-- Inner Scalable Surface -->
+                <!-- Scalable Surface (Proper scaling with automatic scrollWidth & scrollHeight) -->
                 <div
-                    x-ref="canvasContent"
-                    :style="'transform: translate(' + panX + 'px, ' + panY + 'px) scale(' + zoom + '); transform-origin: 0 0; will-change: transform; transition: ' + (isDragging ? 'none' : 'transform 0.1s ease-out') + ';'"
-                    style="position: absolute; top: 0; left: 0; padding: 1.25rem; display: inline-block;"
+                    :style="'transform: scale(' + zoom + '); transform-origin: top left; width: ' + (100 / zoom) + '%; min-width: 880px; padding: 1.25rem; display: inline-block;'"
                 >
-                    <!-- Visible Bounding Board for Topology -->
-                    <div class="ims-topology-board" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.25rem 1.5rem; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);">
+                    <!-- Visible Bounding Board for Topology (Pas sesuai isi diagram) -->
+                    <div class="ims-topology-board" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.25rem 1.5rem; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03); width: fit-content; min-width: 100%;">
                         
                         <!-- Stage Header Columns -->
                         <div class="ims-stage-bar" style="display: grid; grid-template-columns: 160px 140px 190px minmax(220px, 1fr); gap: 1rem; padding-bottom: 0.5rem; border-bottom: 1.5px dashed #cbd5e1; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em;">
