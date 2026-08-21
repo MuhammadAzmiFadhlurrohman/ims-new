@@ -74,21 +74,33 @@ class FtthTopologyPage extends Page
         $this->selectedOdp = ($this->selectedOdp === $code) ? null : $code;
     }
 
-    public function togglePon(int $ponId): void
+    public function isPonCollapsed($ponId): bool
     {
-        if (in_array($ponId, $this->collapsedPons)) {
-            $this->collapsedPons = array_diff($this->collapsedPons, [$ponId]);
+        return !empty($this->collapsedPons[(string)$ponId]);
+    }
+
+    public function togglePon($ponId): void
+    {
+        $key = (string)$ponId;
+        if (!empty($this->collapsedPons[$key])) {
+            unset($this->collapsedPons[$key]);
         } else {
-            $this->collapsedPons[] = $ponId;
+            $this->collapsedPons[$key] = true;
         }
     }
 
-    public function toggleOdp(string $odpCode): void
+    public function isOdpCollapsed($odpCode): bool
     {
-        if (in_array($odpCode, $this->collapsedOdps)) {
-            $this->collapsedOdps = array_diff($this->collapsedOdps, [$odpCode]);
+        return !empty($this->collapsedOdps[(string)$odpCode]);
+    }
+
+    public function toggleOdp($odpCode): void
+    {
+        $key = (string)$odpCode;
+        if (!empty($this->collapsedOdps[$key])) {
+            unset($this->collapsedOdps[$key]);
         } else {
-            $this->collapsedOdps[] = $odpCode;
+            $this->collapsedOdps[$key] = true;
         }
     }
 
@@ -100,10 +112,14 @@ class FtthTopologyPage extends Page
 
     public function collapseAll(): void
     {
-        $allPonIds = PonPort::pluck('id')->toArray();
-        $allOdpCodes = Odp::pluck('code')->toArray();
-        $this->collapsedPons = $allPonIds;
-        $this->collapsedOdps = $allOdpCodes;
+        $this->collapsedPons = [];
+        $this->collapsedOdps = [];
+        foreach (PonPort::pluck('id') as $id) {
+            $this->collapsedPons[(string)$id] = true;
+        }
+        foreach (Odp::pluck('code') as $code) {
+            $this->collapsedOdps[(string)$code] = true;
+        }
     }
 
     public function resetFilters(): void
@@ -113,6 +129,7 @@ class FtthTopologyPage extends Page
         $this->selectedOdp = null;
         $this->search = '';
         $this->tracedUser = null;
+        $this->expandAll();
     }
 
     public function traceUser(string $internetNo): void
@@ -135,8 +152,8 @@ class FtthTopologyPage extends Page
             }
 
             // Ensure uncollapsed
-            $this->collapsedPons = array_diff($this->collapsedPons, [$this->selectedPon]);
-            $this->collapsedOdps = array_diff($this->collapsedOdps, [$this->selectedOdp]);
+            unset($this->collapsedPons[(string)$this->selectedPon]);
+            unset($this->collapsedOdps[(string)$this->selectedOdp]);
         }
     }
 
@@ -170,32 +187,34 @@ class FtthTopologyPage extends Page
      */
     public function getTopologyTreeProperty()
     {
+        $searchTerm = trim($this->search);
+
         $query = Olt::query()
             ->with(['pop'])
-            ->with(['ponPorts' => function ($q) {
+            ->with(['ponPorts' => function ($q) use ($searchTerm) {
                 if ($this->selectedPon) {
                     $q->where('id', $this->selectedPon);
                 }
-                $q->with(['odps' => function ($odpQ) {
+                $q->with(['odps' => function ($odpQ) use ($searchTerm) {
                     if ($this->selectedOdp) {
                         $odpQ->where('code', $this->selectedOdp);
                     }
-                    if (!empty($this->search)) {
-                        $odpQ->where(function ($s) {
-                            $s->where('code', 'like', "%{$this->search}%")
-                              ->orWhere('name', 'like', "%{$this->search}%")
-                              ->orWhereHas('subscriptions', function ($subQ) {
-                                  $subQ->where('internet_number', 'like', "%{$this->search}%")
-                                       ->orWhere('customer_name', 'like', "%{$this->search}%");
+                    if (!empty($searchTerm)) {
+                        $odpQ->where(function ($s) use ($searchTerm) {
+                            $s->where('code', 'like', "%{$searchTerm}%")
+                              ->orWhere('name', 'like', "%{$searchTerm}%")
+                              ->orWhereHas('subscriptions', function ($subQ) use ($searchTerm) {
+                                  $subQ->where('internet_number', 'like', "%{$searchTerm}%")
+                                       ->orWhere('customer_name', 'like', "%{$searchTerm}%");
                               });
                         });
                     }
-                    $odpQ->with(['subscriptions' => function ($subQ) {
+                    $odpQ->with(['subscriptions' => function ($subQ) use ($searchTerm) {
                         $subQ->with(['customer', 'package']);
-                        if (!empty($this->search)) {
-                            $subQ->where(function ($s) {
-                                $s->where('internet_number', 'like', "%{$this->search}%")
-                                  ->orWhere('customer_name', 'like', "%{$this->search}%");
+                        if (!empty($searchTerm)) {
+                            $subQ->where(function ($s) use ($searchTerm) {
+                                $s->where('internet_number', 'like', "%{$searchTerm}%")
+                                  ->orWhere('customer_name', 'like', "%{$searchTerm}%");
                             });
                         }
                     }]);
@@ -204,6 +223,21 @@ class FtthTopologyPage extends Page
 
         if ($this->selectedOlt) {
             $query->where('code', $this->selectedOlt);
+        }
+
+        if (!empty($searchTerm)) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('code', 'like', "%{$searchTerm}%")
+                  ->orWhereHas('ponPorts.odps', function ($odpQ) use ($searchTerm) {
+                      $odpQ->where('code', 'like', "%{$searchTerm}%")
+                           ->orWhere('name', 'like', "%{$searchTerm}%")
+                           ->orWhereHas('subscriptions', function ($subQ) use ($searchTerm) {
+                               $subQ->where('internet_number', 'like', "%{$searchTerm}%")
+                                    ->orWhere('customer_name', 'like', "%{$searchTerm}%");
+                           });
+                  });
+            });
         }
 
         return $query->get();
