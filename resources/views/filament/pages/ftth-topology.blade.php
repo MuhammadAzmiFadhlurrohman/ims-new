@@ -9,45 +9,13 @@
             startY: 0,
 
             init() {
-                this.$nextTick(() => {
-                    this.clampBounds();
-                });
                 this.$watch('$wire.selectedOlt', () => this.resetZoom());
                 this.$watch('$wire.search', () => this.resetZoom());
             },
 
-            clampBounds() {
-                const vp = this.$refs.viewport;
-                const content = this.$refs.canvasContent;
-                if (!vp || !content) return;
-
-                const vpW = vp.clientWidth;
-                const vpH = vp.clientHeight;
-                const contentW = content.offsetWidth * this.zoom;
-                const contentH = content.offsetHeight * this.zoom;
-
-                // Horizontal Boundary
-                if (contentW <= vpW) {
-                    this.panX = 20;
-                } else {
-                    const minX = vpW - contentW - 30;
-                    const maxX = 20;
-                    this.panX = Math.max(minX, Math.min(maxX, this.panX));
-                }
-
-                // Vertical Boundary: Pastikan tidak bisa discroll ke bawah melewati batas akhir konten
-                if (contentH <= vpH) {
-                    this.panY = 20;
-                } else {
-                    const minY = vpH - contentH - 30;
-                    const maxY = 20;
-                    this.panY = Math.max(minY, Math.min(maxY, this.panY));
-                }
-            },
-
             changeZoom(delta) {
                 const oldZoom = this.zoom;
-                const newZoom = Math.min(Math.max(+(oldZoom + delta).toFixed(2), 0.5), 1.8);
+                const newZoom = Math.min(Math.max(+(oldZoom + delta).toFixed(2), 0.4), 2.0);
                 if (newZoom === oldZoom) return;
 
                 const vp = this.$refs.viewport;
@@ -60,7 +28,6 @@
                 this.panX = cx - (cx - this.panX) * (newZoom / oldZoom);
                 this.panY = cy - (cy - this.panY) * (newZoom / oldZoom);
                 this.zoom = newZoom;
-                this.$nextTick(() => this.clampBounds());
             },
 
             zoomIn() { this.changeZoom(0.15); },
@@ -69,7 +36,6 @@
                 this.zoom = 1.0;
                 this.panX = 20;
                 this.panY = 20;
-                this.$nextTick(() => this.clampBounds());
             },
 
             startDrag(e) {
@@ -88,9 +54,11 @@
                 if (clientX === undefined || clientY === undefined) return;
                 e.preventDefault();
 
-                this.panX = clientX - this.startX;
-                this.panY = clientY - this.startY;
-                this.clampBounds();
+                // Gerakan geser mulus tanpa tertahan
+                const rawX = clientX - this.startX;
+                const rawY = clientY - this.startY;
+                this.panX = Math.min(100, Math.max(-2000, rawX));
+                this.panY = Math.min(80, Math.max(-2500, rawY));
             },
 
             stopDrag() {
@@ -107,15 +75,16 @@
                     }
                 } else {
                     e.preventDefault();
-                    // Scroll mouse menggeser kanvas dan berhenti tepat di akhir konten
-                    this.panX -= (e.deltaX || 0) * 0.8;
-                    this.panY -= (e.deltaY || 0) * 0.8;
-                    this.clampBounds();
+                    // Scroll mouse halus
+                    const newX = this.panX - (e.deltaX || 0) * 0.9;
+                    const newY = this.panY - (e.deltaY || 0) * 0.9;
+                    this.panX = Math.min(100, Math.max(-2000, newX));
+                    this.panY = Math.min(80, Math.max(-2500, newY));
                 }
             }
         }"
         class="ims-ftth-compact-wrapper"
-        style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; font-family: inherit;"
+        style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; max-width: 100%; overflow: hidden; isolation: isolate; font-family: inherit;"
     >
 
         <!-- ══════════════════════════════════════════════════════════════════ -->
@@ -270,7 +239,7 @@
                 </button>
             </div>
         @else
-            <!-- Canvas Viewport Frame (Strictly bounded, no vertical void) -->
+            <!-- Canvas Viewport Frame (Strictly bounded with overflow:hidden and isolation) -->
             <div
                 x-ref="viewport"
                 @mousedown="startDrag($event)"
@@ -283,7 +252,7 @@
                 @wheel="handleWheel($event)"
                 :style="isDragging ? 'cursor: grabbing !important; user-select: none;' : 'cursor: grab;'"
                 class="ims-canvas-viewport"
-                style="position: relative; width: 100%; height: 620px; max-height: 72vh; overflow: hidden !important; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); z-index: 10;"
+                style="position: relative; width: 100%; max-width: 100%; height: 600px; max-height: 72vh; overflow: hidden !important; contain: paint layout; isolation: isolate; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); z-index: 1;"
             >
                 <!-- Floating Canvas Drag Hint Badge -->
                 <div style="position: absolute; bottom: 10px; right: 12px; z-index: 30; display: inline-flex; align-items: center; gap: 0.3rem; padding: 3px 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 0.65rem; font-weight: 800; backdrop-filter: blur(4px); pointer-events: none; user-select: none;">
@@ -296,7 +265,7 @@
                 <div
                     x-ref="canvasContent"
                     :style="'transform: translate(' + panX + 'px, ' + panY + 'px) scale(' + zoom + '); transform-origin: 0 0; will-change: transform; transition: ' + (isDragging ? 'none' : 'transform 0.1s ease-out') + ';'"
-                    style="position: absolute; top: 0; left: 0; padding: 1.25rem; display: inline-block; min-width: max-content;"
+                    style="position: absolute; top: 0; left: 0; padding: 1.25rem; display: inline-block;"
                 >
                     <!-- Visible Bounding Board for Topology -->
                     <div class="ims-topology-board" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.25rem 1.5rem; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);">
@@ -492,56 +461,55 @@
                                                                                                 class="ims-node-ont {{ $isTraced ? 'ims-ont-traced' : '' }}"
                                                                                                 style="display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; padding: 0.3rem 0.55rem; border-radius: 7px; background: {{ $isTraced ? '#ecfdf5' : '#ffffff' }}; border: 1px solid {{ $isTraced ? '#10b981' : '#e2e8f0' }}; box-shadow: 0 1px 3px rgba(0,0,0,0.02); width: 100%; max-width: 280px; transition: all 0.15s ease;"
                                                                                             >
-                                                                                                <div style="display: flex; align-items: center; gap: 0.3rem; overflow: hidden;">
-                                                                                                    <span style="font-size: 0.8rem;">📟</span>
-                                                                                                    <div style="display: flex; flex-direction: column; min-width: 0;">
-                                                                                                        <div style="font-size: 0.72rem; font-weight: 800; color: #0f172a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                                                                                            {{ $sub->customer_name }}
-                                                                                                        </div>
-                                                                                                        <span style="font-family: monospace; font-size: 0.6rem; font-weight: 700; color: #0284c7;">
-                                                                                                            {{ $sub->internet_number }}
-                                                                                                        </span>
+                                                                                            <div style="display: flex; align-items: center; gap: 0.3rem; overflow: hidden;">
+                                                                                                <span style="font-size: 0.8rem;">📟</span>
+                                                                                                <div style="display: flex; flex-direction: column; min-width: 0;">
+                                                                                                    <div style="font-size: 0.72rem; font-weight: 800; color: #0f172a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                                                                        {{ $sub->customer_name }}
                                                                                                     </div>
-                                                                                                </div>
-
-                                                                                                <div style="display: flex; align-items: center; gap: 0.2rem;">
-                                                                                                    @if($sub->package)
-                                                                                                        <span style="font-size: 0.55rem; font-weight: 700; background: #f1f5f9; color: #475569; padding: 1px 3px; border-radius: 3px; white-space: nowrap;">
-                                                                                                            {{ $sub->package->name }}
-                                                                                                        </span>
-                                                                                                    @endif
-                                                                                                    <span style="font-size: 0.55rem; font-weight: 800; padding: 1px 3px; border-radius: 3px; background: {{ $statusBg }}; color: {{ $statusText }}; white-space: nowrap;">
-                                                                                                        {{ ucfirst($sub->status ?? 'Active') }}
+                                                                                                    <span style="font-family: monospace; font-size: 0.6rem; font-weight: 700; color: #0284c7;">
+                                                                                                        {{ $sub->internet_number }}
                                                                                                     </span>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                    @endforeach
 
-                                                                                    <!-- Slot Port Kosong -->
-                                                                                    @if($maxPorts > $subCount)
-                                                                                        <div style="display: flex; align-items: center; position: relative;">
-                                                                                            <div style="position: absolute; left: -12px; width: 12px; height: 1px; border-top: 1px dashed #16a34a;"></div>
-                                                                                            <div style="padding: 0.2rem 0.45rem; border-radius: 5px; border: 1px dashed #86efac; background: #f0fdf4; font-size: 0.6rem; font-weight: 700; color: #15803d;">
-                                                                                                + {{ $maxPorts - $subCount }} Port Tersedia
+                                                                                            <div style="display: flex; align-items: center; gap: 0.2rem;">
+                                                                                                @if($sub->package)
+                                                                                                    <span style="font-size: 0.55rem; font-weight: 700; background: #f1f5f9; color: #475569; padding: 1px 3px; border-radius: 3px; white-space: nowrap;">
+                                                                                                        {{ $sub->package->name }}
+                                                                                                    </span>
+                                                                                                @endif
+                                                                                                <span style="font-size: 0.55rem; font-weight: 800; padding: 1px 3px; border-radius: 3px; background: {{ $statusBg }}; color: {{ $statusText }}; white-space: nowrap;">
+                                                                                                    {{ ucfirst($sub->status ?? 'Active') }}
+                                                                                                </span>
                                                                                             </div>
                                                                                         </div>
-                                                                                    @endif
+                                                                                    </div>
+                                                                                @endforeach
+
+                                                                                <!-- Slot Port Kosong -->
+                                                                                @if($maxPorts > $subCount)
+                                                                                    <div style="display: flex; align-items: center; position: relative;">
+                                                                                        <div style="position: absolute; left: -12px; width: 12px; height: 1px; border-top: 1px dashed #16a34a;"></div>
+                                                                                        <div style="padding: 0.2rem 0.45rem; border-radius: 5px; border: 1px dashed #86efac; background: #f0fdf4; font-size: 0.6rem; font-weight: 700; color: #15803d;">
+                                                                                            + {{ $maxPorts - $subCount }} Port Tersedia
+                                                                                        </div>
+                                                                                    </div>
                                                                                 @endif
-                                                                            </div>
-                                                                        @endif
-                                                                    </div>
-                                                                @endforeach
-                                                            @endif
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            @endforeach
-                                        @endif
-                                    </div>
+                                                                            @endif
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
