@@ -11,6 +11,74 @@
             init() {
                 this.$watch('$wire.selectedOlt', () => this.resetZoom());
                 this.$watch('$wire.search', () => this.resetZoom());
+
+                const vp = this.$refs.viewport;
+                if (!vp) return;
+
+                // 1. Mousedown Handler
+                vp.addEventListener('mousedown', (e) => {
+                    if (e.target.closest('button, input, select, a, [wire\\:click]')) return;
+                    e.preventDefault(); // Menghentikan seleksi teks agar drag pasti jalan
+                    this.isDragging = true;
+                    this.startX = e.clientX - this.panX;
+                    this.startY = e.clientY - this.panY;
+                });
+
+                // 2. Window Mousemove Handler
+                window.addEventListener('mousemove', (e) => {
+                    if (!this.isDragging) return;
+                    e.preventDefault();
+                    
+                    const rawX = e.clientX - this.startX;
+                    const rawY = e.clientY - this.startY;
+
+                    // Batas geser terkunci (tidak bisa ditarik tembus ke ruang kosong)
+                    this.panX = Math.min(20, Math.max(-1100, rawX));
+                    this.panY = Math.min(20, Math.max(-1400, rawY));
+                });
+
+                // 3. Window Mouseup Handler
+                window.addEventListener('mouseup', () => {
+                    this.isDragging = false;
+                });
+
+                // 4. Touch Handlers (Mobile)
+                vp.addEventListener('touchstart', (e) => {
+                    if (e.target.closest('button, input, select, a, [wire\\:click]')) return;
+                    if (e.touches.length === 1) {
+                        this.isDragging = true;
+                        this.startX = e.touches[0].clientX - this.panX;
+                        this.startY = e.touches[0].clientY - this.panY;
+                    }
+                }, { passive: true });
+
+                window.addEventListener('touchmove', (e) => {
+                    if (!this.isDragging || e.touches.length !== 1) return;
+                    const rawX = e.touches[0].clientX - this.startX;
+                    const rawY = e.touches[0].clientY - this.startY;
+                    this.panX = Math.min(20, Math.max(-1100, rawX));
+                    this.panY = Math.min(20, Math.max(-1400, rawY));
+                }, { passive: true });
+
+                window.addEventListener('touchend', () => {
+                    this.isDragging = false;
+                });
+
+                // 5. Wheel Handler: Mencegah scroll halaman web & geser kanvas secara aman
+                vp.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (e.ctrlKey || e.metaKey) {
+                        if (e.deltaY < 0) this.zoomIn();
+                        else this.zoomOut();
+                    } else {
+                        const newX = this.panX - (e.deltaX || 0) * 0.8;
+                        const newY = this.panY - (e.deltaY || 0) * 0.8;
+                        this.panX = Math.min(20, Math.max(-1100, newX));
+                        this.panY = Math.min(20, Math.max(-1400, newY));
+                    }
+                }, { passive: false });
             },
 
             changeZoom(delta) {
@@ -40,50 +108,6 @@
                 this.zoom = 1.0;
                 this.panX = 20;
                 this.panY = 20;
-            },
-
-            startDrag(e) {
-                if (e.target.closest('button, input, select, a, [wire\\:click]')) return;
-                this.isDragging = true;
-                const pageX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
-                const pageY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
-                this.startX = pageX - this.panX;
-                this.startY = pageY - this.panY;
-            },
-
-            onDrag(e) {
-                if (!this.isDragging) return;
-                const pageX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
-                const pageY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
-                if (pageX === undefined || pageY === undefined) return;
-
-                let newX = pageX - this.startX;
-                let newY = pageY - this.startY;
-
-                // Batas geser terkunci (tidak bisa ditarik ke kanan/bawah melayang di ruang kosong)
-                this.panX = Math.min(20, Math.max(-1100, newX));
-                this.panY = Math.min(20, Math.max(-1400, newY));
-            },
-
-            stopDrag() {
-                this.isDragging = false;
-            },
-
-            handleWheel(e) {
-                if (e.ctrlKey || e.metaKey) {
-                    e.preventDefault();
-                    if (e.deltaY < 0) {
-                        this.zoomIn();
-                    } else {
-                        this.zoomOut();
-                    }
-                } else {
-                    e.preventDefault();
-                    let newX = this.panX - (e.deltaX || 0) * 0.8;
-                    let newY = this.panY - (e.deltaY || 0) * 0.8;
-                    this.panX = Math.min(20, Math.max(-1100, newX));
-                    this.panY = Math.min(20, Math.max(-1400, newY));
-                }
             }
         }"
         class="ims-ftth-compact-wrapper"
@@ -245,13 +269,6 @@
             <!-- Canvas Viewport Frame: Strictly bounded viewport with smooth drag-to-pan -->
             <div
                 x-ref="viewport"
-                @mousedown="startDrag($event)"
-                @window.mousemove="onDrag($event)"
-                @window.mouseup="stopDrag()"
-                @touchstart.passive="startDrag($event)"
-                @touchmove.passive="onDrag($event)"
-                @touchend="stopDrag()"
-                @wheel="handleWheel($event)"
                 :style="isDragging ? 'cursor: grabbing !important; user-select: none;' : 'cursor: grab;'"
                 class="ims-canvas-viewport"
                 style="position: relative; width: 100%; max-width: 100%; height: 600px; max-height: 72vh; overflow: hidden !important; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); z-index: 1;"
