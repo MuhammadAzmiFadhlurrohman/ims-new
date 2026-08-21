@@ -187,7 +187,8 @@ class MonthlyInvoiceResource extends Resource
                                 </a>
                             </div>
                         ";
-                    }),
+                    })
+                    ->hiddenOn('sm'),
 
                 // ── 3. PERIODE ──
                 Tables\Columns\TextColumn::make('billing_period_text')
@@ -195,7 +196,8 @@ class MonthlyInvoiceResource extends Resource
                     ->html()
                     ->state(function (MonthlyInvoice $record): string {
                         return "<span class='text-slate-800 font-bold text-[10.5px] whitespace-nowrap'>Aug 2026</span>";
-                    }),
+                    })
+                    ->hiddenOn('sm'),
 
                 // ── 4. AMOUNT ──
                 Tables\Columns\TextColumn::make('total_amount')
@@ -290,7 +292,8 @@ class MonthlyInvoiceResource extends Resource
                                 </span>
                             </div>
                         ";
-                    }),
+                    })
+                    ->hiddenOn('sm'),
             ])
             ->filters([
                 // Row 1
@@ -377,7 +380,12 @@ class MonthlyInvoiceResource extends Resource
                         'CANCELED' => 'Cancel Billing',
                     ]),
             ], layout: Tables\Enums\FiltersLayout::AboveContent)
-            ->filtersFormColumns(4)
+            ->filtersFormColumns([
+                'default' => 2,
+                'sm'      => 2,
+                'md'      => 4,
+                'lg'      => 4,
+            ])
             ->headerActions([
                 Tables\Actions\Action::make('export_excel')
                     ->label('Export')

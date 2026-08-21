@@ -1,0 +1,306 @@
+/* ============================================================
+   IMS — BILLING LAYANAN · MOBILE RESPONSIVE CSS
+   Target: /admin/monthly-invoices & /admin/registration-invoices
+   ============================================================ */
+
+/* ──────────────────────────────────────────────
+   1. BILLING SUMMARY CARDS — 2×2 di mobile
+   ────────────────────────────────────────────── */
+.ims-billing-summary-wrap {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    width: 100% !important;
+    margin: 8px 0 14px 0 !important;
+    padding: 0 1rem !important;
+    box-sizing: border-box !important;
+    flex-wrap: nowrap !important;
+}
+
+@media (max-width: 640px) {
+    .ims-billing-summary-wrap {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        padding: 0 0.75rem !important;
+        margin: 6px 0 10px 0 !important;
+    }
+
+    .ims-billing-summary-wrap > div {
+        flex: unset !important;
+        min-width: unset !important;
+        padding: 10px 10px !important;
+        border-radius: 8px !important;
+    }
+
+    .ims-billing-summary-wrap > div > div:first-child {
+        font-size: 10px !important;
+        white-space: normal !important;
+        line-height: 1.3 !important;
+    }
+
+    .ims-billing-summary-wrap > div > div:last-child {
+        font-size: 11px !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        line-height: 1.4 !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   2. FILTER BAR — scrollable / 2 cols di mobile
+   ────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    /* Filter form container */
+    .fi-ta-filters-form {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+    }
+
+    /* Filter field wrapper takes full col */
+    .fi-ta-filters-form .fi-fo-field-wrp {
+        width: 100% !important;
+    }
+
+    /* Semua select & input di filter mobile */
+    .fi-ta-filters-form select,
+    .fi-ta-filters-form input[type="text"] {
+        font-size: 12px !important;
+        padding: 6px 8px !important;
+        height: auto !important;
+    }
+
+    /* Filter label hidden (placeholder sudah cukup) */
+    .fi-ta-filters-form label {
+        display: none !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   3. TABLE — horizontal scroll indicator di mobile
+   ────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    /* Pastikan table container bisa di-scroll horizontal */
+    .fi-ta-table-ctn {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Tabel tetap pakai lebar minimalnya sendiri */
+    .fi-ta-table {
+        min-width: 420px !important;
+    }
+
+    /* Action column — selalu sticky di kanan agar selalu kelihatan */
+    .fi-ta-col-action,
+    .fi-ta-actions,
+    [data-column-name="actions"] {
+        position: sticky !important;
+        right: 0 !important;
+        background: inherit !important;
+        z-index: 10 !important;
+        box-shadow: -3px 0 8px rgba(0,0,0,0.10) !important;
+    }
+
+    /* Dropdown action menu lebar cukup */
+    .fi-dropdown-panel {
+        min-width: 160px !important;
+        max-width: 220px !important;
+        right: 0 !important;
+        left: auto !important;
+    }
+
+    /* Header action kolom */
+    .fi-ta-header-cell:last-child {
+        position: sticky !important;
+        right: 0 !important;
+        background: var(--fi-bg, #fff) !important;
+        z-index: 11 !important;
+    }
+
+    /* Reduce header padding on mobile */
+    .fi-ta-header-cell {
+        padding: 8px 6px !important;
+        font-size: 10px !important;
+    }
+
+    /* Reduce cell padding on mobile */
+    .fi-ta-cell {
+        padding: 8px 6px !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   4. BILLING INFO COLUMN — wrap di mobile
+   ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    /* Billing Info: hilangkan max-width agar tidak terpotong */
+    .fi-ta-cell [style*="max-width: 140px"],
+    .fi-ta-cell [style*="max-width: 165px"],
+    .fi-ta-cell [style*="max-width: 170px"] {
+        max-width: 130px !important;
+    }
+
+    /* Text lebih kecil di mobile */
+    .fi-ta-cell .text-\[10\.5px\],
+    .fi-ta-cell .text-\[10px\],
+    .fi-ta-cell .text-\[9\.5px\] {
+        font-size: 9px !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   5. ACTION BUTTONS dalam row — mobile touch target
+   ────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    /* Tombol action di row: lebih besar touchable */
+    .fi-ta-actions .fi-btn,
+    .fi-ta-actions button {
+        min-height: 36px !important;
+        min-width: 36px !important;
+    }
+
+    /* Action button icon-only cukup kecil */
+    .fi-ta-actions .fi-btn-icon {
+        padding: 6px !important;
+    }
+
+    /* Dropdown trigger button */
+    .fi-ta-actions .fi-dropdown-trigger {
+        padding: 6px 10px !important;
+        font-size: 12px !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   6. TOOLBAR (Create, Export, Filter toggle)
+   ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .fi-ta-toolbar {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        padding: 8px 10px !important;
+    }
+
+    /* Buat group tombol header wrap */
+    .fi-ta-header-toolbar {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+
+    /* Search bar full width di mobile */
+    .fi-ta-search-field {
+        flex: 1 1 100% !important;
+        min-width: 0 !important;
+    }
+
+    /* Header actions (Export button, Create button) */
+    .fi-ta-header-toolbar .fi-btn {
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   7. MODAL — full screen di mobile
+   ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    /* Modal overlay full screen */
+    .fi-modal-window {
+        margin: 0 !important;
+        max-height: 100dvh !important;
+        max-width: 100vw !important;
+        border-radius: 0 !important;
+        overflow-y: auto !important;
+    }
+
+    /* Modal container */
+    .fi-modal {
+        padding: 0 !important;
+        align-items: flex-end !important;
+    }
+
+    /* Modal content */
+    .fi-modal-content {
+        padding: 16px !important;
+    }
+
+    /* Modal footer buttons */
+    .fi-modal-footer {
+        padding: 12px 16px !important;
+    }
+
+    .fi-modal-footer .fi-btn {
+        flex: 1 !important;
+        justify-content: center !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   8. PAGINATION — compact di mobile
+   ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .fi-ta-pagination {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 8px !important;
+    }
+
+    .fi-ta-pagination-records-per-page {
+        order: 2 !important;
+    }
+
+    .fi-ta-pagination-nav {
+        order: 1 !important;
+    }
+
+    /* Pagination buttons lebih kecil */
+    .fi-ta-pagination .fi-btn {
+        padding: 4px 8px !important;
+        font-size: 12px !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   9. DARK MODE adjustments untuk sticky action col
+   ────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    html.dark .fi-ta-header-cell:last-child,
+    html.dark [data-column-name="actions"] {
+        background: #0f172a !important;
+    }
+
+    html.dark .fi-ta-col-action,
+    html.dark .fi-ta-actions {
+        background: #1e293b !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   10. SCROLL HINT — indikator swipe kanan di mobile
+   ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .fi-ta-table-ctn {
+        position: relative !important;
+    }
+
+    /* Gradient fade di ujung kanan tabel sbg hint scroll */
+    .fi-ta-table-ctn::after {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        width: 40px !important;
+        height: 100% !important;
+        background: linear-gradient(to left, rgba(255,255,255,0.6), transparent) !important;
+        pointer-events: none !important;
+        z-index: 5 !important;
+    }
+
+    html.dark .fi-ta-table-ctn::after {
+        background: linear-gradient(to left, rgba(15,23,42,0.6), transparent) !important;
+    }
+}
