@@ -125,7 +125,9 @@
             },
 
             toggleFullScreen() {
-                const elem = this.$el;
+                const elem = this.$refs.mainContainer || document.querySelector('.ims-ftth-compact-wrapper');
+                if (!elem) return;
+
                 if (!document.fullscreenElement && !document.webkitFullscreenElement) {
                     if (elem.requestFullscreen) {
                         elem.requestFullscreen().catch(() => {});
@@ -145,6 +147,7 @@
                 }
             }
         }"
+        x-ref="mainContainer"
         @keydown.escape.window="if(isFullScreen && document.fullscreenElement) document.exitFullscreen().catch(()=>{})"
         class="ims-ftth-compact-wrapper"
         style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; max-width: 100%; overflow: hidden; isolation: isolate; font-family: inherit;"
