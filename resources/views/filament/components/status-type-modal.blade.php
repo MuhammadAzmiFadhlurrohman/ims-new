@@ -145,6 +145,8 @@
 <script>
     window.currentImsRecordKey = window.currentImsRecordKey || '';
     window.currentImsStatusType = window.currentImsStatusType || 'Temporary Delete';
+    window.lastOpenedDetailPayload = window.lastOpenedDetailPayload || '';
+    window.openedFromDetailModal = false;
 
     window.openImsStatusModal = function(key, status) {
         window.currentImsRecordKey = key;
@@ -164,6 +166,10 @@
         const modal = document.getElementById('ims-status-modal');
         if (modal) {
             modal.style.setProperty('display', 'none', 'important');
+        }
+        // Return to detail modal if opened from it
+        if (window.openedFromDetailModal && window.lastOpenedDetailPayload) {
+            window.openImsDetailFromPayload(window.lastOpenedDetailPayload);
         }
     };
 
@@ -189,8 +195,31 @@
             })
         }).then(res => res.json()).then(data => {
             if (saveText) saveText.textContent = 'Simpan';
-            closeImsStatusModal();
-            window.location.reload();
+            window.currentImsStatusType = statusValue;
+
+            // Update status text in detail modal
+            const stEl = document.getElementById('ims-detail-status-type');
+            if (stEl) stEl.textContent = statusValue;
+
+            // Close status modal
+            const modal = document.getElementById('ims-status-modal');
+            if (modal) modal.style.setProperty('display', 'none', 'important');
+
+            // Return to detail modal with updated payload
+            if (window.lastOpenedDetailPayload) {
+                try {
+                    const parsed = JSON.parse(decodeURIComponent(escape(atob(window.lastOpenedDetailPayload))));
+                    parsed.statustype = statusValue;
+                    window.lastOpenedDetailPayload = btoa(unescape(encodeURIComponent(JSON.stringify(parsed))));
+                    window.openImsDetailFromPayload(window.lastOpenedDetailPayload);
+                } catch(e) {
+                    const detailModal = document.getElementById('ims-detail-modal');
+                    if (detailModal) detailModal.style.setProperty('display', 'flex', 'important');
+                }
+            } else {
+                const detailModal = document.getElementById('ims-detail-modal');
+                if (detailModal) detailModal.style.setProperty('display', 'flex', 'important');
+            }
         }).catch(err => {
             alert('Gagal mengubah status tipe: ' + err.message);
             if (saveText) saveText.textContent = 'Simpan';
@@ -199,6 +228,7 @@
 
     window.openImsDetailFromPayload = function(b64) {
         try {
+            window.lastOpenedDetailPayload = b64;
             const str = decodeURIComponent(escape(atob(b64)));
             const d = JSON.parse(str);
             window.currentImsRecordKey = d.key || '';
@@ -261,7 +291,10 @@
                         btn.innerHTML = iconHtml + '<span>' + act.label + '</span>';
 
                         btn.onclick = function() {
-                            window.closeImsDetailModal();
+                            window.openedFromDetailModal = true;
+                            const detailModal = document.getElementById('ims-detail-modal');
+                            if (detailModal) detailModal.style.setProperty('display', 'none', 'important');
+
                             if (act.url) {
                                 window.location.href = act.url;
                             } else if (act.name === 'change_status_type') {
@@ -286,6 +319,7 @@
     };
 
     window.closeImsDetailModal = function() {
+        window.openedFromDetailModal = false;
         const modal = document.getElementById('ims-detail-modal');
         if (modal) {
             modal.style.setProperty('display', 'none', 'important');
@@ -314,4 +348,27 @@
             }
         }
     };
+
+    // Auto-reopen detail modal when any Filament action modal is dismissed/cancelled
+    document.addEventListener('click', function(e) {
+        if (window.openedFromDetailModal && window.lastOpenedDetailPayload) {
+            const closeTrigger = e.target.closest('.fi-modal-close-btn, .fi-modal-close-action, [x-on\\:click*="close"], .fi-modal-close-overlay');
+            if (closeTrigger) {
+                setTimeout(function() {
+                    const anyModal = document.querySelector('.fi-modal-open');
+                    if (!anyModal) {
+                        window.openImsDetailFromPayload(window.lastOpenedDetailPayload);
+                    }
+                }, 250);
+            }
+        }
+    });
+
+    window.addEventListener('close-modal', function() {
+        if (window.openedFromDetailModal && window.lastOpenedDetailPayload) {
+            setTimeout(function() {
+                window.openImsDetailFromPayload(window.lastOpenedDetailPayload);
+            }, 250);
+        }
+    });
 </script>
