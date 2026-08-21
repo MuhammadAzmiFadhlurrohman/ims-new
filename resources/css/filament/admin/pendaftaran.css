@@ -1219,3 +1219,33 @@ html.dark .ims-desktop-view span {
 html.dark .ims-desktop-view span strong {
     color: #e2e8f0 !important;
 }
+
+/* ── Modal Dark Mode Support ── */
+html.dark .ims-modal-card {
+    background: #0b1f38 !important;
+    border-color: #1e3a5f !important;
+    color: #e2e8f0 !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7) !important;
+}
+
+html.dark .ims-modal-section {
+    background: #061324 !important;
+    border-color: #14355a !important;
+    color: #cbd5e1 !important;
+}
+
+html.dark .ims-modal-lbl {
+    color: #94a3b8 !important;
+}
+
+html.dark #ims-detail-cust-name,
+html.dark #ims-detail-phone,
+html.dark #ims-detail-nik,
+html.dark #ims-detail-group,
+html.dark #ims-detail-building,
+html.dark #ims-detail-address,
+html.dark #ims-detail-latlong,
+html.dark #ims-detail-sales,
+html.dark #ims-detail-created {
+    color: #f1f5f9 !important;
+}

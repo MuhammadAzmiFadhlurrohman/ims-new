@@ -351,10 +351,56 @@
     };
 
     window.openImsTableAction = function(action, key) {
-        const safeKey = (key || '').toString().replace(/[^a-zA-Z0-9_-]/g, '_');
+        if (!action) return;
 
-        // 1. Try DOM trigger buttons first
+        // 1. Direct Livewire 3 call (Primary & most reliable)
+        if (window.Livewire) {
+            try {
+                const tableEl = document.querySelector('.fi-ta, .fi-ta-ctn, [wire\\:id]');
+                const wireId = tableEl ? (tableEl.getAttribute('wire:id') || tableEl.closest('[wire\\:id]')?.getAttribute('wire:id')) : null;
+                const mainComp = wireId ? Livewire.find(wireId) : null;
+                if (mainComp) {
+                    if (typeof mainComp.call === 'function') {
+                        mainComp.call('mountTableAction', action, key);
+                        return;
+                    }
+                    if (mainComp.$wire && typeof mainComp.$wire.mountTableAction === 'function') {
+                        mainComp.$wire.mountTableAction(action, key);
+                        return;
+                    }
+                }
+
+                const all = (typeof Livewire.all === 'function') ? Livewire.all() : [];
+                for (let c of all) {
+                    if (c && typeof c.call === 'function') {
+                        c.call('mountTableAction', action, key);
+                        return;
+                    }
+                    if (c && c.$wire && typeof c.$wire.mountTableAction === 'function') {
+                        c.$wire.mountTableAction(action, key);
+                        return;
+                    }
+                }
+            } catch(e) {
+                console.error('[IMS Livewire error]', e);
+            }
+        }
+
+        // 2. Alpine $wire call
         try {
+            const alpineEl = document.querySelector('.fi-ta, .fi-ta-ctn, [wire\\:id]');
+            if (alpineEl && window.Alpine) {
+                const data = window.Alpine.$data(alpineEl);
+                if (data && data.$wire && typeof data.$wire.mountTableAction === 'function') {
+                    data.$wire.mountTableAction(action, key);
+                    return;
+                }
+            }
+        } catch(e) {}
+
+        // 3. Fallback: Native DOM Action Trigger via Synthetic MouseEvent
+        try {
+            const safeKey = (key || '').toString().replace(/[^a-zA-Z0-9_-]/g, '_');
             const selectors = [
                 '.ims-act-' + action.replace(/_/g, '-') + '-' + safeKey,
                 '.ims-act-' + action + '-' + safeKey,
@@ -369,63 +415,13 @@
                 const targetBtn = document.querySelector(sel);
                 if (targetBtn) {
                     const inner = (targetBtn.matches('button, a') ? targetBtn : targetBtn.querySelector('button, a')) || targetBtn;
+                    const evt = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+                    inner.dispatchEvent(evt);
                     inner.click();
                     return;
                 }
             }
         } catch(e) {}
-
-        // 2. Direct Livewire call
-        if (window.Livewire) {
-            try {
-                const tableEl = document.querySelector('.fi-ta, .fi-ta-ctn, [wire\\:id]');
-                const wireId = tableEl ? (tableEl.getAttribute('wire:id') || tableEl.closest('[wire\\:id]')?.getAttribute('wire:id')) : null;
-                const comp = wireId ? Livewire.find(wireId) : (typeof Livewire.first === 'function' ? Livewire.first() : null);
-
-                if (comp) {
-                    if (typeof comp.call === 'function') {
-                        comp.call('mountTableAction', action, key);
-                        return;
-                    }
-                    if (comp.$wire && typeof comp.$wire.mountTableAction === 'function') {
-                        comp.$wire.mountTableAction(action, key);
-                        return;
-                    }
-                }
-
-                if (typeof Livewire.all === 'function') {
-                    const all = Livewire.all();
-                    for (let c of all) {
-                        if (c && typeof c.call === 'function') {
-                            c.call('mountTableAction', action, key);
-                            return;
-                        }
-                    }
-                }
-            } catch(e) {}
-
-            try {
-                const wireEls = document.querySelectorAll('[wire\\:id]');
-                for (let el of wireEls) {
-                    const id = el.getAttribute('wire:id');
-                    if (id && typeof Livewire.find === 'function') {
-                        const comp = Livewire.find(id);
-                        if (comp && comp.$wire && typeof comp.$wire.mountTableAction === 'function') {
-                            comp.$wire.mountTableAction(action, key);
-                            return;
-                        }
-                        if (comp && typeof comp.call === 'function') {
-                            comp.call('mountTableAction', action, key);
-                            return;
-                        }
-                        if (comp && typeof comp.mountTableAction === 'function') {
-                            comp.mountTableAction(action, key);
-                            return;
-                        }
-                    }
-                }
-            } catch(e) {}
-        }
     };
 
     // Delegated click handler for mobile card action buttons
