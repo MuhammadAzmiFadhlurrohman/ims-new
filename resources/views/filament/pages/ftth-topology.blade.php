@@ -273,12 +273,12 @@
                 </button>
             </div>
         @else
-            <!-- Canvas Viewport Frame: Strictly bounded viewport with smooth drag-to-pan -->
+            <!-- Canvas Viewport Frame: Perfectly sized to screen height, eliminating outer browser scrollbar -->
             <div
                 x-ref="viewport"
                 :style="isDragging ? 'cursor: grabbing !important; user-select: none;' : 'cursor: grab;'"
                 class="ims-canvas-viewport"
-                style="position: relative; width: 100%; max-width: 100%; height: 600px; max-height: 72vh; overflow: hidden !important; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); z-index: 1;"
+                style="position: relative; width: 100%; max-width: 100%; height: calc(100vh - 215px); min-height: 420px; max-height: calc(100vh - 215px); overflow: hidden !important; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); z-index: 1;"
             >
                 <!-- Floating Canvas Drag Hint Badge -->
                 <div style="position: absolute; bottom: 10px; right: 12px; z-index: 30; display: inline-flex; align-items: center; gap: 0.3rem; padding: 3px 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 0.65rem; font-weight: 800; backdrop-filter: blur(4px); pointer-events: none; user-select: none;">
@@ -624,6 +624,16 @@
         @keyframes imsLaserPulse {
             from { transform: scale(1); }
             to { transform: scale(1.02); }
+        }
+
+        /* Hilangkan sisa scrollbar halaman web luar agar pas 1 layar penuh */
+        body:has(.ims-ftth-compact-wrapper),
+        html:has(.ims-ftth-compact-wrapper),
+        .fi-main:has(.ims-ftth-compact-wrapper),
+        .fi-page:has(.ims-ftth-compact-wrapper) {
+            overflow-y: hidden !important;
+            height: 100vh !important;
+            max-height: 100vh !important;
         }
     </style>
 </x-filament-panels::page>
