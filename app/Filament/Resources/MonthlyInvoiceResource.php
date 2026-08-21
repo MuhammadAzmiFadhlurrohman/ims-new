@@ -253,12 +253,12 @@ class MonthlyInvoiceResource extends Resource
 
                         return new \Illuminate\Support\HtmlString("
                             <!-- DESKTOP VIEW (Visible on Desktop) -->
-                            <div class='ims-desktop-view' style='display: flex !important; flex-direction: column !important; gap: 2px !important; max-width: 140px;'>
-                                <span class='text-slate-500 font-mono text-[9.5px]' style='display: block !important; line-height: 1.2;'>{$invNo}</span>
-                                <a href='{$custUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 transition-colors uppercase tracking-tight truncate' style='display: block !important; line-height: 1.2; margin-top: 1px;' title='{$custName}'>
+                            <div class='ims-desktop-view'>
+                                <span class='text-slate-500 font-mono text-[9.5px]'>{$invNo}</span>
+                                <a href='{$custUrl}' class='font-black text-slate-900 underline hover:text-indigo-600 transition-colors uppercase tracking-tight truncate' title='{$custName}'>
                                     {$custName} {$gender}
                                 </a>
-                                <a href='{$custUrl}' class='text-slate-800 underline font-semibold text-[9.5px] hover:text-indigo-600 transition-colors uppercase truncate' style='display: block !important; line-height: 1.2; margin-top: 1px;' title='{$packageName}'>
+                                <a href='{$custUrl}' class='text-slate-800 underline font-semibold text-[9.5px] hover:text-indigo-600 transition-colors uppercase truncate' title='{$packageName}'>
                                     {$packageName}
                                 </a>
                             </div>
@@ -299,9 +299,7 @@ class MonthlyInvoiceResource extends Resource
                                     <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 4px;'>
                                         <button
                                             type='button'
-                                            wire:click.stop=\"mountTableAction('change_payment_method', '{$key}')\"
-                                            x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
-                                            onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('change_payment_method', '{$key}')\"
+                                            onclick=\"document.querySelector('.ims-act-change-payment-{$safeKey}')?.click() || document.querySelector('.ims-monthly-paymethod-trigger-{$safeKey}')?.click();\"
                                             title='Klik untuk mengubah metode pembayaran'
                                             style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
                                         >
@@ -317,9 +315,7 @@ class MonthlyInvoiceResource extends Resource
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
-                                        wire:click.stop=\"mountTableAction('change_payment_method', '{$key}')\"
-                                        x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
-                                        onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('change_payment_method', '{$key}')\"
+                                        onclick=\"document.querySelector('.ims-act-change-payment-{$safeKey}')?.click() || document.querySelector('.ims-monthly-paymethod-trigger-{$safeKey}')?.click();\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -327,9 +323,7 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        wire:click.stop=\"mountTableAction('publish', '{$key}')\"
-                                        x-on:click.stop=\"\$wire.mountTableAction('publish', '{$key}')\"
-                                        onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('publish', '{$key}')\"
+                                        onclick=\"document.querySelector('.ims-act-publish-{$safeKey}')?.click();\"
                                         class='ims-modal-act-btn ims-modal-act-cyan'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -337,9 +331,7 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        wire:click.stop=\"mountTableAction('accept', '{$key}')\"
-                                        x-on:click.stop=\"\$wire.mountTableAction('accept', '{$key}')\"
-                                        onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('accept', '{$key}')\"
+                                        onclick=\"document.querySelector('.ims-act-accept-{$safeKey}')?.click();\"
                                         class='ims-modal-act-btn ims-modal-act-green'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -347,9 +339,7 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        wire:click.stop=\"mountTableAction('delete', '{$key}')\"
-                                        x-on:click.stop=\"\$wire.mountTableAction('delete', '{$key}')\"
-                                        onclick=\"window.openImsTableAction \u0026\u0026 window.openImsTableAction('delete', '{$key}')\"
+                                        onclick=\"document.querySelector('.ims-act-delete-{$safeKey}')?.click();\"
                                         class='ims-modal-act-btn ims-modal-act-red'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -630,7 +620,7 @@ class MonthlyInvoiceResource extends Resource
                     ->modalSubmitActionLabel('Update')
                     ->modalCancelActionLabel('Batal')
                     ->extraAttributes(fn (MonthlyInvoice $record) => [
-                        'class' => 'ims-monthly-paymethod-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $record->getKey()),
+                        'class' => 'ims-act-change-payment-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()) . ' ims-monthly-paymethod-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
                     ])
                     ->fillForm(fn (MonthlyInvoice $record): array => [
                         'payment_method' => match (strtoupper($record->payment_method ?? 'MIDTRANS')) {
@@ -669,6 +659,9 @@ class MonthlyInvoiceResource extends Resource
                     ->color('success')
                     ->requiresConfirmation()
                     ->modalHeading('Publish Billing')
+                    ->extraAttributes(fn (MonthlyInvoice $record) => [
+                        'class' => 'ims-act-publish-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
+                    ])
                     ->action(function (MonthlyInvoice $record) {
                         $record->update(['payment_status' => 'PUBLISHED']);
                         Notification::make()->title('Invoice berhasil di-publish')->success()->send();
@@ -680,6 +673,9 @@ class MonthlyInvoiceResource extends Resource
                     ->color('success')
                     ->requiresConfirmation()
                     ->modalHeading('Konfirmasi Pembayaran')
+                    ->extraAttributes(fn (MonthlyInvoice $record) => [
+                        'class' => 'ims-act-accept-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
+                    ])
                     ->action(function (MonthlyInvoice $record) {
                         $record->update([
                             'payment_status' => 'PAID',
@@ -691,7 +687,10 @@ class MonthlyInvoiceResource extends Resource
                 Tables\Actions\DeleteAction::make()
                     ->label('Hapus')
                     ->icon('heroicon-m-trash')
-                    ->color('danger'),
+                    ->color('danger')
+                    ->extraAttributes(fn (MonthlyInvoice $record) => [
+                        'class' => 'ims-act-delete-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
+                    ]),
             ])
             ->bulkActions([]);
     }

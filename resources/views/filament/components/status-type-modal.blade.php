@@ -320,7 +320,16 @@
                             } else if (act.name === 'change_status_type') {
                                 window.openImsStatusModal(window.currentImsRecordKey, window.currentImsStatusType);
                             } else {
-                                window.openImsTableAction(act.name, window.currentImsRecordKey);
+                                const safeKey = (window.currentImsRecordKey || '').replace(/[^a-zA-Z0-9_-]/g, '_');
+                                const domActBtn = document.querySelector('.ims-act-' + act.name.replace(/_/g, '-') + '-' + safeKey) ||
+                                                  document.querySelector('.ims-act-' + act.name + '-' + safeKey) ||
+                                                  document.querySelector('.ims-monthly-paymethod-trigger-' + safeKey) ||
+                                                  document.querySelector('.ims-paymethod-trigger-' + safeKey);
+                                if (domActBtn) {
+                                    domActBtn.click();
+                                } else {
+                                    window.openImsTableAction(act.name, window.currentImsRecordKey);
+                                }
                             }
                         };
 

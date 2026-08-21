@@ -345,6 +345,14 @@ html.dark .ims-temp-badge:hover {
         display: flex !important;
         flex-direction: column !important;
         width: 100% !important;
+        max-width: 150px !important;
+        gap: 2px !important;
+    }
+
+    .ims-desktop-view span,
+    .ims-desktop-view a {
+        display: block !important;
+        line-height: 1.25 !important;
     }
 
     /* Hide label on desktop filter (labels take space in the clean horizontal filter bar) */
@@ -404,7 +412,10 @@ html.dark .ims-temp-badge:hover {
 @media (max-width: 1023px) {
 
     /* ── Hide Desktop View on Mobile ── */
-    .ims-desktop-view {
+    .ims-desktop-view,
+    div.ims-desktop-view,
+    .fi-ta-cell .ims-desktop-view,
+    .fi-ta-cell-full-card .ims-desktop-view {
         display: none !important;
     }
 
@@ -652,13 +663,28 @@ html.dark .ims-temp-badge:hover {
         box-sizing: border-box !important;
     }
 
-    /* Hide all other columns on mobile (except internet_number cell) */
+    /* Hide all other columns on mobile (except first cell and actions cell) */
     .ims-mobile-hide,
     td:has(.ims-mobile-hide),
     .fi-ta-cell:has(.ims-mobile-hide),
-    table.fi-ta-table tbody tr td:not(.fi-table-cell-internet-number):not(:first-child),
-    table.fi-ta-table tbody tr.fi-ta-row td:not(.fi-table-cell-internet-number):not(:first-child) {
+    table.fi-ta-table tbody tr td:not(.fi-table-cell-internet-number):not(:first-child):not(.fi-ta-actions-cell):not(:last-child),
+    table.fi-ta-table tbody tr.fi-ta-row td:not(.fi-table-cell-internet-number):not(:first-child):not(.fi-ta-actions-cell):not(:last-child) {
         display: none !important;
+    }
+
+    /* Retain actions container in DOM for active Livewire/Alpine click listeners */
+    table.fi-ta-table tbody tr td.fi-ta-actions-cell,
+    table.fi-ta-table tbody tr td:last-child:has(.fi-ta-actions) {
+        display: block !important;
+        position: absolute !important;
+        opacity: 0 !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
+        pointer-events: auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
     }
 
     /* Column 1 (internet_number) renders the entire Standalone Card */
