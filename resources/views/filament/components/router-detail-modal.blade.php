@@ -20,7 +20,10 @@
                     📡
                 </div>
                 <div>
-                    <div class="text-xs text-cyan-100 font-semibold uppercase tracking-wider">MikroTik System Identity</div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-cyan-100 font-semibold uppercase tracking-wider">MikroTik System Identity</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-white/20 text-white tracking-wide">{{ $info['protocol'] ?? 'API/Telnet' }}</span>
+                    </div>
                     <div class="text-lg font-black tracking-tight">{{ $info['identity'] ?? '-' }}</div>
                 </div>
             </div>

@@ -56,20 +56,20 @@ class RouterResource extends Resource
                             ->maxLength(100),
 
                         Forms\Components\TextInput::make('port')
-                            ->label('Port API')
+                            ->label('Port Koneksi (API / Telnet)')
                             ->numeric()
                             ->default(8728)
                             ->required()
-                            ->helperText('Port standar API: 8728, API-SSL: 8729'),
+                            ->helperText('Port standar API: 8728 (SSL: 8729), Telnet: 23, atau Port Custom NAT/VPN.'),
 
                         Forms\Components\TextInput::make('username')
-                            ->label('Username API')
+                            ->label('Username Login (API / Telnet)')
                             ->default('admin')
                             ->required()
                             ->maxLength(100),
 
                         Forms\Components\TextInput::make('password')
-                            ->label('Password API')
+                            ->label('Password (API / Telnet)')
                             ->password()
                             ->revealable()
                             ->maxLength(255),
