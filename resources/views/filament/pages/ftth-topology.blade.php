@@ -304,13 +304,13 @@
                             <span style="color: #7c3aed;">4. Drop Line / ONT User</span>
                         </div>
 
-                        <!-- Diagram Branches (Proper center tree hierarchy) -->
+                        <!-- Diagram Branches (Top-aligned hierarchical tree) -->
                         <div style="display: flex; flex-direction: column; gap: 1.75rem;">
                             @foreach($tree as $olt)
-                                <div class="ims-tree-branch-olt" style="display: flex; align-items: center; gap: 0;">
+                                <div class="ims-tree-branch-olt" style="display: flex; align-items: flex-start; gap: 0;">
                                     
-                                    <!-- ── 1. OLT NODE (Centered on PON branch) ── -->
-                                    <div style="width: 160px; min-width: 160px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                                    <!-- ── 1. OLT NODE (Top-aligned) ── -->
+                                    <div style="width: 160px; min-width: 160px; display: flex; flex-direction: column; justify-content: flex-start; position: relative;">
                                         <div class="ims-node-olt" style="padding: 0.65rem; border-radius: 10px; background: linear-gradient(145deg, #0b1e3b 0%, #030f24 100%); border: 1.5px solid #00d4ff; box-shadow: 0 3px 10px rgba(0, 212, 255, 0.2); color: #ffffff; display: flex; flex-direction: column; gap: 0.25rem; position: relative; z-index: 5;">
                                             <div style="display: flex; align-items: center; justify-content: space-between;">
                                                 <span style="font-size: 0.95rem;">🖥️</span>
@@ -334,11 +334,11 @@
                                         </div>
 
                                         <!-- Trunk Line Output -->
-                                        <div style="position: absolute; right: -12px; top: 50%; width: 12px; height: 2.5px; background: #16a34a; z-index: 2;"></div>
+                                        <div style="position: absolute; right: -12px; top: 32px; width: 12px; height: 2.5px; background: #16a34a; z-index: 2;"></div>
                                     </div>
 
                                     <!-- ── 2. PON BRANCHES ── -->
-                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 1rem; position: relative; padding-left: 12px; border-left: 2.5px solid #16a34a; margin-left: 12px;">
+                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 1.25rem; position: relative; padding-left: 12px; border-left: 2.5px solid #16a34a; margin-left: 12px;">
                                         @if($olt->ponPorts->isEmpty())
                                             <div style="padding: 0.5rem; color: #94a3b8; font-size: 0.7rem; font-style: italic;">
                                                 Belum ada PON Port.
@@ -350,12 +350,12 @@
                                                     $odpCount = $pon->odps->count();
                                                     $subCountInPon = $pon->odps->sum(fn($o) => $o->subscriptions->count());
                                                 @endphp
-                                                <div class="ims-tree-branch-pon" style="display: flex; align-items: center; gap: 0; position: relative;">
+                                                <div class="ims-tree-branch-pon" style="display: flex; align-items: flex-start; gap: 0; position: relative;">
                                                     
-                                                    <!-- PON Port Node Card (Centered on ODP branch) -->
-                                                    <div style="width: 140px; min-width: 140px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                                                    <!-- PON Port Node Card (Top-aligned) -->
+                                                    <div style="width: 140px; min-width: 140px; display: flex; flex-direction: column; justify-content: flex-start; position: relative;">
                                                         <!-- Link from Feeder -->
-                                                        <div style="position: absolute; left: -12px; top: 50%; width: 12px; height: 2px; background: #16a34a;"></div>
+                                                        <div style="position: absolute; left: -12px; top: 24px; width: 12px; height: 2px; background: #16a34a;"></div>
 
                                                         <div
                                                             wire:click="togglePon({{ $pon->id }})"
@@ -379,7 +379,7 @@
                                                         </div>
 
                                                         @if(!$isPonCollapsed && !$pon->odps->isEmpty())
-                                                            <div style="position: absolute; right: -12px; top: 50%; width: 12px; height: 2px; background: #16a34a;"></div>
+                                                            <div style="position: absolute; right: -12px; top: 24px; width: 12px; height: 2px; background: #16a34a;"></div>
                                                         @endif
                                                     </div>
 
@@ -398,12 +398,12 @@
                                                                         $maxPorts = $odp->total_ports ?: 8;
                                                                         $isFull = $subCount >= $maxPorts;
                                                                     @endphp
-                                                                    <div class="ims-tree-branch-odp" style="display: flex; align-items: center; gap: 0; position: relative;">
+                                                                    <div class="ims-tree-branch-odp" style="display: flex; align-items: flex-start; gap: 0; position: relative;">
                                                                         
-                                                                        <!-- ODP Splitter Node Card (Centered on user branch) -->
-                                                                        <div style="width: 190px; min-width: 190px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                                                                        <!-- ODP Splitter Node Card (Top-aligned) -->
+                                                                        <div style="width: 190px; min-width: 190px; display: flex; flex-direction: column; justify-content: flex-start; position: relative;">
                                                                             <!-- Link from PON -->
-                                                                            <div style="position: absolute; left: -12px; top: 50%; width: 12px; height: 2px; background: #16a34a;"></div>
+                                                                            <div style="position: absolute; left: -12px; top: 28px; width: 12px; height: 2px; background: #16a34a;"></div>
 
                                                                             <div class="ims-node-odp" style="padding: 0.45rem 0.65rem; border-radius: 8px; background: #ffffff; border: 1.5px solid {{ $isFull ? '#ef4444' : '#10b981' }}; box-shadow: 0 2px 5px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 0.2rem; position: relative; z-index: 5;">
                                                                                 
@@ -455,7 +455,7 @@
                                                                             </div>
 
                                                                             @if(!$isOdpCollapsed && !$odp->subscriptions->isEmpty())
-                                                                                <div style="position: absolute; right: -12px; top: 50%; width: 12px; height: 1.5px; background: #16a34a;"></div>
+                                                                                <div style="position: absolute; right: -12px; top: 28px; width: 12px; height: 1.5px; background: #16a34a;"></div>
                                                                             @endif
                                                                         </div>
 
@@ -627,13 +627,8 @@
         }
 
         /* Hilangkan sisa scrollbar halaman web luar agar pas 1 layar penuh */
-        body:has(.ims-ftth-compact-wrapper),
-        html:has(.ims-ftth-compact-wrapper),
-        .fi-main:has(.ims-ftth-compact-wrapper),
-        .fi-page:has(.ims-ftth-compact-wrapper) {
-            overflow-y: hidden !important;
-            height: 100vh !important;
-            max-height: 100vh !important;
+        html:has(.ims-ftth-compact-wrapper) {
+            scrollbar-width: thin;
         }
     </style>
 </x-filament-panels::page>
