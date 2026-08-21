@@ -217,19 +217,19 @@ class RegistrationInvoiceResource extends Resource
                                         <a href='{$pdfUrl}' target='_blank' style='display: inline-flex; align-items: center; gap: 4px; color: #2563eb; font-weight: 700; font-size: 10.5px; text-decoration: underline; margin-top: 2px;' title='Buka / Cetak Invoice Registrasi PDF'>
                                             📄 {$pdfName}
                                         </a>
-                                    </div>
-                                    <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 4px;'>
-                                        <button
-                                            type='button'
-                                            onclick=\"document.querySelector('.ims-act-change-payment-{$safeKey}')?.click() || document.querySelector('.ims-paymethod-trigger-{$safeKey}')?.click();\"
-                                            title='Klik untuk mengubah metode pembayaran'
-                                            style='background: #6366f1; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(99,102,241,0.25);'
-                                        >
-                                            {$badgeText}
-                                        </button>
-                                        <div style='display: flex; align-items: center; gap: 4px; font-size: 9.5px; color: #f43f5e; font-weight: 700;'>
-                                            <span style='text-decoration: underline;'>🗲 UnSend</span>
-                                            <span style='text-decoration: underline;'>✉ UnSend</span>
+                                        <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 4px;'>
+                                            <button
+                                                type='button'
+                                                onclick=\"(function(){ var el = document.querySelector('.ims-act-change-payment-{$safeKey}') || document.querySelector('.ims-paymethod-trigger-{$safeKey}'); if(el){ ((el.matches('button, a') ? el : el.querySelector('button, a')) || el).click(); } })()\"
+                                                title='Klik untuk mengubah metode pembayaran'
+                                                style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
+                                            >
+                                                {$payLabel}
+                                            </button>
+                                            <div style='display: flex; align-items: center; gap: 4px; font-size: 9.5px; color: #f43f5e; font-weight: 700;'>
+                                                <span style='text-decoration: underline;'>🗲 UnSend</span>
+                                                <span style='text-decoration: underline;'>✉ UnSend</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -238,7 +238,7 @@ class RegistrationInvoiceResource extends Resource
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
-                                        onclick=\"document.querySelector('.ims-act-change-payment-{$safeKey}')?.click() || document.querySelector('.ims-paymethod-trigger-{$safeKey}')?.click();\"
+                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-change-payment-{$safeKey}') || document.querySelector('.ims-paymethod-trigger-{$safeKey}'); if(el){ ((el.matches('button, a') ? el : el.querySelector('button, a')) || el).click(); } })()\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -246,17 +246,33 @@ class RegistrationInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        onclick=\"document.querySelector('.ims-act-pelunasan-{$safeKey}')?.click() || document.querySelector('.ims-act-accept-{$safeKey}')?.click();\"
+                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-publish-{$safeKey}'); if(el){ ((el.matches('button, a') ? el : el.querySelector('button, a')) || el).click(); } })()\"
+                                        class='ims-modal-act-btn ims-modal-act-cyan'
+                                        style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                    >
+                                        ✅ Publish
+                                    </button>
+                                    <button
+                                        type='button'
+                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-pelunasan-{$safeKey}') || document.querySelector('.ims-act-accept-{$safeKey}'); if(el){ ((el.matches('button, a') ? el : el.querySelector('button, a')) || el).click(); } })()\"
                                         class='ims-modal-act-btn ims-modal-act-green'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
                                         💵 Terima Bayar
                                     </button>
+                                    <button
+                                        type='button'
+                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-delete-{$safeKey}'); if(el){ ((el.matches('button, a') ? el : el.querySelector('button, a')) || el).click(); } })()\"
+                                        class='ims-modal-act-btn ims-modal-act-red'
+                                        style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                    >
+                                        🗑️ Hapus
+                                    </button>
                                 </div>
                                 <button
                                     type='button'
                                     data-detail-payload='{$encodedDetail}'
-                                    onclick=\"window.openImsDetailFromPayload \u0026\u0026 window.openImsDetailFromPayload('{$encodedDetail}')\"
+                                    onclick=\"(function(){ if (window.openImsDetailFromPayload) { window.openImsDetailFromPayload('{$encodedDetail}'); } })()\"
                                     class='ims-card-detail-btn'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
