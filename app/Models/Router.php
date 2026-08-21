@@ -103,14 +103,16 @@ class Router extends Model
      * Get RouterOS API Client instance (Supports v7 and v6 legacy MD5 authentication)
      * Throws exception on failure so callers can capture the error message.
      */
-    public function getClient(bool $legacy = false): \RouterOS\Client
+    public function getClient(bool $legacy = false, ?bool $sslOverride = null): \RouterOS\Client
     {
+        $useSsl = $sslOverride ?? (bool) ($this->use_ssl ?? false);
+
         return new \RouterOS\Client([
             'host' => $this->ip_address,
             'user' => $this->username ?: 'admin',
             'pass' => $this->password ?? '',
             'port' => (int) ($this->port ?: 8728),
-            'ssl'  => (bool) ($this->use_ssl ?? false),
+            'ssl'  => $useSsl,
             'timeout' => 10,
             'legacy' => $legacy,
         ]);
@@ -119,10 +121,10 @@ class Router extends Model
     /**
      * Safely attempt to get a client, returns null on failure
      */
-    public function getClientSafe(bool $legacy = false): ?\RouterOS\Client
+    public function getClientSafe(bool $legacy = false, ?bool $sslOverride = null): ?\RouterOS\Client
     {
         try {
-            return $this->getClient($legacy);
+            return $this->getClient($legacy, $sslOverride);
         } catch (\Throwable $e) {
             return null;
         }
@@ -143,10 +145,15 @@ class Router extends Model
             'PROFILE-100M' => 'PROFILE 100 Mbps',
         ];
 
-        // 1. Try API on configured port (v7 then v6 legacy)
-        foreach ([false, true] as $isLegacy) {
+        // Try all API combinations: [legacy, ssl]
+        $attempts = [
+            [false, null], [false, true],  // v7 plain, v7 SSL
+            [true, null],  [true, true],   // v6 plain, v6 SSL
+        ];
+
+        foreach ($attempts as [$isLegacy, $sslOverride]) {
             try {
-                $client = $this->getClientSafe($isLegacy);
+                $client = $this->getClientSafe($isLegacy, $sslOverride);
                 if ($client) {
                     $query = new \RouterOS\Query('/ppp/profile/print');
                     $response = $client->query($query)->read();
@@ -165,7 +172,7 @@ class Router extends Model
             } catch (\Throwable $e) {}
         }
 
-        // 2. Try Telnet on port 23
+        // Try Telnet on port 23
         try {
             $telnetService = new \App\Services\RouterTelnetService();
             $info = $telnetService->getSystemInfo($this->ip_address, 23, $this->username ?: 'admin', $this->password ?? '');
@@ -196,10 +203,15 @@ class Router extends Model
         ?string $remoteAddress = null,
         ?string $comment = null
     ): array {
-        // Try API (Modern and Legacy v6)
-        foreach ([false, true] as $isLegacy) {
+        // Try all API combinations
+        $attempts = [
+            [false, null], [false, true],
+            [true, null],  [true, true],
+        ];
+
+        foreach ($attempts as [$isLegacy, $sslOverride]) {
             try {
-                $client = $this->getClientSafe($isLegacy);
+                $client = $this->getClientSafe($isLegacy, $sslOverride);
                 if ($client) {
                     $checkQuery = (new \RouterOS\Query('/ppp/secret/print'))
                         ->where('name', $username);
@@ -254,35 +266,35 @@ class Router extends Model
 
     /**
      * Get complete live system info from MikroTik.
-     * Connection priority: API v7 → API v6 Legacy → Telnet (port 23)
-     * All attempts use the configured port for API; Telnet always uses port 23.
+     * Connection priority: API v7 → API v7-SSL → API v6 → API v6-SSL → Telnet (port 23)
+     * All API attempts use the configured port. Telnet always uses port 23.
      */
     public function getSystemInfo(): array
     {
         $port = (int) ($this->port ?: 8728);
         $errors = [];
 
-        // 1. Try API on configured port - Modern v7 scheme
-        try {
-            $client = $this->getClient(false);
-            $info = $this->extractApiSystemInfo($client, "RouterOS v7 API (Port {$port})");
-            if ($info) return $info;
-            $errors[] = "API v7 (:{$port}): Terhubung tapi gagal membaca data resource";
-        } catch (\Throwable $e) {
-            $errors[] = "API v7 (:{$port}): " . $this->cleanErrorMessage($e->getMessage());
+        // Define all API connection attempts: [legacy, ssl, label]
+        $apiAttempts = [
+            [false, false, "API v7 (:{$port})"],
+            [false, true,  "API v7-SSL (:{$port})"],
+            [true,  false, "API v6 Legacy (:{$port})"],
+            [true,  true,  "API v6 Legacy-SSL (:{$port})"],
+        ];
+
+        foreach ($apiAttempts as [$legacy, $ssl, $label]) {
+            try {
+                $client = $this->getClient($legacy, $ssl);
+                $protocolName = str_replace(['(', ')'], ['(Port ', ')'], $label);
+                $info = $this->extractApiSystemInfo($client, $protocolName);
+                if ($info) return $info;
+                $errors[] = "{$label}: Terhubung tapi gagal membaca data resource";
+            } catch (\Throwable $e) {
+                $errors[] = "{$label}: " . $this->cleanErrorMessage($e->getMessage());
+            }
         }
 
-        // 2. Try API on configured port - Legacy v6 MD5 scheme
-        try {
-            $client = $this->getClient(true);
-            $info = $this->extractApiSystemInfo($client, "RouterOS v6 API Legacy (Port {$port})");
-            if ($info) return $info;
-            $errors[] = "API v6 (:{$port}): Terhubung tapi gagal membaca data resource";
-        } catch (\Throwable $e) {
-            $errors[] = "API v6 (:{$port}): " . $this->cleanErrorMessage($e->getMessage());
-        }
-
-        // 3. Try Telnet on standard port 23 (NOT on the custom API port - avoids broken pipe)
+        // Try Telnet on standard port 23
         try {
             $telnetService = new \App\Services\RouterTelnetService();
             $telnetInfo = $telnetService->getSystemInfo($this->ip_address, 23, $this->username ?: 'admin', $this->password ?? '');
@@ -307,7 +319,7 @@ class Router extends Model
 
         return [
             'connected' => false,
-            'error' => "Gagal terhubung ke {$this->ip_address}:{$port}.\n\nDetail diagnostik:\n" . implode("\n", array_map(fn($e, $i) => ($i + 1) . ". " . $e, $errors, array_keys($errors))) . "\n\nPastikan:\n• Port {$port} di MikroTik mengarah ke service API\n• Username & Password sudah benar\n• IP server web tidak terblokir di /ip service atau /ip firewall",
+            'error' => "Gagal terhubung ke {$this->ip_address}:{$port}.\n\nDetail diagnostik:\n" . implode("\n", array_map(fn($e, $i) => ($i + 1) . ". " . $e, $errors, array_keys($errors))) . "\n\nPastikan:\n• Port {$port} di MikroTik mengarah ke service API (bukan API-SSL jika tidak pakai SSL)\n• Username & Password sudah benar\n• IP server web ({$_SERVER['SERVER_ADDR'] ?? 'server'}) tidak terblokir di /ip service atau /ip firewall\n• Cek: /ip service print di MikroTik untuk memverifikasi port dan status service",
         ];
     }
 
