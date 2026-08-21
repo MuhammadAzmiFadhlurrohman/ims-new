@@ -500,8 +500,7 @@ class InstallationPipelineResource extends Resource
                 Tables\Columns\TextColumn::make('internet_number')
                     ->label('Pelanggan')
                     ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
-                    ->html()
-                    ->formatStateUsing(function (CustomerSubscription $record): string {
+                    ->formatStateUsing(function ($state, CustomerSubscription $record): \Illuminate\Contracts\Support\Htmlable {
                         $internetNo = $record->internet_number ?? '-';
                         $custName = strtoupper($record->customer_name ?? $record->customer?->name ?? '-');
                         $gender = $record->customer?->gender == 'female' ? 'P' : 'L';
@@ -576,7 +575,7 @@ class InstallationPipelineResource extends Resource
 
                         $phoneHtml = $phone ? "<span class='ims-cust-phone' style='font-size: 11.5px; color: #64748b; font-family: monospace; font-weight: 600;'>📞 {$phone}</span>" : "";
 
-                        return "
+                        return new \Illuminate\Support\HtmlString("
                             <!-- DESKTOP VIEW (Visible on Desktop) -->
                             <div class='ims-desktop-view ims-cust-card'>
                                 <div class='ims-cust-top-row'>
@@ -640,7 +639,7 @@ class InstallationPipelineResource extends Resource
                                     <span>Detail</span>
                                 </button>
                             </div>
-                        ";
+                        ");
                     })
                     ->searchable(['internet_number', 'customer_name'])
                     ->sortable(),
