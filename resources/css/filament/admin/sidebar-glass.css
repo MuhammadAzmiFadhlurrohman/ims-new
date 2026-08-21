@@ -93,8 +93,8 @@ html.dark .fi-sidebar {
     }
 
     :root, html, body {
-        --sidebar-width: 50vw !important;
-        --default-sidebar-width: 50vw !important;
+        --sidebar-width: 80vw !important;
+        --default-sidebar-width: 80vw !important;
     }
 
     aside.fi-sidebar,
@@ -113,9 +113,9 @@ html.dark .fi-sidebar {
         max-height: 100dvh !important;
         z-index: 999999 !important;
         margin: 0 !important;
-        width: 50vw !important;
-        min-width: 50vw !important;
-        max-width: 50vw !important;
+        width: 80vw !important;
+        min-width: 80vw !important;
+        max-width: 80vw !important;
         will-change: transform !important;
         -webkit-backface-visibility: hidden !important;
         backface-visibility: hidden !important;
@@ -133,9 +133,9 @@ html.dark .fi-sidebar {
     aside.fi-sidebar.fi-sidebar-open,
     .fi-sidebar.fi-sidebar-open {
         transform: translateX(0) !important;
-        width: 50vw !important;
-        min-width: 50vw !important;
-        max-width: 50vw !important;
+        width: 80vw !important;
+        min-width: 80vw !important;
+        max-width: 80vw !important;
         pointer-events: auto !important;
         visibility: visible !important;
         transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1),
