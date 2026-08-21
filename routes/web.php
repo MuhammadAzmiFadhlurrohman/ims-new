@@ -27,6 +27,92 @@ Route::middleware(['web', 'auth'])->group(function () {
         return response()->json(['success' => false, 'message' => 'Record not found'], 404);
     });
 
+    // ── Invoice Actions (Mobile & Instant Modals) ──
+    Route::post('/admin/invoices/update-payment-method', function (Request $request) {
+        $key = $request->input('key');
+        $method = $request->input('payment_method', 'Midtrans');
+        $type = $request->input('type', 'monthly');
+
+        if ($type === 'registration') {
+            $record = \App\Models\RegistrationInvoice::where('invoice_number', $key)->orWhere('id', $key)->first();
+        } else {
+            $record = \App\Models\MonthlyInvoice::where('invoice_number', $key)->orWhere('id', $key)->first();
+        }
+
+        if ($record) {
+            $record->update(['payment_method' => $method]);
+            return response()->json(['success' => true, 'message' => 'Metode pembayaran berhasil diubah']);
+        }
+        return response()->json(['success' => false, 'message' => 'Invoice tidak ditemukan'], 404);
+    });
+
+    Route::post('/admin/invoices/publish', function (Request $request) {
+        $key = $request->input('key');
+        $type = $request->input('type', 'monthly');
+
+        if ($type === 'registration') {
+            $record = \App\Models\RegistrationInvoice::where('invoice_number', $key)->orWhere('id', $key)->first();
+            if ($record) {
+                $record->update(['payment_status' => 'UNPAID']);
+                return response()->json(['success' => true, 'message' => 'Invoice registrasi berhasil di-publish']);
+            }
+        } else {
+            $record = \App\Models\MonthlyInvoice::where('invoice_number', $key)->orWhere('id', $key)->first();
+            if ($record) {
+                $record->update(['payment_status' => 'PUBLISHED']);
+                return response()->json(['success' => true, 'message' => 'Invoice bulanan berhasil di-publish']);
+            }
+        }
+        return response()->json(['success' => false, 'message' => 'Invoice tidak ditemukan'], 404);
+    });
+
+    Route::post('/admin/invoices/accept-payment', function (Request $request) {
+        $key = $request->input('key');
+        $type = $request->input('type', 'monthly');
+        $method = $request->input('payment_method', 'TUNAI');
+        $paidAt = $request->input('paid_at', now());
+
+        if ($type === 'registration') {
+            $record = \App\Models\RegistrationInvoice::where('invoice_number', $key)->orWhere('id', $key)->first();
+            if ($record) {
+                $record->update([
+                    'payment_status' => 'PAID',
+                    'payment_method' => $method,
+                    'paid_at' => $paidAt,
+                ]);
+                return response()->json(['success' => true, 'message' => 'Pelunasan invoice berhasil dicatat']);
+            }
+        } else {
+            $record = \App\Models\MonthlyInvoice::where('invoice_number', $key)->orWhere('id', $key)->first();
+            if ($record) {
+                $record->update([
+                    'payment_status' => 'PAID',
+                    'payment_method' => $method,
+                    'paid_at' => $paidAt,
+                ]);
+                return response()->json(['success' => true, 'message' => 'Pembayaran invoice bulanan berhasil diterima']);
+            }
+        }
+        return response()->json(['success' => false, 'message' => 'Invoice tidak ditemukan'], 404);
+    });
+
+    Route::post('/admin/invoices/delete', function (Request $request) {
+        $key = $request->input('key');
+        $type = $request->input('type', 'monthly');
+
+        if ($type === 'registration') {
+            $record = \App\Models\RegistrationInvoice::where('invoice_number', $key)->orWhere('id', $key)->first();
+        } else {
+            $record = \App\Models\MonthlyInvoice::where('invoice_number', $key)->orWhere('id', $key)->first();
+        }
+
+        if ($record) {
+            $record->delete();
+            return response()->json(['success' => true, 'message' => 'Invoice berhasil dihapus']);
+        }
+        return response()->json(['success' => false, 'message' => 'Invoice tidak ditemukan'], 404);
+    });
+
     // ── PDF Documents: Scan Dokumen Pelanggan ──
     Route::get('/admin/customer-documents/{internetNumber}/form-berlangganan', [CustomerDocumentPdfController::class, 'formBerlangganan'])
         ->name('customer-documents.form-berlangganan');

@@ -262,9 +262,7 @@ class RegistrationInvoiceResource extends Resource
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
-                                        data-table-action='change_payment_method'
-                                        data-record-key='{$key}'
-                                        onclick=\"window.openImsTableAction('change_payment_method', '{$key}')\"
+                                        onclick=\"window.openImsPaymentMethodModal('{$key}', '{$payLabel}', 'registration')\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -272,9 +270,7 @@ class RegistrationInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        data-table-action='publish'
-                                        data-record-key='{$key}'
-                                        onclick=\"window.openImsTableAction('publish', '{$key}')\"
+                                        onclick=\"window.openImsPublishModal('{$key}', 'registration', '{$invNo}')\"
                                         class='ims-modal-act-btn ims-modal-act-cyan'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -282,9 +278,7 @@ class RegistrationInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        data-table-action='pelunasan'
-                                        data-record-key='{$key}'
-                                        onclick=\"window.openImsTableAction('pelunasan', '{$key}')\"
+                                        onclick=\"window.openImsAcceptModal('{$key}', 'registration', '{$invNo}')\"
                                         class='ims-modal-act-btn ims-modal-act-green'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -292,9 +286,7 @@ class RegistrationInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        data-table-action='delete'
-                                        data-record-key='{$key}'
-                                        onclick=\"window.openImsTableAction('delete', '{$key}')\"
+                                        onclick=\"window.openImsDeleteModal('{$key}', 'registration', '{$invNo}')\"
                                         class='ims-modal-act-btn ims-modal-act-red'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >

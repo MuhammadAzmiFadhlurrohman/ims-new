@@ -1,7 +1,7 @@
 {{-- ── 1. STANDALONE STATUS TYPE MODAL ─────────────────────────────────────── --}}
 <div
     id="ims-status-modal"
-    style="display: none; position: fixed; inset: 0; z-index: 99999999; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px);"
+    style="display: none; position: fixed; inset: 0; z-index: 99999999; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px); padding: 14px; box-sizing: border-box;"
     onclick="closeImsStatusModal()"
 >
     <div
@@ -10,7 +10,6 @@
         onclick="event.stopPropagation()"
     >
         <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
-            {{-- Left: Label Ubah & Radio Options Horizontal --}}
             <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
                 <span style="font-weight: 800; color: #0284c7; font-size: 13.5px; text-transform: uppercase;">Ubah Status:</span>
 
@@ -35,7 +34,6 @@
                 </label>
             </div>
 
-            {{-- Right: Ubah & Batal Buttons --}}
             <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
                 <button
                     type="button"
@@ -114,10 +112,10 @@
         <div class="ims-modal-section" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px;">
             <div style="font-size: 10.5px; font-weight: 800; color: #0284c7; text-transform: uppercase; margin-bottom: 6px;">⚙️ Status Pipeline & Sales</div>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; font-size: 11.5px;">
-                <div><span class="ims-modal-lbl" style="color: #64748b; font-size: 10px; display: block;">Status Registrasi:</span><div id="ims-detail-status" style="font-weight: 800;">-</div></div>
+                <div><span class="ims-modal-lbl" style="color: #64748b; font-size: 10px; display: block;">Status Tagihan:</span><div id="ims-detail-status" style="font-weight: 800;">-</div></div>
                 <div><span class="ims-modal-lbl" style="color: #64748b; font-size: 10px; display: block;">Status Tipe:</span><div id="ims-detail-status-type" style="font-weight: 800; color: #d97706;">-</div></div>
                 <div><span class="ims-modal-lbl" style="color: #64748b; font-size: 10px; display: block;">Sales PIC:</span><div id="ims-detail-sales" style="font-weight: 700;">-</div></div>
-                <div><span class="ims-modal-lbl" style="color: #64748b; font-size: 10px; display: block;">Tanggal SO:</span><div id="ims-detail-created" style="font-weight: 700;">-</div></div>
+                <div><span class="ims-modal-lbl" style="color: #64748b; font-size: 10px; display: block;">Tanggal Terbit / SO:</span><div id="ims-detail-created" style="font-weight: 700;">-</div></div>
             </div>
         </div>
 
@@ -142,12 +140,162 @@
     </div>
 </div>
 
+{{-- ── 3. MODAL UBAH METODE BAYAR ───────────────────────────────────────────── --}}
+<div
+    id="ims-paymethod-modal"
+    style="display: none; position: fixed; inset: 0; z-index: 99999999; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px); padding: 14px; box-sizing: border-box;"
+    onclick="closeImsPaymentMethodModal()"
+>
+    <div
+        class="ims-modal-card"
+        style="position: relative; background: #ffffff; border-radius: 18px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); padding: 20px 22px; width: 100%; max-width: 440px; z-index: 100000000; border: 1px solid #e2e8f0; box-sizing: border-box;"
+        onclick="event.stopPropagation()"
+    >
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(148, 163, 184, 0.2); padding-bottom: 10px; margin-bottom: 16px;">
+            <div style="font-size: 14px; font-weight: 800; color: #0284c7;">💳 Ubah Metode Pembayaran</div>
+            <button type="button" onclick="closeImsPaymentMethodModal()" style="background: rgba(148, 163, 184, 0.2); border: none; border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-weight: 800; cursor: pointer;">✕</button>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+            <label style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; cursor: pointer;">
+                <input type="radio" name="ims_pay_method_radio" value="Midtrans" checked style="accent-color: #6366f1; width: 18px; height: 18px;">
+                <span style="font-weight: 700; font-size: 13px;">▲ Midtrans (Payment Gateway)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; cursor: pointer;">
+                <input type="radio" name="ims_pay_method_radio" value="Manual Transfer" style="accent-color: #3b82f6; width: 18px; height: 18px;">
+                <span style="font-weight: 700; font-size: 13px;">🏦 Manual Transfer</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; cursor: pointer;">
+                <input type="radio" name="ims_pay_method_radio" value="Cash To Collector" style="accent-color: #059669; width: 18px; height: 18px;">
+                <span style="font-weight: 700; font-size: 13px;">💵 Cash To Collector</span>
+            </label>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" onclick="closeImsPaymentMethodModal()" style="padding: 8px 16px; background: #94a3b8; color: #fff; border-radius: 8px; border: none; font-weight: 700; font-size: 12.5px; cursor: pointer;">Batal</button>
+            <button type="button" id="ims-btn-paymethod-save" onclick="submitImsPaymentMethodChange()" style="padding: 8px 20px; background: #2563eb; color: #fff; border-radius: 8px; border: none; font-weight: 800; font-size: 12.5px; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);">Simpan</button>
+        </div>
+    </div>
+</div>
+
+{{-- ── 4. MODAL PUBLISH BILLING ─────────────────────────────────────────────── --}}
+<div
+    id="ims-publish-modal"
+    style="display: none; position: fixed; inset: 0; z-index: 99999999; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px); padding: 14px; box-sizing: border-box;"
+    onclick="closeImsPublishModal()"
+>
+    <div
+        class="ims-modal-card"
+        style="position: relative; background: #ffffff; border-radius: 18px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); padding: 20px 22px; width: 100%; max-width: 440px; z-index: 100000000; border: 1px solid #e2e8f0; box-sizing: border-box;"
+        onclick="event.stopPropagation()"
+    >
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(148, 163, 184, 0.2); padding-bottom: 10px; margin-bottom: 14px;">
+            <div style="font-size: 14px; font-weight: 800; color: #0891b2;">🚀 Publish Billing Invoice</div>
+            <button type="button" onclick="closeImsPublishModal()" style="background: rgba(148, 163, 184, 0.2); border: none; border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-weight: 800; cursor: pointer;">✕</button>
+        </div>
+
+        <div style="font-size: 13px; color: #334155; line-height: 1.5; margin-bottom: 20px;">
+            Apakah Anda yakin ingin mem-publish tagihan untuk invoice <strong id="ims-pub-inv-no" style="font-family: monospace; color: #0891b2;">-</strong>? Status pembayaran akan siap ditagihkan.
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" onclick="closeImsPublishModal()" style="padding: 8px 16px; background: #94a3b8; color: #fff; border-radius: 8px; border: none; font-weight: 700; font-size: 12.5px; cursor: pointer;">Batal</button>
+            <button type="button" id="ims-btn-publish-save" onclick="submitImsPublish()" style="padding: 8px 20px; background: #0891b2; color: #fff; border-radius: 8px; border: none; font-weight: 800; font-size: 12.5px; cursor: pointer; box-shadow: 0 4px 12px rgba(8, 145, 178, 0.35);">Ya, Publish</button>
+        </div>
+    </div>
+</div>
+
+{{-- ── 5. MODAL TERIMA BAYAR / PELUNASAN ─────────────────────────────────────── --}}
+<div
+    id="ims-accept-modal"
+    style="display: none; position: fixed; inset: 0; z-index: 99999999; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px); padding: 14px; box-sizing: border-box;"
+    onclick="closeImsAcceptModal()"
+>
+    <div
+        class="ims-modal-card"
+        style="position: relative; background: #ffffff; border-radius: 18px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); padding: 20px 22px; width: 100%; max-width: 440px; z-index: 100000000; border: 1px solid #e2e8f0; box-sizing: border-box;"
+        onclick="event.stopPropagation()"
+    >
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(148, 163, 184, 0.2); padding-bottom: 10px; margin-bottom: 14px;">
+            <div style="font-size: 14px; font-weight: 800; color: #16a34a;">💵 Catat Pelunasan / Terima Pembayaran</div>
+            <button type="button" onclick="closeImsAcceptModal()" style="background: rgba(148, 163, 184, 0.2); border: none; border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-weight: 800; cursor: pointer;">✕</button>
+        </div>
+
+        <div style="font-size: 12px; color: #64748b; margin-bottom: 12px;">
+            Invoice: <strong id="ims-acc-inv-no" style="font-family: monospace; color: #0f172a;">-</strong>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+            <div>
+                <label style="display: block; font-size: 11px; font-weight: 800; color: #475569; margin-bottom: 4px; text-transform: uppercase;">Metode Pembayaran:</label>
+                <select id="ims-acc-method-select" style="width: 100%; padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 700;">
+                    <option value="TUNAI">Tunai / Cash</option>
+                    <option value="TRANSFER">Transfer Bank</option>
+                    <option value="MIDTRANS">Midtrans Online</option>
+                </select>
+            </div>
+
+            <div>
+                <label style="display: block; font-size: 11px; font-weight: 800; color: #475569; margin-bottom: 4px; text-transform: uppercase;">Waktu Pembayaran:</label>
+                <input type="datetime-local" id="ims-acc-date-input" style="width: 100%; padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 700; box-sizing: border-box;">
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" onclick="closeImsAcceptModal()" style="padding: 8px 16px; background: #94a3b8; color: #fff; border-radius: 8px; border: none; font-weight: 700; font-size: 12.5px; cursor: pointer;">Batal</button>
+            <button type="button" id="ims-btn-accept-save" onclick="submitImsAccept()" style="padding: 8px 20px; background: #16a34a; color: #fff; border-radius: 8px; border: none; font-weight: 800; font-size: 12.5px; cursor: pointer; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);">Konfirmasi Pelunasan</button>
+        </div>
+    </div>
+</div>
+
+{{-- ── 6. MODAL HAPUS INVOICE ────────────────────────────────────────────────── --}}
+<div
+    id="ims-delete-modal"
+    style="display: none; position: fixed; inset: 0; z-index: 99999999; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px); padding: 14px; box-sizing: border-box;"
+    onclick="closeImsDeleteModal()"
+>
+    <div
+        class="ims-modal-card"
+        style="position: relative; background: #ffffff; border-radius: 18px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); padding: 20px 22px; width: 100%; max-width: 440px; z-index: 100000000; border: 1px solid #e2e8f0; box-sizing: border-box;"
+        onclick="event.stopPropagation()"
+    >
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(148, 163, 184, 0.2); padding-bottom: 10px; margin-bottom: 14px;">
+            <div style="font-size: 14px; font-weight: 800; color: #dc2626;">🗑️ Hapus Invoice</div>
+            <button type="button" onclick="closeImsDeleteModal()" style="background: rgba(148, 163, 184, 0.2); border: none; border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-weight: 800; cursor: pointer;">✕</button>
+        </div>
+
+        <div style="font-size: 13px; color: #334155; line-height: 1.5; margin-bottom: 20px;">
+            Apakah Anda yakin ingin menghapus data invoice <strong id="ims-del-inv-no" style="font-family: monospace; color: #dc2626;">-</strong>? Tindakan ini tidak dapat dibatalkan.
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" onclick="closeImsDeleteModal()" style="padding: 8px 16px; background: #94a3b8; color: #fff; border-radius: 8px; border: none; font-weight: 700; font-size: 12.5px; cursor: pointer;">Batal</button>
+            <button type="button" id="ims-btn-delete-save" onclick="submitImsDelete()" style="padding: 8px 20px; background: #dc2626; color: #fff; border-radius: 8px; border: none; font-weight: 800; font-size: 12.5px; cursor: pointer; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);">Ya, Hapus Data</button>
+        </div>
+    </div>
+</div>
+
 <script>
     window.currentImsRecordKey = window.currentImsRecordKey || '';
     window.currentImsStatusType = window.currentImsStatusType || 'Temporary Delete';
     window.lastOpenedDetailPayload = window.lastOpenedDetailPayload || '';
     window.openedFromDetailModal = false;
+    window.currentImsActionType = 'monthly';
 
+    function getImsCsrf() {
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        return csrfMeta ? csrfMeta.content : '{{ csrf_token() }}';
+    }
+
+    function detectImsType() {
+        return (window.location.href.includes('registration-invoices') || window.location.pathname.includes('registration-invoices')) ? 'registration' : 'monthly';
+    }
+
+    function showImsToast(msg, isError) {
+        alert(msg);
+    }
+
+    // ── 1. STATUS TYPE MODAL ──
     window.openImsStatusModal = function(key, status) {
         window.currentImsRecordKey = key;
         const radios = document.querySelectorAll('input[name="ims_status_radio"]');
@@ -164,10 +312,7 @@
 
     window.closeImsStatusModal = function() {
         const modal = document.getElementById('ims-status-modal');
-        if (modal) {
-            modal.style.setProperty('display', 'none', 'important');
-        }
-        // Return to detail modal if opened from it
+        if (modal) modal.style.setProperty('display', 'none', 'important');
         if (window.openedFromDetailModal && window.lastOpenedDetailPayload) {
             window.openImsDetailFromPayload(window.lastOpenedDetailPayload);
         }
@@ -179,14 +324,11 @@
         const saveText = document.getElementById('ims-btn-save-text');
         if (saveText) saveText.textContent = 'Menyimpan...';
 
-        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
-        const csrfToken = csrfMeta ? csrfMeta.content : '{{ csrf_token() }}';
-
         fetch('/admin/update-status-type', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
+                'X-CSRF-TOKEN': getImsCsrf(),
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
@@ -196,36 +338,17 @@
         }).then(res => res.json()).then(data => {
             if (saveText) saveText.textContent = 'Simpan';
             window.currentImsStatusType = statusValue;
-
-            // Update status text in detail modal
             const stEl = document.getElementById('ims-detail-status-type');
             if (stEl) stEl.textContent = statusValue;
-
-            // Close status modal
-            const modal = document.getElementById('ims-status-modal');
-            if (modal) modal.style.setProperty('display', 'none', 'important');
-
-            // Return to detail modal with updated payload
-            if (window.lastOpenedDetailPayload) {
-                try {
-                    const parsed = JSON.parse(decodeURIComponent(escape(atob(window.lastOpenedDetailPayload))));
-                    parsed.statustype = statusValue;
-                    window.lastOpenedDetailPayload = btoa(unescape(encodeURIComponent(JSON.stringify(parsed))));
-                    window.openImsDetailFromPayload(window.lastOpenedDetailPayload);
-                } catch(e) {
-                    const detailModal = document.getElementById('ims-detail-modal');
-                    if (detailModal) detailModal.style.setProperty('display', 'flex', 'important');
-                }
-            } else {
-                const detailModal = document.getElementById('ims-detail-modal');
-                if (detailModal) detailModal.style.setProperty('display', 'flex', 'important');
-            }
+            window.closeImsStatusModal();
+            window.location.reload();
         }).catch(err => {
             alert('Gagal mengubah status tipe: ' + err.message);
             if (saveText) saveText.textContent = 'Simpan';
         });
     };
 
+    // ── 2. DETAIL MODAL ──
     window.openImsDetailFromPayload = function(b64) {
         try {
             window.lastOpenedDetailPayload = b64;
@@ -275,7 +398,6 @@
                 }
             }
 
-            // Render Dynamic Operational Actions matching Desktop pipeline
             const actionsContainer = document.getElementById('ims-detail-actions-list');
             if (actionsContainer) {
                 actionsContainer.innerHTML = '';
@@ -284,31 +406,7 @@
                         const btn = document.createElement('button');
                         btn.type = 'button';
                         btn.className = 'ims-modal-act-btn ims-modal-act-' + (act.color || 'blue');
-
-                        let iconHtml = '';
-                        if (act.icon === 'x') {
-                            iconHtml = '<span style="font-size: 13px; font-weight: 900;">✕</span>';
-                        } else if (act.icon === 'edit') {
-                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>';
-                        } else if (act.icon === 'delete') {
-                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>';
-                        } else if (act.icon === 'calendar') {
-                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>';
-                        } else if (act.icon === 'refresh' || act.icon === 'arrow-path' || act.icon === 'sync') {
-                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>';
-                        } else if (act.icon === 'pause') {
-                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>';
-                        } else if (act.icon === 'x-circle' || act.icon === 'cancel') {
-                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
-                        } else if (act.icon === 'adjust' || act.icon === 'sliders') {
-                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>';
-                        } else if (act.icon === 'clipboard' || act.icon === 'report') {
-                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>';
-                        } else if (act.icon === 'play') {
-                            iconHtml = '<svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>';
-                        }
-
-                        btn.innerHTML = iconHtml + '<span>' + act.label + '</span>';
+                        btn.innerHTML = '<span>' + act.label + '</span>';
 
                         btn.onclick = function() {
                             window.openedFromDetailModal = true;
@@ -350,158 +448,222 @@
         }
     };
 
+    // ── 3. PAYMENT METHOD MODAL ──
+    window.openImsPaymentMethodModal = function(key, currentMethod, type) {
+        window.currentImsRecordKey = key || window.currentImsRecordKey;
+        window.currentImsActionType = type || detectImsType();
+        const radios = document.querySelectorAll('input[name="ims_pay_method_radio"]');
+        radios.forEach(r => {
+            if (r.value.toLowerCase().includes((currentMethod || '').toLowerCase())) {
+                r.checked = true;
+            }
+        });
+        const modal = document.getElementById('ims-paymethod-modal');
+        if (modal) modal.style.setProperty('display', 'flex', 'important');
+    };
+
+    window.closeImsPaymentMethodModal = function() {
+        const modal = document.getElementById('ims-paymethod-modal');
+        if (modal) modal.style.setProperty('display', 'none', 'important');
+    };
+
+    window.submitImsPaymentMethodChange = function() {
+        const sel = document.querySelector('input[name="ims_pay_method_radio"]:checked');
+        const method = sel ? sel.value : 'Midtrans';
+        const btn = document.getElementById('ims-btn-paymethod-save');
+        if (btn) btn.textContent = 'Menyimpan...';
+
+        fetch('/admin/invoices/update-payment-method', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getImsCsrf(),
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                key: window.currentImsRecordKey,
+                payment_method: method,
+                type: window.currentImsActionType || detectImsType()
+            })
+        }).then(res => res.json()).then(data => {
+            if (btn) btn.textContent = 'Simpan';
+            window.closeImsPaymentMethodModal();
+            window.location.reload();
+        }).catch(err => {
+            alert('Gagal: ' + err.message);
+            if (btn) btn.textContent = 'Simpan';
+        });
+    };
+
+    // ── 4. PUBLISH MODAL ──
+    window.openImsPublishModal = function(key, type, invNo) {
+        window.currentImsRecordKey = key || window.currentImsRecordKey;
+        window.currentImsActionType = type || detectImsType();
+        const el = document.getElementById('ims-pub-inv-no');
+        if (el) el.textContent = invNo || key;
+        const modal = document.getElementById('ims-publish-modal');
+        if (modal) modal.style.setProperty('display', 'flex', 'important');
+    };
+
+    window.closeImsPublishModal = function() {
+        const modal = document.getElementById('ims-publish-modal');
+        if (modal) modal.style.setProperty('display', 'none', 'important');
+    };
+
+    window.submitImsPublish = function() {
+        const btn = document.getElementById('ims-btn-publish-save');
+        if (btn) btn.textContent = 'Memproses...';
+
+        fetch('/admin/invoices/publish', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getImsCsrf(),
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                key: window.currentImsRecordKey,
+                type: window.currentImsActionType || detectImsType()
+            })
+        }).then(res => res.json()).then(data => {
+            if (btn) btn.textContent = 'Ya, Publish';
+            window.closeImsPublishModal();
+            window.location.reload();
+        }).catch(err => {
+            alert('Gagal: ' + err.message);
+            if (btn) btn.textContent = 'Ya, Publish';
+        });
+    };
+
+    // ── 5. ACCEPT / PELUNASAN MODAL ──
+    window.openImsAcceptModal = function(key, type, invNo) {
+        window.currentImsRecordKey = key || window.currentImsRecordKey;
+        window.currentImsActionType = type || detectImsType();
+        const el = document.getElementById('ims-acc-inv-no');
+        if (el) el.textContent = invNo || key;
+
+        const dateInput = document.getElementById('ims-acc-date-input');
+        if (dateInput) {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            dateInput.value = now.toISOString().slice(0, 16);
+        }
+
+        const modal = document.getElementById('ims-accept-modal');
+        if (modal) modal.style.setProperty('display', 'flex', 'important');
+    };
+
+    window.closeImsAcceptModal = function() {
+        const modal = document.getElementById('ims-accept-modal');
+        if (modal) modal.style.setProperty('display', 'none', 'important');
+    };
+
+    window.submitImsAccept = function() {
+        const methodEl = document.getElementById('ims-acc-method-select');
+        const dateEl = document.getElementById('ims-acc-date-input');
+        const btn = document.getElementById('ims-btn-accept-save');
+        if (btn) btn.textContent = 'Menyimpan...';
+
+        fetch('/admin/invoices/accept-payment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getImsCsrf(),
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                key: window.currentImsRecordKey,
+                type: window.currentImsActionType || detectImsType(),
+                payment_method: methodEl ? methodEl.value : 'TUNAI',
+                paid_at: dateEl ? dateEl.value : null
+            })
+        }).then(res => res.json()).then(data => {
+            if (btn) btn.textContent = 'Konfirmasi Pelunasan';
+            window.closeImsAcceptModal();
+            window.location.reload();
+        }).catch(err => {
+            alert('Gagal: ' + err.message);
+            if (btn) btn.textContent = 'Konfirmasi Pelunasan';
+        });
+    };
+
+    // ── 6. DELETE MODAL ──
+    window.openImsDeleteModal = function(key, type, invNo) {
+        window.currentImsRecordKey = key || window.currentImsRecordKey;
+        window.currentImsActionType = type || detectImsType();
+        const el = document.getElementById('ims-del-inv-no');
+        if (el) el.textContent = invNo || key;
+        const modal = document.getElementById('ims-delete-modal');
+        if (modal) modal.style.setProperty('display', 'flex', 'important');
+    };
+
+    window.closeImsDeleteModal = function() {
+        const modal = document.getElementById('ims-delete-modal');
+        if (modal) modal.style.setProperty('display', 'none', 'important');
+    };
+
+    window.submitImsDelete = function() {
+        const btn = document.getElementById('ims-btn-delete-save');
+        if (btn) btn.textContent = 'Menghapus...';
+
+        fetch('/admin/invoices/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getImsCsrf(),
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                key: window.currentImsRecordKey,
+                type: window.currentImsActionType || detectImsType()
+            })
+        }).then(res => res.json()).then(data => {
+            if (btn) btn.textContent = 'Ya, Hapus Data';
+            window.closeImsDeleteModal();
+            window.location.reload();
+        }).catch(err => {
+            alert('Gagal: ' + err.message);
+            if (btn) btn.textContent = 'Ya, Hapus Data';
+        });
+    };
+
+    // ── GLOBAL DISPATCHER FOR ALL ACTIONS ──
     window.openImsTableAction = function(action, key) {
         if (!action) return;
+        const type = detectImsType();
 
-        // 1. Direct Livewire 3 call (Primary & most reliable)
+        if (action === 'change_payment_method') {
+            window.openImsPaymentMethodModal(key, 'Midtrans', type);
+            return;
+        }
+        if (action === 'publish') {
+            window.openImsPublishModal(key, type, key);
+            return;
+        }
+        if (action === 'accept' || action === 'pelunasan') {
+            window.openImsAcceptModal(key, type, key);
+            return;
+        }
+        if (action === 'delete') {
+            window.openImsDeleteModal(key, type, key);
+            return;
+        }
+        if (action === 'change_status_type') {
+            window.openImsStatusModal(key, 'Temporary Delete');
+            return;
+        }
+
+        // Livewire fallback if any other action
         if (window.Livewire) {
             try {
-                const tableEl = document.querySelector('.fi-ta, .fi-ta-ctn, [wire\\:id]');
-                const wireId = tableEl ? (tableEl.getAttribute('wire:id') || tableEl.closest('[wire\\:id]')?.getAttribute('wire:id')) : null;
-                const mainComp = wireId ? Livewire.find(wireId) : null;
-                if (mainComp) {
-                    if (typeof mainComp.call === 'function') {
-                        mainComp.call('mountTableAction', action, key);
-                        return;
-                    }
-                    if (mainComp.$wire && typeof mainComp.$wire.mountTableAction === 'function') {
-                        mainComp.$wire.mountTableAction(action, key);
-                        return;
-                    }
-                }
-
-                const all = (typeof Livewire.all === 'function') ? Livewire.all() : [];
-                for (let c of all) {
+                const comps = (typeof Livewire.all === 'function') ? Livewire.all() : [];
+                for (let c of comps) {
                     if (c && typeof c.call === 'function') {
                         c.call('mountTableAction', action, key);
                         return;
                     }
-                    if (c && c.$wire && typeof c.$wire.mountTableAction === 'function') {
-                        c.$wire.mountTableAction(action, key);
-                        return;
-                    }
                 }
-            } catch(e) {
-                console.error('[IMS Livewire error]', e);
-            }
+            } catch(e) {}
         }
-
-        // 2. Alpine $wire call
-        try {
-            const alpineEl = document.querySelector('.fi-ta, .fi-ta-ctn, [wire\\:id]');
-            if (alpineEl && window.Alpine) {
-                const data = window.Alpine.$data(alpineEl);
-                if (data && data.$wire && typeof data.$wire.mountTableAction === 'function') {
-                    data.$wire.mountTableAction(action, key);
-                    return;
-                }
-            }
-        } catch(e) {}
-
-        // 3. Fallback: Native DOM Action Trigger via Synthetic MouseEvent
-        try {
-            const safeKey = (key || '').toString().replace(/[^a-zA-Z0-9_-]/g, '_');
-            const selectors = [
-                '.ims-act-' + action.replace(/_/g, '-') + '-' + safeKey,
-                '.ims-act-' + action + '-' + safeKey,
-                '.ims-act-' + action + '-' + key,
-                '[class*="ims-act-' + action.replace(/_/g, '-') + '-' + safeKey + '"]',
-                '[class*="ims-act-' + action + '-' + safeKey + '"]',
-                '[class*="ims-act-' + action + '-' + key + '"]',
-                '.ims-monthly-paymethod-trigger-' + safeKey,
-                '.ims-paymethod-trigger-' + safeKey
-            ];
-            for (let sel of selectors) {
-                const targetBtn = document.querySelector(sel);
-                if (targetBtn) {
-                    const inner = (targetBtn.matches('button, a') ? targetBtn : targetBtn.querySelector('button, a')) || targetBtn;
-                    const evt = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
-                    inner.dispatchEvent(evt);
-                    inner.click();
-                    return;
-                }
-            }
-        } catch(e) {}
     };
-
-    // Delegated click handler for mobile card action buttons
-    function handleActionBtnClick(e) {
-        const actBtn = e.target.closest('[data-table-action]');
-        if (actBtn) {
-            const action = actBtn.getAttribute('data-table-action');
-            const key = actBtn.getAttribute('data-record-key');
-            if (action && key) {
-                e.preventDefault();
-                e.stopPropagation();
-                window.openImsTableAction(action, key);
-                return false;
-            }
-        }
-    }
-    document.addEventListener('click', handleActionBtnClick, true);
-
-    // Delegated click handler for mobile card detail buttons (capture phase)
-    function handleDetailBtnClick(e) {
-        const detailBtn = e.target.closest('.ims-card-detail-btn, [data-detail-payload]');
-        if (detailBtn) {
-            const payload = detailBtn.getAttribute('data-detail-payload');
-            if (payload) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                window.openImsDetailFromPayload(payload);
-                return false;
-            }
-        }
-    }
-    document.addEventListener('click', handleDetailBtnClick, true);
-    document.addEventListener('touchend', function(e) {
-        const detailBtn = e.target.closest('.ims-card-detail-btn, [data-detail-payload]');
-        if (detailBtn) {
-            const payload = detailBtn.getAttribute('data-detail-payload');
-            if (payload) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                setTimeout(function() {
-                    window.openImsDetailFromPayload(payload);
-                }, 50);
-                return false;
-            }
-        }
-    }, true);
-
-    // Re-register handlers after Livewire SPA navigations
-    if (window.Livewire) {
-        document.addEventListener('livewire:navigated', function() {
-            // Functions on window persist, no need to re-register
-            // But ensure modal DOM elements are still present
-            if (!document.getElementById('ims-detail-modal')) {
-                console.warn('[IMS] Detail modal missing after navigation');
-            }
-        });
-    }
-
-    // Auto-reopen detail modal when any Filament action modal is dismissed/cancelled
-    document.addEventListener('click', function(e) {
-        if (window.openedFromDetailModal && window.lastOpenedDetailPayload) {
-            const closeTrigger = e.target.closest('.fi-modal-close-btn, .fi-modal-close-action, [x-on\\:click*="close"], .fi-modal-close-overlay');
-            if (closeTrigger) {
-                setTimeout(function() {
-                    const anyModal = document.querySelector('.fi-modal-open');
-                    if (!anyModal) {
-                        window.openImsDetailFromPayload(window.lastOpenedDetailPayload);
-                    }
-                }, 250);
-            }
-        }
-    });
-
-    window.addEventListener('close-modal', function() {
-        if (window.openedFromDetailModal && window.lastOpenedDetailPayload) {
-            setTimeout(function() {
-                window.openImsDetailFromPayload(window.lastOpenedDetailPayload);
-            }, 250);
-        }
-    });
 </script>
