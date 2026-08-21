@@ -666,7 +666,7 @@
             overflow-x: hidden !important;
         }
 
-        /* ── Full Size Mode Styling ── */
+        /* ── Full Size Mode: Full 100% Screen Topology Area ── */
         .ims-fullscreen-mode {
             position: fixed !important;
             top: 0 !important;
@@ -676,22 +676,44 @@
             width: 100vw !important;
             height: 100vh !important;
             z-index: 99999999 !important;
-            background: #f1f5f9 !important;
-            padding: 0.65rem !important;
-            box-sizing: border-box !important;
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 0.5rem !important;
+            background: #f8fafc !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+            display: block !important;
         }
 
         html.dark .ims-fullscreen-mode {
             background: #020712 !important;
         }
 
+        .ims-fullscreen-mode .ims-top-control-card {
+            position: absolute !important;
+            top: 12px !important;
+            left: 16px !important;
+            right: 16px !important;
+            z-index: 60 !important;
+            background: rgba(255, 255, 255, 0.94) !important;
+            backdrop-filter: blur(12px) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        html.dark .ims-fullscreen-mode .ims-top-control-card {
+            background: rgba(3, 10, 20, 0.92) !important;
+            border-color: #1e3a5f !important;
+        }
+
         .ims-fullscreen-mode .ims-canvas-viewport {
-            height: calc(100vh - 65px) !important;
-            max-height: calc(100vh - 65px) !important;
-            border-radius: 10px !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-height: 100vh !important;
+            border-radius: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
         }
     </style>
 </x-filament-panels::page>
