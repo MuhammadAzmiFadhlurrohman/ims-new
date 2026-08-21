@@ -316,20 +316,15 @@
                             if (detailModal) detailModal.style.setProperty('display', 'none', 'important');
 
                             if (act.url) {
-                                window.location.href = act.url;
+                                if (act.url.endsWith('.pdf') || act.url.includes('/pdf')) {
+                                    window.open(act.url, '_blank');
+                                } else {
+                                    window.location.href = act.url;
+                                }
                             } else if (act.name === 'change_status_type') {
                                 window.openImsStatusModal(window.currentImsRecordKey, window.currentImsStatusType);
                             } else {
-                                const safeKey = (window.currentImsRecordKey || '').replace(/[^a-zA-Z0-9_-]/g, '_');
-                                const domActBtn = document.querySelector('.ims-act-' + act.name.replace(/_/g, '-') + '-' + safeKey) ||
-                                                  document.querySelector('.ims-act-' + act.name + '-' + safeKey) ||
-                                                  document.querySelector('.ims-monthly-paymethod-trigger-' + safeKey) ||
-                                                  document.querySelector('.ims-paymethod-trigger-' + safeKey);
-                                if (domActBtn) {
-                                    domActBtn.click();
-                                } else {
-                                    window.openImsTableAction(act.name, window.currentImsRecordKey);
-                                }
+                                window.openImsTableAction(act.name, window.currentImsRecordKey);
                             }
                         };
 

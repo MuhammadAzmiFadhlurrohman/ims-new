@@ -137,19 +137,43 @@ class RegistrationInvoiceResource extends Resource
                         $recordActions = [
                             [
                                 'name' => 'change_payment_method',
-                                'label' => 'Ubah Metode Bayar',
+                                'label' => '💳 Ubah Metode Bayar',
                                 'icon' => 'sliders',
                                 'color' => 'blue',
                             ],
                             [
-                                'name' => 'accept',
-                                'label' => 'Konfirmasi Pembayaran (Accept)',
+                                'name' => 'publish',
+                                'label' => '✅ Publish Billing Registrasi',
+                                'icon' => 'play',
+                                'color' => 'cyan',
+                            ],
+                            [
+                                'name' => 'pelunasan',
+                                'label' => '💵 Pelunasan / Terima Bayar',
                                 'icon' => 'clipboard',
                                 'color' => 'green',
                             ],
                             [
+                                'url' => $pdfUrl,
+                                'label' => '📄 Cetak / Download PDF',
+                                'icon' => 'report',
+                                'color' => 'blue',
+                            ],
+                            [
+                                'url' => $custUrl,
+                                'label' => '👤 Lihat Profil Pelanggan',
+                                'icon' => 'clipboard',
+                                'color' => 'cyan',
+                            ],
+                            [
+                                'name' => 'change_status_type',
+                                'label' => '⚡ Ubah Status Tipe',
+                                'icon' => 'refresh',
+                                'color' => 'cyan',
+                            ],
+                            [
                                 'name' => 'delete',
-                                'label' => 'Hapus Invoice',
+                                'label' => '🗑️ Hapus Invoice',
                                 'icon' => 'delete',
                                 'color' => 'red',
                             ],

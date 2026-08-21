@@ -206,25 +206,43 @@ class MonthlyInvoiceResource extends Resource
                         $recordActions = [
                             [
                                 'name' => 'change_payment_method',
-                                'label' => 'Ubah Metode Bayar',
+                                'label' => '💳 Ubah Metode Bayar',
                                 'icon' => 'sliders',
                                 'color' => 'blue',
                             ],
                             [
                                 'name' => 'publish',
-                                'label' => 'Publish Billing',
+                                'label' => '✅ Publish Billing',
                                 'icon' => 'play',
                                 'color' => 'cyan',
                             ],
                             [
                                 'name' => 'accept',
-                                'label' => 'Konfirmasi Pembayaran (Accept)',
+                                'label' => '💵 Terima Pembayaran',
                                 'icon' => 'clipboard',
                                 'color' => 'green',
                             ],
                             [
+                                'url' => $pdfUrl,
+                                'label' => '📄 Cetak / Download PDF',
+                                'icon' => 'report',
+                                'color' => 'blue',
+                            ],
+                            [
+                                'url' => $custUrl,
+                                'label' => '👤 Lihat Profil Pelanggan',
+                                'icon' => 'clipboard',
+                                'color' => 'cyan',
+                            ],
+                            [
+                                'name' => 'change_status_type',
+                                'label' => '⚡ Ubah Status Tipe',
+                                'icon' => 'refresh',
+                                'color' => 'cyan',
+                            ],
+                            [
                                 'name' => 'delete',
-                                'label' => 'Hapus Invoice',
+                                'label' => '🗑️ Hapus Invoice',
                                 'icon' => 'delete',
                                 'color' => 'red',
                             ],
