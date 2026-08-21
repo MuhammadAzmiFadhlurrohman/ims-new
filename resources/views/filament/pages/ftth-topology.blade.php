@@ -13,6 +13,10 @@
                 this.$watch('$wire.selectedOlt', () => this.resetZoom());
                 this.$watch('$wire.search', () => this.resetZoom());
 
+                document.addEventListener('fullscreenchange', () => {
+                    this.isFullScreen = !!document.fullscreenElement;
+                });
+
                 const vp = this.$refs.viewport;
                 if (!vp) return;
 
@@ -116,9 +120,23 @@
                 this.zoom = 1.0;
                 this.panX = 20;
                 this.panY = 20;
+            },
+
+            toggleFullScreen() {
+                if (!this.isFullScreen) {
+                    this.isFullScreen = true;
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen().catch(() => {});
+                    }
+                } else {
+                    this.isFullScreen = false;
+                    if (document.fullscreenElement && document.exitFullscreen) {
+                        document.exitFullscreen().catch(() => {});
+                    }
+                }
             }
         }"
-        @keydown.escape.window="if(isFullScreen) isFullScreen = false"
+        @keydown.escape.window="if(isFullScreen) { if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); isFullScreen = false; }"
         :class="isFullScreen ? 'ims-fullscreen-mode' : ''"
         class="ims-ftth-compact-wrapper"
         style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; max-width: 100%; overflow: hidden; isolation: isolate; font-family: inherit;"
@@ -171,19 +189,18 @@
                     @endforeach
                 </select>
 
-                <!-- Full Size / Minimize Toggle Button -->
+                <!-- Full Size / Minimize Icon-Only Button -->
                 <button
-                    @click="isFullScreen = !isFullScreen"
+                    @click="toggleFullScreen()"
                     type="button"
-                    :title="isFullScreen ? 'Kembali ke Ukuran Standar (Minimize)' : 'Tampilkan Layar Penuh (Full Size)'"
-                    style="display: inline-flex; align-items: center; gap: 0.35rem; height: 30px; padding: 0 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease;"
+                    :title="isFullScreen ? 'Minimize (Kecilkan Layar)' : 'Full Size (Layar Penuh Browser)'"
+                    style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 6px; font-size: 0.95rem; font-weight: 900; cursor: pointer; transition: all 0.15s ease;"
                     :style="isFullScreen 
                         ? 'background: #fee2e2; color: #b91c1c; border: 1.5px solid #f87171;' 
                         : 'background: #eff6ff; color: #1d4ed8; border: 1.5px solid #93c5fd;'"
                     class="ims-control-fullscreen-btn"
                 >
-                    <span x-text="isFullScreen ? '🗗' : '⛶'" style="font-size: 0.85rem;"></span>
-                    <span x-text="isFullScreen ? 'Minimize' : 'Full Size'">Full Size</span>
+                    <span x-text="isFullScreen ? '🗗' : '⛶'"></span>
                 </button>
 
                 <!-- Search Input -->
