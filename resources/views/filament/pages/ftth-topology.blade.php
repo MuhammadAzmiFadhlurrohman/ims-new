@@ -33,8 +33,10 @@
                 const c = this.$refs.viewport;
                 if (!c) return;
                 this.isDragging = true;
-                this.startX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
-                this.startY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
+                const clientX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
+                const clientY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
+                this.startX = clientX;
+                this.startY = clientY;
                 this.initialScrollLeft = c.scrollLeft;
                 this.initialScrollTop = c.scrollTop;
             },
@@ -46,9 +48,7 @@
                 const clientX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
                 const clientY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
                 if (clientX === undefined || clientY === undefined) return;
-                e.preventDefault();
 
-                // Menggeser secara presisi mengikuti batas kanvas aktual (tidak bisa kebablasan)
                 const deltaX = clientX - this.startX;
                 const deltaY = clientY - this.startY;
                 c.scrollLeft = this.initialScrollLeft - deltaX;
@@ -219,11 +219,10 @@
             <div
                 x-ref="viewport"
                 @mousedown="startDrag($event)"
-                @mousemove="onDrag($event)"
-                @mouseup="stopDrag()"
-                @mouseleave="stopDrag()"
-                @touchstart="startDrag($event)"
-                @touchmove="onDrag($event)"
+                @window.mousemove="onDrag($event)"
+                @window.mouseup="stopDrag()"
+                @touchstart.passive="startDrag($event)"
+                @touchmove.passive="onDrag($event)"
                 @touchend="stopDrag()"
                 :style="isDragging ? 'cursor: grabbing !important; user-select: none;' : 'cursor: grab;'"
                 class="ims-canvas-viewport"
