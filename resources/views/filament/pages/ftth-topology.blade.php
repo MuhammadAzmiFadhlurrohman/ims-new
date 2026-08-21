@@ -1,598 +1,479 @@
 <x-filament-panels::page>
-    <div class="ims-ftth-topology-wrapper" style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;">
+    <div class="ims-ftth-canvas-wrapper" style="display: flex; flex-direction: column; gap: 1.25rem; width: 100%;">
 
         <!-- ══════════════════════════════════════════════════════════════════ -->
-        <!-- 1. HEADER BANNER & STATS CARDS -->
+        <!-- 1. TOP HEADER & CONTROL BAR -->
         <!-- ══════════════════════════════════════════════════════════════════ -->
-        <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <div class="ims-ftth-banner" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 1.25rem 1.5rem; border-radius: 18px; background: linear-gradient(135deg, #0284c7 0%, #1e40af 100%); color: #ffffff; box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.35);">
+        <div class="ims-ftth-top-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 1.1rem 1.4rem; border-radius: 18px; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #0284c7 0%, #16a34a 100%); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #ffffff; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);">
+                    🌿
+                </div>
                 <div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 10px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px);">
-                            🌐
-                        </span>
-                        <h2 style="margin: 0; font-size: 1.35rem; font-weight: 900; letter-spacing: -0.02em; color: #ffffff;">
-                            Visualisasi Topologi Jaringan FTTH
-                        </h2>
-                    </div>
-                    <p style="margin: 0.35rem 0 0 0; font-size: 0.85rem; opacity: 0.9; color: #e0f2fe;">
-                        Hierarki jalur distribusi fiber optik: <strong>OLT Core ➔ PON Port ➔ ODP Box ➔ Pelanggan</strong>
+                    <h2 style="margin: 0; font-size: 1.15rem; font-weight: 900; color: #0f172a; letter-spacing: -0.01em;">
+                        Diagram Skema Topologi FTTH (Root Tree)
+                    </h2>
+                    <p style="margin: 0.15rem 0 0 0; font-size: 0.78rem; color: #64748b; font-weight: 600;">
+                        Jalur Distribusi Optik: <strong>OLT Core ➔ Feeder Cable ➔ PON Port ➔ ODC/ODP Splitter ➔ Drop Cable ➔ ONT / User</strong>
                     </p>
                 </div>
-
-                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                    <button
-                        wire:click="expandAll"
-                        type="button"
-                        style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.85rem; font-size: 0.78rem; font-weight: 800; border-radius: 10px; background: rgba(255, 255, 255, 0.15); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.2s ease;"
-                    >
-                        ➕ Expand Semua
-                    </button>
-                    <button
-                        wire:click="collapseAll"
-                        type="button"
-                        style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.85rem; font-size: 0.78rem; font-weight: 800; border-radius: 10px; background: rgba(255, 255, 255, 0.15); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.2s ease;"
-                    >
-                        ➖ Collapse Semua
-                    </button>
-                </div>
             </div>
 
-            <!-- Stats Metrics Grid -->
-            @php $stats = $this->stats; @endphp
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.85rem;">
-                <!-- OLT Card -->
-                <div class="ims-top-stat-card" style="padding: 1rem; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04); display: flex; flex-direction: column; gap: 0.25rem;">
-                    <span style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: #64748b; letter-spacing: 0.03em;">Total OLT Active</span>
-                    <div style="display: flex; align-items: baseline; justify-content: space-between;">
-                        <span style="font-size: 1.5rem; font-weight: 900; color: #0f172a;">{{ $stats['total_olts'] }}</span>
-                        <span style="font-size: 1.1rem;">🖥️</span>
-                    </div>
+            <!-- Controls: OLT Select, Search, Zoom/Reset -->
+            <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+                <!-- OLT Picker -->
+                <div style="display: flex; align-items: center; gap: 0.4rem;">
+                    <span style="font-size: 0.75rem; font-weight: 800; color: #64748b;">Pilih OLT:</span>
+                    <select
+                        wire:model.live="selectedOlt"
+                        style="height: 38px; border-radius: 10px; border: 1.5px solid #cbd5e1; background: #f8fafc; font-size: 0.82rem; font-weight: 800; color: #0f172a; padding: 0 0.85rem; outline: none; cursor: pointer;"
+                        class="ims-select-custom"
+                    >
+                        <option value="">Semua OLT</option>
+                        @foreach(\App\Models\Olt::all() as $olt)
+                            <option value="{{ $olt->code }}">{{ $olt->name }} ({{ $olt->code }})</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <!-- PON Ports Card -->
-                <div class="ims-top-stat-card" style="padding: 1rem; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04); display: flex; flex-direction: column; gap: 0.25rem;">
-                    <span style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: #64748b; letter-spacing: 0.03em;">Total PON Ports</span>
-                    <div style="display: flex; align-items: baseline; justify-content: space-between;">
-                        <span style="font-size: 1.5rem; font-weight: 900; color: #0284c7;">{{ $stats['total_pons'] }}</span>
-                        <span style="font-size: 1.1rem;">⚡</span>
-                    </div>
+                <!-- Quick Search -->
+                <div style="position: relative; min-width: 220px;">
+                    <input
+                        wire:model.live.debounce.300ms="search"
+                        type="text"
+                        placeholder="🔍 Cari Pelanggan / ODP..."
+                        style="width: 100%; height: 38px; border-radius: 10px; border: 1.5px solid #cbd5e1; background: #f8fafc; padding: 0 10px; font-size: 0.8rem; font-weight: 700; color: #0f172a; outline: none;"
+                        class="ims-search-input"
+                    />
+                    @if(!empty($search))
+                        <button wire:click="$set('search', '')" style="position: absolute; right: 8px; top: 10px; background: none; border: none; font-size: 0.75rem; color: #94a3b8; cursor: pointer;">✖</button>
+                    @endif
                 </div>
 
-                <!-- ODP Boxes Card -->
-                <div class="ims-top-stat-card" style="padding: 1rem; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04); display: flex; flex-direction: column; gap: 0.25rem;">
-                    <span style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: #64748b; letter-spacing: 0.03em;">Total ODP Deployed</span>
-                    <div style="display: flex; align-items: baseline; justify-content: space-between;">
-                        <span style="font-size: 1.5rem; font-weight: 900; color: #16a34a;">{{ $stats['total_odps'] }}</span>
-                        <span style="font-size: 1.1rem;">📦</span>
-                    </div>
-                </div>
-
-                <!-- FTTH Subscribers Card -->
-                <div class="ims-top-stat-card" style="padding: 1rem; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04); display: flex; flex-direction: column; gap: 0.25rem;">
-                    <span style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: #64748b; letter-spacing: 0.03em;">Pelanggan FTTH</span>
-                    <div style="display: flex; align-items: baseline; justify-content: space-between;">
-                        <span style="font-size: 1.5rem; font-weight: 900; color: #7c3aed;">{{ $stats['total_subs'] }}</span>
-                        <span style="font-size: 1.1rem;">👥</span>
-                    </div>
-                </div>
-
-                <!-- Occupancy Rate Card -->
-                <div class="ims-top-stat-card" style="padding: 1rem; border-radius: 16px; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04); display: flex; flex-direction: column; gap: 0.25rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: #64748b; letter-spacing: 0.03em;">ODP Occupancy</span>
-                        <span style="font-size: 0.75rem; font-weight: 900; color: #0284c7;">{{ $stats['occupancy_rate'] }}%</span>
-                    </div>
-                    <div style="width: 100%; height: 8px; border-radius: 999px; background: #e2e8f0; overflow: hidden; margin-top: 0.35rem;">
-                        <div style="width: {{ min(100, $stats['occupancy_rate']) }}%; height: 100%; background: linear-gradient(90deg, #0284c7, #10b981); border-radius: 999px;"></div>
-                    </div>
-                    <span style="font-size: 0.68rem; color: #94a3b8; font-weight: 600; margin-top: 0.15rem;">
-                        {{ $stats['odp_used'] }} terpakai dari {{ $stats['odp_capacity'] }} ports
-                    </span>
-                </div>
+                <!-- Reset & Expand/Collapse -->
+                <button
+                    wire:click="expandAll"
+                    type="button"
+                    style="padding: 0.45rem 0.75rem; border-radius: 10px; font-size: 0.76rem; font-weight: 800; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; cursor: pointer;"
+                >
+                    ➕ Expand
+                </button>
+                <button
+                    wire:click="collapseAll"
+                    type="button"
+                    style="padding: 0.45rem 0.75rem; border-radius: 10px; font-size: 0.76rem; font-weight: 800; background: #fef2f2; color: #dc2626; border: 1px solid #fecdd3; cursor: pointer;"
+                >
+                    ➖ Collapse
+                </button>
             </div>
         </div>
 
         <!-- ══════════════════════════════════════════════════════════════════ -->
-        <!-- 2. FILTER, SEARCH & PATH TRACING BAR -->
+        <!-- 2. TRACED PATH BANNER -->
         <!-- ══════════════════════════════════════════════════════════════════ -->
-        <div class="ims-filter-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 1.1rem 1.4rem; box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05); display: flex; flex-direction: column; gap: 1rem;">
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-                <!-- Search Input with Auto-Trace Suggestions -->
-                <div style="position: relative; flex: 1 1 280px;">
-                    <div style="position: relative; display: flex; align-items: center;">
-                        <span style="position: absolute; left: 12px; font-size: 0.9rem; color: #94a3b8;">🔍</span>
-                        <input
-                            wire:model.live.debounce.300ms="search"
-                            type="text"
-                            placeholder="Cari Pelanggan (CID/Nama), Kode ODP, atau OLT..."
-                            style="width: 100%; height: 42px; border-radius: 12px; border: 1.5px solid #cbd5e1; background: #f8fafc; padding: 0 12px 0 38px; font-size: 0.84rem; font-weight: 700; color: #0f172a; outline: none; transition: all 0.2s ease;"
-                            class="ims-search-input"
-                        />
-                        @if(!empty($search))
-                            <button
-                                wire:click="$set('search', '')"
-                                style="position: absolute; right: 10px; background: none; border: none; font-size: 0.85rem; color: #94a3b8; cursor: pointer;"
-                            >✖</button>
-                        @endif
+        @if($tracedUser)
+            @php
+                $tracedSub = \App\Models\CustomerSubscription::with(['odp.ponPort.olt.pop', 'package'])->where('internet_number', $tracedUser)->first();
+            @endphp
+            @if($tracedSub)
+                <div class="ims-trace-banner" style="display: flex; align-items: center; gap: 0.65rem; padding: 0.75rem 1.25rem; border-radius: 14px; background: #ecfdf5; border: 1.5px solid #10b981; color: #065f46; flex-wrap: wrap; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);">
+                    <span style="font-size: 1.2rem;">🎯</span>
+                    <span style="font-size: 0.85rem; font-weight: 900; color: #047857;">Laser Path Tracing:</span>
+                    <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 800; flex-wrap: wrap;">
+                        <span style="background: #ffffff; padding: 3px 8px; border-radius: 6px; border: 1px solid #d1fae5;">🏛️ {{ $tracedSub->odp?->ponPort?->olt?->pop?->name ?? 'POP Central' }}</span>
+                        <span style="color: #10b981; font-weight: 900;">➔</span>
+                        <span style="background: #ffffff; padding: 3px 8px; border-radius: 6px; border: 1px solid #d1fae5;">🖥️ {{ $tracedSub->odp?->ponPort?->olt?->name ?? 'OLT' }}</span>
+                        <span style="color: #10b981; font-weight: 900;">➔</span>
+                        <span style="background: #ffffff; padding: 3px 8px; border-radius: 6px; border: 1px solid #d1fae5;">⚡ {{ $tracedSub->odp?->ponPort?->name ?? 'PON' }}</span>
+                        <span style="color: #10b981; font-weight: 900;">➔</span>
+                        <span style="background: #ffffff; padding: 3px 8px; border-radius: 6px; border: 1px solid #d1fae5;">📦 {{ $tracedSub->odp?->code ?? 'ODP' }}</span>
+                        <span style="color: #10b981; font-weight: 900;">➔</span>
+                        <span style="background: #047857; color: #ffffff; padding: 3px 10px; border-radius: 6px; box-shadow: 0 2px 6px rgba(4, 120, 87, 0.3);">
+                            🏠 {{ $tracedSub->customer_name }} ({{ $tracedSub->internet_number }}) - Port #{{ $tracedSub->odp_port ?: 1 }}
+                        </span>
                     </div>
-
-                    <!-- Search Suggestions Popup -->
-                    @php $results = $this->searchResults; @endphp
-                    @if(!empty($search) && (!empty($results['users']) && $results['users']->count() > 0 || !empty($results['odps']) && $results['odps']->count() > 0))
-                        <div style="position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 50; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); max-height: 320px; overflow-y: auto; padding: 0.5rem;" class="ims-search-dropdown">
-                            @if(!empty($results['users']) && $results['users']->count() > 0)
-                                <div style="padding: 0.35rem 0.65rem; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #64748b;">Pelanggan FTTH</div>
-                                @foreach($results['users'] as $u)
-                                    <div
-                                        wire:click="traceUser('{{ $u->internet_number }}')"
-                                        style="display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 0.65rem; border-radius: 8px; cursor: pointer; transition: background 0.15s ease;"
-                                        class="ims-suggestion-item"
-                                    >
-                                        <div style="display: flex; align-items: center; gap: 0.45rem;">
-                                            <span style="font-family: monospace; font-size: 0.78rem; font-weight: 900; color: #1d4ed8; background: #eff6ff; padding: 1px 6px; border-radius: 6px;">{{ $u->internet_number }}</span>
-                                            <span style="font-size: 0.82rem; font-weight: 700; color: #0f172a;">{{ $u->customer_name }}</span>
-                                        </div>
-                                        <span style="font-size: 0.72rem; color: #64748b; font-weight: 600;">ODP: {{ $u->odp_code ?? '-' }}</span>
-                                    </div>
-                                @endforeach
-                            @endif
-
-                            @if(!empty($results['odps']) && $results['odps']->count() > 0)
-                                <div style="padding: 0.5rem 0.65rem 0.25rem 0.65rem; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #64748b; border-top: 1px dashed #e2e8f0; margin-top: 0.25rem;">ODP Distribution Box</div>
-                                @foreach($results['odps'] as $o)
-                                    <div
-                                        wire:click="selectOdp('{{ $o->code }}')"
-                                        style="display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 0.65rem; border-radius: 8px; cursor: pointer; transition: background 0.15s ease;"
-                                        class="ims-suggestion-item"
-                                    >
-                                        <div style="display: flex; align-items: center; gap: 0.45rem;">
-                                            <span style="font-family: monospace; font-size: 0.78rem; font-weight: 900; color: #059669; background: #ecfdf5; padding: 1px 6px; border-radius: 6px;">{{ $o->code }}</span>
-                                            <span style="font-size: 0.82rem; font-weight: 700; color: #0f172a;">{{ $o->name }}</span>
-                                        </div>
-                                        <span style="font-size: 0.72rem; color: #64748b; font-weight: 600;">{{ $o->used_ports ?? 0 }}/{{ $o->total_ports ?? 8 }} Ports</span>
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
-                    @endif
                 </div>
-
-                <!-- OLT Filter Pills / Dropdown -->
-                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                    <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b;">Filter OLT:</span>
-                    <button
-                        wire:click="selectOlt(null)"
-                        type="button"
-                        style="padding: 0.35rem 0.75rem; border-radius: 10px; font-size: 0.76rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; border: 1.5px solid {{ is_null($selectedOlt) ? '#0284c7' : '#e2e8f0' }}; background: {{ is_null($selectedOlt) ? '#0284c7' : '#f8fafc' }}; color: {{ is_null($selectedOlt) ? '#ffffff' : '#475569' }};"
-                    >
-                        Semua OLT
-                    </button>
-                    @foreach(\App\Models\Olt::all() as $olt)
-                        <button
-                            wire:click="selectOlt('{{ $olt->code }}')"
-                            type="button"
-                            style="padding: 0.35rem 0.75rem; border-radius: 10px; font-size: 0.76rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; border: 1.5px solid {{ $selectedOlt === $olt->code ? '#0284c7' : '#e2e8f0' }}; background: {{ $selectedOlt === $olt->code ? '#0284c7' : '#f8fafc' }}; color: {{ $selectedOlt === $olt->code ? '#ffffff' : '#475569' }};"
-                        >
-                            🖥️ {{ $olt->name }}
-                        </button>
-                    @endforeach
-
-                    @if($selectedOlt || $selectedPon || $selectedOdp || !empty($search) || $tracedUser)
-                        <button
-                            wire:click="resetFilters"
-                            type="button"
-                            style="padding: 0.35rem 0.75rem; border-radius: 10px; font-size: 0.76rem; font-weight: 800; background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; cursor: pointer;"
-                        >
-                            🔄 Reset Filter
-                        </button>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Active Traced Path Banner -->
-            @if($tracedUser)
-                @php
-                    $tracedSub = \App\Models\CustomerSubscription::with(['odp.ponPort.olt.pop', 'package'])->where('internet_number', $tracedUser)->first();
-                @endphp
-                @if($tracedSub)
-                    <div class="ims-trace-banner" style="display: flex; align-items: center; gap: 0.65rem; padding: 0.75rem 1rem; border-radius: 12px; background: #ecfdf5; border: 1.5px solid #a7f3d0; color: #065f46; flex-wrap: wrap;">
-                        <span style="font-size: 1.1rem;">🎯</span>
-                        <span style="font-size: 0.82rem; font-weight: 900; color: #047857;">Jalur Terdeteksi (End-to-End Tracing):</span>
-                        <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; flex-wrap: wrap;">
-                            <span class="ims-trace-step" style="background: #ffffff; padding: 2px 8px; border-radius: 6px; border: 1px solid #d1fae5;">🏛️ {{ $tracedSub->odp?->ponPort?->olt?->pop?->name ?? 'POP Central' }}</span>
-                            <span>➔</span>
-                            <span class="ims-trace-step" style="background: #ffffff; padding: 2px 8px; border-radius: 6px; border: 1px solid #d1fae5;">🖥️ {{ $tracedSub->odp?->ponPort?->olt?->name ?? 'OLT' }}</span>
-                            <span>➔</span>
-                            <span class="ims-trace-step" style="background: #ffffff; padding: 2px 8px; border-radius: 6px; border: 1px solid #d1fae5;">⚡ {{ $tracedSub->odp?->ponPort?->name ?? 'PON' }}</span>
-                            <span>➔</span>
-                            <span class="ims-trace-step" style="background: #ffffff; padding: 2px 8px; border-radius: 6px; border: 1px solid #d1fae5;">📦 {{ $tracedSub->odp?->code ?? 'ODP' }}</span>
-                            <span>➔</span>
-                            <span class="ims-trace-step" style="background: #047857; color: #ffffff; padding: 2px 8px; border-radius: 6px;">👤 {{ $tracedSub->customer_name }} ({{ $tracedSub->internet_number }})</span>
-                        </div>
-                    </div>
-                @endif
             @endif
-        </div>
+        @endif
 
         <!-- ══════════════════════════════════════════════════════════════════ -->
-        <!-- 3. HIERARCHICAL TOPOLOGY VISUALIZER (TREE VIEW) -->
+        <!-- 3. HORIZONTAL ROOT TREE CANVAS (SCHEMATIC FTTH DIAGRAM) -->
         <!-- ══════════════════════════════════════════════════════════════════ -->
         @php $tree = $this->topologyTree; @endphp
 
         @if($tree->isEmpty())
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 1.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; text-align: center;" class="ims-empty-card">
                 <span style="font-size: 3rem; margin-bottom: 0.75rem;">🔍</span>
-                <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #0f172a;">Tidak Ada Topologi FTTH yang Cocok</h3>
+                <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #0f172a;">Tidak Ada Perangkat OLT / Topologi yang Ditemukan</h3>
                 <p style="margin: 0.35rem 0 1rem 0; font-size: 0.85rem; color: #64748b;">
-                    Coba sesuaikan kata kunci pencarian atau reset filter OLT.
+                    Coba sesuaikan filter atau reset kata kunci pencarian.
                 </p>
-                <button
-                    wire:click="resetFilters"
-                    type="button"
-                    style="padding: 0.5rem 1.25rem; border-radius: 10px; font-size: 0.82rem; font-weight: 800; background: #0284c7; color: #ffffff; border: none; cursor: pointer;"
-                >
+                <button wire:click="resetFilters" type="button" style="padding: 0.5rem 1.25rem; border-radius: 10px; font-size: 0.82rem; font-weight: 800; background: #0284c7; color: #ffffff; border: none; cursor: pointer;">
                     Reset Filter
                 </button>
             </div>
         @else
-            <div class="ims-topology-tree-container" style="display: flex; flex-direction: column; gap: 2rem;">
-                @foreach($tree as $olt)
-                    <div class="ims-olt-node-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06); overflow: hidden;">
-                        
-                        <!-- Level 1: OLT Core Header -->
-                        <div class="ims-olt-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding: 1.1rem 1.4rem; background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 1.35rem; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);">
-                                    🖥️
-                                </div>
-                                <div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                        <h3 style="margin: 0; font-size: 1.15rem; font-weight: 900; color: #0f172a;">
+            <!-- Outer Schematic Diagram Canvas -->
+            <div class="ims-schematic-canvas" style="width: 100%; overflow-x: auto; padding: 1.5rem 1rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);">
+                
+                <!-- Stage Step Indicators Header -->
+                <div class="ims-schematic-stages" style="display: grid; grid-template-columns: 240px 220px 320px minmax(320px, 1fr); gap: 2rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px dashed #e2e8f0;">
+                    <div style="font-size: 0.75rem; font-weight: 900; text-transform: uppercase; color: #0284c7; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.35rem;">
+                        <span>🏢 STAGE 1: CENTRAL / OLT</span>
+                    </div>
+                    <div style="font-size: 0.75rem; font-weight: 900; text-transform: uppercase; color: #0284c7; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.35rem;">
+                        <span>⚡ STAGE 2: PON INTERFACE</span>
+                    </div>
+                    <div style="font-size: 0.75rem; font-weight: 900; text-transform: uppercase; color: #16a34a; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.35rem;">
+                        <span>📦 STAGE 3: ODN / ODP SPLITTER</span>
+                    </div>
+                    <div style="font-size: 0.75rem; font-weight: 900; text-transform: uppercase; color: #7c3aed; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.35rem;">
+                        <span>🏠 STAGE 4: DROP LINK / ONT USER</span>
+                    </div>
+                </div>
+
+                <!-- Tree Root Nodes -->
+                <div class="ims-tree-root-container" style="display: flex; flex-direction: column; gap: 3.5rem; min-width: 1100px;">
+                    @foreach($tree as $olt)
+                        <div class="ims-tree-olt-branch" style="display: flex; align-items: stretch; gap: 0;">
+                            
+                            <!-- ── COLUMN 1: OLT Core Node ── -->
+                            <div style="width: 240px; min-width: 240px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                                <div class="ims-node-olt-card" style="padding: 1.25rem; border-radius: 16px; background: linear-gradient(145deg, #0b1e3b 0%, #030f24 100%); border: 2px solid #00d4ff; box-shadow: 0 10px 25px rgba(0, 212, 255, 0.25); color: #ffffff; display: flex; flex-direction: column; gap: 0.5rem; position: relative; z-index: 5;">
+                                    <!-- 3D OLT Graphic Badge -->
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <div style="width: 38px; height: 38px; border-radius: 10px; background: #00d4ff; color: #030f24; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);">
+                                            🖥️
+                                        </div>
+                                        <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 6px; background: rgba(0, 212, 255, 0.2); color: #00d4ff; border: 1px solid rgba(0, 212, 255, 0.4);">
+                                            CORE OLT
+                                        </span>
+                                    </div>
+
+                                    <div>
+                                        <h3 style="margin: 0; font-size: 1.05rem; font-weight: 900; color: #ffffff;">
                                             {{ $olt->name }}
                                         </h3>
-                                        <span style="font-family: monospace; font-size: 0.72rem; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd;">
+                                        <span style="font-family: monospace; font-size: 0.72rem; color: #94a3b8; font-weight: 700;">
                                             {{ $olt->code }}
                                         </span>
-                                        @if($olt->brand)
-                                            <span style="font-size: 0.72rem; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: #f1f5f9; color: #475569;">
-                                                {{ strtoupper($olt->brand) }}
-                                            </span>
-                                        @endif
                                     </div>
-                                    <div style="display: flex; align-items: center; gap: 0.65rem; margin-top: 0.25rem; font-size: 0.76rem; color: #64748b; font-weight: 600;">
-                                        <span>IP: <strong style="color: #0f172a; font-family: monospace;">{{ $olt->ip_address ?? '127.0.0.1' }}</strong></span>
-                                        <span>•</span>
-                                        <span>POP: <strong style="color: #0f172a;">{{ $olt->pop?->name ?? ($olt->pop_code ?? 'Central') }}</strong></span>
-                                        <span>•</span>
-                                        <span>Total PON: <strong style="color: #0284c7;">{{ $olt->ponPorts->count() }} Ports</strong></span>
+
+                                    <div style="font-size: 0.72rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 2px; border-top: 1px dashed rgba(255, 255, 255, 0.15); padding-top: 0.45rem;">
+                                        <span>IP: <strong style="font-family: monospace; color: #00d4ff;">{{ $olt->ip_address ?? '10.10.10.1' }}</strong></span>
+                                        <span>POP: <strong>{{ $olt->pop?->name ?? 'Central POP' }}</strong></span>
+                                        <span>Capacity: <strong>{{ $olt->ponPorts->count() }} PON Ports</strong></span>
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.68rem; font-weight: 800; color: #4ade80; margin-top: 0.25rem;">
+                                        <span style="width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px #4ade80;"></span>
+                                        Online • Active Distribution
                                     </div>
                                 </div>
+
+                                <!-- Optical Feeder Trunk Output Line -->
+                                <div class="ims-feeder-trunk-line" style="position: absolute; right: -25px; top: 50%; width: 25px; height: 4px; background: #16a34a; box-shadow: 0 0 10px rgba(22, 163, 74, 0.6); z-index: 2;"></div>
                             </div>
 
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <span style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.74rem; font-weight: 800; color: #16a34a; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 0.35rem 0.75rem; border-radius: 999px;">
-                                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #16a34a; box-shadow: 0 0 8px #16a34a;"></span>
-                                    OLT Core Online
-                                </span>
-                            </div>
-                        </div>
+                            <!-- ── COLUMN 2..4: PON Branches -> ODPs -> Users ── -->
+                            <div class="ims-pon-tree-branches" style="flex: 1; display: flex; flex-direction: column; gap: 2rem; position: relative; padding-left: 25px; border-left: 4px solid #16a34a; margin-left: 25px;">
+                                @if($olt->ponPorts->isEmpty())
+                                    <div style="padding: 2rem; color: #94a3b8; font-style: italic;">
+                                        Belum ada PON Port terdaftar.
+                                    </div>
+                                @else
+                                    @foreach($olt->ponPorts as $pon)
+                                        @php
+                                            $isPonCollapsed = in_array($pon->id, $collapsedPons);
+                                        @endphp
+                                        <div class="ims-tree-pon-sub-branch" style="display: flex; align-items: stretch; gap: 0; position: relative;">
+                                            
+                                            <!-- PON Port Card Node -->
+                                            <div style="width: 220px; min-width: 220px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                                                <!-- Horizontal Link from Feeder -->
+                                                <div style="position: absolute; left: -25px; top: 50%; width: 25px; height: 3px; background: #16a34a;"></div>
 
-                        <!-- Level 2: PON Ports List / Branches -->
-                        <div class="ims-olt-body" style="padding: 1.25rem; display: flex; flex-direction: column; gap: 1.25rem;">
-                            @if($olt->ponPorts->isEmpty())
-                                <div style="padding: 1.5rem; text-align: center; color: #64748b; font-size: 0.84rem; font-weight: 600;">
-                                    Belum ada PON Port terdaftar pada OLT ini.
-                                </div>
-                            @else
-                                @foreach($olt->ponPorts as $pon)
-                                    @php
-                                        $isPonCollapsed = in_array($pon->id, $collapsedPons);
-                                        $odpCount = $pon->odps->count();
-                                        $totalUsersInPon = $pon->odps->sum(fn($o) => $o->subscriptions->count());
-                                    @endphp
-                                    <div class="ims-pon-branch-card" style="border: 1.5px solid #e2e8f0; border-radius: 16px; background: #fafafa; overflow: hidden; transition: border-color 0.2s ease;">
-                                        
-                                        <!-- PON Port Node Header -->
-                                        <div
-                                            wire:click="togglePon({{ $pon->id }})"
-                                            class="ims-pon-header"
-                                            style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; padding: 0.85rem 1.1rem; background: #f1f5f9; cursor: pointer; user-select: none;"
-                                        >
-                                            <div style="display: flex; align-items: center; gap: 0.65rem;">
-                                                <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; background: #0284c7; color: #ffffff; font-size: 0.85rem;">
-                                                    ⚡
-                                                </span>
-                                                <div>
-                                                    <span style="font-size: 0.92rem; font-weight: 900; color: #0f172a;">
-                                                        {{ $pon->name }}
-                                                    </span>
-                                                    <span style="font-size: 0.72rem; font-weight: 700; color: #64748b; margin-left: 0.35rem;">
-                                                        (Port #{{ $pon->port_number ?? 1 }})
-                                                    </span>
-                                                </div>
-                                                <span style="font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; background: #e0f2fe; color: #0369a1;">
-                                                    {{ $odpCount }} ODP
-                                                </span>
-                                                <span style="font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; background: #ecfdf5; color: #047857;">
-                                                    {{ $totalUsersInPon }} Pelanggan
-                                                </span>
-                                            </div>
-
-                                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                                <span style="font-size: 0.75rem; font-weight: 800; color: #64748b;">
-                                                    {{ $isPonCollapsed ? '▶ Expand' : '▼ Collapse' }}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Level 3: ODP Distribution Boxes Grid (When uncollapsed) -->
-                                        @if(!$isPonCollapsed)
-                                            <div class="ims-odp-grid" style="padding: 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem;">
-                                                @if($pon->odps->isEmpty())
-                                                    <div style="grid-column: 1 / -1; padding: 1rem; text-align: center; color: #94a3b8; font-size: 0.8rem;">
-                                                        Belum ada ODP terhubung pada PON ini.
+                                                <div
+                                                    wire:click="togglePon({{ $pon->id }})"
+                                                    class="ims-node-pon-card"
+                                                    style="padding: 1rem; border-radius: 14px; background: #f0fdf4; border: 2px solid #22c55e; box-shadow: 0 4px 14px rgba(34, 197, 94, 0.15); display: flex; flex-direction: column; gap: 0.35rem; cursor: pointer; transition: all 0.2s ease; position: relative; z-index: 5;"
+                                                >
+                                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                                        <span style="font-size: 0.68rem; font-weight: 900; color: #15803d; background: #dcfce7; padding: 2px 6px; border-radius: 6px; border: 1px solid #bbf7d0;">
+                                                            PON PORT #{{ $pon->port_number ?? 1 }}
+                                                        </span>
+                                                        <span style="font-size: 0.72rem; font-weight: 800; color: #16a34a;">
+                                                            {{ $isPonCollapsed ? '➕ Expand' : '➖' }}
+                                                        </span>
                                                     </div>
-                                                @else
-                                                    @foreach($pon->odps as $odp)
-                                                        @php
-                                                            $isOdpCollapsed = in_array($odp->code, $collapsedOdps);
-                                                            $subCount = $odp->subscriptions->count();
-                                                            $maxPorts = $odp->total_ports ?: 8;
-                                                            $isFull = $subCount >= $maxPorts;
-                                                            $isNearFull = $subCount >= ($maxPorts * 0.75) && !$isFull;
 
-                                                            $badgeBg = $isFull ? '#fff1f2' : ($isNearFull ? '#fefce8' : '#f0fdf4');
-                                                            $badgeText = $isFull ? '#be123c' : ($isNearFull ? '#a16207' : '#15803d');
-                                                            $badgeBorder = $isFull ? '#fecdd3' : ($isNearFull ? '#fef08a' : '#bbf7d0');
-                                                        @endphp
+                                                    <div style="font-size: 0.95rem; font-weight: 900; color: #0f172a;">
+                                                        ⚡ {{ $pon->name }}
+                                                    </div>
 
-                                                        <div class="ims-odp-box-card" style="border: 1.5px solid #e2e8f0; border-radius: 14px; background: #ffffff; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04); overflow: hidden; display: flex; flex-direction: column;">
-                                                            
-                                                            <!-- ODP Card Header -->
-                                                            <div style="padding: 0.75rem 0.95rem; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
-                                                                <div style="display: flex; align-items: center; gap: 0.45rem;">
-                                                                    <span style="font-size: 1rem;">📦</span>
-                                                                    <div>
-                                                                        <div style="font-size: 0.85rem; font-weight: 900; color: #0f172a;">
-                                                                            {{ $odp->name }}
+                                                    <div style="font-size: 0.72rem; color: #475569; font-weight: 700; display: flex; flex-direction: column; gap: 1px;">
+                                                        <span>Terhubung: <strong>{{ $pon->odps->count() }} ODP Box</strong></span>
+                                                        <span>Subscribers: <strong>{{ $pon->odps->sum(fn($o) => $o->subscriptions->count()) }} Users</strong></span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Distribution Line to ODPs -->
+                                                @if(!$isPonCollapsed && !$pon->odps->isEmpty())
+                                                    <div style="position: absolute; right: -25px; top: 50%; width: 25px; height: 3px; background: #16a34a;"></div>
+                                                @endif
+                                            </div>
+
+                                            <!-- ── COLUMN 3 & 4: ODP Splitters & Connected Users ── -->
+                                            @if(!$isPonCollapsed)
+                                                <div class="ims-odp-tree-branches" style="flex: 1; display: flex; flex-direction: column; gap: 1.75rem; position: relative; padding-left: 25px; border-left: 3px solid #16a34a; margin-left: 25px;">
+                                                    @if($pon->odps->isEmpty())
+                                                        <div style="padding: 1.5rem; color: #94a3b8; font-size: 0.78rem; font-style: italic;">
+                                                            Belum ada ODP terpasang pada PON ini.
+                                                        </div>
+                                                    @else
+                                                        @foreach($pon->odps as $odp)
+                                                            @php
+                                                                $isOdpCollapsed = in_array($odp->code, $collapsedOdps);
+                                                                $subCount = $odp->subscriptions->count();
+                                                                $maxPorts = $odp->total_ports ?: 8;
+                                                                $isFull = $subCount >= $maxPorts;
+                                                            @endphp
+                                                            <div class="ims-tree-odp-sub-branch" style="display: flex; align-items: stretch; gap: 0; position: relative;">
+                                                                
+                                                                <!-- ── COLUMN 3: ODP Splitter Box Node (Graphic Cabinet) ── -->
+                                                                <div style="width: 300px; min-width: 300px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                                                                    <!-- Link from PON Distribution -->
+                                                                    <div style="position: absolute; left: -25px; top: 50%; width: 25px; height: 2.5px; background: #16a34a;"></div>
+
+                                                                    <div class="ims-node-odp-card" style="padding: 1rem; border-radius: 14px; background: #ffffff; border: 2px solid {{ $isFull ? '#ef4444' : '#10b981' }}; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; gap: 0.45rem; position: relative; z-index: 5;">
+                                                                        
+                                                                        <!-- ODP Graphic Head -->
+                                                                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                                                                            <div style="display: flex; align-items: center; gap: 0.45rem;">
+                                                                                <span style="font-size: 1.2rem;">📦</span>
+                                                                                <div>
+                                                                                    <div style="font-size: 0.88rem; font-weight: 900; color: #0f172a;">
+                                                                                        {{ $odp->name }}
+                                                                                    </div>
+                                                                                    <span style="font-family: monospace; font-size: 0.72rem; font-weight: 800; color: #0284c7;">
+                                                                                        {{ $odp->code }}
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 6px; background: {{ $isFull ? '#fee2e2' : '#dcfce7' }}; color: {{ $isFull ? '#b91c1c' : '#15803d' }}; border: 1px solid {{ $isFull ? '#fca5a5' : '#86efac' }};">
+                                                                                1 : {{ $maxPorts }} Splitter
+                                                                            </span>
                                                                         </div>
-                                                                        <div style="font-family: monospace; font-size: 0.72rem; font-weight: 800; color: #0284c7;">
-                                                                            {{ $odp->code }}
+
+                                                                        <!-- Capacity Progress Bar -->
+                                                                        <div style="display: flex; flex-direction: column; gap: 2px; margin-top: 2px;">
+                                                                            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 800; color: #475569;">
+                                                                                <span>Port Terpakai:</span>
+                                                                                <span>{{ $subCount }} / {{ $maxPorts }} ({{ round(($subCount/$maxPorts)*100) }}%)</span>
+                                                                            </div>
+                                                                            <div style="width: 100%; height: 6px; border-radius: 999px; background: #e2e8f0; overflow: hidden;">
+                                                                                <div style="width: {{ min(100, round(($subCount/$maxPorts)*100)) }}%; height: 100%; background: {{ $isFull ? '#ef4444' : '#10b981' }};"></div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- Address / Location Info -->
+                                                                        @if($odp->address || $odp->latitude)
+                                                                            <div style="font-size: 0.7rem; color: #64748b; display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #f1f5f9; padding-top: 0.35rem;">
+                                                                                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 190px;">
+                                                                                    📍 {{ $odp->address ?? 'ODP Pole Location' }}
+                                                                                </span>
+                                                                                @if($odp->latitude)
+                                                                                    <a href="https://maps.google.com/?q={{ $odp->latitude }},{{ $odp->longitude }}" target="_blank" style="color: #0284c7; font-weight: 800; text-decoration: none;">Maps ↗</a>
+                                                                                @endif
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <div style="display: flex; justify-content: flex-end; margin-top: 2px;">
+                                                                            <button
+                                                                                wire:click="toggleOdp('{{ $odp->code }}')"
+                                                                                type="button"
+                                                                                style="background: none; border: none; font-size: 0.7rem; font-weight: 800; color: #0284c7; cursor: pointer; padding: 0;"
+                                                                            >
+                                                                                {{ $isOdpCollapsed ? '▶ Lihat ' . $subCount . ' User' : '▼ Sembunyikan' }}
+                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <!-- Capacity Pill -->
-                                                                <span style="font-size: 0.72rem; font-weight: 900; padding: 2px 8px; border-radius: 8px; background: {{ $badgeBg }}; color: {{ $badgeText }}; border: 1px solid {{ $badgeBorder }};">
-                                                                    {{ $subCount }}/{{ $maxPorts }} Ports
-                                                                </span>
-                                                            </div>
-
-                                                            <!-- ODP Meta Info -->
-                                                            @if($odp->address || $odp->latitude)
-                                                                <div style="padding: 0.5rem 0.95rem; font-size: 0.72rem; color: #64748b; border-bottom: 1px dashed #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-                                                                    <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px;">
-                                                                        📍 {{ $odp->address ?? 'Lokasi Terpasang' }}
-                                                                    </span>
-                                                                    @if($odp->latitude && $odp->longitude)
-                                                                        <a
-                                                                            href="https://www.google.com/maps?q={{ $odp->latitude }},{{ $odp->longitude }}"
-                                                                            target="_blank"
-                                                                            style="color: #0284c7; font-weight: 800; text-decoration: none;"
-                                                                        >
-                                                                            Maps ↗
-                                                                        </a>
-                                                                    @endif
-                                                                </div>
-                                                            @endif
-
-                                                            <!-- Level 4: Connected Customers List -->
-                                                            <div style="padding: 0.75rem 0.95rem; display: flex; flex-direction: column; gap: 0.45rem; flex: 1;">
-                                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.15rem;">
-                                                                    <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #64748b;">
-                                                                        Pelanggan Terhubung ({{ $subCount }})
-                                                                    </span>
-                                                                    @if($subCount > 0)
-                                                                        <button
-                                                                            wire:click="toggleOdp('{{ $odp->code }}')"
-                                                                            type="button"
-                                                                            style="background: none; border: none; font-size: 0.68rem; font-weight: 800; color: #0284c7; cursor: pointer; padding: 0;"
-                                                                        >
-                                                                            {{ $isOdpCollapsed ? 'Tampilkan' : 'Sembunyikan' }}
-                                                                        </button>
+                                                                    <!-- Drop Cables Output Line to ONT Users -->
+                                                                    @if(!$isOdpCollapsed && !$odp->subscriptions->isEmpty())
+                                                                        <div style="position: absolute; right: -25px; top: 50%; width: 25px; height: 2px; background: #16a34a;"></div>
                                                                     @endif
                                                                 </div>
 
+                                                                <!-- ── COLUMN 4: Drop Cables to ONT / Home Users (Roots) ── -->
                                                                 @if(!$isOdpCollapsed)
-                                                                    @if($odp->subscriptions->isEmpty())
-                                                                        <div style="padding: 0.75rem; text-align: center; color: #94a3b8; font-size: 0.74rem; font-style: italic; background: #f8fafc; border-radius: 8px;">
-                                                                            Belum ada pelanggan terhubung pada ODP ini.
-                                                                        </div>
-                                                                    @else
-                                                                        <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                                                                    <div class="ims-user-tree-branches" style="flex: 1; display: flex; flex-direction: column; gap: 0.65rem; position: relative; padding-left: 25px; border-left: 2px solid #16a34a; margin-left: 25px; justify-content: center;">
+                                                                        @if($odp->subscriptions->isEmpty())
+                                                                            <div style="padding: 0.75rem 1rem; border-radius: 10px; border: 1px dashed #cbd5e1; background: #fafafa; font-size: 0.75rem; color: #94a3b8; font-style: italic;">
+                                                                                Semua {{ $maxPorts }} Port masih KOSONG / TERSEDIA
+                                                                            </div>
+                                                                        @else
                                                                             @foreach($odp->subscriptions as $index => $sub)
                                                                                 @php
                                                                                     $isTraced = ($tracedUser === $sub->internet_number);
                                                                                     $statusBg = ($sub->status === 'active' || $sub->status === 'aktif') ? '#dcfce7' : '#fee2e2';
-                                                                                    $statusColor = ($sub->status === 'active' || $sub->status === 'aktif') ? '#15803d' : '#b91c1c';
+                                                                                    $statusText = ($sub->status === 'active' || $sub->status === 'aktif') ? '#15803d' : '#b91c1c';
                                                                                 @endphp
-                                                                                <div
-                                                                                    class="ims-user-node-item {{ $isTraced ? 'ims-user-traced' : '' }}"
-                                                                                    style="display: flex; align-items: center; justify-content: space-between; padding: 0.35rem 0.55rem; border-radius: 8px; background: {{ $isTraced ? '#ecfdf5' : '#f8fafc' }}; border: 1px solid {{ $isTraced ? '#10b981' : '#e2e8f0' }}; transition: all 0.15s ease;"
-                                                                                >
-                                                                                    <div style="display: flex; align-items: center; gap: 0.4rem; overflow: hidden;">
-                                                                                        <!-- Port slot number -->
-                                                                                        <span style="font-size: 0.68rem; font-weight: 800; width: 20px; height: 20px; border-radius: 4px; background: #e2e8f0; color: #475569; display: flex; align-items: center; justify-content: center;">
-                                                                                            {{ $sub->odp_port ?: ($index + 1) }}
-                                                                                        </span>
-                                                                                        <div style="display: flex; flex-direction: column; min-width: 0;">
-                                                                                            <span style="font-size: 0.78rem; font-weight: 800; color: #0f172a; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                                                                                                {{ $sub->customer_name }}
-                                                                                            </span>
-                                                                                            <span style="font-family: monospace; font-size: 0.68rem; font-weight: 700; color: #0284c7;">
-                                                                                                {{ $sub->internet_number }}
-                                                                                            </span>
-                                                                                        </div>
-                                                                                    </div>
+                                                                                <div class="ims-tree-user-line" style="display: flex; align-items: center; position: relative;">
+                                                                                    
+                                                                                    <!-- Individual Drop Fiber Cable Line with Port Label -->
+                                                                                    <div style="position: absolute; left: -25px; width: 25px; height: 2px; background: {{ $isTraced ? '#10b981' : '#16a34a' }};"></div>
 
-                                                                                    <div style="display: flex; align-items: center; gap: 0.35rem;">
-                                                                                        @if($sub->package)
-                                                                                            <span style="font-size: 0.65rem; font-weight: 700; background: #f1f5f9; color: #475569; padding: 1px 5px; border-radius: 4px;">
-                                                                                                {{ $sub->package->name }}
+                                                                                    <!-- Drop Cable Port Label (e.g. 1..32 in diagram) -->
+                                                                                    <span style="position: absolute; left: -20px; top: -14px; font-family: monospace; font-size: 0.65rem; font-weight: 900; color: #16a34a; background: #ffffff; padding: 0 3px; border-radius: 3px;">
+                                                                                        {{ $sub->odp_port ?: ($index + 1) }}
+                                                                                    </span>
+
+                                                                                    <!-- ONT Router / User Card Node -->
+                                                                                    <div
+                                                                                        class="ims-node-ont-card {{ $isTraced ? 'ims-ont-traced' : '' }}"
+                                                                                        style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.55rem 0.85rem; border-radius: 12px; background: {{ $isTraced ? '#ecfdf5' : '#ffffff' }}; border: 1.5px solid {{ $isTraced ? '#10b981' : '#e2e8f0' }}; box-shadow: 0 2px 8px rgba(0,0,0,0.03); width: 100%; max-width: 440px; transition: all 0.2s ease;"
+                                                                                    >
+                                                                                        <!-- ONT Icon & Name -->
+                                                                                        <div style="display: flex; align-items: center; gap: 0.5rem; overflow: hidden;">
+                                                                                            <span style="font-size: 1.1rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
+                                                                                                📟
                                                                                             </span>
-                                                                                        @endif
-                                                                                        <span style="width: 7px; height: 7px; border-radius: 50%; background: {{ $statusColor }};" title="{{ ucfirst($sub->status ?? 'Active') }}"></span>
+                                                                                            <div style="display: flex; flex-direction: column; min-width: 0;">
+                                                                                                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                                                                                                    <span style="font-size: 0.82rem; font-weight: 900; color: #0f172a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                                                                        {{ $sub->customer_name }}
+                                                                                                    </span>
+                                                                                                    <span style="font-size: 0.65rem; font-weight: 800; padding: 1px 5px; border-radius: 4px; background: #e0f2fe; color: #0284c7;">
+                                                                                                        ONT
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                                <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem;">
+                                                                                                    <span style="font-family: monospace; font-weight: 800; color: #1d4ed8;">
+                                                                                                        CID: {{ $sub->internet_number }}
+                                                                                                    </span>
+                                                                                                    @if($sub->package)
+                                                                                                        <span>•</span>
+                                                                                                        <span style="color: #64748b; font-weight: 700;">{{ $sub->package->name }}</span>
+                                                                                                    @endif
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <!-- Status Badge -->
+                                                                                        <span style="font-size: 0.68rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; background: {{ $statusBg }}; color: {{ $statusText }}; white-space: nowrap;">
+                                                                                            {{ ucfirst($sub->status ?? 'Active') }}
+                                                                                        </span>
                                                                                     </div>
                                                                                 </div>
                                                                             @endforeach
-                                                                        </div>
-                                                                    @endif
 
-                                                                    <!-- Free Ports Slot Indicator -->
-                                                                    @if($maxPorts > $subCount)
-                                                                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.35rem; border-radius: 8px; border: 1px dashed #cbd5e1; background: #fafafa; font-size: 0.72rem; font-weight: 700; color: #64748b; margin-top: 0.2rem;">
-                                                                            <span>🟢 {{ $maxPorts - $subCount }} Port Kosong / Tersedia</span>
-                                                                        </div>
-                                                                    @endif
+                                                                            <!-- Available Empty Ports Slot -->
+                                                                            @if($maxPorts > $subCount)
+                                                                                <div style="display: flex; align-items: center; position: relative;">
+                                                                                    <div style="position: absolute; left: -25px; width: 25px; height: 1.5px; border-top: 1.5px dashed #16a34a;"></div>
+                                                                                    <div style="display: flex; align-items: center; gap: 0.35rem; padding: 0.4rem 0.85rem; border-radius: 10px; border: 1.5px dashed #86efac; background: #f0fdf4; font-size: 0.72rem; font-weight: 800; color: #15803d;">
+                                                                                        <span>🟢 + {{ $maxPorts - $subCount }} Port Kosong (Drop Cable Slot Tersedia)</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            @endif
+                                                                        @endif
+                                                                    </div>
                                                                 @endif
                                                             </div>
-                                                        </div>
-                                                    @endforeach
-                                                @endif
-                                            </div>
-                                        @endif
-                                    </div>
-                                @endforeach
-                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         @endif
     </div>
 
     <!-- ══════════════════════════════════════════════════════════════════ -->
-    <!-- 4. CUSTOM STYLES (DARK MODE & INTERACTIVE EFFECTS) -->
+    <!-- 4. CUSTOM STYLES (DARK MODE & SCHEMATIC FIBER GLOW EFFECTS) -->
     <!-- ══════════════════════════════════════════════════════════════════ -->
     <style>
-        /* Light / Dark Mode Styling for FTTH Topology */
-        html.dark .ims-top-stat-card {
-            background: #08192e !important;
-            border-color: #14355a !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
-        }
-
-        html.dark .ims-top-stat-card span:nth-child(1) {
-            color: #94a3b8 !important;
-        }
-
-        html.dark .ims-top-stat-card div > span:first-child {
-            color: #ffffff !important;
-        }
-
-        html.dark .ims-filter-card {
+        /* Schematic Canvas Styling */
+        html.dark .ims-ftth-top-bar {
             background: #08192e !important;
             border-color: #14355a !important;
             box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4) !important;
         }
 
+        html.dark .ims-ftth-top-bar h2 {
+            color: #ffffff !important;
+        }
+
+        html.dark .ims-select-custom,
         html.dark .ims-search-input {
             background: #051324 !important;
             border-color: #1e3a5f !important;
             color: #f1f5f9 !important;
         }
 
-        html.dark .ims-search-input:focus {
-            border-color: #00d4ff !important;
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.18) !important;
-        }
-
-        html.dark .ims-search-dropdown {
-            background: #08192e !important;
+        html.dark .ims-schematic-canvas {
+            background: #040d1a !important;
             border-color: #14355a !important;
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
         }
 
-        html.dark .ims-suggestion-item:hover {
-            background: #0f2d52 !important;
-        }
-
-        html.dark .ims-suggestion-item span:nth-child(2) {
-            color: #ffffff !important;
-        }
-
-        html.dark .ims-olt-node-card {
-            background: #08192e !important;
-            border-color: #14355a !important;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
-        }
-
-        html.dark .ims-olt-header {
-            background: #051324 !important;
+        html.dark .ims-schematic-stages {
             border-bottom-color: #14355a !important;
         }
 
-        html.dark .ims-olt-header h3 {
+        html.dark .ims-node-pon-card {
+            background: #062014 !important;
+            border-color: #16a34a !important;
+        }
+
+        html.dark .ims-node-pon-card div[style*="color: #0f172a"] {
             color: #ffffff !important;
         }
 
-        html.dark .ims-pon-branch-card {
-            background: #06172b !important;
-            border-color: #14355a !important;
-        }
-
-        html.dark .ims-pon-header {
-            background: #092240 !important;
-        }
-
-        html.dark .ims-pon-header span:first-child {
-            color: #ffffff !important;
-        }
-
-        html.dark .ims-odp-box-card {
+        html.dark .ims-node-odp-card {
             background: #08192e !important;
-            border-color: #14355a !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+            border-color: #16a34a !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
         }
 
-        html.dark .ims-odp-box-card > div:first-child {
-            background: #051324 !important;
-            border-bottom-color: #14355a !important;
-        }
-
-        html.dark .ims-odp-box-card > div:first-child div[style*="color: #0f172a"] {
+        html.dark .ims-node-odp-card div[style*="color: #0f172a"] {
             color: #ffffff !important;
         }
 
-        html.dark .ims-user-node-item {
-            background: #051324 !important;
-            border-color: #14355a !important;
+        html.dark .ims-node-ont-card {
+            background: #0b1f38 !important;
+            border-color: #1e3a5f !important;
         }
 
-        html.dark .ims-user-node-item span[style*="color: #0f172a"] {
-            color: #f1f5f9 !important;
-        }
-
-        html.dark .ims-empty-card {
-            background: #08192e !important;
-            border-color: #14355a !important;
-        }
-
-        html.dark .ims-empty-card h3 {
+        html.dark .ims-node-ont-card span[style*="color: #0f172a"] {
             color: #ffffff !important;
         }
 
-        /* Highlight animation for traced user */
-        .ims-user-traced {
-            box-shadow: 0 0 12px rgba(16, 185, 129, 0.5) !important;
+        /* Laser pulse animation for traced ONT node */
+        .ims-ont-traced {
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.7) !important;
             border-color: #10b981 !important;
-            animation: imsPulseGlow 1.5s infinite alternate;
+            animation: imsLaserPulse 1.2s infinite alternate !important;
         }
 
-        @keyframes imsPulseGlow {
-            from { transform: scale(1); }
-            to { transform: scale(1.02); }
+        @keyframes imsLaserPulse {
+            from { transform: scale(1); box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
+            to { transform: scale(1.03); box-shadow: 0 0 22px rgba(16, 185, 129, 0.9); }
+        }
+
+        /* Fiber optical line glow */
+        .ims-pon-tree-branches,
+        .ims-odp-tree-branches,
+        .ims-user-tree-branches {
+            transition: all 0.3s ease;
         }
     </style>
 </x-filament-panels::page>
