@@ -667,15 +667,18 @@ html.dark .ims-temp-badge:hover {
     .ims-mobile-hide,
     td:has(.ims-mobile-hide),
     .fi-ta-cell:has(.ims-mobile-hide),
-    table.fi-ta-table tbody tr td:not(.fi-table-cell-internet-number):not(:first-child):not(.fi-ta-actions-cell):not(:last-child),
-    table.fi-ta-table tbody tr.fi-ta-row td:not(.fi-table-cell-internet-number):not(:first-child):not(.fi-ta-actions-cell):not(:last-child) {
+    table.fi-ta-table tbody tr td:not(.fi-table-cell-internet-number):not(:first-child):not(.fi-ta-actions-cell):not(.fi-table-cell-actions):not(:last-child),
+    table.fi-ta-table tbody tr.fi-ta-row td:not(.fi-table-cell-internet-number):not(:first-child):not(.fi-ta-actions-cell):not(.fi-table-cell-actions):not(:last-child) {
         display: none !important;
     }
 
     /* Retain actions container in DOM for active Livewire/Alpine click listeners */
     table.fi-ta-table tbody tr td.fi-ta-actions-cell,
+    table.fi-ta-table tbody tr td.fi-table-cell-actions,
+    table.fi-ta-table tbody tr td:has(.fi-ta-actions),
     table.fi-ta-table tbody tr td:last-child:has(.fi-ta-actions),
     table.fi-ta-table tbody tr:has(.ims-standalone-card) td.fi-ta-actions-cell,
+    table.fi-ta-table tbody tr:has(.ims-standalone-card) td.fi-table-cell-actions,
     table.fi-ta-table tbody tr:has(.ims-standalone-card) td:last-child {
         display: block !important;
         position: absolute !important;

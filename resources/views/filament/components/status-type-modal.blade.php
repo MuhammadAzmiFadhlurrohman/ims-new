@@ -361,8 +361,10 @@
         // 1. Try DOM trigger buttons first
         try {
             const selectors = [
+                '.ims-act-' + action.replace(/_/g, '-') + '-' + safeKey,
                 '.ims-act-' + action + '-' + safeKey,
                 '.ims-act-' + action + '-' + key,
+                '[class*="ims-act-' + action.replace(/_/g, '-') + '-' + safeKey + '"]',
                 '[class*="ims-act-' + action + '-' + safeKey + '"]',
                 '[class*="ims-act-' + action + '-' + key + '"]',
                 '.ims-monthly-paymethod-trigger-' + safeKey,
@@ -381,19 +383,26 @@
         // 2. Direct Livewire call
         if (window.Livewire) {
             try {
+                const tableEl = document.querySelector('.fi-ta, .fi-ta-ctn, [wire\\:id]');
+                const wireId = tableEl ? (tableEl.getAttribute('wire:id') || tableEl.closest('[wire\\:id]')?.getAttribute('wire:id')) : null;
+                const comp = wireId ? Livewire.find(wireId) : (typeof Livewire.first === 'function' ? Livewire.first() : null);
+
+                if (comp) {
+                    if (typeof comp.call === 'function') {
+                        comp.call('mountTableAction', action, key);
+                        return;
+                    }
+                    if (comp.$wire && typeof comp.$wire.mountTableAction === 'function') {
+                        comp.$wire.mountTableAction(action, key);
+                        return;
+                    }
+                }
+
                 if (typeof Livewire.all === 'function') {
                     const all = Livewire.all();
                     for (let c of all) {
-                        if (c && c.$wire && typeof c.$wire.mountTableAction === 'function') {
-                            c.$wire.mountTableAction(action, key);
-                            return;
-                        }
                         if (c && typeof c.call === 'function') {
                             c.call('mountTableAction', action, key);
-                            return;
-                        }
-                        if (c && typeof c.mountTableAction === 'function') {
-                            c.mountTableAction(action, key);
                             return;
                         }
                     }
