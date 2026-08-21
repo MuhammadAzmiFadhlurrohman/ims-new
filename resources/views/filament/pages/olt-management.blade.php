@@ -167,6 +167,49 @@
                 width: 100% !important;
             }
         }
+
+        /* Dark Mode Text Fixes for Customer Details */
+        .olt-user-badge-num {
+            color: #0284c7;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+        }
+        .olt-user-name {
+            color: #0f172a;
+        }
+        .olt-user-package {
+            color: #1e293b;
+        }
+        .olt-user-address {
+            color: #475569;
+        }
+        .olt-user-phone {
+            color: #1e293b;
+        }
+        .olt-user-notes {
+            color: #64748b;
+        }
+
+        html.dark .olt-user-badge-num {
+            background: rgba(2, 132, 199, 0.2) !important;
+            color: #38bdf8 !important;
+            border: 1px solid rgba(2, 132, 199, 0.4) !important;
+        }
+        html.dark .olt-user-name {
+            color: #ffffff !important;
+        }
+        html.dark .olt-user-package {
+            color: #f1f5f9 !important;
+        }
+        html.dark .olt-user-address {
+            color: #94a3b8 !important;
+        }
+        html.dark .olt-user-phone {
+            color: #e2e8f0 !important;
+        }
+        html.dark .olt-user-notes {
+            color: #94a3b8 !important;
+        }
     </style>
     <div class="olt-wrapper">
 
@@ -732,10 +775,10 @@
                                     {{-- Pelanggan --}}
                                     <td style="padding-left: 1.5rem;">
                                         <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 3px;">
-                                            <span style="font-family: monospace; font-size: 0.74rem; color: #0284c7; font-weight: 700; background: #eff6ff; padding: 1px 6px; border-radius: 4px; border: 1px solid #bfdbfe;">
+                                            <span class="olt-user-badge-num" style="font-family: monospace; font-size: 0.74rem; font-weight: 700; padding: 1px 6px; border-radius: 4px;">
                                                 #{{ $u->internet_number }}
                                             </span>
-                                            <span style="font-weight: 800; font-size: 0.88rem; color: #0f172a; text-transform: uppercase; margin-top: 2px;">
+                                            <span class="olt-user-name" style="font-weight: 800; font-size: 0.88rem; text-transform: uppercase; margin-top: 2px;">
                                                 {{ $u->customer_name }}
                                             </span>
                                             @if($isTerminasi)
@@ -756,20 +799,20 @@
 
                                     {{-- Layanan --}}
                                     <td>
-                                        <span style="font-weight: 800; color: #1e293b; font-size: 0.84rem;">
+                                        <span class="olt-user-package" style="font-weight: 800; font-size: 0.84rem;">
                                             {{ $u->package ? $u->package->name : 'UP TO NEW' }}
                                         </span>
                                     </td>
 
                                     {{-- Alamat --}}
-                                    <td style="color: #475569; font-size: 0.76rem; max-width: 260px; line-height: 1.45;">
+                                    <td class="olt-user-address" style="font-size: 0.76rem; max-width: 260px; line-height: 1.45;">
                                         {{ $u->installation_address ?? '-' }}
                                     </td>
 
                                     {{-- Nomor --}}
                                     <td>
                                         <div style="display: flex; flex-direction: column; gap: 2px;">
-                                            <span style="font-family: monospace; font-weight: 700; color: #1e293b; font-size: 0.82rem;">{{ $u->phone_number ?? '-' }}</span>
+                                            <span class="olt-user-phone" style="font-family: monospace; font-weight: 700; font-size: 0.82rem;">{{ $u->phone_number ?? '-' }}</span>
                                             <span style="color: #0284c7; font-size: 0.72rem; font-weight: 700;">{{ $u->package ? ($u->package->speed_mbps . ' Mbps') : '30 Mbps' }}</span>
                                         </div>
                                     </td>
@@ -794,7 +837,7 @@
                                     </td>
 
                                     {{-- Keterangan --}}
-                                    <td style="color: #64748b; font-size: 0.76rem;">
+                                    <td class="olt-user-notes" style="font-size: 0.76rem;">
                                         {{ $u->special_request ?: '-' }}
                                     </td>
 

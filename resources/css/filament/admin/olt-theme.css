@@ -1009,12 +1009,46 @@ html.dark .olt-item-name {
     color: #ffffff !important;
 }
 
-html.dark .olt-item-sub {
-    color: #94a3b8 !important;
+.olt-user-badge-num {
+    color: #0284c7;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+.olt-user-name {
+    color: #0f172a;
+}
+.olt-user-package {
+    color: #1e293b;
+}
+.olt-user-address {
+    color: #475569;
+}
+.olt-user-phone {
+    color: #1e293b;
+}
+.olt-user-notes {
+    color: #64748b;
 }
 
-html.dark .olt-progress-track {
-    background: #0f2744 !important;
+html.dark .olt-user-badge-num {
+    background: rgba(2, 132, 199, 0.2) !important;
+    color: #38bdf8 !important;
+    border: 1px solid rgba(2, 132, 199, 0.4) !important;
+}
+html.dark .olt-user-name {
+    color: #ffffff !important;
+}
+html.dark .olt-user-package {
+    color: #f1f5f9 !important;
+}
+html.dark .olt-user-address {
+    color: #94a3b8 !important;
+}
+html.dark .olt-user-phone {
+    color: #e2e8f0 !important;
+}
+html.dark .olt-user-notes {
+    color: #94a3b8 !important;
 }
 
 html.dark .olt-onu-sn-box {
