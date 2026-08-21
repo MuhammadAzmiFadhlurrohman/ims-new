@@ -128,29 +128,24 @@
                 const elem = this.$el;
                 if (!document.fullscreenElement && !document.webkitFullscreenElement) {
                     if (elem.requestFullscreen) {
-                        elem.requestFullscreen().catch(() => { this.isFullScreen = true; });
+                        elem.requestFullscreen().catch(() => {});
                     } else if (elem.webkitRequestFullscreen) {
                         elem.webkitRequestFullscreen();
                     } else if (elem.msRequestFullscreen) {
                         elem.msRequestFullscreen();
-                    } else {
-                        this.isFullScreen = true;
                     }
                 } else {
                     if (document.exitFullscreen) {
-                        document.exitFullscreen().catch(() => { this.isFullScreen = false; });
+                        document.exitFullscreen().catch(() => {});
                     } else if (document.webkitExitFullscreen) {
                         document.webkitExitFullscreen();
                     } else if (document.msExitFullscreen) {
                         document.msExitFullscreen();
-                    } else {
-                        this.isFullScreen = false;
                     }
                 }
             }
         }"
-        @keydown.escape.window="if(isFullScreen) { if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); isFullScreen = false; }"
-        :class="isFullScreen ? 'ims-fullscreen-mode' : ''"
+        @keydown.escape.window="if(isFullScreen && document.fullscreenElement) document.exitFullscreen().catch(()=>{})"
         class="ims-ftth-compact-wrapper"
         style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; max-width: 100%; overflow: hidden; isolation: isolate; font-family: inherit;"
     >
@@ -207,10 +202,7 @@
                     @click="toggleFullScreen()"
                     type="button"
                     :title="isFullScreen ? 'Minimize (Kecilkan Layar Penuh)' : 'Full Size (Tampilkan Layar Penuh)'"
-                    style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease;"
-                    :style="isFullScreen 
-                        ? 'background: #fee2e2; color: #b91c1c; border: 1.5px solid #f87171;' 
-                        : 'background: #eff6ff; color: #1d4ed8; border: 1.5px solid #93c5fd;'"
+                    style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease; background: #eff6ff; color: #1d4ed8; border: 1.5px solid #93c5fd;"
                     class="ims-control-fullscreen-btn"
                 >
                     <!-- Full Size Icon (Expand) -->
@@ -691,39 +683,38 @@
 
         /* ── Full Size Mode: Native Browser Fullscreen Support ── */
         .ims-ftth-compact-wrapper:fullscreen,
-        .ims-ftth-compact-wrapper:-webkit-full-screen,
-        .ims-fullscreen-mode {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
+        .ims-ftth-compact-wrapper:-webkit-full-screen {
             width: 100vw !important;
             height: 100vh !important;
-            z-index: 99999999 !important;
-            background: #f8fafc !important;
-            padding: 0.6rem !important;
+            max-width: 100vw !important;
+            max-height: 100vh !important;
+            padding: 0.65rem !important;
             margin: 0 !important;
-            overflow: hidden !important;
+            background: #f8fafc !important;
             box-sizing: border-box !important;
             display: flex !important;
             flex-direction: column !important;
             gap: 0.5rem !important;
+            overflow: hidden !important;
         }
 
         html.dark .ims-ftth-compact-wrapper:fullscreen,
-        html.dark .ims-ftth-compact-wrapper:-webkit-full-screen,
-        html.dark .ims-fullscreen-mode {
+        html.dark .ims-ftth-compact-wrapper:-webkit-full-screen {
             background: #020712 !important;
         }
 
-        .ims-ftth-compact-wrapper:fullscreen .ims-canvas-viewport,
-        .ims-ftth-compact-wrapper:-webkit-full-screen .ims-canvas-viewport,
-        .ims-fullscreen-mode .ims-canvas-viewport {
-            flex: 1 !important;
+        .ims-ftth-compact-wrapper:fullscreen .ims-top-control-card,
+        .ims-ftth-compact-wrapper:-webkit-full-screen .ims-top-control-card {
             width: 100% !important;
-            height: calc(100vh - 65px) !important;
-            max-height: calc(100vh - 65px) !important;
+            box-sizing: border-box !important;
+        }
+
+        .ims-ftth-compact-wrapper:fullscreen .ims-canvas-viewport,
+        .ims-ftth-compact-wrapper:-webkit-full-screen .ims-canvas-viewport {
+            flex: 1 1 auto !important;
+            width: 100% !important;
+            height: calc(100vh - 75px) !important;
+            max-height: calc(100vh - 75px) !important;
             border-radius: 10px !important;
         }
     </style>
