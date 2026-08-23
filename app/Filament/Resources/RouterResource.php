@@ -111,6 +111,7 @@ class RouterResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Router')
+                    ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->searchable()
                     ->sortable()
                     ->html()

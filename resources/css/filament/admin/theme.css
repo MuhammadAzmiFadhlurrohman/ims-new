@@ -1439,12 +1439,28 @@ html.dark table.fi-ta-table th {
     }
 
     .fi-ta-cell-content,
+    .fi-ta-col-wrp,
+    .fi-ta-col-wrp > div,
+    .fi-ta-col-wrp .max-w-max,
+    .fi-ta-cell-full-card,
+    .fi-ta-cell-full-card *,
+    .ims-standalone-card,
     .fi-ta-text,
     .fi-ta-text > div,
     .fi-ta-text-item,
     .fi-ta-text-item-label {
         display: block !important;
         width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .ims-standalone-card {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        min-width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
     }
