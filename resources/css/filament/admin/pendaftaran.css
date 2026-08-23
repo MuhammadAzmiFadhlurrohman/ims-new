@@ -672,46 +672,91 @@ html.dark .ims-temp-badge:hover {
         display: none !important;
     }
 
-    /* Hide the external duplicate Filament actions cell on mobile (buttons are inside the card) */
+    /* ── Render Native Filament Actions Below Card in 2x2 Grid + Full Width Detail ── */
     table.fi-ta-table tbody tr td.fi-ta-actions-cell,
     table.fi-ta-table tbody tr td.fi-table-cell-actions,
-    table.fi-ta-table tbody tr td:last-child:has(.fi-ta-actions),
-    table.fi-ta-table tbody tr:has(.ims-standalone-card) td.fi-ta-actions-cell,
-    table.fi-ta-table tbody tr:has(.ims-standalone-card) td.fi-table-cell-actions,
-    table.fi-ta-table tbody tr:has(.ims-standalone-card) td:last-child {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        width: 0 !important;
-        height: 0 !important;
+    table.fi-ta-table tbody tr td:last-child {
+        display: block !important;
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding: 0 4px 16px 4px !important;
+        margin: 10px 0 0 0 !important;
+        border: none !important;
+        left: 0 !important;
+        top: 0 !important;
+        z-index: 20 !important;
+        background: transparent !important;
+        box-sizing: border-box !important;
+    }
+
+    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-cell-content,
+    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-cell-content {
+        display: block !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
         padding: 0 !important;
         margin: 0 !important;
-        border: none !important;
-        position: absolute !important;
-        left: -9999px !important;
-        top: -9999px !important;
-        z-index: -1 !important;
+        box-sizing: border-box !important;
     }
 
-    /* Mobile Action Buttons Dock (placed outside the card) */
-    .ims-card-actions-dock {
+    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions,
+    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions,
+    table.fi-ta-table tbody tr td .fi-ta-actions {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 6px !important;
+        grid-auto-flow: row !important;
+        gap: 8px !important;
         width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
-        margin-top: 8px !important;
-        margin-bottom: 6px !important;
+        justify-content: stretch !important;
+        align-items: stretch !important;
+        flex-direction: unset !important;
     }
 
-    .ims-card-actions-dock .ims-modal-act-btn {
+    /* Target direct children of .fi-ta-actions */
+    table.fi-ta-table tbody tr td .fi-ta-actions > *,
+    table.fi-ta-table tbody tr td .fi-ta-actions > div,
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-ta-action {
+        display: flex !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        grid-column: span 1 !important;
+    }
+
+    /* Universal styling for all action buttons */
+    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions .fi-btn,
+    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-btn,
+    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions button,
+    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions button,
+    table.fi-ta-table tbody tr td .fi-ta-actions button,
+    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions a,
+    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions a,
+    table.fi-ta-table tbody tr td .fi-ta-actions a {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         gap: 6px !important;
         width: 100% !important;
-        padding: 8px 10px !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        padding: 6px 12px !important;
         font-size: 11.5px !important;
         font-weight: 800 !important;
         border-radius: 8px !important;
@@ -719,36 +764,65 @@ html.dark .ims-temp-badge:hover {
         color: #ffffff !important;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
         box-sizing: border-box !important;
+        pointer-events: auto !important;
         cursor: pointer !important;
+        text-decoration: none !important;
         transition: transform 0.1s ease, filter 0.15s ease !important;
     }
 
-    .ims-card-actions-dock .ims-modal-act-btn:active {
+    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions .fi-btn:active,
+    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions .fi-btn:active,
+    table.fi-ta-table tbody tr td .fi-ta-actions button:active {
         transform: scale(0.97) !important;
     }
 
-    .ims-card-actions-dock .ims-modal-act-blue {
+    /* Color 1: Ubah Bayar (Blue) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(1) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(1) button,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="change_payment_method"] {
         background: #1d4ed8 !important;
+        box-shadow: 0 3px 8px rgba(29, 78, 216, 0.4) !important;
     }
 
-    .ims-card-actions-dock .ims-modal-act-cyan {
+    /* Color 2: Publish (Cyan) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(2) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(2) button,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="publish"] {
         background: #0284c7 !important;
+        box-shadow: 0 3px 8px rgba(2, 132, 199, 0.4) !important;
     }
 
-    .ims-card-actions-dock .ims-modal-act-green {
+    /* Color 3: Terima Bayar / Pelunasan (Green) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3) button,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="accept"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="pelunasan"] {
         background: #059669 !important;
+        box-shadow: 0 3px 8px rgba(5, 150, 105, 0.4) !important;
     }
 
-    .ims-card-actions-dock .ims-modal-act-red {
+    /* Color 4: Hapus / Delete (Red) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(4) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(4) button,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="delete"] {
         background: #dc2626 !important;
+        box-shadow: 0 3px 8px rgba(220, 38, 38, 0.4) !important;
     }
 
-    .ims-card-actions-dock .ims-card-detail-btn {
-        grid-column: span 2 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 8px !important;
+    /* Button 5: Detail Lengkap & Opsi (Full width soft blue / dark blue) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :last-child,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5),
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-ta-action:last-child,
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-ta-action:nth-child(5) {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+    }
+
+    table.fi-ta-table tbody tr td .fi-ta-actions > :last-child .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :last-child button,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5) button,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="detail_lengkap"] {
         width: 100% !important;
         padding: 9px 12px !important;
         border-radius: 12px !important;
@@ -758,9 +832,19 @@ html.dark .ims-temp-badge:hover {
         font-size: 13px !important;
         font-weight: 800 !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
-        box-sizing: border-box !important;
-        cursor: pointer !important;
         margin-top: 2px !important;
+    }
+
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-btn-label,
+    table.fi-ta-table tbody tr td .fi-ta-actions span {
+        color: inherit !important;
+        font-weight: 800 !important;
+    }
+
+    table.fi-ta-table tbody tr td .fi-ta-actions svg {
+        color: inherit !important;
+        width: 15px !important;
+        height: 15px !important;
     }
 
     /* Column 1 (internet_number) renders the entire Standalone Card */
