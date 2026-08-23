@@ -119,14 +119,6 @@
             </div>
         </div>
 
-        <!-- Section 4: Aksi Lanjutan Operasional -->
-        <div class="ims-modal-section" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px;">
-            <div style="font-size: 10.5px; font-weight: 800; color: #0284c7; text-transform: uppercase; margin-bottom: 8px;">⚡ Tindakan Operasional</div>
-            <div id="ims-detail-actions-list" style="display: flex; flex-wrap: wrap; gap: 8px;">
-                <!-- DYNAMICALLY INJECTED FROM ACTIVE RECORD ACTIONS -->
-            </div>
-        </div>
-
         <!-- Modal Footer Close Button -->
         <div style="display: flex; justify-content: flex-end;">
             <button
