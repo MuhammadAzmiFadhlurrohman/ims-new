@@ -694,9 +694,6 @@ html.dark .ims-temp-badge:hover {
         z-index: -1 !important;
     }
 
-    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions .fi-btn:active,
-    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions .fi-btn:active,
-    table.fi-ta-table tbody tr td .fi-ta-actions button:active {
     /* Mobile Action Buttons Dock (placed outside the card) */
     .ims-card-actions-dock {
         display: grid !important;

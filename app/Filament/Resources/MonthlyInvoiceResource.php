@@ -314,6 +314,19 @@ class MonthlyInvoiceResource extends Resource
                                             📄 {$pdfName}
                                         </a>
                                     </div>
+                                    <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 6px;'>
+                                        <button
+                                            type='button'
+                                            x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
+                                            title='Klik untuk mengubah metode pembayaran'
+                                            style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
+                                        >
+                                            {$payLabel}
+                                        </button>
+                                        <span style='color: #ef4444; font-size: 9.5px; font-weight: 700; font-style: italic; text-decoration: line-through;'>
+                                            🚫 UnSend 🚫 UnSend
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <!-- OUTSIDE THE CARD: ACTION BUTTONS DOCK (2X2 GRID + FULL WIDTH DETAIL) -->
