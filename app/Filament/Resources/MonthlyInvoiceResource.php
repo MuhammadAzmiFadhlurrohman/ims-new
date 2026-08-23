@@ -314,15 +314,53 @@ class MonthlyInvoiceResource extends Resource
                                             📄 {$pdfName}
                                         </a>
                                     </div>
-                                    <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 4px;'>
-                                        <span
-                                            style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
+                                    <div class='ims-card-sep'></div>
+                                    <!-- QUICK ACTION BUTTONS 2X2 GRID + FULL WIDTH DETAIL -->
+                                    <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
+                                        <button
+                                            type='button'
+                                            x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
+                                            class='ims-modal-act-btn ims-modal-act-blue'
+                                            style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                         >
-                                            {$payLabel}
-                                        </span>
-                                        <span style='color: #ef4444; font-size: 9.5px; font-weight: 700; font-style: italic; text-decoration: line-through;'>
-                                            🚫 UnSend 🚫 UnSend
-                                        </span>
+                                            💳 Ubah Bayar
+                                        </button>
+                                        <button
+                                            type='button'
+                                            x-on:click.stop=\"\$wire.mountTableAction('publish', '{$key}')\"
+                                            class='ims-modal-act-btn ims-modal-act-cyan'
+                                            style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                        >
+                                            ✅ Publish
+                                        </button>
+                                        <button
+                                            type='button'
+                                            x-on:click.stop=\"\$wire.mountTableAction('accept', '{$key}')\"
+                                            class='ims-modal-act-btn ims-modal-act-green'
+                                            style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                        >
+                                            💵 Terima Bayar
+                                        </button>
+                                        <button
+                                            type='button'
+                                            x-on:click.stop=\"\$wire.mountTableAction('delete', '{$key}')\"
+                                            class='ims-modal-act-btn ims-modal-act-red'
+                                            style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                        >
+                                            🗑️ Hapus
+                                        </button>
+                                        <button
+                                            type='button'
+                                            x-on:click.stop=\"\$wire.mountTableAction('detail_lengkap', '{$key}')\"
+                                            class='ims-card-detail-btn'
+                                            style='grid-column: span 2; width: 100%; box-sizing: border-box; margin-top: 2px;'
+                                        >
+                                            <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
+                                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
+                                            </svg>
+                                            <span>Detail Lengkap & Opsi</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
