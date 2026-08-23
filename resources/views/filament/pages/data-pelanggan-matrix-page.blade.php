@@ -301,23 +301,44 @@
             }
 
             .matrix-slider-slide .matrix-item-card {
-                min-height: 100px;
+                min-height: 105px;
                 border-radius: 14px;
-                padding: 16px 18px;
-            }
-
-            .matrix-slider-slide .matrix-count-number {
-                font-size: 28px;
-            }
-
-            .matrix-slider-slide .matrix-count-unit {
-                font-size: 13px;
+                padding: 16px 42px;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
             }
 
             .matrix-slider-slide .matrix-badge {
                 font-size: 11px;
-                padding: 5px 12px;
+                padding: 5px 14px;
                 border-radius: 8px;
+                margin: 0 auto !important;
+                display: inline-flex !important;
+                justify-content: center !important;
+                text-align: center !important;
+            }
+
+            .matrix-slider-slide .matrix-count-row {
+                margin-top: 10px;
+                display: flex !important;
+                align-items: baseline !important;
+                justify-content: center !important;
+                text-align: center !important;
+                gap: 6px;
+                width: 100%;
+            }
+
+            .matrix-slider-slide .matrix-count-number {
+                font-size: 30px;
+                line-height: 1;
+            }
+
+            .matrix-slider-slide .matrix-count-unit {
+                font-size: 13px;
             }
 
             /* ── Slider Dots ── */
