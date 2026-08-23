@@ -304,12 +304,12 @@
     document.addEventListener('DOMContentLoaded', ensureModalsInBody);
     document.addEventListener('livewire:navigated', ensureModalsInBody);
     document.addEventListener('livewire:init', ensureModalsInBody);
-    setTimeout(ensureModalsInBody, 300);
+    setTimeout(ensureModalsInBody, 200);
 
     // ── 1. STATUS TYPE MODAL ──
     window.openImsStatusModal = function(key, status) {
         ensureModalsInBody();
-        window.currentImsRecordKey = key;
+        window.currentImsRecordKey = key || '';
         const radios = document.querySelectorAll('input[name="ims_status_radio"]');
         radios.forEach(r => {
             if (r.value.toLowerCase() === (status || '').toLowerCase()) {
@@ -318,7 +318,7 @@
         });
         const modal = document.getElementById('ims-status-modal');
         if (modal) {
-            modal.style.setProperty('display', 'flex', 'important');
+            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0px !important; z-index: 99999999 !important; align-items: center !important; justify-content: center !important; background: rgba(15, 23, 42, 0.8) !important; backdrop-filter: blur(6px) !important; padding: 14px !important; box-sizing: border-box !important;';
         }
     };
 
@@ -448,7 +448,7 @@
 
             const modal = document.getElementById('ims-detail-modal');
             if (modal) {
-                modal.style.setProperty('display', 'flex', 'important');
+                modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0px !important; z-index: 99999999 !important; align-items: center !important; justify-content: center !important; background: rgba(15, 23, 42, 0.8) !important; backdrop-filter: blur(6px) !important; padding: 14px !important; box-sizing: border-box !important;';
             }
         } catch(e) {
             console.error('Failed to decode detail payload:', e);
@@ -475,7 +475,9 @@
             }
         });
         const modal = document.getElementById('ims-paymethod-modal');
-        if (modal) modal.style.setProperty('display', 'flex', 'important');
+        if (modal) {
+            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0px !important; z-index: 99999999 !important; align-items: center !important; justify-content: center !important; background: rgba(15, 23, 42, 0.8) !important; backdrop-filter: blur(6px) !important; padding: 14px !important; box-sizing: border-box !important;';
+        }
     };
 
     window.closeImsPaymentMethodModal = function() {
@@ -519,7 +521,9 @@
         const el = document.getElementById('ims-pub-inv-no');
         if (el) el.textContent = invNo || key;
         const modal = document.getElementById('ims-publish-modal');
-        if (modal) modal.style.setProperty('display', 'flex', 'important');
+        if (modal) {
+            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0px !important; z-index: 99999999 !important; align-items: center !important; justify-content: center !important; background: rgba(15, 23, 42, 0.8) !important; backdrop-filter: blur(6px) !important; padding: 14px !important; box-sizing: border-box !important;';
+        }
     };
 
     window.closeImsPublishModal = function() {
@@ -568,7 +572,9 @@
         }
 
         const modal = document.getElementById('ims-accept-modal');
-        if (modal) modal.style.setProperty('display', 'flex', 'important');
+        if (modal) {
+            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0px !important; z-index: 99999999 !important; align-items: center !important; justify-content: center !important; background: rgba(15, 23, 42, 0.8) !important; backdrop-filter: blur(6px) !important; padding: 14px !important; box-sizing: border-box !important;';
+        }
     };
 
     window.closeImsAcceptModal = function() {
@@ -613,7 +619,9 @@
         const el = document.getElementById('ims-del-inv-no');
         if (el) el.textContent = invNo || key;
         const modal = document.getElementById('ims-delete-modal');
-        if (modal) modal.style.setProperty('display', 'flex', 'important');
+        if (modal) {
+            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0px !important; z-index: 99999999 !important; align-items: center !important; justify-content: center !important; background: rgba(15, 23, 42, 0.8) !important; backdrop-filter: blur(6px) !important; padding: 14px !important; box-sizing: border-box !important;';
+        }
     };
 
     window.closeImsDeleteModal = function() {
@@ -646,17 +654,15 @@
         });
     };
 
-    // ── MASTER ACTION HANDLER (BOTH NATIVE LIVEWIRE & STANDALONE MODALS) ──
+    // ── MASTER ACTION HANDLER ──
     window.handleImsAction = function(btn, event) {
         if (event) {
-            event.preventDefault();
             event.stopPropagation();
         }
         if (!btn) return;
 
         const action = btn.getAttribute('data-ims-action') || '';
         const key = btn.getAttribute('data-ims-key') || '';
-        const safeKey = btn.getAttribute('data-ims-safekey') || (key ? key.replace(/[^a-zA-Z0-9_-]/g, '_') : '');
         const type = btn.getAttribute('data-ims-type') || detectImsType();
         const label = btn.getAttribute('data-ims-label') || 'Midtrans';
         const invNo = btn.getAttribute('data-ims-invno') || key;
@@ -668,42 +674,21 @@
         }
 
         if (action === 'change_payment_method') {
-            // First check if native Filament modal button exists in DOM
-            const nativeTrigger = document.querySelector('.ims-act-change-payment-' + safeKey) || document.querySelector('.ims-monthly-paymethod-trigger-' + safeKey);
-            if (nativeTrigger && typeof nativeTrigger.click === 'function') {
-                nativeTrigger.click();
-                return;
-            }
             window.openImsPaymentMethodModal(key, label, type);
             return;
         }
 
         if (action === 'publish') {
-            const nativeTrigger = document.querySelector('.ims-act-publish-' + safeKey);
-            if (nativeTrigger && typeof nativeTrigger.click === 'function') {
-                nativeTrigger.click();
-                return;
-            }
             window.openImsPublishModal(key, type, invNo);
             return;
         }
 
         if (action === 'accept' || action === 'pelunasan') {
-            const nativeTrigger = document.querySelector('.ims-act-accept-' + safeKey) || document.querySelector('.ims-act-pelunasan-' + safeKey);
-            if (nativeTrigger && typeof nativeTrigger.click === 'function') {
-                nativeTrigger.click();
-                return;
-            }
             window.openImsAcceptModal(key, type, invNo);
             return;
         }
 
         if (action === 'delete') {
-            const nativeTrigger = document.querySelector('.ims-act-delete-' + safeKey);
-            if (nativeTrigger && typeof nativeTrigger.click === 'function') {
-                nativeTrigger.click();
-                return;
-            }
             window.openImsDeleteModal(key, type, invNo);
             return;
         }
@@ -712,9 +697,6 @@
             window.openImsStatusModal(key, label || 'Temporary Delete');
             return;
         }
-
-        // Generic fallback
-        window.openImsTableAction(action, key);
     };
 
     // ── GLOBAL DISPATCHER FOR ALL ACTIONS ──
@@ -742,26 +724,5 @@
             window.openImsStatusModal(key, 'Temporary Delete');
             return;
         }
-
-        // Livewire fallback if any other action
-        if (window.Livewire) {
-            try {
-                const comps = (typeof Livewire.all === 'function') ? Livewire.all() : [];
-                for (let c of comps) {
-                    if (c && typeof c.call === 'function') {
-                        c.call('mountTableAction', action, key);
-                        return;
-                    }
-                }
-            } catch(e) {}
-        }
     };
-
-    // ── GLOBAL EVENT DELEGATION CAPTURE ──
-    document.addEventListener('click', function(e) {
-        const btn = e.target.closest('[data-ims-action], .ims-modal-act-btn, .ims-card-detail-btn');
-        if (btn && typeof window.handleImsAction === 'function') {
-            window.handleImsAction(btn, e);
-        }
-    }, true);
 </script>

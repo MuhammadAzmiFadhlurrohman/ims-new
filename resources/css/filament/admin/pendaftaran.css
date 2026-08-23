@@ -1032,8 +1032,21 @@ html.dark .ims-updated-text {
 #ims-publish-modal,
 #ims-accept-modal,
 #ims-delete-modal {
-    z-index: 99999999 !important;
+    z-index: 999999999 !important;
     position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    box-sizing: border-box !important;
+}
+
+table.fi-ta-table tbody tr:focus,
+table.fi-ta-table tbody tr:active,
+table.fi-ta-table tbody tr td:focus,
+table.fi-ta-table tbody tr td:active,
+.ims-standalone-card:focus,
+.ims-standalone-card:active {
+    outline: none !important;
 }
 
 html.dark #ims-detail-modal .ims-modal-card,

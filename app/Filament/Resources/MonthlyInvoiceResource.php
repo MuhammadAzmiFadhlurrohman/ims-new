@@ -317,14 +317,7 @@ class MonthlyInvoiceResource extends Resource
                                     <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 4px;'>
                                         <button
                                             type='button'
-                                            wire:click=\"mountTableAction('change_payment_method', '{$key}')\"
-                                            x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
-                                            data-ims-action='change_payment_method'
-                                            data-ims-key='{$key}'
-                                            data-ims-safekey='{$safeKey}'
-                                            data-ims-label='{$payLabel}'
-                                            data-ims-type='monthly'
-                                            onclick=\"if(!window.Livewire){window.openImsPaymentMethodModal('{$key}', '{$payLabel}', 'monthly');}\"
+                                            onclick=\"window.openImsPaymentMethodModal('{$key}', '{$payLabel}', 'monthly');\"
                                             title='Klik untuk mengubah metode pembayaran'
                                             style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
                                         >
@@ -340,14 +333,7 @@ class MonthlyInvoiceResource extends Resource
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
-                                        wire:click=\"mountTableAction('change_payment_method', '{$key}')\"
-                                        x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
-                                        data-ims-action='change_payment_method'
-                                        data-ims-key='{$key}'
-                                        data-ims-safekey='{$safeKey}'
-                                        data-ims-label='{$payLabel}'
-                                        data-ims-type='monthly'
-                                        onclick=\"if(!window.Livewire){window.openImsPaymentMethodModal('{$key}', '{$payLabel}', 'monthly');}\"
+                                        onclick=\"window.openImsPaymentMethodModal('{$key}', '{$payLabel}', 'monthly');\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -355,14 +341,7 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        wire:click=\"mountTableAction('publish', '{$key}')\"
-                                        x-on:click.stop=\"\$wire.mountTableAction('publish', '{$key}')\"
-                                        data-ims-action='publish'
-                                        data-ims-key='{$key}'
-                                        data-ims-safekey='{$safeKey}'
-                                        data-ims-invno='{$invNo}'
-                                        data-ims-type='monthly'
-                                        onclick=\"if(!window.Livewire){window.openImsPublishModal('{$key}', 'monthly', '{$invNo}');}\"
+                                        onclick=\"window.openImsPublishModal('{$key}', 'monthly', '{$invNo}');\"
                                         class='ims-modal-act-btn ims-modal-act-cyan'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -370,14 +349,7 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        wire:click=\"mountTableAction('accept', '{$key}')\"
-                                        x-on:click.stop=\"\$wire.mountTableAction('accept', '{$key}')\"
-                                        data-ims-action='accept'
-                                        data-ims-key='{$key}'
-                                        data-ims-safekey='{$safeKey}'
-                                        data-ims-invno='{$invNo}'
-                                        data-ims-type='monthly'
-                                        onclick=\"if(!window.Livewire){window.openImsAcceptModal('{$key}', 'monthly', '{$invNo}');}\"
+                                        onclick=\"window.openImsAcceptModal('{$key}', 'monthly', '{$invNo}');\"
                                         class='ims-modal-act-btn ims-modal-act-green'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -385,14 +357,7 @@ class MonthlyInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
-                                        wire:click=\"mountTableAction('delete', '{$key}')\"
-                                        x-on:click.stop=\"\$wire.mountTableAction('delete', '{$key}')\"
-                                        data-ims-action='delete'
-                                        data-ims-key='{$key}'
-                                        data-ims-safekey='{$safeKey}'
-                                        data-ims-invno='{$invNo}'
-                                        data-ims-type='monthly'
-                                        onclick=\"if(!window.Livewire){window.openImsDeleteModal('{$key}', 'monthly', '{$invNo}');}\"
+                                        onclick=\"window.openImsDeleteModal('{$key}', 'monthly', '{$invNo}');\"
                                         class='ims-modal-act-btn ims-modal-act-red'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -401,11 +366,8 @@ class MonthlyInvoiceResource extends Resource
                                 </div>
                                 <button
                                     type='button'
-                                    wire:click=\"mountTableAction('detail_lengkap', '{$key}')\"
-                                    x-on:click.stop=\"\$wire.mountTableAction('detail_lengkap', '{$key}')\"
-                                    data-ims-action='detail'
                                     data-detail-payload='{$encodedDetail}'
-                                    onclick=\"if(!window.Livewire){window.openImsDetailFromPayload('{$encodedDetail}');}\"
+                                    onclick=\"window.openImsDetailFromPayload('{$encodedDetail}');\"
                                     class='ims-card-detail-btn'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
