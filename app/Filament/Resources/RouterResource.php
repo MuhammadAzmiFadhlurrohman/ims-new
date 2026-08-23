@@ -160,54 +160,53 @@ class RouterResource extends Resource
 
                             <!-- STANDALONE MOBILE CARD (Visible on Mobile) -->
                             <div class='ims-standalone-card'>
-                                <!-- Header: Nama Router & Status Badge -->
-                                <div style='display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; width: 100%;'>
-                                    <div style='display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1;'>
-                                        <div style='display: flex; align-items: center; gap: 6px; flex-wrap: wrap;'>
-                                            <span class='ims-cid-badge' style='background: #0284c7; color: #ffffff; font-size: 12px; font-weight: 900; padding: 2px 8px; border-radius: 7px;'>📡 {$name}</span>
-                                            {$activeBadge}
-                                        </div>
-                                        <div class='text-xs font-bold text-slate-700 dark:text-sky-300' style='margin-top: 2px; word-break: break-word;'>
-                                            ⚙️ {$model} {$ros}
-                                        </div>
+                                <!-- Header: Nama Router, Aktif, & Status Badge -->
+                                <div style='display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%;'>
+                                    <div style='display: flex; align-items: center; gap: 6px; flex-wrap: wrap;'>
+                                        <span class='ims-cid-badge' style='background: #0284c7; color: #ffffff; font-size: 12px; font-weight: 900; padding: 2px 8px; border-radius: 7px;'>📡 {$name}</span>
+                                        {$activeBadge}
                                     </div>
                                     <div style='flex-shrink: 0;'>
                                         {$statusBadge}
                                     </div>
                                 </div>
 
+                                <div class='text-xs font-bold text-slate-700 dark:text-sky-300' style='margin-top: 2px; word-break: break-word;'>
+                                    ⚙️ {$model} {$ros}
+                                </div>
+
                                 <div class='ims-card-sep'></div>
 
-                                <!-- Detail Konektivitas (IP, SSL, POP, Kredensial, Waktu) -->
-                                <div style='display: flex; flex-direction: column; gap: 6px; width: 100%; font-size: 11px;'>
-                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; background: rgba(2, 132, 199, 0.06); padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(2, 132, 199, 0.15);'>
-                                        <div style='display: inline-flex; align-items: center; gap: 6px; font-family: ui-monospace, monospace; font-size: 11.5px; font-weight: 800; color: #0284c7;' class='dark:text-sky-400'>
-                                            <span>🌐 {$ip}</span>
-                                            {$sslBadge}
-                                        </div>
-                                        <button
-                                            type='button'
-                                            onclick=\"navigator.clipboard.writeText('{$rawIp}'); alert('IP & Port disalin: {$rawIp}');\"
-                                            title='Salin IP & Port'
-                                            style='font-size: 9.5px; font-weight: 800; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 2px 7px; border-radius: 6px; cursor: pointer;'
-                                            class='dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800'
-                                        >
-                                            📋 Salin IP
-                                        </button>
+                                <!-- Detail Konektivitas (IP, SSL, Salin IP) -->
+                                <div style='display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; background: rgba(2, 132, 199, 0.08); padding: 7px 10px; border-radius: 10px; border: 1px solid rgba(2, 132, 199, 0.2); width: 100%; box-sizing: border-box;'>
+                                    <div style='display: inline-flex; align-items: center; gap: 6px; font-family: ui-monospace, monospace; font-size: 12px; font-weight: 800; color: #0284c7;' class='dark:text-sky-400'>
+                                        <span>🌐 {$ip}</span>
+                                        {$sslBadge}
                                     </div>
-
-                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap;'>
-                                        <span class='ims-mobile-group-badge' style='font-size: 10.5px;'>📍 POP: {$popName}</span>
-                                        <span class='text-slate-500 dark:text-slate-400' style='font-size: 10.5px; font-weight: 700;'>
-                                            👤 User: <code class='text-slate-800 dark:text-slate-200 font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded'>{$username}</code>
-                                        </span>
-                                    </div>
-
-                                    <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; font-size: 10px;' class='text-slate-500 dark:text-slate-400'>
-                                        <span>🕒 Terakhir Dicek: <strong class='text-slate-700 dark:text-slate-200'>{$lastChecked}</strong></span>
-                                    </div>
-                                    {$descriptionHtml}
+                                    <button
+                                        type='button'
+                                        onclick=\"navigator.clipboard.writeText('{$rawIp}'); alert('IP & Port disalin: {$rawIp}');\"
+                                        title='Salin IP & Port'
+                                        style='display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 800; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 3px 8px; border-radius: 6px; cursor: pointer;'
+                                        class='dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800'
+                                    >
+                                        📋 Salin IP
+                                    </button>
                                 </div>
+
+                                <!-- Detail POP & User -->
+                                <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; width: 100%;'>
+                                    <span class='ims-mobile-group-badge' style='font-size: 11px;'>📍 POP: {$popName}</span>
+                                    <span class='text-slate-500 dark:text-slate-400' style='font-size: 11px; font-weight: 700;'>
+                                        👤 User: <code class='text-slate-800 dark:text-slate-200 font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded'>{$username}</code>
+                                    </span>
+                                </div>
+
+                                <!-- Waktu & Deskripsi -->
+                                <div style='display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; font-size: 10.5px; width: 100%;' class='text-slate-500 dark:text-slate-400'>
+                                    <span>🕒 Terakhir Dicek: <strong class='text-slate-700 dark:text-slate-200'>{$lastChecked}</strong></span>
+                                </div>
+                                {$descriptionHtml}
                             </div>
                         ");
                     }),
