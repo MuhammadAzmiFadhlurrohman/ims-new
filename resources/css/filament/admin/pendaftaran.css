@@ -686,28 +686,47 @@ html.dark .ims-temp-badge:hover {
         visibility: visible !important;
         pointer-events: auto !important;
         width: 100% !important;
+        min-width: 100% !important;
         max-width: 100% !important;
         height: auto !important;
         overflow: visible !important;
         padding: 0 10px 14px 10px !important;
-        margin-top: -6px !important;
+        margin: -6px 0 0 0 !important;
         border: none !important;
-        left: auto !important;
-        top: auto !important;
+        left: 0 !important;
+        top: 0 !important;
         z-index: 20 !important;
         background: transparent !important;
         box-sizing: border-box !important;
     }
 
+    body:has([class*="invoice"]) .fi-ta-actions,
+    .fi-resource-monthly-invoices .fi-ta-actions,
+    .fi-resource-registration-invoices .fi-ta-actions,
+    .fi-page-list-monthly-invoices .fi-ta-actions,
+    .fi-page-list-registration-invoices .fi-ta-actions,
     table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions,
     table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions,
     table.fi-ta-table tbody tr td .fi-ta-actions {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-auto-flow: row !important;
         gap: 6px !important;
         width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
         box-sizing: border-box !important;
         justify-content: stretch !important;
+        flex-direction: unset !important;
+        align-items: stretch !important;
+    }
+
+    /* Target direct children of .fi-ta-actions */
+    table.fi-ta-table tbody tr td .fi-ta-actions > * {
+        display: flex !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
     }
 
     /* Universal styling for all action buttons */
@@ -746,27 +765,27 @@ html.dark .ims-temp-badge:hover {
     }
 
     /* Color 1: Ubah Bayar (Blue) */
-    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions > :nth-child(1),
-    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions > :nth-child(1),
     table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(1),
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(1) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(1) button,
     table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="change_payment_method"] {
         background: #1d4ed8 !important;
         box-shadow: 0 3px 8px rgba(29, 78, 216, 0.4) !important;
     }
 
     /* Color 2: Publish (Cyan) */
-    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions > :nth-child(2),
-    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions > :nth-child(2),
     table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(2),
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(2) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(2) button,
     table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="publish"] {
         background: #0284c7 !important;
         box-shadow: 0 3px 8px rgba(2, 132, 199, 0.4) !important;
     }
 
     /* Color 3: Terima Bayar / Pelunasan (Green) */
-    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions > :nth-child(3),
-    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions > :nth-child(3),
     table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3),
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3) button,
     table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="accept"],
     table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="pelunasan"] {
         background: #059669 !important;
@@ -774,18 +793,18 @@ html.dark .ims-temp-badge:hover {
     }
 
     /* Color 4: Hapus / Delete (Red) */
-    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions > :nth-child(4),
-    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions > :nth-child(4),
     table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(4),
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(4) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(4) button,
     table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="delete"] {
         background: #dc2626 !important;
         box-shadow: 0 3px 8px rgba(220, 38, 38, 0.4) !important;
     }
 
     /* Button 5: Detail Lengkap & Opsi (Full width soft blue / dark blue) */
-    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions > :last-child,
-    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions > :last-child,
     table.fi-ta-table tbody tr td .fi-ta-actions > :last-child,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :last-child .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :last-child button,
     table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="detail_lengkap"] {
         grid-column: span 2 !important;
         width: 100% !important;
