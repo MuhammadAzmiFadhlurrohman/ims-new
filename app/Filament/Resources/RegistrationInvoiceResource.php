@@ -241,12 +241,12 @@ class RegistrationInvoiceResource extends Resource
                                         <a href='{$pdfUrl}' target='_blank' style='display: inline-flex; align-items: center; gap: 4px; color: #2563eb; font-weight: 700; font-size: 10.5px; text-decoration: underline; margin-top: 2px;' title='Buka / Cetak Invoice Registrasi PDF'>
                                             📄 {$pdfName}
                                         </a>
-                                        <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 4px;'>
+                                        <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 6px;'>
                                             <button
                                                 type='button'
                                                 x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
                                                 title='Klik untuk mengubah metode pembayaran'
-                                                style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
+                                                style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10.5px; padding: 3.5px 10px; border-radius: 6px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
                                             >
                                                 {$payLabel}
                                             </button>
@@ -257,54 +257,53 @@ class RegistrationInvoiceResource extends Resource
                                         </div>
                                     </div>
                                 </div>
-                                <div class='ims-card-sep'></div>
-                                <!-- QUICK ACTION BUTTONS 2X2 GRID + FULL WIDTH DETAIL -->
-                                <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
-                                    <button
-                                        type='button'
-                                        x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
-                                        class='ims-modal-act-btn ims-modal-act-blue'
-                                        style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
-                                    >
-                                        💳 Ubah Bayar
-                                    </button>
-                                    <button
-                                        type='button'
-                                        x-on:click.stop=\"\$wire.mountTableAction('publish', '{$key}')\"
-                                        class='ims-modal-act-btn ims-modal-act-cyan'
-                                        style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
-                                    >
-                                        ✅ Publish
-                                    </button>
-                                    <button
-                                        type='button'
-                                        x-on:click.stop=\"\$wire.mountTableAction('pelunasan', '{$key}')\"
-                                        class='ims-modal-act-btn ims-modal-act-green'
-                                        style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
-                                    >
-                                        💵 Terima Bayar
-                                    </button>
-                                    <button
-                                        type='button'
-                                        x-on:click.stop=\"\$wire.mountTableAction('delete', '{$key}')\"
-                                        class='ims-modal-act-btn ims-modal-act-red'
-                                        style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
-                                    >
-                                        🗑️ Hapus
-                                    </button>
-                                    <button
-                                        type='button'
-                                        x-on:click.stop=\"\$wire.mountTableAction('detail_lengkap', '{$key}')\"
-                                        class='ims-card-detail-btn'
-                                        style='grid-column: span 2; width: 100%; box-sizing: border-box; margin-top: 2px;'
-                                    >
-                                        <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
-                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
-                                        </svg>
-                                        <span>Detail Lengkap & Opsi</span>
-                                    </button>
-                                </div>
+                            </div>
+                            <!-- OUTSIDE THE CARD: ACTION BUTTONS DOCK (2X2 GRID + FULL WIDTH DETAIL) -->
+                            <div class='ims-card-actions-dock' style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box; margin-top: 8px; margin-bottom: 6px;'>
+                                <button
+                                    type='button'
+                                    x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
+                                    class='ims-modal-act-btn ims-modal-act-blue'
+                                    style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                >
+                                    💳 Ubah Bayar
+                                </button>
+                                <button
+                                    type='button'
+                                    x-on:click.stop=\"\$wire.mountTableAction('publish', '{$key}')\"
+                                    class='ims-modal-act-btn ims-modal-act-cyan'
+                                    style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                >
+                                    ✅ Publish
+                                </button>
+                                <button
+                                    type='button'
+                                    x-on:click.stop=\"\$wire.mountTableAction('pelunasan', '{$key}')\"
+                                    class='ims-modal-act-btn ims-modal-act-green'
+                                    style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                >
+                                    💵 Terima Bayar
+                                </button>
+                                <button
+                                    type='button'
+                                    x-on:click.stop=\"\$wire.mountTableAction('delete', '{$key}')\"
+                                    class='ims-modal-act-btn ims-modal-act-red'
+                                    style='font-size: 11px; padding: 7px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
+                                >
+                                    🗑️ Hapus
+                                </button>
+                                <button
+                                    type='button'
+                                    x-on:click.stop=\"\$wire.mountTableAction('detail_lengkap', '{$key}')\"
+                                    class='ims-card-detail-btn'
+                                    style='grid-column: span 2; width: 100%; box-sizing: border-box; margin-top: 2px;'
+                                >
+                                    <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
+                                    </svg>
+                                    <span>Detail Lengkap & Opsi</span>
+                                </button>
                             </div>
                         ");
                     })
