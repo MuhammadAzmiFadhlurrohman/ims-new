@@ -672,7 +672,7 @@ html.dark .ims-temp-badge:hover {
         display: none !important;
     }
 
-    /* Retain actions container in DOM for active Livewire/Alpine click listeners */
+    /* Retain actions container in DOM for active Livewire/Alpine click listeners without blocking touches */
     table.fi-ta-table tbody tr td.fi-ta-actions-cell,
     table.fi-ta-table tbody tr td.fi-table-cell-actions,
     table.fi-ta-table tbody tr td:has(.fi-ta-actions),
@@ -686,10 +686,13 @@ html.dark .ims-temp-badge:hover {
         width: 1px !important;
         height: 1px !important;
         overflow: hidden !important;
-        pointer-events: auto !important;
+        pointer-events: none !important;
         padding: 0 !important;
         margin: 0 !important;
         border: none !important;
+        left: -9999px !important;
+        top: -9999px !important;
+        z-index: -1 !important;
     }
 
     /* Column 1 (internet_number) renders the entire Standalone Card */
@@ -707,6 +710,8 @@ html.dark .ims-temp-badge:hover {
         border: none !important;
         background: transparent !important;
         box-sizing: border-box !important;
+        position: relative !important;
+        z-index: 10 !important;
     }
 
     /* Neutralize ALL Filament's TextColumn nested wrappers and max-w-max */
@@ -1020,14 +1025,23 @@ html.dark .ims-updated-text {
     color: #64748b !important;
 }
 
-/* ── Mobile Detail & Status Modal (Dark Mode) ── */
+/* ── Mobile Detail, Action & Status Modals ── */
 #ims-detail-modal,
-#ims-status-modal {
+#ims-status-modal,
+#ims-paymethod-modal,
+#ims-publish-modal,
+#ims-accept-modal,
+#ims-delete-modal {
     z-index: 99999999 !important;
+    position: fixed !important;
 }
 
 html.dark #ims-detail-modal .ims-modal-card,
-html.dark #ims-status-modal .ims-modal-card {
+html.dark #ims-status-modal .ims-modal-card,
+html.dark #ims-paymethod-modal .ims-modal-card,
+html.dark #ims-publish-modal .ims-modal-card,
+html.dark #ims-accept-modal .ims-modal-card,
+html.dark #ims-delete-modal .ims-modal-card {
     background: #0b1528 !important;
     border: 1px solid #1e3a8a !important;
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 25px rgba(2, 132, 199, 0.2) !important;

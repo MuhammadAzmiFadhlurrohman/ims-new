@@ -291,12 +291,24 @@
         return (window.location.href.includes('registration-invoices') || window.location.pathname.includes('registration-invoices')) ? 'registration' : 'monthly';
     }
 
-    function showImsToast(msg, isError) {
-        alert(msg);
+    function ensureModalsInBody() {
+        const modalIds = ['ims-status-modal', 'ims-detail-modal', 'ims-paymethod-modal', 'ims-publish-modal', 'ims-accept-modal', 'ims-delete-modal'];
+        modalIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && el.parentElement !== document.body) {
+                document.body.appendChild(el);
+            }
+        });
     }
+
+    document.addEventListener('DOMContentLoaded', ensureModalsInBody);
+    document.addEventListener('livewire:navigated', ensureModalsInBody);
+    document.addEventListener('livewire:init', ensureModalsInBody);
+    setTimeout(ensureModalsInBody, 300);
 
     // ── 1. STATUS TYPE MODAL ──
     window.openImsStatusModal = function(key, status) {
+        ensureModalsInBody();
         window.currentImsRecordKey = key;
         const radios = document.querySelectorAll('input[name="ims_status_radio"]');
         radios.forEach(r => {
@@ -350,6 +362,8 @@
 
     // ── 2. DETAIL MODAL ──
     window.openImsDetailFromPayload = function(b64) {
+        if (!b64) return;
+        ensureModalsInBody();
         try {
             window.lastOpenedDetailPayload = b64;
             let str = '';
@@ -408,7 +422,8 @@
                         btn.className = 'ims-modal-act-btn ims-modal-act-' + (act.color || 'blue');
                         btn.innerHTML = '<span>' + act.label + '</span>';
 
-                        btn.onclick = function() {
+                        btn.onclick = function(e) {
+                            if (e) { e.preventDefault(); e.stopPropagation(); }
                             window.openedFromDetailModal = true;
                             const detailModal = document.getElementById('ims-detail-modal');
                             if (detailModal) detailModal.style.setProperty('display', 'none', 'important');
@@ -450,6 +465,7 @@
 
     // ── 3. PAYMENT METHOD MODAL ──
     window.openImsPaymentMethodModal = function(key, currentMethod, type) {
+        ensureModalsInBody();
         window.currentImsRecordKey = key || window.currentImsRecordKey;
         window.currentImsActionType = type || detectImsType();
         const radios = document.querySelectorAll('input[name="ims_pay_method_radio"]');
@@ -497,6 +513,7 @@
 
     // ── 4. PUBLISH MODAL ──
     window.openImsPublishModal = function(key, type, invNo) {
+        ensureModalsInBody();
         window.currentImsRecordKey = key || window.currentImsRecordKey;
         window.currentImsActionType = type || detectImsType();
         const el = document.getElementById('ims-pub-inv-no');
@@ -537,6 +554,7 @@
 
     // ── 5. ACCEPT / PELUNASAN MODAL ──
     window.openImsAcceptModal = function(key, type, invNo) {
+        ensureModalsInBody();
         window.currentImsRecordKey = key || window.currentImsRecordKey;
         window.currentImsActionType = type || detectImsType();
         const el = document.getElementById('ims-acc-inv-no');
@@ -589,6 +607,7 @@
 
     // ── 6. DELETE MODAL ──
     window.openImsDeleteModal = function(key, type, invNo) {
+        ensureModalsInBody();
         window.currentImsRecordKey = key || window.currentImsRecordKey;
         window.currentImsActionType = type || detectImsType();
         const el = document.getElementById('ims-del-inv-no');
@@ -625,6 +644,77 @@
             alert('Gagal: ' + err.message);
             if (btn) btn.textContent = 'Ya, Hapus Data';
         });
+    };
+
+    // ── MASTER ACTION HANDLER (BOTH NATIVE LIVEWIRE & STANDALONE MODALS) ──
+    window.handleImsAction = function(btn, event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        if (!btn) return;
+
+        const action = btn.getAttribute('data-ims-action') || '';
+        const key = btn.getAttribute('data-ims-key') || '';
+        const safeKey = btn.getAttribute('data-ims-safekey') || (key ? key.replace(/[^a-zA-Z0-9_-]/g, '_') : '');
+        const type = btn.getAttribute('data-ims-type') || detectImsType();
+        const label = btn.getAttribute('data-ims-label') || 'Midtrans';
+        const invNo = btn.getAttribute('data-ims-invno') || key;
+        const payload = btn.getAttribute('data-detail-payload') || '';
+
+        if (action === 'detail') {
+            window.openImsDetailFromPayload(payload);
+            return;
+        }
+
+        if (action === 'change_payment_method') {
+            // First check if native Filament modal button exists in DOM
+            const nativeTrigger = document.querySelector('.ims-act-change-payment-' + safeKey) || document.querySelector('.ims-monthly-paymethod-trigger-' + safeKey);
+            if (nativeTrigger && typeof nativeTrigger.click === 'function') {
+                nativeTrigger.click();
+                return;
+            }
+            window.openImsPaymentMethodModal(key, label, type);
+            return;
+        }
+
+        if (action === 'publish') {
+            const nativeTrigger = document.querySelector('.ims-act-publish-' + safeKey);
+            if (nativeTrigger && typeof nativeTrigger.click === 'function') {
+                nativeTrigger.click();
+                return;
+            }
+            window.openImsPublishModal(key, type, invNo);
+            return;
+        }
+
+        if (action === 'accept' || action === 'pelunasan') {
+            const nativeTrigger = document.querySelector('.ims-act-accept-' + safeKey) || document.querySelector('.ims-act-pelunasan-' + safeKey);
+            if (nativeTrigger && typeof nativeTrigger.click === 'function') {
+                nativeTrigger.click();
+                return;
+            }
+            window.openImsAcceptModal(key, type, invNo);
+            return;
+        }
+
+        if (action === 'delete') {
+            const nativeTrigger = document.querySelector('.ims-act-delete-' + safeKey);
+            if (nativeTrigger && typeof nativeTrigger.click === 'function') {
+                nativeTrigger.click();
+                return;
+            }
+            window.openImsDeleteModal(key, type, invNo);
+            return;
+        }
+
+        if (action === 'change_status_type') {
+            window.openImsStatusModal(key, label || 'Temporary Delete');
+            return;
+        }
+
+        // Generic fallback
+        window.openImsTableAction(action, key);
     };
 
     // ── GLOBAL DISPATCHER FOR ALL ACTIONS ──
@@ -666,4 +756,12 @@
             } catch(e) {}
         }
     };
+
+    // ── GLOBAL EVENT DELEGATION CAPTURE ──
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('[data-ims-action], .ims-modal-act-btn, .ims-card-detail-btn');
+        if (btn && typeof window.handleImsAction === 'function') {
+            window.handleImsAction(btn, e);
+        }
+    }, true);
 </script>
