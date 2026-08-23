@@ -381,28 +381,27 @@ html.dark .ims-temp-badge:hover {
         transform: translateY(-1px) !important;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
     }
-}
-
-/* ── STACK VERTICALLY ON INVOICE & BILLING TABLES ── */
-.fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions,
-.fi-ta-table td:has([class*="paymethod-trigger"]) .fi-ta-actions,
-.fi-ta-table td:has([class*="paymethod-trigger"]) ~ td .fi-ta-actions,
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(3)),
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(4)),
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(3)),
-.fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)),
-.fi-page-list-monthly-invoices .fi-ta-actions,
-.fi-page-list-registration-invoices .fi-ta-actions,
-[class*="monthly-invoices"] .fi-ta-actions,
-[class*="registration-invoices"] .fi-ta-actions {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    justify-content: center !important;
-    gap: 0.22rem !important;
-    min-width: 112px !important;
-    max-width: 125px !important;
-    width: 100% !important;
+    /* ── STACK VERTICALLY ON DESKTOP INVOICE & BILLING TABLES (min-width: 1024px) ── */
+    .fi-ta-table td:has(button[onclick*="paymethod-trigger"]) ~ td .fi-ta-actions,
+    .fi-ta-table td:has([class*="paymethod-trigger"]) .fi-ta-actions,
+    .fi-ta-table td:has([class*="paymethod-trigger"]) ~ td .fi-ta-actions,
+    .fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(3)),
+    .fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(.fi-btn:nth-child(4)),
+    .fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(3)),
+    .fi-ta-table td.fi-ta-cell:last-child .fi-ta-actions:has(button:nth-child(4)),
+    .fi-page-list-monthly-invoices .fi-ta-actions,
+    .fi-page-list-registration-invoices .fi-ta-actions,
+    [class*="monthly-invoices"] .fi-ta-actions,
+    [class*="registration-invoices"] .fi-ta-actions {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: center !important;
+        gap: 0.22rem !important;
+        min-width: 112px !important;
+        max-width: 125px !important;
+        width: 100% !important;
+    }
 }
 
 

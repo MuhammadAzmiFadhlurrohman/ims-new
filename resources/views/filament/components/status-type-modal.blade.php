@@ -726,3 +726,204 @@
         }
     };
 </script>
+
+{{-- ── 7. STANDALONE NATIVE ACTIONS 2X2 GRID STYLESHEET ────────────────────────── --}}
+<style id="ims-mobile-action-2x2-native">
+@media (max-width: 1023.98px) {
+    /* 1. TD Actions Cell takes full width block below the card */
+    table.fi-ta-table tbody tr td.fi-ta-actions-cell,
+    table.fi-ta-table tbody tr td.fi-table-cell-actions,
+    table.fi-ta-table tbody tr td:last-child {
+        display: block !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 4px 16px 4px !important;
+        margin: 10px 0 0 0 !important;
+        border: none !important;
+        background: transparent !important;
+        box-sizing: border-box !important;
+        clear: both !important;
+        float: none !important;
+    }
+
+    /* 2. Inner Cell Content wrapper full width */
+    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-cell-content,
+    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-cell-content,
+    td.fi-ta-actions-cell > div,
+    td.fi-table-cell-actions > div {
+        display: block !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 3. The Grid Container: 2 equal columns */
+    table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions,
+    table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions,
+    table.fi-ta-table tbody tr td .fi-ta-actions,
+    .fi-ta-actions {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-auto-flow: row !important;
+        gap: 8px !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        justify-content: stretch !important;
+        align-items: stretch !important;
+        flex-direction: unset !important;
+    }
+
+    /* 4. Action item wrappers inside grid */
+    table.fi-ta-table tbody tr td .fi-ta-actions > *,
+    table.fi-ta-table tbody tr td .fi-ta-actions > div,
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-ta-action,
+    .fi-ta-actions > *,
+    .fi-ta-actions > div,
+    .fi-ta-actions .fi-ta-action {
+        display: flex !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        grid-column: span 1 !important;
+    }
+
+    /* 5. Fifth Action (Detail Lengkap & Opsi) spans full 2 columns */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5),
+    table.fi-ta-table tbody tr td .fi-ta-actions > :last-child,
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-ta-action:nth-child(5),
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-ta-action:last-child,
+    .fi-ta-actions > :nth-child(5),
+    .fi-ta-actions > :last-child,
+    .fi-ta-actions .fi-ta-action:nth-child(5),
+    .fi-ta-actions .fi-ta-action:last-child {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* 6. Action button elements */
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions button,
+    table.fi-ta-table tbody tr td .fi-ta-actions a,
+    .fi-ta-actions .fi-btn,
+    .fi-ta-actions button,
+    .fi-ta-actions a {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        padding: 6px 12px !important;
+        font-size: 11.5px !important;
+        font-weight: 800 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+        box-sizing: border-box !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        text-decoration: none !important;
+        transition: transform 0.1s ease, filter 0.15s ease !important;
+    }
+
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-btn:active,
+    table.fi-ta-table tbody tr td .fi-ta-actions button:active,
+    .fi-ta-actions .fi-btn:active,
+    .fi-ta-actions button:active {
+        transform: scale(0.97) !important;
+    }
+
+    /* Color 1: Ubah Bayar (Blue) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(1) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(1) button,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="change_payment_method"],
+    .fi-ta-actions > :nth-child(1) .fi-btn,
+    .fi-ta-actions > :nth-child(1) button {
+        background: #1d4ed8 !important;
+        box-shadow: 0 3px 8px rgba(29, 78, 216, 0.4) !important;
+    }
+
+    /* Color 2: Publish (Cyan) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(2) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(2) button,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="publish"],
+    .fi-ta-actions > :nth-child(2) .fi-btn,
+    .fi-ta-actions > :nth-child(2) button {
+        background: #0284c7 !important;
+        box-shadow: 0 3px 8px rgba(2, 132, 199, 0.4) !important;
+    }
+
+    /* Color 3: Terima Bayar / Pelunasan (Green) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3) button,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="accept"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="pelunasan"],
+    .fi-ta-actions > :nth-child(3) .fi-btn,
+    .fi-ta-actions > :nth-child(3) button {
+        background: #059669 !important;
+        box-shadow: 0 3px 8px rgba(5, 150, 105, 0.4) !important;
+    }
+
+    /* Color 4: Hapus / Delete (Red) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(4) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(4) button,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="delete"],
+    .fi-ta-actions > :nth-child(4) .fi-btn,
+    .fi-ta-actions > :nth-child(4) button {
+        background: #dc2626 !important;
+        box-shadow: 0 3px 8px rgba(220, 38, 38, 0.4) !important;
+    }
+
+    /* Button 5: Detail Lengkap & Opsi (Full width soft blue / dark blue) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :last-child .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5) .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :last-child button,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5) button,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="detail_lengkap"],
+    .fi-ta-actions > :last-child .fi-btn,
+    .fi-ta-actions > :nth-child(5) .fi-btn,
+    .fi-ta-actions > :last-child button,
+    .fi-ta-actions > :nth-child(5) button {
+        width: 100% !important;
+        padding: 9px 12px !important;
+        border-radius: 12px !important;
+        background: #0b2546 !important;
+        color: #38bdf8 !important;
+        border: 1.5px solid #1e3a8a !important;
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+        margin-top: 2px !important;
+    }
+
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-btn-label,
+    table.fi-ta-table tbody tr td .fi-ta-actions span,
+    .fi-ta-actions .fi-btn-label,
+    .fi-ta-actions span {
+        color: inherit !important;
+        font-weight: 800 !important;
+    }
+
+    table.fi-ta-table tbody tr td .fi-ta-actions svg,
+    .fi-ta-actions svg {
+        color: inherit !important;
+        width: 15px !important;
+        height: 15px !important;
+    }
+}
+</style>
