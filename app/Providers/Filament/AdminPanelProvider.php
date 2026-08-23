@@ -344,6 +344,7 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\PackageMutationResource::class,
                 \App\Filament\Resources\PositionResource::class,
                 \App\Filament\Resources\RegistrationInvoiceResource::class,
+                \App\Filament\Resources\RoleResource::class,
                 \App\Filament\Resources\RouterHistoryResource::class,
                 \App\Filament\Resources\RouterResource::class,
                 \App\Filament\Resources\ServiceSuspensionResource::class,
