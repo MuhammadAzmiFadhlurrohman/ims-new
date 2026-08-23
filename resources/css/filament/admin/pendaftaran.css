@@ -662,12 +662,16 @@ html.dark .ims-temp-badge:hover {
         box-sizing: border-box !important;
     }
 
-    /* Hide all other columns on mobile (except first cell and actions cell) */
+    /* Hide all other columns on mobile (except card cell and actions cell) */
     .ims-mobile-hide,
     td:has(.ims-mobile-hide),
     .fi-ta-cell:has(.ims-mobile-hide),
-    table.fi-ta-table tbody tr td:not(.fi-table-cell-internet-number):not(:first-child):not(.fi-ta-actions-cell):not(.fi-table-cell-actions):not(:last-child),
-    table.fi-ta-table tbody tr.fi-ta-row td:not(.fi-table-cell-internet-number):not(:first-child):not(.fi-ta-actions-cell):not(.fi-table-cell-actions):not(:last-child) {
+    .fi-ta-selection-cell,
+    td:has(.fi-ta-checkbox),
+    th:has(.fi-ta-checkbox),
+    table.fi-ta-table thead .fi-ta-selection-cell,
+    table.fi-ta-table tbody tr td:not(.fi-ta-cell-full-card):not(:has(.ims-standalone-card)):not(.fi-table-cell-internet-number):not(.fi-ta-actions-cell):not(.fi-table-cell-actions):not(:last-child),
+    table.fi-ta-table tbody tr.fi-ta-row td:not(.fi-ta-cell-full-card):not(:has(.ims-standalone-card)):not(.fi-table-cell-internet-number):not(.fi-ta-actions-cell):not(.fi-table-cell-actions):not(:last-child) {
         display: none !important;
     }
 
@@ -851,8 +855,9 @@ html.dark .ims-temp-badge:hover {
         height: 15px !important;
     }
 
-    /* Column 1 (internet_number) renders the entire Standalone Card */
-    table.fi-ta-table tbody tr td,
+    /* Column (fi-ta-cell-full-card / ims-standalone-card) renders the entire Standalone Card */
+    table.fi-ta-table tbody tr td.fi-ta-cell-full-card,
+    table.fi-ta-table tbody tr td:has(.ims-standalone-card),
     table.fi-ta-table tbody tr td.fi-table-cell-internet-number,
     table.fi-ta-table tbody tr.fi-ta-row td.fi-table-cell-internet-number,
     table.fi-ta-table tbody tr td:first-child,
