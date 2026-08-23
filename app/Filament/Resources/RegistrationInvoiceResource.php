@@ -244,12 +244,14 @@ class RegistrationInvoiceResource extends Resource
                                         <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 4px;'>
                                             <button
                                                 type='button'
+                                                wire:click=\"mountTableAction('change_payment_method', '{$key}')\"
+                                                x-on:click.stop=\"$wire.mountTableAction('change_payment_method', '{$key}')\"
                                                 data-ims-action='change_payment_method'
                                                 data-ims-key='{$key}'
                                                 data-ims-safekey='{$safeKey}'
                                                 data-ims-label='{$payLabel}'
                                                 data-ims-type='registration'
-                                                onclick=\"window.handleImsAction && window.handleImsAction(this, event)\"
+                                                onclick=\"if(!window.Livewire){window.openImsPaymentMethodModal('{$key}', '{$payLabel}', 'registration');}\"
                                                 title='Klik untuk mengubah metode pembayaran'
                                                 style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
                                             >
@@ -267,12 +269,14 @@ class RegistrationInvoiceResource extends Resource
                                 <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
                                     <button
                                         type='button'
+                                        wire:click=\"mountTableAction('change_payment_method', '{$key}')\"
+                                        x-on:click.stop=\"$wire.mountTableAction('change_payment_method', '{$key}')\"
                                         data-ims-action='change_payment_method'
                                         data-ims-key='{$key}'
                                         data-ims-safekey='{$safeKey}'
                                         data-ims-label='{$payLabel}'
                                         data-ims-type='registration'
-                                        onclick=\"window.handleImsAction && window.handleImsAction(this, event)\"
+                                        onclick=\"if(!window.Livewire){window.openImsPaymentMethodModal('{$key}', '{$payLabel}', 'registration');}\"
                                         class='ims-modal-act-btn ims-modal-act-blue'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -280,12 +284,14 @@ class RegistrationInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
+                                        wire:click=\"mountTableAction('publish', '{$key}')\"
+                                        x-on:click.stop=\"$wire.mountTableAction('publish', '{$key}')\"
                                         data-ims-action='publish'
                                         data-ims-key='{$key}'
                                         data-ims-safekey='{$safeKey}'
                                         data-ims-invno='{$invNo}'
                                         data-ims-type='registration'
-                                        onclick=\"window.handleImsAction && window.handleImsAction(this, event)\"
+                                        onclick=\"if(!window.Livewire){window.openImsPublishModal('{$key}', 'registration', '{$invNo}');}\"
                                         class='ims-modal-act-btn ims-modal-act-cyan'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -293,12 +299,14 @@ class RegistrationInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
+                                        wire:click=\"mountTableAction('pelunasan', '{$key}')\"
+                                        x-on:click.stop=\"$wire.mountTableAction('pelunasan', '{$key}')\"
                                         data-ims-action='pelunasan'
                                         data-ims-key='{$key}'
                                         data-ims-safekey='{$safeKey}'
                                         data-ims-invno='{$invNo}'
                                         data-ims-type='registration'
-                                        onclick=\"window.handleImsAction && window.handleImsAction(this, event)\"
+                                        onclick=\"if(!window.Livewire){window.openImsAcceptModal('{$key}', 'registration', '{$invNo}');}\"
                                         class='ims-modal-act-btn ims-modal-act-green'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -306,12 +314,14 @@ class RegistrationInvoiceResource extends Resource
                                     </button>
                                     <button
                                         type='button'
+                                        wire:click=\"mountTableAction('delete', '{$key}')\"
+                                        x-on:click.stop=\"$wire.mountTableAction('delete', '{$key}')\"
                                         data-ims-action='delete'
                                         data-ims-key='{$key}'
                                         data-ims-safekey='{$safeKey}'
                                         data-ims-invno='{$invNo}'
                                         data-ims-type='registration'
-                                        onclick=\"window.handleImsAction && window.handleImsAction(this, event)\"
+                                        onclick=\"if(!window.Livewire){window.openImsDeleteModal('{$key}', 'registration', '{$invNo}');}\"
                                         class='ims-modal-act-btn ims-modal-act-red'
                                         style='font-size: 11px; padding: 6px 8px; justify-content: center; width: 100%; box-sizing: border-box;'
                                     >
@@ -320,9 +330,11 @@ class RegistrationInvoiceResource extends Resource
                                 </div>
                                 <button
                                     type='button'
+                                    wire:click=\"mountTableAction('detail_lengkap', '{$key}')\"
+                                    x-on:click.stop=\"$wire.mountTableAction('detail_lengkap', '{$key}')\"
                                     data-ims-action='detail'
                                     data-detail-payload='{$encodedDetail}'
-                                    onclick=\"window.handleImsAction && window.handleImsAction(this, event)\"
+                                    onclick=\"if(!window.Livewire){window.openImsDetailFromPayload('{$encodedDetail}');}\"
                                     class='ims-card-detail-btn'
                                 >
                                     <svg style='width: 16px; height: 16px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -635,6 +647,35 @@ class RegistrationInvoiceResource extends Resource
                     ->extraAttributes(fn (RegistrationInvoice $record) => [
                         'class' => 'ims-act-delete-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
                     ]),
+
+                Tables\Actions\Action::make('detail_lengkap')
+                    ->label('Detail Lengkap')
+                    ->icon('heroicon-m-information-circle')
+                    ->color('info')
+                    ->modalHeading(fn (RegistrationInvoice $record) => 'Detail Invoice Registrasi: ' . $record->invoice_number)
+                    ->modalWidth('lg')
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Tutup')
+                    ->modalContent(function (RegistrationInvoice $record) {
+                        $sub = $record->subscription;
+                        $custName = $sub ? $sub->customer_name : 'PELANGGAN';
+                        $phone = $sub?->customer?->phone_number ?? $sub?->phone_number ?? '-';
+                        $nik = $sub?->customer?->nik ?? '-';
+                        $packageName = $sub?->package?->name ?? 'UP TO NEW 20 Mbps';
+                        $group = $sub?->group_service ?? 'MEDIANET';
+                        $building = $sub?->building_type ?? '-';
+                        $fullAddress = $sub?->installation_address ?? '-';
+                        $latlong = ($sub?->latitude && $sub?->longitude) ? "{$sub->latitude}, {$sub->longitude}" : '-';
+                        $status = $record->payment_status ?? 'DRAFT';
+                        $amountFormatted = number_format($record->total_amount ?? 100000, 2, ',', '.');
+                        $pdfUrl = url("/admin/registration-invoices/{$record->invoice_number}/pdf");
+                        $key = $record->getKey();
+
+                        return view('filament.components.invoice-modal-detail', compact(
+                            'record', 'sub', 'custName', 'phone', 'nik', 'packageName', 'group', 'building',
+                            'fullAddress', 'latlong', 'status', 'amountFormatted', 'pdfUrl', 'key'
+                        ));
+                    }),
             ])
             ->bulkActions([]);
     }
