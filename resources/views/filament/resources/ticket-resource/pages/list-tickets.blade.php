@@ -379,6 +379,161 @@
 
             html.dark .ims-card-terminasi .ims-card-icon-wrap { background: rgba(148, 163, 184, 0.15) !important; color: #cbd5e1 !important; border-color: rgba(148, 163, 184, 0.3) !important; }
             html.dark .ims-card-terminasi .ims-count-badge { background: rgba(148, 163, 184, 0.2) !important; color: #e2e8f0 !important; border-color: rgba(148, 163, 184, 0.35) !important; }
+
+            /* ── MOBILE & TABLET 2-COLUMN RESPONSIVE LAYOUT (< 1024px) ── */
+            @media (max-width: 1023px) {
+                .ims-ticket-hero {
+                    padding: 1.25rem 1.35rem;
+                    border-radius: 16px;
+                    gap: 1rem;
+                }
+
+                .ims-ticket-hero-title {
+                    font-size: 1.2rem;
+                }
+
+                .ims-ticket-hero-desc {
+                    font-size: 0.78rem;
+                }
+
+                .ims-ticket-hero-right {
+                    width: 100%;
+                    display: grid;
+                    grid-template-columns: 1fr 1.4fr;
+                    gap: 0.75rem;
+                }
+
+                .ims-ticket-stat-box {
+                    min-width: unset;
+                    padding: 0.55rem 0.85rem;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                .ims-ticket-stat-val {
+                    font-size: 1.45rem;
+                }
+
+                .ims-ticket-stat-lbl {
+                    font-size: 0.62rem;
+                }
+
+                .ims-btn-action-all {
+                    padding: 0.55rem 0.85rem;
+                    font-size: 0.76rem;
+                    justify-content: center;
+                    text-align: center;
+                }
+
+                /* 2-COLUMN GRID SYSTEM */
+                .ims-ticket-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                    gap: 0.75rem !important;
+                }
+
+                .ims-ticket-card {
+                    padding: 0.95rem 0.9rem !important;
+                    border-radius: 15px !important;
+                    gap: 0.75rem !important;
+                    height: 100% !important;
+                    box-sizing: border-box !important;
+                }
+
+                .ims-card-top {
+                    gap: 0.4rem !important;
+                }
+
+                .ims-card-icon-wrap {
+                    width: 36px !important;
+                    height: 36px !important;
+                    border-radius: 10px !important;
+                }
+
+                .ims-card-icon-wrap svg {
+                    width: 18px !important;
+                    height: 18px !important;
+                }
+
+                .ims-count-badge {
+                    padding: 0.2rem 0.5rem !important;
+                    font-size: 0.65rem !important;
+                    white-space: nowrap !important;
+                }
+
+                .ims-card-middle {
+                    gap: 0.25rem !important;
+                    flex: 1 1 auto !important;
+                }
+
+                .ims-card-title {
+                    font-size: 0.84rem !important;
+                    line-height: 1.22 !important;
+                    font-weight: 900 !important;
+                }
+
+                .ims-card-desc {
+                    font-size: 0.68rem !important;
+                    line-height: 1.35 !important;
+                    display: -webkit-box !important;
+                    -webkit-line-clamp: 2 !important;
+                    -webkit-box-orient: vertical !important;
+                    overflow: hidden !important;
+                }
+
+                .ims-card-bottom {
+                    padding-top: 0.6rem !important;
+                    font-size: 0.68rem !important;
+                    gap: 4px !important;
+                }
+
+                .ims-card-bottom span:first-child {
+                    white-space: nowrap !important;
+                    overflow: hidden !important;
+                    text-overflow: ellipsis !important;
+                    max-width: calc(100% - 16px) !important;
+                }
+            }
+
+            @media (max-width: 420px) {
+                .ims-ticket-grid {
+                    gap: 0.55rem !important;
+                }
+
+                .ims-ticket-card {
+                    padding: 0.8rem 0.75rem !important;
+                    border-radius: 13px !important;
+                    gap: 0.6rem !important;
+                }
+
+                .ims-card-icon-wrap {
+                    width: 32px !important;
+                    height: 32px !important;
+                    border-radius: 8px !important;
+                }
+
+                .ims-card-icon-wrap svg {
+                    width: 16px !important;
+                    height: 16px !important;
+                }
+
+                .ims-count-badge {
+                    padding: 0.15rem 0.4rem !important;
+                    font-size: 0.6rem !important;
+                }
+
+                .ims-card-title {
+                    font-size: 0.78rem !important;
+                }
+
+                .ims-card-desc {
+                    font-size: 0.64rem !important;
+                    -webkit-line-clamp: 2 !important;
+                }
+
+                .ims-card-bottom {
+                    font-size: 0.64rem !important;
+                }
+            }
         </style>
 
         <div class="ims-ticket-container">
