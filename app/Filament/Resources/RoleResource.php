@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\RoleResource\Pages;
 use BezhanSalleh\FilamentShield\Resources\RoleResource as ShieldRoleResource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -93,5 +94,15 @@ class RoleResource extends ShieldRoleResource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListRoles::route('/'),
+            'create' => Pages\CreateRole::route('/create'),
+            'view' => Pages\ViewRole::route('/{record}'),
+            'edit' => Pages\EditRole::route('/{record}/edit'),
+        ];
     }
 }
