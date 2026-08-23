@@ -588,16 +588,66 @@ class MonthlyInvoiceResource extends Resource
                         );
                     }),
 
-                Tables\Filters\SelectFilter::make('city')
+                // 1. FILTER TAHUN
+                Tables\Filters\SelectFilter::make('year')
                     ->label('')
-                    ->placeholder('SEMUA WILAYAH')
+                    ->placeholder('SEMUA TAHUN')
                     ->options([
-                        'KOTA BANDUNG' => 'KOTA BANDUNG',
-                        'KABUPATEN BANDUNG' => 'KABUPATEN BANDUNG',
-                        'KABUPATEN BANDUNG BARAT' => 'KABUPATEN BANDUNG BARAT',
-                        'KOTA CIMAHI' => 'KOTA CIMAHI',
-                    ]),
+                        '2024' => '2024',
+                        '2025' => '2025',
+                        '2026' => '2026',
+                        '2027' => '2027',
+                    ])
+                    ->default('2026')
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (empty($data['value'])) {
+                            return $query;
+                        }
+                        return $query->whereYear('created_at', $data['value']);
+                    }),
 
+                // 2. FILTER BULAN
+                Tables\Filters\SelectFilter::make('month')
+                    ->label('')
+                    ->placeholder('SEMUA BULAN')
+                    ->options([
+                        '1' => 'Januari',
+                        '2' => 'Februari',
+                        '3' => 'Maret',
+                        '4' => 'April',
+                        '5' => 'Mei',
+                        '6' => 'Juni',
+                        '7' => 'Juli',
+                        '8' => 'Agustus',
+                        '9' => 'September',
+                        '10' => 'Oktober',
+                        '11' => 'November',
+                        '12' => 'Desember',
+                    ])
+                    ->default('8')
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (empty($data['value'])) {
+                            return $query;
+                        }
+                        return $query->whereMonth('created_at', $data['value']);
+                    }),
+
+                // 3. GROUP LAYANAN
+                Tables\Filters\SelectFilter::make('group_service')
+                    ->label('')
+                    ->placeholder('SEMUA GROUP')
+                    ->options([
+                        'MEDIANET' => 'MEDIANET',
+                        'GLOBALNET' => 'GLOBALNET',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (empty($data['value'])) {
+                            return $query;
+                        }
+                        return $query->whereHas('subscription', fn ($q) => $q->where('group_service', $data['value']));
+                    }),
+
+                // 4. METODE BAYAR
                 Tables\Filters\SelectFilter::make('payment_method')
                     ->label('')
                     ->placeholder('SEMUA METODE BAYAR')
@@ -607,6 +657,7 @@ class MonthlyInvoiceResource extends Resource
                         'CASH' => 'Cash',
                     ]),
 
+                // 5. STATUS BAYAR
                 Tables\Filters\SelectFilter::make('payment_status')
                     ->label('')
                     ->placeholder('SEMUA STATUS BAYAR')
@@ -618,7 +669,7 @@ class MonthlyInvoiceResource extends Resource
                         'CANCELED' => 'Cancel Billing',
                     ]),
             ], layout: Tables\Enums\FiltersLayout::AboveContent)
-            ->filtersFormColumns(4)
+            ->filtersFormColumns(5)
             ->headerActions([
                 Tables\Actions\Action::make('export_excel')
                     ->label('Export')
@@ -630,16 +681,14 @@ class MonthlyInvoiceResource extends Resource
             ->actions([
                 // ── 0. CHANGE PAYMENT METHOD MODAL ──
                 Tables\Actions\Action::make('change_payment_method')
-                    ->label('Change Payment')
+                    ->label('Ubah Bayar')
                     ->icon('heroicon-m-credit-card')
                     ->color('primary')
-                    ->modalHeading('Change Payment Method')
-                    ->modalWidth('2xl')
+                    ->button()
+                    ->modalHeading('Ubah Metode Pembayaran')
+                    ->modalWidth('lg')
                     ->modalSubmitActionLabel('Update')
                     ->modalCancelActionLabel('Batal')
-                    ->extraAttributes(fn (MonthlyInvoice $record) => [
-                        'class' => 'ims-act-change-payment-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()) . ' ims-act-change-payment-method-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()) . ' ims-monthly-paymethod-trigger-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
-                    ])
                     ->fillForm(fn (MonthlyInvoice $record): array => [
                         'payment_method' => match (strtoupper($record->payment_method ?? 'MIDTRANS')) {
                             'MANUAL TRANSFER', 'TRANSFER', 'MANUAL' => 'Manual Transfer',
@@ -649,13 +698,12 @@ class MonthlyInvoiceResource extends Resource
                     ])
                     ->form([
                         Forms\Components\Radio::make('payment_method')
-                            ->label('')
+                            ->label('Pilih Metode Pembayaran')
                             ->options([
                                 'Midtrans' => 'Midtrans',
                                 'Manual Transfer' => 'Manual Transfer',
                                 'Cash To Collector' => 'Cash To Collector',
                             ])
-                            ->inline()
                             ->default('Midtrans')
                             ->required(),
                     ])
@@ -675,25 +723,21 @@ class MonthlyInvoiceResource extends Resource
                     ->label('Publish')
                     ->icon('heroicon-m-check')
                     ->color('success')
+                    ->button()
                     ->requiresConfirmation()
                     ->modalHeading('Publish Billing')
-                    ->extraAttributes(fn (MonthlyInvoice $record) => [
-                        'class' => 'ims-act-publish-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
-                    ])
                     ->action(function (MonthlyInvoice $record) {
                         $record->update(['payment_status' => 'PUBLISHED']);
                         Notification::make()->title('Invoice berhasil di-publish')->success()->send();
                     }),
 
                 Tables\Actions\Action::make('accept')
-                    ->label('Accept')
+                    ->label('Terima Bayar')
                     ->icon('heroicon-m-currency-dollar')
                     ->color('success')
+                    ->button()
                     ->requiresConfirmation()
                     ->modalHeading('Konfirmasi Pembayaran')
-                    ->extraAttributes(fn (MonthlyInvoice $record) => [
-                        'class' => 'ims-act-accept-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
-                    ])
                     ->action(function (MonthlyInvoice $record) {
                         $record->update([
                             'payment_status' => 'PAID',
@@ -706,14 +750,13 @@ class MonthlyInvoiceResource extends Resource
                     ->label('Hapus')
                     ->icon('heroicon-m-trash')
                     ->color('danger')
-                    ->extraAttributes(fn (MonthlyInvoice $record) => [
-                        'class' => 'ims-act-delete-' . preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) $record->getKey()),
-                    ]),
+                    ->button(),
 
                 Tables\Actions\Action::make('detail_lengkap')
-                    ->label('Detail Lengkap')
+                    ->label('Detail Lengkap & Opsi')
                     ->icon('heroicon-m-information-circle')
                     ->color('info')
+                    ->button()
                     ->modalHeading(fn (MonthlyInvoice $record) => 'Detail Invoice: ' . $record->invoice_number)
                     ->modalWidth('lg')
                     ->modalSubmitAction(false)
