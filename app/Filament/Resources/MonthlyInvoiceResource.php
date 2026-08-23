@@ -330,7 +330,7 @@ class MonthlyInvoiceResource extends Resource
                                 </div>
                             </div>
                             <!-- OUTSIDE THE CARD: ACTION BUTTONS DOCK (2X2 GRID + FULL WIDTH DETAIL) -->
-                            <div class='ims-card-actions-dock' style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box; margin-top: 8px; margin-bottom: 6px;'>
+                            <div class='ims-card-actions-dock' style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; width: 100%; box-sizing: border-box; margin-top: 12px; margin-bottom: 16px;'>
                                 <button
                                     type='button'
                                     x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
