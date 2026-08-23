@@ -736,9 +736,9 @@ html.dark .ims-temp-badge:hover {
         grid-column: span 1 !important;
     }
 
-    /* When there are 4 items total (e.g. Publish is hidden), make the 3rd item (Hapus) span 2 columns */
-    table.fi-ta-table tbody tr td .fi-ta-actions:has(> :nth-child(4):last-child) > :nth-child(3),
-    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3):nth-last-child(2) {
+    /* Grid span behavior: default span 1, only odd last item spans 2 columns (e.g. 3rd item when 3 total, 5th item when 5 total) */
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3):last-child,
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5):last-child {
         grid-column: 1 / -1 !important;
     }
 
@@ -781,46 +781,45 @@ html.dark .ims-temp-badge:hover {
         transform: scale(0.97) !important;
     }
 
-    /* Color 1: Ubah Bayar (Blue) */
-    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(1) .fi-btn,
-    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(1) button,
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="change_payment_method"] {
+    /* Color 1: Primary / Blue */
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-primary .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-primary,
+    table.fi-ta-table tbody tr td .fi-ta-actions a[href*="/edit"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="change_payment_method"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="change_status_type"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="jadwal_"] {
         background: #1d4ed8 !important;
         box-shadow: 0 3px 8px rgba(29, 78, 216, 0.4) !important;
     }
 
-    /* Color 2: Publish (Cyan) */
-    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(2) .fi-btn,
-    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(2) button,
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="publish"] {
+    /* Color 2: Cyan / Info */
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-info .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-info,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="publish"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="testConnection"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="report_"] {
         background: #0284c7 !important;
         box-shadow: 0 3px 8px rgba(2, 132, 199, 0.4) !important;
     }
 
-    /* Color 3: Terima Bayar / Pelunasan (Green) */
-    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3) .fi-btn,
-    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3) button,
+    /* Color 3: Green / Success */
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-success .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-success,
     table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="accept"],
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="pelunasan"] {
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="pelunasan"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="detailMikrotik"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="detail_live"] {
         background: #059669 !important;
         box-shadow: 0 3px 8px rgba(5, 150, 105, 0.4) !important;
     }
 
-    /* Color 4: Hapus / Delete (Red) */
-    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(4) .fi-btn,
-    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(4) button,
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="delete"] {
+    /* Color 4: Red / Danger */
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-danger .fi-btn,
+    table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-danger,
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="delete"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="batal"] {
         background: #dc2626 !important;
         box-shadow: 0 3px 8px rgba(220, 38, 38, 0.4) !important;
-    }
-
-    /* Button 5: Detail Lengkap & Opsi (Full width soft blue / dark blue) */
-    table.fi-ta-table tbody tr td .fi-ta-actions > :last-child,
-    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5),
-    table.fi-ta-table tbody tr td .fi-ta-actions .fi-ta-action:last-child,
-    table.fi-ta-table tbody tr td .fi-ta-actions .fi-ta-action:nth-child(5) {
-        grid-column: 1 / -1 !important;
-        width: 100% !important;
     }
 
     table.fi-ta-table tbody tr td .fi-ta-actions > :last-child .fi-btn,

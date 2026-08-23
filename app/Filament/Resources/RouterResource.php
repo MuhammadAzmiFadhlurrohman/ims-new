@@ -207,44 +207,6 @@ class RouterResource extends Resource
                                     </div>
                                     {$descriptionHtml}
                                 </div>
-
-                                <div class='ims-card-sep'></div>
-
-                                <!-- 4 Tombol Aksi Sesuai Desktop (Grid 2x2) -->
-                                <div style='display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; box-sizing: border-box;'>
-                                    <button
-                                        type='button'
-                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-detail-{$recordId}'); ((el?.matches('button, a') ? el : el?.querySelector('button, a')) || el)?.click(); })()\"
-                                        class='ims-modal-act-btn ims-modal-act-green'
-                                        style='font-size: 11.5px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
-                                    >
-                                        ⚡ Detail Live
-                                    </button>
-                                    <button
-                                        type='button'
-                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-test-{$recordId}'); ((el?.matches('button, a') ? el : el?.querySelector('button, a')) || el)?.click(); })()\"
-                                        class='ims-modal-act-btn ims-modal-act-cyan'
-                                        style='font-size: 11.5px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
-                                    >
-                                        📶 Test Ping / API
-                                    </button>
-                                    <button
-                                        type='button'
-                                        onclick=\"window.location.href = '{$editUrl}';\"
-                                        class='ims-modal-act-btn ims-modal-act-blue'
-                                        style='font-size: 11.5px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
-                                    >
-                                        ✏️ Edit
-                                    </button>
-                                    <button
-                                        type='button'
-                                        onclick=\"(function(){ var el = document.querySelector('.ims-act-delete-{$recordId}'); ((el?.matches('button, a') ? el : el?.querySelector('button, a')) || el)?.click(); })()\"
-                                        class='ims-modal-act-btn ims-modal-act-red'
-                                        style='font-size: 11.5px; padding: 8px 4px; justify-content: center; width: 100%; box-sizing: border-box; text-align: center; margin: 0;'
-                                    >
-                                        🗑️ Hapus
-                                    </button>
-                                </div>
                             </div>
                         ");
                     }),
