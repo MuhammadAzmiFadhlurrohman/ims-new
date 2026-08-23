@@ -796,6 +796,14 @@
         grid-column: span 1 !important;
     }
 
+    /* When there are 4 items total (e.g. Publish is hidden), make the 3rd item (Hapus) span 2 columns */
+    table.fi-ta-table tbody tr td .fi-ta-actions:has(> :nth-child(4):last-child) > :nth-child(3),
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3):nth-last-child(2),
+    .fi-ta-actions:has(> :nth-child(4):last-child) > :nth-child(3),
+    .fi-ta-actions > :nth-child(3):nth-last-child(2) {
+        grid-column: 1 / -1 !important;
+    }
+
     /* 5. Fifth Action (Detail Lengkap & Opsi) spans full 2 columns */
     table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5),
     table.fi-ta-table tbody tr td .fi-ta-actions > :last-child,

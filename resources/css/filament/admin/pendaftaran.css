@@ -736,6 +736,12 @@ html.dark .ims-temp-badge:hover {
         grid-column: span 1 !important;
     }
 
+    /* When there are 4 items total (e.g. Publish is hidden), make the 3rd item (Hapus) span 2 columns */
+    table.fi-ta-table tbody tr td .fi-ta-actions:has(> :nth-child(4):last-child) > :nth-child(3),
+    table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(3):nth-last-child(2) {
+        grid-column: 1 / -1 !important;
+    }
+
     /* Universal styling for all action buttons */
     table.fi-ta-table tbody tr td.fi-ta-actions-cell .fi-ta-actions .fi-btn,
     table.fi-ta-table tbody tr td.fi-table-cell-actions .fi-ta-actions .fi-btn,

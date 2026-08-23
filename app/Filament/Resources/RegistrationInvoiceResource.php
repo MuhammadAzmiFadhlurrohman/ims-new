@@ -90,7 +90,7 @@ class RegistrationInvoiceResource extends Resource
             ->recordAction(null)
             ->columns([
                 // ── 1. BILLING INFO ──
-                Tables\Columns\TextColumn::make('invoice_number')
+                Tables\Columns\TextColumn::make('internet_number')
                     ->label('Billing Info')
                     ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
@@ -242,19 +242,19 @@ class RegistrationInvoiceResource extends Resource
                                         <a href='{$pdfUrl}' target='_blank' style='display: inline-flex; align-items: center; gap: 4px; color: #2563eb; font-weight: 700; font-size: 10.5px; text-decoration: underline; margin-top: 2px;' title='Buka / Cetak Invoice Registrasi PDF'>
                                             📄 {$pdfName}
                                         </a>
-                                        <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 6px;'>
-                                            <button
-                                                type='button'
-                                                x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
-                                                title='Klik untuk mengubah metode pembayaran'
-                                                style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10.5px; padding: 3.5px 10px; border-radius: 6px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
-                                            >
-                                                {$payLabel}
-                                            </button>
-                                            <div style='display: flex; align-items: center; gap: 4px; font-size: 9.5px; color: #f43f5e; font-weight: 700;'>
-                                                <span style='text-decoration: underline;'>🗲 UnSend</span>
-                                                <span style='text-decoration: underline;'>✉ UnSend</span>
-                                            </div>
+                                    </div>
+                                    <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 6px;'>
+                                        <button
+                                            type='button'
+                                            x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
+                                            title='Klik untuk mengubah metode pembayaran'
+                                            style='background: {$payBg}; color: #ffffff; font-weight: 800; font-size: 10px; padding: 3px 9px; border-radius: 5px; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15);'
+                                        >
+                                            {$payLabel}
+                                        </button>
+                                        <div style='display: flex; align-items: center; gap: 4px; font-size: 9.5px; color: #f43f5e; font-weight: 700;'>
+                                            <span style='text-decoration: underline;'>🗲 UnSend</span>
+                                            <span style='text-decoration: underline;'>✉ UnSend</span>
                                         </div>
                                     </div>
                                 </div>
