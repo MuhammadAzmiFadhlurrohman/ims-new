@@ -318,7 +318,7 @@ class MonthlyInvoiceResource extends Resource
                                         <button
                                             type='button'
                                             wire:click=\"mountTableAction('change_payment_method', '{$key}')\"
-                                            x-on:click.stop=\"$wire.mountTableAction('change_payment_method', '{$key}')\"
+                                            x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
                                             data-ims-action='change_payment_method'
                                             data-ims-key='{$key}'
                                             data-ims-safekey='{$safeKey}'
@@ -341,7 +341,7 @@ class MonthlyInvoiceResource extends Resource
                                     <button
                                         type='button'
                                         wire:click=\"mountTableAction('change_payment_method', '{$key}')\"
-                                        x-on:click.stop=\"$wire.mountTableAction('change_payment_method', '{$key}')\"
+                                        x-on:click.stop=\"\$wire.mountTableAction('change_payment_method', '{$key}')\"
                                         data-ims-action='change_payment_method'
                                         data-ims-key='{$key}'
                                         data-ims-safekey='{$safeKey}'
@@ -356,7 +356,7 @@ class MonthlyInvoiceResource extends Resource
                                     <button
                                         type='button'
                                         wire:click=\"mountTableAction('publish', '{$key}')\"
-                                        x-on:click.stop=\"$wire.mountTableAction('publish', '{$key}')\"
+                                        x-on:click.stop=\"\$wire.mountTableAction('publish', '{$key}')\"
                                         data-ims-action='publish'
                                         data-ims-key='{$key}'
                                         data-ims-safekey='{$safeKey}'
@@ -371,7 +371,7 @@ class MonthlyInvoiceResource extends Resource
                                     <button
                                         type='button'
                                         wire:click=\"mountTableAction('accept', '{$key}')\"
-                                        x-on:click.stop=\"$wire.mountTableAction('accept', '{$key}')\"
+                                        x-on:click.stop=\"\$wire.mountTableAction('accept', '{$key}')\"
                                         data-ims-action='accept'
                                         data-ims-key='{$key}'
                                         data-ims-safekey='{$safeKey}'
@@ -386,7 +386,7 @@ class MonthlyInvoiceResource extends Resource
                                     <button
                                         type='button'
                                         wire:click=\"mountTableAction('delete', '{$key}')\"
-                                        x-on:click.stop=\"$wire.mountTableAction('delete', '{$key}')\"
+                                        x-on:click.stop=\"\$wire.mountTableAction('delete', '{$key}')\"
                                         data-ims-action='delete'
                                         data-ims-key='{$key}'
                                         data-ims-safekey='{$safeKey}'
@@ -402,7 +402,7 @@ class MonthlyInvoiceResource extends Resource
                                 <button
                                     type='button'
                                     wire:click=\"mountTableAction('detail_lengkap', '{$key}')\"
-                                    x-on:click.stop=\"$wire.mountTableAction('detail_lengkap', '{$key}')\"
+                                    x-on:click.stop=\"\$wire.mountTableAction('detail_lengkap', '{$key}')\"
                                     data-ims-action='detail'
                                     data-detail-payload='{$encodedDetail}'
                                     onclick=\"if(!window.Livewire){window.openImsDetailFromPayload('{$encodedDetail}');}\"
