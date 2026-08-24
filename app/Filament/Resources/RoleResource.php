@@ -3,13 +3,146 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoleResource\Pages;
+use BezhanSalleh\FilamentShield\Facades\FilamentShield;
+use BezhanSalleh\FilamentShield\Forms\ShieldSelectAllToggle;
 use BezhanSalleh\FilamentShield\Resources\RoleResource as ShieldRoleResource;
+use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Facades\Filament;
+use Filament\Forms;
+use Filament\Forms\Components\Component;
+use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Unique;
 
 class RoleResource extends ShieldRoleResource
 {
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Grid::make(1)
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label(__('filament-shield::filament-shield.field.name'))
+                                    ->unique(
+                                        ignoreRecord: true,
+                                        modifyRuleUsing: fn (Unique $rule) => Utils::isTenancyEnabled() ? $rule->where(Utils::getTenantModelForeignKey(), Filament::getTenant()?->id) : $rule
+                                    )
+                                    ->required()
+                                    ->maxLength(255),
+
+                                Forms\Components\TextInput::make('guard_name')
+                                    ->label(__('filament-shield::filament-shield.field.guard_name'))
+                                    ->default(Utils::getFilamentAuthGuard())
+                                    ->nullable()
+                                    ->maxLength(255),
+
+                                Forms\Components\Select::make(config('permission.column_names.team_foreign_key'))
+                                    ->label(__('filament-shield::filament-shield.field.team'))
+                                    ->placeholder(__('filament-shield::filament-shield.field.team.placeholder'))
+                                    ->default([Filament::getTenant()?->id])
+                                    ->options(fn (): Arrayable => Utils::getTenantModel() ? Utils::getTenantModel()::pluck('name', 'id') : collect())
+                                    ->hidden(fn (): bool => ! (static::shield()->isCentralApp() && Utils::isTenancyEnabled()))
+                                    ->dehydrated(fn (): bool => ! (static::shield()->isCentralApp() && Utils::isTenancyEnabled())),
+
+                                ShieldSelectAllToggle::make('select_all')
+                                    ->onIcon('heroicon-s-shield-check')
+                                    ->offIcon('heroicon-s-shield-exclamation')
+                                    ->label(__('filament-shield::filament-shield.field.select_all.name'))
+                                    ->helperText(fn (): HtmlString => new HtmlString(__('filament-shield::filament-shield.field.select_all.message')))
+                                    ->dehydrated(fn (bool $state): bool => $state),
+                            ])
+                            ->columns([
+                                'default' => 1,
+                                'sm' => 2,
+                                'lg' => 3,
+                            ]),
+                    ])
+                    ->columnSpanFull(),
+
+                static::getShieldFormComponents(),
+            ])
+            ->columns(1);
+    }
+
+    public static function getShieldFormComponents(): Component
+    {
+        return Forms\Components\Tabs::make('Permissions')
+            ->contained()
+            ->tabs([
+                static::getTabFormComponentForResources(),
+                static::getTabFormComponentForPage(),
+                static::getTabFormComponentForWidget(),
+                static::getTabFormComponentForCustomPermissions(),
+            ])
+            ->extraAttributes(['class' => 'ims-shield-tabs-container'])
+            ->columnSpanFull();
+    }
+
+    public static function getTabFormComponentForResources(): Component
+    {
+        return static::shield()->hasSimpleResourcePermissionView()
+            ? static::getTabFormComponentForSimpleResourcePermissionsView()
+            : Forms\Components\Tabs\Tab::make('resources')
+                ->label(__('filament-shield::filament-shield.resources'))
+                ->visible(fn (): bool => (bool) Utils::isResourceEntityEnabled())
+                ->badge(static::getResourceTabBadgeCount())
+                ->schema([
+                    Forms\Components\Grid::make([
+                        'default' => 2,
+                        'sm' => 2,
+                        'md' => 2,
+                        'lg' => 3,
+                        'xl' => 4,
+                    ])
+                        ->schema(static::getResourceEntitiesSchema())
+                        ->extraAttributes(['class' => 'ims-shield-grid']),
+                ]);
+    }
+
+    public static function getResourceEntitiesSchema(): ?array
+    {
+        return collect(FilamentShield::getResources())
+            ->sortKeys()
+            ->map(function ($entity) {
+                $sectionLabel = strval(
+                    static::shield()->hasLocalizedPermissionLabels()
+                    ? FilamentShield::getLocalizedResourceLabel($entity['fqcn'])
+                    : $entity['model']
+                );
+
+                return Forms\Components\Section::make($sectionLabel)
+                    ->description(fn () => new HtmlString('<span style="word-break: break-all; font-size: 8.5px; opacity: 0.75;">' . Utils::showModelPath($entity['fqcn']) . '</span>'))
+                    ->compact()
+                    ->schema([
+                        static::getCheckBoxListComponentForResource($entity),
+                    ])
+                    ->columnSpan(1)
+                    ->extraAttributes(['class' => 'ims-shield-card'])
+                    ->collapsible();
+            })
+            ->toArray();
+    }
+
+    public static function getCheckBoxListComponentForResource(array $entity): Component
+    {
+        $permissionsArray = static::getResourcePermissionOptions($entity);
+
+        return static::getCheckboxListFormComponent(
+            name: $entity['resource'],
+            options: $permissionsArray,
+            columns: 1,
+            columnSpan: 1,
+            searchable: false
+        );
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -104,3 +237,4 @@ class RoleResource extends ShieldRoleResource
         ];
     }
 }
+
