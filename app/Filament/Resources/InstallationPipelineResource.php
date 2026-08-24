@@ -718,7 +718,7 @@ class InstallationPipelineResource extends Resource
                                 </div>
                                 <div class='ims-card-cust-info'>
                                     <div style='display: flex; align-items: center; gap: 6px;'>
-                                        <a href='{$detailUrl}' class='ims-cust-name' style='font-size: 14px; font-weight: 900; color: #0f172a;'>{$custName}</a>
+                                        <a href='{$detailUrl}' class='ims-cust-name' style='font-size: 14px; font-weight: 900;'>{$custName}</a>
                                         <span style='font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px; background: #e2e8f0; color: #475569;'>{$gender}</span>
                                     </div>
                                     <div style='display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 3px;'>
@@ -863,10 +863,10 @@ class InstallationPipelineResource extends Resource
                         $salesCode = $record->sales_code ? "ID: {$record->sales_code}" : "ID: 12345";
 
                         return "
-                            <div style='display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: #475569;'>
-                                <span style='font-weight: 700;'>📅 {$tgl}</span>
-                                <span style='font-weight: 800; color: #0f172a;'>👤 {$sales}</span>
-                                <span style='font-size: 10px; color: #94a3b8; font-family: monospace;'>{$salesCode}</span>
+                            <div class='ims-so-sales-info'>
+                                <span class='ims-so-date'>📅 {$tgl}</span>
+                                <span class='ims-so-sales-name'>👤 {$sales}</span>
+                                <span class='ims-so-sales-code'>{$salesCode}</span>
                             </div>
                         ";
                     })

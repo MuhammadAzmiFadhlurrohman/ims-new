@@ -1846,6 +1846,19 @@ html.dark table.fi-ta-table th {
     }
 }
 
+html.dark .ims-so-sales-name {
+    color: #f1f5f9 !important;
+}
+
+html.dark .ims-so-date,
+html.dark .ims-so-sales-info {
+    color: #94a3b8 !important;
+}
+
+html.dark .ims-so-sales-code {
+    color: #64748b !important;
+}
+
 /* ============================================================
    ── ULTRA-SMOOTH THEME TRANSITIONS & CIRCULAR EXPAND ANIMATION ──
    ============================================================ */

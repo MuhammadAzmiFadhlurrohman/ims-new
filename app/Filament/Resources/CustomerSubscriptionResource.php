@@ -417,10 +417,10 @@ class CustomerSubscriptionResource extends Resource
                         $salesName = $record->sales_name ?? 'Abdul Ghani';
 
                         return "
-                            <div class='flex flex-col items-start text-left text-xs leading-snug text-slate-500 py-1'>
+                            <div class='flex flex-col items-start text-left text-xs leading-snug text-slate-500 dark:text-slate-400 py-1'>
                                 <span>{$dateStr}</span>
-                                <span class='font-bold text-slate-700 mt-1 uppercase'>{$adminName}</span>
-                                <span class='text-[11px] text-slate-600 mt-0.5'>SALES : {$salesName}</span>
+                                <span class='font-bold text-slate-700 dark:text-slate-200 mt-1 uppercase'>{$adminName}</span>
+                                <span class='text-[11px] text-slate-600 dark:text-slate-400 mt-0.5'>SALES : {$salesName}</span>
                             </div>
                         ";
                     })

@@ -243,6 +243,44 @@ html.dark .ims-pkg-pill {
     border-color: #1e4d80 !important;
 }
 
+/* ── SO & SALES INFO COLUMN ── */
+.ims-so-sales-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 11px;
+    color: #475569;
+}
+
+.ims-so-date {
+    font-weight: 700;
+    color: #475569;
+}
+
+.ims-so-sales-name {
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.ims-so-sales-code {
+    font-size: 10px;
+    color: #94a3b8;
+    font-family: monospace;
+}
+
+html.dark .ims-so-sales-info,
+html.dark .ims-so-date {
+    color: #94a3b8 !important;
+}
+
+html.dark .ims-so-sales-name {
+    color: #f1f5f9 !important;
+}
+
+html.dark .ims-so-sales-code {
+    color: #64748b !important;
+}
+
 /* ── 4. STATUS PIPELINE BADGES ── */
 .ims-status-box {
     display: flex;
