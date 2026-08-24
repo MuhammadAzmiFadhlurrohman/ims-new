@@ -210,15 +210,7 @@ class EmployeeResource extends Resource
                         ";
                     }),
 
-                // ── 6. STATUS KONTRAK (DESKTOP) ──
-                Tables\Columns\TextColumn::make('status_contract')
-                    ->label('Kontrak')
-                    ->extraAttributes(['class' => 'ims-mobile-hide'])
-                    ->badge()
-                    ->color('gray')
-                    ->sortable(),
-
-                // ── 7. STATUS AKTIF (DESKTOP) ──
+                // ── 6. STATUS AKTIF (DESKTOP) ──
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
                     ->extraAttributes(['class' => 'ims-mobile-hide'])
