@@ -721,68 +721,58 @@
                     </div>
 
                     <!-- CTA Buttons: Gradient Primary & Crisp Secondary -->
-                    <div class="flex flex-wrap items-center gap-3.5 pt-1">
-                        <a href="#coverage" class="px-6 py-3.5 rounded-xl ims-gradient-btn text-white font-extrabold text-xs sm:text-sm shadow-lg flex items-center gap-2">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+                        <a href="#coverage" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl ims-gradient-btn text-white font-extrabold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-2">
                             <span>Cek Ketersediaan Area</span>
                             <span class="text-electric-yellow font-black">&rarr;</span>
                         </a>
 
-                        <a href="#paket" class="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 hover:border-electric-blue text-electric-deep font-bold text-xs sm:text-sm shadow-sm transition-all">
+                        <a href="#paket" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-300 hover:border-electric-blue text-electric-deep font-bold text-xs sm:text-sm shadow-sm transition-all text-center justify-center flex items-center">
                             Lihat Pilihan Paket
                         </a>
                     </div>
 
                     <!-- 3 Stats Below Headline with Multi-Colored Identities -->
-                    <div class="pt-6 border-t border-slate-200/80 grid grid-cols-3 gap-4 sm:gap-6">
+                    <div class="pt-6 border-t border-slate-200/80 grid grid-cols-3 gap-2 sm:gap-6 text-center sm:text-left">
                         <div>
-                            <div class="font-heading text-2xl sm:text-3xl font-black text-electric-blue">1 Gbps</div>
-                            <div class="text-xs text-ink-muted font-semibold mt-0.5">Kecepatan hingga</div>
+                            <div class="font-heading text-xl sm:text-3xl font-black text-electric-blue">1 Gbps</div>
+                            <div class="text-[11px] sm:text-xs text-ink-muted font-semibold mt-0.5">Kecepatan hingga</div>
                         </div>
                         <div>
-                            <div class="font-heading text-2xl sm:text-3xl font-black text-electric-violet">100% Fiber</div>
-                            <div class="text-xs text-ink-muted font-semibold mt-0.5">Koneksi Simetris</div>
+                            <div class="font-heading text-xl sm:text-3xl font-black text-electric-violet">100% Fiber</div>
+                            <div class="text-[11px] sm:text-xs text-ink-muted font-semibold mt-0.5">Koneksi Simetris</div>
                         </div>
                         <div>
-                            <div class="font-heading text-2xl sm:text-3xl font-black text-electric-lime">99.98%</div>
-                            <div class="text-xs text-ink-muted font-semibold mt-0.5">SLA Uptime Aktif</div>
+                            <div class="font-heading text-xl sm:text-3xl font-black text-electric-lime">99.98%</div>
+                            <div class="text-[11px] sm:text-xs text-ink-muted font-semibold mt-0.5">SLA Uptime Aktif</div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Right Visual Column: Living Electric Fiber Network Visual -->
+                <!-- Right Visual Column: Living Electric Fiber Network Visual (Fully Responsive on Mobile) -->
                 <div class="lg:col-span-6 relative">
                     
                     <!-- Decorative Radial Glow behind Card -->
                     <div class="absolute -inset-4 bg-gradient-to-tr from-electric-blue/20 via-electric-cyan/25 to-electric-violet/20 rounded-3xl blur-2xl pointer-events-none"></div>
 
-                    <div class="relative w-full max-w-lg mx-auto bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200 shadow-2xl p-6 sm:p-7 overflow-hidden">
+                    <div class="relative w-full max-w-lg mx-auto bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200 shadow-xl p-4 sm:p-6 overflow-hidden">
                         
-                        <!-- Floating Yellow Accent Price Badge (Focal Point) -->
-                        <div class="absolute -top-1 right-6 z-20">
-                            <div class="bg-gradient-to-r from-electric-blue to-electric-violet text-white rounded-b-2xl px-4 py-2 shadow-lg border-t-0 border border-white/20 text-center">
-                                <span class="text-[10px] font-black uppercase tracking-wider block text-electric-yellow">True Unlimited</span>
-                                <div class="font-heading text-sm sm:text-base font-black text-white">
-                                    Mulai <span class="text-electric-yellow font-black">175rb</span><span class="text-[10px] font-normal text-slate-200">/bln</span>
-                                </div>
+                        <!-- Top Header: Title & Responsive Price Badge -->
+                        <div class="flex items-center justify-between pb-3 mb-2 border-b border-slate-100 gap-2">
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <span class="w-2.5 h-2.5 rounded-full bg-electric-lime pulse-beacon-lime shrink-0"></span>
+                                <span class="font-heading text-xs sm:text-sm font-bold text-electric-deep truncate">Transmisi Fiber FTTH Direct</span>
                             </div>
-                        </div>
-
-                        <!-- Top Title & Network Flow Legend -->
-                        <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-100">
-                            <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-electric-lime pulse-beacon-lime"></span>
-                                <span class="font-heading text-xs sm:text-sm font-bold text-electric-deep">Transmisi Fiber Optic FTTH Direct</span>
-                            </div>
-                            <span class="text-[10px] font-mono px-2.5 py-1 rounded-full bg-tint-blue text-electric-blue font-black border border-electric-blue/20">
-                                2.4ms Latency
+                            <span class="text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full bg-gradient-to-r from-electric-blue to-electric-violet text-white whitespace-nowrap shadow-sm shrink-0">
+                                Mulai <span class="text-electric-yellow">175rb</span>/bln
                             </span>
                         </div>
 
-                        <!-- SVG Network Diagram (Blue Node -> Multi-Colored Cable -> Purple ODP -> Green Home) -->
-                        <div class="relative w-full h-[260px] sm:h-[280px]">
+                        <!-- SVG Network Diagram (Proportional Non-Overlapping Coordinates) -->
+                        <div class="relative w-full h-[230px] sm:h-[270px]">
                             
-                            <svg class="w-full h-full" viewBox="0 0 460 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="w-full h-full" viewBox="0 0 460 260" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
                                 
                                 <defs>
                                     <!-- Official IMS ONE Gradient for Fiber Cable -->
@@ -800,87 +790,87 @@
                                 </defs>
 
                                 <!-- Background Grid Subtle Hairlines -->
-                                <line x1="50" y1="20" x2="50" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
-                                <line x1="220" y1="20" x2="220" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
-                                <line x1="390" y1="20" x2="390" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
+                                <line x1="60" y1="20" x2="60" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
+                                <line x1="230" y1="20" x2="230" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
+                                <line x1="400" y1="20" x2="400" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
 
                                 <!-- Glowing Cable 1: NOC Core (Blue) -> ODP Box (Purple) -->
-                                <path d="M 75 75 Q 140 75 200 130" stroke="#E2E8F0" stroke-width="5" fill="none" stroke-linecap="round"/>
-                                <path d="M 75 75 Q 140 75 200 130" stroke="url(#electricFiberGrad)" stroke-width="3.5" fill="none" stroke-linecap="round" class="animate-fiber-flow-fast"/>
+                                <path d="M 70 70 Q 145 70 225 125" stroke="#E2E8F0" stroke-width="4" fill="none" stroke-linecap="round"/>
+                                <path d="M 70 70 Q 145 70 225 125" stroke="url(#electricFiberGrad)" stroke-width="3" fill="none" stroke-linecap="round" class="animate-fiber-flow-fast"/>
 
                                 <!-- Glowing Cable 2: ODP Box (Purple) -> Customer Home (Green) -->
-                                <path d="M 240 140 Q 300 150 360 170" stroke="#E2E8F0" stroke-width="5" fill="none" stroke-linecap="round"/>
-                                <path d="M 240 140 Q 300 150 360 170" stroke="url(#electricFiberGrad2)" stroke-width="3.5" fill="none" stroke-linecap="round" class="animate-fiber-flow-electric"/>
+                                <path d="M 235 135 Q 315 150 395 175" stroke="#E2E8F0" stroke-width="4" fill="none" stroke-linecap="round"/>
+                                <path d="M 235 135 Q 315 150 395 175" stroke="url(#electricFiberGrad2)" stroke-width="3" fill="none" stroke-linecap="round" class="animate-fiber-flow-electric"/>
 
                                 <!-- Secondary Fiber Branch (Cyan/Purple Expansion) -->
-                                <path d="M 240 135 Q 310 90 380 75" stroke="#E2E8F0" stroke-width="2.5" stroke-dasharray="4 4" fill="none"/>
-                                <path d="M 240 135 Q 310 90 380 75" stroke="#00CFFF" stroke-width="2.5" fill="none" class="animate-fiber-flow-electric" opacity="0.8"/>
+                                <path d="M 235 120 Q 315 80 395 65" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="4 4" fill="none"/>
+                                <path d="M 235 120 Q 315 80 395 65" stroke="#00CFFF" stroke-width="2" fill="none" class="animate-fiber-flow-electric" opacity="0.8"/>
 
                                 <!-- WiFi Expanding Waves from Smart House (Cyan & Violet Accents) -->
-                                <circle cx="380" cy="155" r="28" fill="none" stroke="#00CFFF" stroke-width="2" class="animate-wifi-wave" opacity="0.7"/>
-                                <circle cx="380" cy="155" r="46" fill="none" stroke="#6C3BFF" stroke-width="1.5" class="animate-wifi-wave" opacity="0.4" style="animation-delay: 0.9s;"/>
+                                <circle cx="395" cy="175" r="24" fill="none" stroke="#00CFFF" stroke-width="1.8" class="animate-wifi-wave" opacity="0.7"/>
+                                <circle cx="395" cy="175" r="40" fill="none" stroke="#6C3BFF" stroke-width="1.2" class="animate-wifi-wave" opacity="0.4" style="animation-delay: 0.9s;"/>
 
                             </svg>
 
                             <!-- Node 1: 🔵 Blue Node — IMS ONE Core NOC (Top-Left) -->
-                            <div class="absolute top-2 left-1 sm:left-3 flex flex-col items-center">
-                                <div class="w-13 h-13 p-2.5 rounded-2xl bg-electric-blue text-white shadow-lg shadow-electric-blue/30 border-2 border-white flex items-center justify-center relative">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="absolute top-1 left-1 sm:left-2 flex flex-col items-center">
+                                <div class="w-11 h-11 sm:w-12 sm:h-12 p-2 rounded-2xl bg-electric-blue text-white shadow-lg shadow-electric-blue/30 border-2 border-white flex items-center justify-center relative">
+                                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
                                     </svg>
-                                    <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-electric-lime rounded-full border-2 border-white pulse-beacon-lime"></span>
+                                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-electric-lime rounded-full border-2 border-white pulse-beacon-lime"></span>
                                 </div>
-                                <span class="font-heading text-[11px] font-black text-electric-deep mt-1 block">IMS ONE Core</span>
-                                <span class="text-[9px] font-mono text-electric-blue font-bold">10 Gbps NOC</span>
+                                <span class="font-heading text-[10px] sm:text-[11px] font-black text-electric-deep mt-0.5 block">IMS ONE Core</span>
+                                <span class="text-[8.5px] sm:text-[9px] font-mono text-electric-blue font-bold">10G NOC</span>
+                            </div>
+
+                            <!-- Top-Right 4K Stream Tag -->
+                            <div class="absolute top-1 right-1 sm:right-2 bg-gradient-to-r from-electric-deep to-electric-violet text-white px-2 py-0.5 sm:py-1 rounded-lg text-[8.5px] sm:text-[9.5px] font-mono shadow-md flex items-center gap-1 border border-white/20">
+                                <span>📱 4K Stream</span>
+                                <span class="text-electric-cyan font-bold">✓</span>
                             </div>
 
                             <!-- Node 2: 🟣 Violet Node — ODP Distribution (Center) -->
-                            <div class="absolute top-[105px] left-[180px] sm:left-[195px] flex flex-col items-center">
-                                <div class="w-11 h-11 rounded-xl bg-electric-violet text-white shadow-lg shadow-electric-violet/30 border-2 border-white flex items-center justify-center relative">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="absolute top-[48%] left-[50%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-electric-violet text-white shadow-lg shadow-electric-violet/30 border-2 border-white flex items-center justify-center relative">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                                     </svg>
-                                    <span class="absolute -bottom-1 -right-1 w-3 h-3 bg-electric-cyan rounded-full border-2 border-white"></span>
+                                    <span class="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-electric-cyan rounded-full border-2 border-white"></span>
                                 </div>
-                                <span class="font-heading text-[10.5px] font-black text-electric-deep mt-1">ODP Splitter</span>
-                                <span class="text-[8.5px] font-mono text-electric-violet bg-tint-purple px-1.5 rounded font-bold">100% Fiber</span>
+                                <span class="font-heading text-[9.5px] sm:text-[10.5px] font-black text-electric-deep mt-0.5">ODP Splitter</span>
+                                <span class="text-[8px] sm:text-[8.5px] font-mono text-electric-violet bg-tint-purple px-1.5 rounded font-bold">100% Fiber</span>
                             </div>
 
                             <!-- Node 3: 🟢 Green Node — Rumah Pelanggan (Bottom-Right) -->
-                            <div class="absolute top-[125px] right-2 sm:right-5 flex flex-col items-center">
-                                <div class="w-16 h-16 rounded-2xl bg-white border-2 border-electric-lime shadow-xl p-2 flex flex-col items-center justify-center relative">
+                            <div class="absolute bottom-1 right-1 sm:right-2 flex flex-col items-center">
+                                <div class="w-13 h-13 sm:w-15 sm:h-15 rounded-2xl bg-white border-2 border-electric-lime shadow-lg p-1.5 flex flex-col items-center justify-center relative">
                                     <!-- House Icon -->
-                                    <svg class="w-8 h-8 text-electric-deep" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-electric-deep" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                                     </svg>
                                     <!-- WiFi Beacon on Roof -->
-                                    <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-4.5 h-4.5 rounded-full bg-electric-lime text-white flex items-center justify-center shadow-md">
+                                    <div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-electric-lime text-white flex items-center justify-center shadow-md">
                                         <svg class="w-2.5 h-2.5 text-electric-deep font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01"/>
                                         </svg>
                                     </div>
                                 </div>
-                                <span class="font-heading text-xs font-black text-electric-deep mt-1">Rumah Pelanggan</span>
-                                <span class="text-[9px] font-bold text-electric-lime flex items-center gap-1">
+                                <span class="font-heading text-[10px] sm:text-xs font-black text-electric-deep mt-0.5">Rumah Pelanggan</span>
+                                <span class="text-[8px] sm:text-[9px] font-bold text-electric-lime flex items-center gap-1">
                                     <span class="w-1.5 h-1.5 rounded-full bg-electric-lime"></span>
-                                    WiFi 6 Gigabit Aktif
+                                    WiFi 6 Gigabit
                                 </span>
-                            </div>
-
-                            <!-- Connected Devices Mini-Tags -->
-                            <div class="absolute top-[40px] right-2 sm:right-6 bg-gradient-to-r from-electric-deep to-electric-violet text-white px-2.5 py-1 rounded-lg text-[9.5px] font-mono shadow-md flex items-center gap-1 border border-white/20">
-                                <span>📱 4K Ultra Stream</span>
-                                <span class="text-electric-cyan font-bold">✓</span>
                             </div>
 
                         </div>
 
                         <!-- Bottom Telemetry Banner (Transmission Info) -->
-                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-ink-muted">
+                        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-[9.5px] sm:text-[11px] text-ink-muted">
                             <span class="flex items-center gap-1 font-medium">
                                 <span class="text-electric-deep font-bold">IMS ONE</span> &rarr; <span class="text-electric-blue font-bold">Fiber Optic</span> &rarr; <span class="text-electric-lime font-bold">Pelanggan</span>
                             </span>
-                            <span class="font-bold text-electric-deep">True Unlimited 1:1</span>
+                            <span class="font-bold text-electric-deep whitespace-nowrap">True Unlimited</span>
                         </div>
 
                     </div>
@@ -888,60 +878,60 @@
 
             </div>
 
-            <!-- Service Category Feature Strip Bar (Colorful Icons & Accents) -->
-            <div class="mt-12 pt-8 border-t border-slate-200">
+            <!-- Service Category Feature Strip Bar (Clean Typography & Icons) -->
+            <div class="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-200">
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                     
                     <!-- Item 1: 🔵 Internet Fiber (Electric Blue) -->
-                    <a href="#paket" class="p-3.5 rounded-2xl border border-electric-blue/25 bg-[#EAF8FF] hover:bg-sky-100/90 transition-all flex items-center gap-3 group card-interactive">
-                        <div class="w-10 h-10 rounded-xl bg-electric-blue text-white flex items-center justify-center shrink-0 shadow-md shadow-electric-blue/30 group-hover:scale-105 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="#paket" class="p-3 sm:p-3.5 rounded-2xl border border-electric-blue/25 bg-[#EAF8FF] hover:bg-sky-100/90 transition-all flex items-center gap-2.5 sm:gap-3 group card-interactive">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-electric-blue text-white flex items-center justify-center shrink-0 shadow-md shadow-electric-blue/30 group-hover:scale-105 transition-transform">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                             </svg>
                         </div>
-                        <div>
-                            <strong class="font-heading text-xs sm:text-sm font-bold text-electric-deep block">🔵 Internet Fiber</strong>
-                            <span class="text-[11px] text-ink-muted block">100% serat optik</span>
+                        <div class="min-w-0">
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-electric-deep block truncate">Internet Fiber</strong>
+                            <span class="text-[10px] sm:text-[11px] text-ink-muted block truncate">100% serat optik</span>
                         </div>
                     </a>
 
                     <!-- Item 2: 🟣 Stabil & Kencang (Violet/Purple) -->
-                    <a href="#keunggulan" class="p-3.5 rounded-2xl border border-electric-violet/25 bg-[#F1EEFF] hover:bg-purple-100/90 transition-all flex items-center gap-3 group card-interactive">
-                        <div class="w-10 h-10 rounded-xl bg-electric-violet text-white flex items-center justify-center shrink-0 shadow-md shadow-electric-violet/30 group-hover:scale-105 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="#keunggulan" class="p-3 sm:p-3.5 rounded-2xl border border-electric-violet/25 bg-[#F1EEFF] hover:bg-purple-100/90 transition-all flex items-center gap-2.5 sm:gap-3 group card-interactive">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-electric-violet text-white flex items-center justify-center shrink-0 shadow-md shadow-electric-violet/30 group-hover:scale-105 transition-transform">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                             </svg>
                         </div>
-                        <div>
-                            <strong class="font-heading text-xs sm:text-sm font-bold text-electric-deep block">🟣 Performa Stabil</strong>
-                            <span class="text-[11px] text-ink-muted block">Simetris 1:1 No FUP</span>
+                        <div class="min-w-0">
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-electric-deep block truncate">Performa Stabil</strong>
+                            <span class="text-[10px] sm:text-[11px] text-ink-muted block truncate">Simetris No FUP</span>
                         </div>
                     </a>
 
                     <!-- Item 3: 🩵 Ready WiFi (Bright Cyan) -->
-                    <a href="#paket" class="p-3.5 rounded-2xl border border-electric-cyan/40 bg-[#E0F7FA]/70 hover:bg-cyan-100/80 transition-all flex items-center gap-3 group card-interactive">
-                        <div class="w-10 h-10 rounded-xl bg-electric-cyan text-electric-deep flex items-center justify-center shrink-0 shadow-md shadow-electric-cyan/30 group-hover:scale-105 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="#paket" class="p-3 sm:p-3.5 rounded-2xl border border-electric-cyan/40 bg-[#E0F7FA]/70 hover:bg-cyan-100/80 transition-all flex items-center gap-2.5 sm:gap-3 group card-interactive">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-electric-cyan text-electric-deep flex items-center justify-center shrink-0 shadow-md shadow-electric-cyan/30 group-hover:scale-105 transition-transform">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
                             </svg>
                         </div>
-                        <div>
-                            <strong class="font-heading text-xs sm:text-sm font-bold text-electric-deep block">🩵 Ready WiFi 6</strong>
-                            <span class="text-[11px] text-ink-muted block">Gigabit dual-band</span>
+                        <div class="min-w-0">
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-electric-deep block truncate">Ready WiFi 6</strong>
+                            <span class="text-[10px] sm:text-[11px] text-ink-muted block truncate">Gigabit dual-band</span>
                         </div>
                     </a>
 
                     <!-- Item 4: 🟢 Cek Coverage (Lime/Green) -->
-                    <a href="#coverage" class="p-3.5 rounded-2xl border border-electric-lime/40 bg-[#EFFFFB] hover:bg-emerald-100/80 transition-all flex items-center gap-3 group card-interactive">
-                        <div class="w-10 h-10 rounded-xl bg-electric-lime text-electric-deep flex items-center justify-center shrink-0 shadow-md shadow-electric-lime/30 group-hover:scale-105 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="#coverage" class="p-3 sm:p-3.5 rounded-2xl border border-electric-lime/40 bg-[#EFFFFB] hover:bg-emerald-100/80 transition-all flex items-center gap-2.5 sm:gap-3 group card-interactive">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-electric-lime text-electric-deep flex items-center justify-center shrink-0 shadow-md shadow-electric-lime/30 group-hover:scale-105 transition-transform">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
                         </div>
-                        <div>
-                            <strong class="font-heading text-xs sm:text-sm font-bold text-electric-deep block">🟢 Cek Coverage</strong>
-                            <span class="text-[11px] text-ink-muted block">Cek slot ODP instan</span>
+                        <div class="min-w-0">
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-electric-deep block truncate">Cek Coverage</strong>
+                            <span class="text-[10px] sm:text-[11px] text-ink-muted block truncate">Cek slot ODP instan</span>
                         </div>
                     </a>
 
