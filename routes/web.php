@@ -39,6 +39,15 @@ Route::get('/', function () {
     return view('landing', compact('mapPins'));
 });
 
+// ── CUSTOMER SELF-SERVICE PORTAL ──
+Route::get('/portal', [\App\Http\Controllers\CustomerPortalController::class, 'index'])->name('customer.portal');
+Route::get('/layanan-pelanggan', function () {
+    return redirect()->route('customer.portal');
+});
+Route::post('/portal/login', [\App\Http\Controllers\CustomerPortalController::class, 'login'])->name('customer.login');
+Route::post('/portal/logout', [\App\Http\Controllers\CustomerPortalController::class, 'logout'])->name('customer.logout');
+Route::post('/portal/ticket', [\App\Http\Controllers\CustomerPortalController::class, 'submitTicket'])->name('customer.ticket.submit');
+
 Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/admin/update-status-type', function (Request $request) {
         $request->validate([
