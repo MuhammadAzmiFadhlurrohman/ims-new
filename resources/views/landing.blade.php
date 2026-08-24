@@ -90,6 +90,41 @@
             animation: pulseGreen 2s infinite ease-in-out;
         }
 
+        @keyframes fiberFlow {
+            to {
+                stroke-dashoffset: -100;
+            }
+        }
+
+        .animate-fiber-flow {
+            stroke-dasharray: 8 6;
+            animation: fiberFlow 1.8s linear infinite;
+        }
+
+        .animate-fiber-flow-fast {
+            stroke-dasharray: 6 4;
+            animation: fiberFlow 1.2s linear infinite;
+        }
+
+        @keyframes waveExpand {
+            0% { transform: scale(0.5); opacity: 0.9; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        .animate-wifi-wave {
+            transform-origin: center;
+            animation: waveExpand 2.2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+        }
+
+        @keyframes floatCardSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-7px); }
+        }
+
+        .animate-float-badge {
+            animation: floatCardSlow 4s ease-in-out infinite;
+        }
+
         /* Leaflet Z-Index Isolations */
         #landing-gis-map {
             z-index: 10 !important;
@@ -363,124 +398,259 @@
     @endif
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 2. HERO / JUMBOTRON (EDITORIAL ARCHITECTURE) ──
+         ── 2. HERO / JUMBOTRON (LIVING FIBER NETWORK VISUAL) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="beranda" class="pt-28 pb-16 lg:pt-36 lg:pb-24 border-b border-slate-200 bg-slate-50/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10 lg:gap-12 items-center">
+    <section id="beranda" class="pt-28 pb-14 lg:pt-36 lg:pb-20 border-b border-slate-200 relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-sky-50/30">
+        
+        {{-- Soft Background Glow Shapes (Inspired by Reference) --}}
+        <div class="absolute inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
+            <div class="absolute -top-24 right-0 w-[550px] h-[550px] bg-sky-200/25 rounded-full blur-3xl transform rotate-12"></div>
+            <div class="absolute top-1/3 -left-32 w-[450px] h-[450px] bg-cyan-100/30 rounded-full blur-3xl"></div>
+            {{-- Diagonal Accent Stripes --}}
+            <div class="hidden lg:block absolute -top-10 right-1/4 w-32 h-[600px] bg-gradient-to-b from-sky-100/30 via-cyan-100/20 to-transparent rounded-full transform -rotate-45"></div>
+            <div class="hidden lg:block absolute -top-20 right-1/3 w-20 h-[500px] bg-gradient-to-b from-blue-100/25 via-sky-100/10 to-transparent rounded-full transform -rotate-45"></div>
+        </div>
 
-                <!-- Left Content -->
-                <div class="space-y-6 text-left">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+
+                <!-- Left Content Column (Exact User Copy) -->
+                <div class="lg:col-span-6 space-y-6 text-left">
                     
-                    <!-- Status Line -->
-                    <div class="flex items-center gap-3 text-xs text-slate-600 font-medium">
-                        <span class="inline-flex items-center gap-1.5 text-emerald-700 font-semibold">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-beacon-green"></span>
-                            Jaringan FTTH Aktif
-                        </span>
-                        <span class="text-slate-300">/</span>
-                        <span>SLA Uptime 99.8%</span>
-                        <span class="text-slate-300">/</span>
-                        <span>100% Fiber Direct</span>
+                    <!-- Superfast Badge -->
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-xs font-bold shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-beacon-green"></span>
+                        <span>Superfast Internet Provider</span>
                     </div>
 
                     <!-- Main Headline -->
                     <div class="space-y-3">
-                        <h1 class="font-heading text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 tracking-tight leading-[1.15]">
-                            Internet Fiber Simetris.<br>
-                            <span class="text-slate-900">Tanpa Batas untuk Rumah &amp; Bisnis.</span>
+                        <h1 class="font-heading text-3xl sm:text-4xl lg:text-[44px] xl:text-[48px] font-black text-slate-900 tracking-tight leading-[1.15]">
+                            Internet Fiber Cepat untuk Rumah &amp; Bisnis.
                         </h1>
                         <p class="text-sm sm:text-base text-slate-600 max-w-xl font-normal leading-relaxed">
-                            Koneksi serat optik murni tanpa batasan kuota (True Unlimited). Kecepatan simetris 1:1 hingga 1 Gbps dengan latensi rendah dan dukungan operasional 24 jam.
+                            Koneksi stabil, cepat, dan siap mendukung aktivitas digital Anda setiap hari.
                         </p>
                     </div>
 
-                    <!-- Actions -->
-                    <div class="flex flex-wrap items-center gap-3 pt-1">
-                        <button @click="openRegister('Paket Pro (100 Mbps)')" class="px-6 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm transition-colors flex items-center gap-2">
-                            <span>Pasang Sekarang</span>
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap items-center gap-3.5 pt-1">
+                        <a href="#coverage" class="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 transform hover:-translate-y-0.5">
+                            <span>Cek Ketersediaan</span>
                             <span>&rarr;</span>
-                        </button>
+                        </a>
 
-                        <a href="#coverage" class="px-5 py-3 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-xs sm:text-sm transition-colors">
-                            Cek Ketersediaan Area
+                        <a href="#paket" class="px-6 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 hover:text-slate-900 font-bold text-xs sm:text-sm shadow-sm transition-all">
+                            Lihat Paket
                         </a>
                     </div>
 
-                    <!-- Architectural Stat Row -->
-                    <div class="pt-6 border-t border-slate-200 grid grid-cols-3 gap-6">
+                    <!-- 3 Stats Below Headline -->
+                    <div class="pt-6 border-t border-slate-200 grid grid-cols-3 gap-4 sm:gap-6">
                         <div>
-                            <div class="font-heading text-xl sm:text-2xl font-black text-slate-900">1 Gbps</div>
-                            <div class="text-xs text-slate-500 font-medium mt-0.5">Kapasitas Fiber Max</div>
+                            <div class="font-heading text-2xl sm:text-3xl font-black text-slate-900">1 Gbps</div>
+                            <div class="text-xs text-slate-500 font-medium mt-0.5">Kecepatan hingga</div>
                         </div>
                         <div>
-                            <div class="font-heading text-xl sm:text-2xl font-black text-slate-900">1:1</div>
-                            <div class="text-xs text-slate-500 font-medium mt-0.5">Upload &amp; Download Simetris</div>
+                            <div class="font-heading text-2xl sm:text-3xl font-black text-slate-900">100% Fiber</div>
+                            <div class="text-xs text-slate-500 font-medium mt-0.5">Koneksi FTTH</div>
                         </div>
                         <div>
-                            <div class="font-heading text-xl sm:text-2xl font-black text-slate-900">&lt; 15 Mnt</div>
-                            <div class="text-xs text-slate-500 font-medium mt-0.5">Respon Tiket Bantuan</div>
+                            <div class="font-heading text-2xl sm:text-3xl font-black text-slate-900">24/7</div>
+                            <div class="text-xs text-slate-500 font-medium mt-0.5">Customer Support</div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Right Telemetry Panel -->
-                <div class="w-full">
-                    <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-sm space-y-4">
+                <!-- Right Visual Column: Living Fiber Network Infrastructure -->
+                <div class="lg:col-span-6 relative">
+                    
+                    <div class="relative w-full max-w-lg mx-auto bg-white/85 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-xl p-5 sm:p-7 overflow-hidden">
                         
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
+                        <!-- Floating Reference-Style Price Banner (Top-Right) -->
+                        <div class="absolute -top-1 right-5 z-20 animate-float-badge">
+                            <div class="bg-gradient-to-r from-sky-600 to-brand-700 text-white rounded-b-xl px-4 py-2 shadow-lg border-t-0 border border-sky-400/40 text-center">
+                                <span class="text-[10px] font-bold uppercase tracking-wider block text-sky-100">Unlimited Internet</span>
+                                <div class="font-heading text-sm sm:text-base font-black text-white">
+                                    Mulai <span class="text-amber-300">175rb</span><span class="text-[10px] font-normal text-sky-100">/bln</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Title & Network Flow Legend -->
+                        <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-100">
                             <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                <span class="font-bold text-slate-900">Live Network Telemetry</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-beacon-green"></span>
+                                <span class="font-heading text-xs sm:text-sm font-bold text-slate-900">Transmisi Serat Optik FTTH Direct</span>
                             </div>
-                            <span class="font-mono text-[11px] text-slate-400">Node: BDG-01</span>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">
+                                3ms Latency
+                            </span>
                         </div>
 
-                        <!-- Latency & Uptime readout -->
-                        <div class="grid grid-cols-2 gap-3">
-                            <div class="p-3 rounded-lg bg-slate-50 border border-slate-100">
-                                <span class="text-[11px] text-slate-500 block">Ping Latency</span>
-                                <span class="font-heading text-lg font-bold text-slate-900">3.2 ms</span>
+                        <!-- SVG Network Diagram (IMS ONE NOC → Fiber Cables → ODP Node → Smart House) -->
+                        <div class="relative w-full h-[260px] sm:h-[280px]">
+                            
+                            <svg class="w-full h-full" viewBox="0 0 460 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                
+                                <defs>
+                                    <linearGradient id="fiberLineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#0284c7"/>
+                                        <stop offset="50%" stop-color="#0ea5e9"/>
+                                        <stop offset="100%" stop-color="#10b981"/>
+                                    </linearGradient>
+                                    <filter id="glowPulseFilter" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                                    </filter>
+                                </defs>
+
+                                <!-- 1. Background Grid Subtle Lines -->
+                                <line x1="50" y1="20" x2="50" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
+                                <line x1="220" y1="20" x2="220" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
+                                <line x1="390" y1="20" x2="390" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
+
+                                <!-- 2. Glowing Fiber Cable 1 (NOC Core -> ODP Box) -->
+                                <path d="M 75 75 Q 140 75 200 130" stroke="#e2e8f0" stroke-width="4" fill="none" stroke-linecap="round"/>
+                                <path d="M 75 75 Q 140 75 200 130" stroke="url(#fiberLineGrad)" stroke-width="3" fill="none" stroke-linecap="round" class="animate-fiber-flow-fast"/>
+
+                                <!-- 3. Glowing Fiber Cable 2 (ODP Box -> Smart House Router) -->
+                                <path d="M 240 140 Q 300 150 360 170" stroke="#e2e8f0" stroke-width="4" fill="none" stroke-linecap="round"/>
+                                <path d="M 240 140 Q 300 150 360 170" stroke="url(#fiberLineGrad)" stroke-width="3" fill="none" stroke-linecap="round" class="animate-fiber-flow"/>
+
+                                <!-- 4. Secondary Fiber Branch (Coverage Expansion) -->
+                                <path d="M 240 135 Q 310 90 380 75" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="4 4" fill="none"/>
+                                <path d="M 240 135 Q 310 90 380 75" stroke="#38bdf8" stroke-width="2" fill="none" class="animate-fiber-flow" opacity="0.6"/>
+
+                                <!-- WiFi Expanding Waves from Smart House -->
+                                <circle cx="380" cy="155" r="28" fill="none" stroke="#0ea5e9" stroke-width="1.5" class="animate-wifi-wave" opacity="0.6"/>
+                                <circle cx="380" cy="155" r="45" fill="none" stroke="#38bdf8" stroke-width="1.2" class="animate-wifi-wave" opacity="0.3" style="animation-delay: 0.8s;"/>
+
+                            </svg>
+
+                            <!-- Node 1: IMS ONE Core NOC (Top-Left) -->
+                            <div class="absolute top-2 left-1 sm:left-3 flex flex-col items-center">
+                                <div class="w-13 h-13 p-2.5 rounded-xl bg-slate-900 text-white shadow-md border border-slate-700 flex items-center justify-center relative">
+                                    <svg class="w-6 h-6 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
+                                    </svg>
+                                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white pulse-beacon-green"></span>
+                                </div>
+                                <span class="font-heading text-[11px] font-black text-slate-900 mt-1 block">IMS ONE Core</span>
+                                <span class="text-[9px] font-mono text-slate-400">Tier-1 NOC</span>
                             </div>
-                            <div class="p-3 rounded-lg bg-slate-50 border border-slate-100">
-                                <span class="text-[11px] text-slate-500 block">Status Gateway</span>
-                                <span class="font-heading text-lg font-bold text-emerald-600">Optimal</span>
+
+                            <!-- Node 2: ODP Distribution Node (Center) -->
+                            <div class="absolute top-[105px] left-[180px] sm:left-[195px] flex flex-col items-center">
+                                <div class="w-11 h-11 rounded-lg bg-sky-600 text-white shadow-md border-2 border-white flex items-center justify-center relative">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                    </svg>
+                                    <span class="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border border-white"></span>
+                                </div>
+                                <span class="font-heading text-[10.5px] font-bold text-slate-800 mt-1">ODP Splitter</span>
+                                <span class="text-[8.5px] font-mono text-sky-700 bg-sky-50 px-1 rounded">100% Fiber</span>
                             </div>
+
+                            <!-- Node 3: Smart House / Rumah Pelanggan (Bottom-Right) -->
+                            <div class="absolute top-[125px] right-2 sm:right-5 flex flex-col items-center">
+                                <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-white to-slate-50 border-2 border-sky-300 shadow-xl p-2 flex flex-col items-center justify-center relative">
+                                    <!-- House Icon -->
+                                    <svg class="w-8 h-8 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                    </svg>
+                                    <!-- WiFi Beacon on Roof -->
+                                    <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-brand-600 text-white flex items-center justify-center shadow-sm">
+                                        <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <span class="font-heading text-xs font-black text-slate-900 mt-1">Rumah Pelanggan</span>
+                                <span class="text-[9px] font-bold text-emerald-700 flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                    WiFi 6 Gigabit Aktif
+                                </span>
+                            </div>
+
+                            <!-- Connected Devices Mini-Tags -->
+                            <div class="absolute top-[40px] right-2 sm:right-6 bg-slate-900/90 text-white px-2 py-1 rounded-md text-[9px] font-mono shadow-sm flex items-center gap-1">
+                                <span>📱 4K Stream</span>
+                                <span class="text-emerald-400">✓</span>
+                            </div>
+
                         </div>
 
-                        <!-- Bandwidth Readouts -->
-                        <div class="space-y-3 pt-1">
-                            <div>
-                                <div class="flex items-center justify-between text-xs mb-1.5">
-                                    <span class="text-slate-600 font-medium">Download Rate</span>
-                                    <span class="font-mono font-bold text-slate-900">100.4 Mbps</span>
-                                </div>
-                                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-emerald-500 rounded-full" style="width: 85%;"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex items-center justify-between text-xs mb-1.5">
-                                    <span class="text-slate-600 font-medium">Upload Rate (1:1)</span>
-                                    <span class="font-mono font-bold text-slate-900">100.2 Mbps</span>
-                                </div>
-                                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-sky-600 rounded-full" style="width: 84%;"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                            <span>Perangkat: Gigabit WiFi 6</span>
-                            <span class="text-emerald-700 font-semibold">24/7 NOC Monitored</span>
+                        <!-- Bottom Telemetry Banner (Transmission Info) -->
+                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                            <span class="flex items-center gap-1 font-medium">
+                                <span class="text-brand-600 font-bold">IMS ONE</span> &rarr; <span class="text-slate-700 font-bold">Fiber Optic</span> &rarr; <span class="text-emerald-600 font-bold">Pelanggan</span>
+                            </span>
+                            <span class="font-bold text-slate-700">True Unlimited 1:1</span>
                         </div>
 
                     </div>
                 </div>
 
             </div>
+
+            <!-- Service Category Icons Bar (Inspired by Reference Image) -->
+            <div class="mt-12 pt-8 border-t border-slate-200/80">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    
+                    <a href="#paket" class="p-3.5 rounded-xl border border-sky-200 bg-sky-50/70 hover:bg-sky-100/80 transition-all flex items-center gap-3 group">
+                        <div class="w-10 h-10 rounded-lg bg-sky-600 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-slate-900 block">Internet Fiber</strong>
+                            <span class="text-[11px] text-slate-500 block">Simetris 1:1 FTTH</span>
+                        </div>
+                    </a>
+
+                    <a href="#paket" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center gap-3 group">
+                        <div class="w-10 h-10 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                            <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-slate-900 block">Bisnis &amp; Kantor</strong>
+                            <span class="text-[11px] text-slate-500 block">Dedicated IP Static</span>
+                        </div>
+                    </a>
+
+                    <a href="#keunggulan" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center gap-3 group">
+                        <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                            <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-slate-900 block">Router WiFi 6</strong>
+                            <span class="text-[11px] text-slate-500 block">Gratis Sewa Unit</span>
+                        </div>
+                    </a>
+
+                    <a href="#coverage" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center gap-3 group">
+                        <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-slate-900 block">Cek Jangkauan</strong>
+                            <span class="text-[11px] text-slate-500 block">Peta ODP Real-Time</span>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+
         </div>
     </section>
 
