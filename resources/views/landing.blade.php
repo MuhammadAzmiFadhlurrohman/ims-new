@@ -509,27 +509,27 @@
          ══════════════════════════════════════════════════════════════ --}}
     <nav class="fixed top-0 left-0 right-0 z-[100] bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-200" style="z-index: 100 !important;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 sm:h-20">
+            <div class="flex items-center justify-between h-14 sm:h-16">
                 
                 <!-- Logo: IMS ONE (Brand Blue) -->
-                <a href="#beranda" class="flex items-center gap-2.5 group">
-                    <div class="w-9 h-9 rounded-xl bg-brand text-white flex items-center justify-center font-bold text-sm shadow-md shadow-brand/20 group-hover:scale-105 transition-transform">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="#beranda" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 rounded-xl bg-brand text-white flex items-center justify-center font-bold text-xs shadow-sm group-hover:scale-105 transition-transform">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                         </svg>
                     </div>
                     <div>
-                        <span class="font-heading text-xl font-black text-brand-navy tracking-tight leading-none block">
+                        <span class="font-heading text-lg font-black text-brand-navy tracking-tight leading-none block">
                             IMS<span class="text-brand">ONE</span>
                         </span>
-                        <span class="text-[9.5px] font-bold tracking-widest text-brand uppercase block mt-0.5">
+                        <span class="text-[9px] font-bold tracking-widest text-brand uppercase block mt-0.5">
                             Fiber Network
                         </span>
                     </div>
                 </a>
 
                 <!-- Desktop Menu Links with Blue Active Underline -->
-                <div class="hidden lg:flex items-center gap-8">
+                <div class="hidden lg:flex items-center gap-7">
                     <a href="#beranda" class="text-xs font-bold text-brand transition-colors relative py-1 group">
                         <span>Beranda</span>
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-brand rounded-full"></span>
@@ -556,18 +556,18 @@
                     </a>
                 </div>
 
-                <!-- Desktop Action Buttons -->
-                <div class="hidden sm:flex items-center gap-3">
+                <!-- Desktop Action Buttons (Sleek Height h-9) -->
+                <div class="hidden sm:flex items-center gap-2.5">
                     <!-- Button 2: Portal Pelanggan (Dark Navy) -->
-                    <a href="{{ route('customer.portal') }}" class="h-10 px-5 rounded-full bg-brand-navy hover:bg-brand-deep text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 whitespace-nowrap shrink-0 border border-white/10 hover:shadow-md">
-                        <svg class="w-4 h-4 text-brand-light shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('customer.portal') }}" class="h-9 px-4 rounded-full bg-brand-navy hover:bg-brand-deep text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 border border-white/10 hover:shadow-md">
+                        <svg class="w-3.5 h-3.5 text-brand-light shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
                         <span>Portal Pelanggan</span>
                     </a>
 
                     <!-- Button 1: Cek Ketersediaan (Brand Blue #0878E5) -->
-                    <a href="#coverage" class="h-10 px-6 rounded-full btn-brand-primary text-white text-xs font-black shadow-md shadow-brand/20 flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 hover:shadow-lg">
+                    <a href="#coverage" class="h-9 px-5 rounded-full btn-brand-primary text-white text-xs font-black shadow-md shadow-brand/20 flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 hover:shadow-lg">
                         <span>Cek Ketersediaan</span>
                         <span class="text-white font-black ml-0.5">&rarr;</span>
                     </a>
@@ -575,11 +575,11 @@
 
                 <!-- Mobile Menu Hamburger Button -->
                 <div class="flex items-center gap-2 lg:hidden">
-                    <a href="{{ route('customer.portal') }}" class="px-3.5 py-1.5 rounded-full bg-brand-navy text-white text-xs font-bold">
+                    <a href="{{ route('customer.portal') }}" class="px-3 py-1 rounded-full bg-brand-navy text-white text-xs font-bold">
                         Portal
                     </a>
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 text-brand-navy hover:text-brand focus:outline-none" aria-label="Menu">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-1.5 text-brand-navy hover:text-brand focus:outline-none" aria-label="Menu">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16"/>
                             <path x-show="mobileMenuOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>
@@ -770,20 +770,6 @@
                     </div>
 
                 </div>
-            </div>
-
-            <!-- City Silhouette Vector at bottom -->
-            <div class="mt-10 pt-4 flex items-end justify-center gap-1.5 opacity-25 text-slate-500 pointer-events-none select-none">
-                <span class="text-xl">🏠</span>
-                <span class="text-2xl">🏢</span>
-                <span class="text-3xl">🏢</span>
-                <span class="text-xl">🏠</span>
-                <span class="text-2xl">🏢</span>
-                <span class="text-3xl">🏢</span>
-                <span class="text-2xl">🏢</span>
-                <span class="text-xl">🏠</span>
-                <span class="text-3xl">🏢</span>
-                <span class="text-xl">🏠</span>
             </div>
 
         </div>
@@ -1387,40 +1373,46 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 5. PROCESS (VERY LIGHT BLUE #F4FAFF + BLUE CONNECTED TIMELINE) ──
+         ── 5. PROCESS (DARK PREMIUM JUMBOTRON ATMOSPHERE) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section class="py-16 sm:py-24 bg-brand-pale border-b border-blue-100 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="py-16 sm:py-24 bg-gradient-to-b from-[#020B1D] via-[#062A5C] to-[#03132D] text-white border-b border-blue-950 relative overflow-hidden">
+        
+        {{-- Subtle Ambient Glow --}}
+        <div class="absolute inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
+            <div class="absolute top-1/2 left-1/4 w-[450px] h-[450px] bg-[#0878E5]/15 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14 pb-6 border-b border-blue-200/60">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14 pb-6 border-b border-white/10">
                 <div>
-                    <span class="text-xs font-black tracking-widest text-brand uppercase block mb-1">PROSES PENDAFTARAN</span>
-                    <h2 class="font-heading text-2xl sm:text-3xl font-black text-brand-navy tracking-tight">
-                        4 Langkah Praktis <span class="text-brand">Pasang Internet IMS ONE</span>
+                    <span class="text-xs font-black tracking-widest text-[#55C7FF] uppercase block mb-1">PROSES PENDAFTARAN</span>
+                    <h2 class="font-heading text-2xl sm:text-3xl font-black text-white tracking-tight">
+                        4 Langkah Praktis <span class="text-[#55C7FF]">Pasang Internet IMS ONE</span>
                     </h2>
                 </div>
-                <p class="text-xs sm:text-sm text-ink-muted max-w-md">
+                <p class="text-xs sm:text-sm text-slate-300 max-w-md">
                     Dari registrasi awal hingga aktif internetan hanya membutuhkan waktu 1–2 hari kerja bersama teknisi resmi.
                 </p>
             </div>
 
-            <!-- Desktop Horizontal Timeline (Monochromatic Blue) -->
+            <!-- Desktop Horizontal Timeline (Dark Premium Blue) -->
             <div class="hidden lg:block relative mb-4">
                 <!-- Background Horizontal Line -->
-                <div class="absolute top-6 left-12 right-12 h-1.5 bg-blue-200 rounded-full -z-0 overflow-hidden">
-                    <div class="h-full w-full bg-brand rounded-full"></div>
+                <div class="absolute top-6 left-12 right-12 h-1.5 bg-blue-950/80 rounded-full -z-0 overflow-hidden border border-white/10">
+                    <div class="h-full w-full bg-gradient-to-r from-[#0878E5] via-[#55C7FF] to-[#0878E5] rounded-full"></div>
                 </div>
 
                 <div class="grid grid-cols-4 gap-8 relative z-10">
                     
                     <!-- Step 01 -->
                     <div class="space-y-4 text-left">
-                        <div class="w-12 h-12 rounded-2xl bg-brand text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-brand-soft ring-2 ring-brand/30">
+                        <div class="w-12 h-12 rounded-2xl bg-[#0878E5] text-white font-heading font-black text-base flex items-center justify-center border-4 border-[#020B1D] shadow-lg ring-2 ring-[#55C7FF]/40">
                             01
                         </div>
                         <div class="space-y-1.5 pr-4">
-                            <h3 class="font-heading text-base font-bold text-brand-navy">Pilih Paket</h3>
-                            <p class="text-xs text-ink-muted leading-relaxed">
+                            <h3 class="font-heading text-base font-bold text-white">Pilih Paket</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
                                 Tentukan kecepatan bandwidth yang cocok untuk kebutuhan rumah, streaming, atau bisnis Anda.
                             </p>
                         </div>
@@ -1428,12 +1420,12 @@
 
                     <!-- Step 02 -->
                     <div class="space-y-4 text-left">
-                        <div class="w-12 h-12 rounded-2xl bg-brand text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-brand-soft ring-2 ring-brand/30">
+                        <div class="w-12 h-12 rounded-2xl bg-[#0878E5] text-white font-heading font-black text-base flex items-center justify-center border-4 border-[#020B1D] shadow-lg ring-2 ring-[#55C7FF]/40">
                             02
                         </div>
                         <div class="space-y-1.5 pr-4">
-                            <h3 class="font-heading text-base font-bold text-brand-navy">Registrasi Online</h3>
-                            <p class="text-xs text-ink-muted leading-relaxed">
+                            <h3 class="font-heading text-base font-bold text-white">Registrasi Online</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
                                 Isi data singkat pemohon via formulir atau WhatsApp untuk verifikasi ketersediaan port ODP.
                             </p>
                         </div>
@@ -1441,12 +1433,12 @@
 
                     <!-- Step 03 -->
                     <div class="space-y-4 text-left">
-                        <div class="w-12 h-12 rounded-2xl bg-brand text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-brand-soft ring-2 ring-brand/30">
+                        <div class="w-12 h-12 rounded-2xl bg-[#0878E5] text-white font-heading font-black text-base flex items-center justify-center border-4 border-[#020B1D] shadow-lg ring-2 ring-[#55C7FF]/40">
                             03
                         </div>
                         <div class="space-y-1.5 pr-4">
-                            <h3 class="font-heading text-base font-bold text-brand-navy">Survey &amp; Instalasi</h3>
-                            <p class="text-xs text-ink-muted leading-relaxed">
+                            <h3 class="font-heading text-base font-bold text-white">Survey &amp; Instalasi</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
                                 Teknisi resmi menarik kabel optik dropcore dan melakukan instalasi modem WiFi 6 di lokasi Anda.
                             </p>
                         </div>
@@ -1454,12 +1446,12 @@
 
                     <!-- Step 04 -->
                     <div class="space-y-4 text-left">
-                        <div class="w-12 h-12 rounded-2xl bg-brand text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-brand-soft ring-2 ring-brand/30">
+                        <div class="w-12 h-12 rounded-2xl bg-[#0878E5] text-white font-heading font-black text-base flex items-center justify-center border-4 border-[#020B1D] shadow-lg ring-2 ring-[#55C7FF]/40">
                             04
                         </div>
                         <div class="space-y-1.5 pr-4">
-                            <h3 class="font-heading text-base font-bold text-brand-navy">Aktif &amp; Siap Pakai</h3>
-                            <p class="text-xs text-ink-muted leading-relaxed">
+                            <h3 class="font-heading text-base font-bold text-white">Aktif &amp; Siap Pakai</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
                                 Koneksi langsung aktif! Nikmati internet fiber simetris tanpa batasan kuota bulanan FUP.
                             </p>
                         </div>
@@ -1469,44 +1461,44 @@
             </div>
 
             <!-- Mobile Vertical Timeline -->
-            <div class="lg:hidden relative pl-6 space-y-8 border-l-2 border-brand/40 ml-4">
+            <div class="lg:hidden relative pl-6 space-y-8 border-l-2 border-[#0878E5]/50 ml-4">
                 
                 <div class="relative space-y-1.5">
-                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-brand text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-[#0878E5] text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-[#020B1D] shadow">
                         01
                     </div>
-                    <h3 class="font-heading text-sm font-bold text-brand-navy">Pilih Paket</h3>
-                    <p class="text-xs text-ink-muted leading-relaxed">
+                    <h3 class="font-heading text-sm font-bold text-white">Pilih Paket</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
                         Tentukan kecepatan bandwidth yang cocok untuk kebutuhan rumah, streaming, atau kantor.
                     </p>
                 </div>
 
                 <div class="relative space-y-1.5">
-                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-brand text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-[#0878E5] text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-[#020B1D] shadow">
                         02
                     </div>
-                    <h3 class="font-heading text-sm font-bold text-brand-navy">Registrasi Online</h3>
-                    <p class="text-xs text-ink-muted leading-relaxed">
+                    <h3 class="font-heading text-sm font-bold text-white">Registrasi Online</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
                         Isi data singkat pemohon via formulir atau WhatsApp untuk verifikasi ketersediaan port ODP.
                     </p>
                 </div>
 
                 <div class="relative space-y-1.5">
-                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-brand text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-[#0878E5] text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-[#020B1D] shadow">
                         03
                     </div>
-                    <h3 class="font-heading text-sm font-bold text-brand-navy">Survey &amp; Instalasi</h3>
-                    <p class="text-xs text-ink-muted leading-relaxed">
+                    <h3 class="font-heading text-sm font-bold text-white">Survey &amp; Instalasi</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
                         Teknisi resmi menarik kabel optik dropcore dan melakukan instalasi modem WiFi 6 di lokasi Anda.
                     </p>
                 </div>
 
                 <div class="relative space-y-1.5">
-                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-brand text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-[#0878E5] text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-[#020B1D] shadow">
                         04
                     </div>
-                    <h3 class="font-heading text-sm font-bold text-brand-navy">Aktif &amp; Siap Dipakai</h3>
-                    <p class="text-xs text-ink-muted leading-relaxed">
+                    <h3 class="font-heading text-sm font-bold text-white">Aktif &amp; Siap Dipakai</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
                         Koneksi langsung aktif! Nikmati internet fiber simetris tanpa batasan kuota bulanan FUP.
                     </p>
                 </div>
