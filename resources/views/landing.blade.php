@@ -167,7 +167,7 @@
             scrollbar-width: none;
         }
 
-        /* ── LEAFLET GIS ISOLATION ── */
+        /* ── LEAFLET GIS ISOLATION & ANIMATED FIBER CABLE ── */
         #landing-gis-map {
             z-index: 10 !important;
             position: relative;
@@ -180,6 +180,16 @@
         }
         .leaflet-container {
             font-family: 'Plus Jakarta Sans', sans-serif !important;
+        }
+
+        .animated-fiber-cable {
+            stroke-dasharray: 10, 8 !important;
+            animation: fiberCableDash 1.2s linear infinite !important;
+        }
+        @keyframes fiberCableDash {
+            to {
+                stroke-dashoffset: -36;
+            }
         }
     </style>
 
@@ -207,6 +217,9 @@
                 // GIS Map State
                 mapInstance: null,
                 markersLayer: null,
+                connectionLineLayer: null,
+                userMarkerLayer: null,
+                nearestOdpInfo: null,
                 odps: @json($mapPins ?? []),
 
                 // Pricing Tab State ('rumah' | 'bisnis')
@@ -375,8 +388,6 @@
 
                     const markers = [];
                     this.odps.forEach((pin, idx) => {
-                        // Monochromatic Blue Markers:
-                        // #0878E5 Primary Brand Blue with clean white border
                         const bg = '#0878E5';
                         const iconColor = '#FFFFFF';
 
@@ -410,6 +421,100 @@
                     }
                 },
 
+                connectToNearestOdp(userLat, userLng, userLabel) {
+                    if (!this.mapInstance) return;
+
+                    // Remove previous line and user marker
+                    if (this.connectionLineLayer) {
+                        this.mapInstance.removeLayer(this.connectionLineLayer);
+                        this.connectionLineLayer = null;
+                    }
+                    if (this.userMarkerLayer) {
+                        this.mapInstance.removeLayer(this.userMarkerLayer);
+                        this.userMarkerLayer = null;
+                    }
+
+                    // Find nearest ODP in this.odps
+                    let nearestOdp = null;
+                    let minDistance = Infinity;
+
+                    if (this.odps && this.odps.length > 0) {
+                        this.odps.forEach(odp => {
+                            const dLat = odp.lat - userLat;
+                            const dLng = odp.lng - userLng;
+                            const dist = Math.sqrt(dLat * dLat + dLng * dLng);
+                            if (dist < minDistance) {
+                                minDistance = dist;
+                                nearestOdp = odp;
+                            }
+                        });
+                    }
+
+                    const distMeters = nearestOdp ? Math.round(minDistance * 111000) : 120;
+                    this.nearestOdpInfo = nearestOdp ? {
+                        name: nearestOdp.name,
+                        code: nearestOdp.code,
+                        distance: distMeters > 0 ? distMeters : 85
+                    } : null;
+
+                    // Create User Marker with pulsating house icon
+                    const userIcon = L.divIcon({
+                        className: 'user-location-pin',
+                        html: `<div style="position: relative; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;">
+                            <div style="position: absolute; inset: 0; border-radius: 50%; background: rgba(8, 120, 229, 0.4); animation: pulseBlue 1.8s infinite;"></div>
+                            <div style="width: 28px; height: 28px; border-radius: 50%; background: #0B1F33; border: 2.5px solid #0878E5; box-shadow: 0 4px 14px rgba(8,120,229,0.5); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px;">
+                                🏠
+                            </div>
+                        </div>`,
+                        iconSize: [34, 34],
+                        iconAnchor: [17, 17]
+                    });
+
+                    this.userMarkerLayer = L.marker([userLat, userLng], { icon: userIcon }).addTo(this.mapInstance);
+                    this.userMarkerLayer.bindPopup(`
+                        <div style="font-family: 'Plus Jakarta Sans', sans-serif; padding: 4px; color: #0B1F33; min-width: 170px;">
+                            <div style="font-size: 10px; font-weight: 800; color: #0878E5; text-transform: uppercase;">📍 LOKASI ANDA</div>
+                            <div style="font-size: 12px; font-weight: 800; margin: 2px 0;">${userLabel || 'Titik Pemasangan'}</div>
+                            <div style="font-size: 11px; color: #0878E5; font-weight: 700; margin-top: 4px;">⚡ Tercover Fiber Optic</div>
+                            ${nearestOdp ? `<div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">Terhubung ke <b>${nearestOdp.name}</b> (~${this.nearestOdpInfo.distance}m)</div>` : ''}
+                        </div>
+                    `).openPopup();
+
+                    if (nearestOdp) {
+                        this.connectionLineLayer = L.layerGroup();
+
+                        // 1. Soft Cyan Glow under-cable
+                        const glowLine = L.polyline([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]], {
+                            color: '#55C7FF',
+                            weight: 7,
+                            opacity: 0.5,
+                            lineCap: 'round'
+                        });
+
+                        // 2. Animated Flowing Dashed Fiber Cable
+                        const fiberLine = L.polyline([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]], {
+                            color: '#0878E5',
+                            weight: 3.5,
+                            dashArray: '10, 8',
+                            className: 'animated-fiber-cable',
+                            lineCap: 'round'
+                        });
+
+                        this.connectionLineLayer.addLayer(glowLine);
+                        this.connectionLineLayer.addLayer(fiberLine);
+                        this.connectionLineLayer.addTo(this.mapInstance);
+
+                        // Fit bounds to show both user pin and nearest ODP clearly
+                        const bounds = L.latLngBounds([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]]);
+                        this.mapInstance.fitBounds(bounds.pad(0.35), {
+                            animate: true,
+                            duration: 1.2
+                        });
+                    } else {
+                        this.mapInstance.flyTo([userLat, userLng], 15);
+                    }
+                },
+
                 checkCoverage() {
                     if (!this.coverageInput.trim()) {
                         alert('Silakan masukkan nama alamat, jalan, atau kelurahan Anda.');
@@ -423,18 +528,27 @@
 
                     if (q.includes('dago') || q.includes('braga') || q.includes('riau') || q.includes('buahbatu') || q.includes('antapani') || q.includes('sukajadi') || q.includes('merdeka') || q.includes('gedebage') || q.includes('summarecon') || q.includes('kordon') || q.includes('sudirman') || q.includes('jakarta') || q.includes('bekasi') || q.includes('cibitung') || q.includes('soreang') || q.includes('cimahi') || q.includes('setia')) {
                         this.coverageStatus = 'AVAILABLE';
-                        if (this.mapInstance) {
-                            if (q.includes('dago')) this.mapInstance.flyTo([-6.8821, 107.6162], 15);
-                            else if (q.includes('braga')) this.mapInstance.flyTo([-6.9175, 107.6096], 15);
-                            else if (q.includes('buahbatu') || q.includes('kordon')) this.mapInstance.flyTo([-6.9385, 107.6258], 15);
-                            else if (q.includes('antapani')) this.mapInstance.flyTo([-6.9142, 107.6587], 15);
-                            else if (q.includes('gedebage')) this.mapInstance.flyTo([-6.9482, 107.7034], 15);
-                            else if (q.includes('sukajadi')) this.mapInstance.flyTo([-6.8904, 107.5975], 15);
-                            else if (q.includes('soreang')) this.mapInstance.flyTo([-7.0289, 107.5189], 15);
-                            else this.mapInstance.flyTo([-6.9175, 107.6096], 13);
-                        }
+                        
+                        let targetLat = -6.9175;
+                        let targetLng = 107.6096;
+
+                        if (q.includes('dago')) { targetLat = -6.8821; targetLng = 107.6162; }
+                        else if (q.includes('braga')) { targetLat = -6.9175; targetLng = 107.6096; }
+                        else if (q.includes('buahbatu') || q.includes('kordon')) { targetLat = -6.9385; targetLng = 107.6258; }
+                        else if (q.includes('antapani')) { targetLat = -6.9142; targetLng = 107.6587; }
+                        else if (q.includes('gedebage') || q.includes('summarecon')) { targetLat = -6.9482; targetLng = 107.7034; }
+                        else if (q.includes('sukajadi')) { targetLat = -6.8904; targetLng = 107.5975; }
+                        else if (q.includes('soreang')) { targetLat = -7.0289; targetLng = 107.5189; }
+                        else if (q.includes('cimahi')) { targetLat = -6.8833; targetLng = 107.5417; }
+
+                        this.connectToNearestOdp(targetLat, targetLng, this.coverageAreaName);
                     } else {
                         this.coverageStatus = 'NOT_AVAILABLE';
+                        this.nearestOdpInfo = null;
+                        if (this.connectionLineLayer && this.mapInstance) {
+                            this.mapInstance.removeLayer(this.connectionLineLayer);
+                            this.connectionLineLayer = null;
+                        }
                     }
                 },
 
@@ -457,19 +571,8 @@
                             this.coverageAreaName = 'Lokasi Anda (' + lat.toFixed(4) + ', ' + lng.toFixed(4) + ')';
                             this.coverageChecked = true;
                             this.coverageStatus = 'AVAILABLE';
-                            if (this.mapInstance) {
-                                this.mapInstance.flyTo([lat, lng], 15);
-                                if (this.markersLayer) {
-                                    L.marker([lat, lng], {
-                                        icon: L.divIcon({
-                                            className: 'user-pin',
-                                            html: `<div style='width: 28px; height: 28px; border-radius: 50%; background: #0878E5; border: 3px solid #ffffff; box-shadow: 0 0 20px rgba(8,120,229,0.8); display: flex; align-items: center; justify-content: center;'><span style='width: 8px; height: 8px; border-radius: 50%; background: #ffffff;'></span></div>`,
-                                            iconSize: [28, 28],
-                                            iconAnchor: [14, 14]
-                                        })
-                                    }).addTo(this.markersLayer).bindPopup('<b>📍 Lokasi Pelanggan</b><br><span style="font-size:11px;color:#0878E5;">Terhubung ke ODP Terdekat</span>').openPopup();
-                                }
-                            }
+                            
+                            this.connectToNearestOdp(lat, lng, 'Lokasi GPS Anda');
                         },
                         (err) => {
                             this.coverageInput = '';
@@ -950,12 +1053,23 @@
                             <div x-show="coverageStatus === 'AVAILABLE'" class="p-4 rounded-2xl bg-brand-soft border-2 border-brand shadow-sm space-y-3">
                                 
                                 <div class="flex items-center gap-2.5">
-                                    <span class="w-3.5 h-3.5 rounded-full bg-brand pulse-beacon-blue"></span>
-                                    <div>
+                                    <span class="w-3.5 h-3.5 rounded-full bg-brand pulse-beacon-blue shrink-0"></span>
+                                    <div class="min-w-0">
                                         <strong class="font-heading text-brand font-bold text-sm block">● Area Tercover</strong>
                                         <span class="text-[11px] text-brand-navy block">Jaringan IMS ONE tersedia di <span x-text="coverageAreaName" class="font-bold text-brand-navy"></span>.</span>
                                     </div>
                                 </div>
+
+                                <!-- Real-time ODP Link Telemetry -->
+                                <template x-if="nearestOdpInfo">
+                                    <div class="p-2 rounded-xl bg-white border border-blue-200 text-[10.5px] text-brand flex items-center justify-between font-mono font-bold">
+                                        <span class="flex items-center gap-1.5 truncate">
+                                            <span>⚡ Jalur Fiber Aktif:</span>
+                                            <strong class="text-brand-navy" x-text="nearestOdpInfo.name"></strong>
+                                        </span>
+                                        <span class="text-brand shrink-0">~<span x-text="nearestOdpInfo.distance"></span>m dropcore</span>
+                                    </div>
+                                </template>
 
                                 <!-- Package Selector for this area -->
                                 <div class="space-y-1.5 pt-2 border-t border-blue-200">
