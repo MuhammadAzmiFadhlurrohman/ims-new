@@ -178,6 +178,9 @@
                 // Pricing Tab State ('rumah' | 'bisnis')
                 pricingTab: 'rumah',
 
+                // Selected package for coverage result
+                selectedCoveragePackage: 'Paket Pro (100 Mbps)',
+
                 // FAQ Accordion State
                 activeFaq: 1,
 
@@ -291,6 +294,48 @@
                 quickCheck(area) {
                     this.coverageInput = area;
                     this.checkCoverage();
+                },
+
+                useCurrentLocation() {
+                    if (!navigator.geolocation) {
+                        alert('Fitur geolokasi tidak didukung oleh browser Anda.');
+                        return;
+                    }
+                    this.coverageInput = 'Mendeteksi lokasi GPS...';
+                    navigator.geolocation.getCurrentPosition(
+                        (pos) => {
+                            const lat = pos.coords.latitude;
+                            const lng = pos.coords.longitude;
+                            this.coverageInput = 'Lokasi Terdeteksi (GPS Presisi)';
+                            this.coverageAreaName = 'Lokasi Anda (' + lat.toFixed(4) + ', ' + lng.toFixed(4) + ')';
+                            this.coverageChecked = true;
+                            this.coverageStatus = 'AVAILABLE';
+                            if (this.mapInstance) {
+                                this.mapInstance.flyTo([lat, lng], 15);
+                                if (this.markersLayer) {
+                                    L.marker([lat, lng], {
+                                        icon: L.divIcon({
+                                            className: 'user-pin',
+                                            html: `<div style='width: 24px; height: 24px; border-radius: 50%; background: #071B3A; border: 3px solid #12C7E8; box-shadow: 0 0 12px rgba(18,199,232,0.6); display: flex; align-items: center; justify-content: center;'><span style='width: 8px; height: 8px; border-radius: 50%; background: #12C7E8;'></span></div>`,
+                                            iconSize: [24, 24],
+                                            iconAnchor: [12, 12]
+                                        })
+                                    }).addTo(this.markersLayer).bindPopup('<b>📍 Lokasi Anda</b><br><span style="font-size:11px;color:#0879D9;">Titik ODP Terdekat Aktif</span>').openPopup();
+                                }
+                            }
+                        },
+                        (err) => {
+                            this.coverageInput = '';
+                            alert('Tidak dapat mendeteksi lokasi otomatis. Silakan ketik nama jalan Anda.');
+                        },
+                        { timeout: 8000 }
+                    );
+                },
+
+                openRegisterWithCoverage() {
+                    this.leadPackage = this.selectedCoveragePackage;
+                    this.leadAddress = this.coverageAreaName;
+                    this.showRegisterModal = true;
                 },
 
                 openRegister(pkgName) {
@@ -663,81 +708,114 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 3. CEK COVERAGE & GIS NODE MAP ──
+         ── 3. INTERACTIVE COVERAGE CHECKER & GIS NODE MAP ──
          ══════════════════════════════════════════════════════════════ --}}
     <section id="coverage" class="py-16 sm:py-20 bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-slate-200">
                 <div>
-                    <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">COVERAGE AREA</span>
+                    <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">INTERACTIVE COVERAGE CHECKER</span>
                     <h2 class="font-heading text-2xl sm:text-3xl font-black text-navy-900 tracking-tight">
-                        Cek Jangkauan Jaringan Fiber Optik
+                        Cek Apakah Jaringan IMS ONE Tersedia di Lokasi Anda
                     </h2>
                 </div>
                 <p class="text-xs sm:text-sm text-ink-muted max-w-md">
-                    Periksa ketersediaan titik Optical Distribution Point (ODP) di wilayah tempat tinggal atau lokasi kantor Anda.
+                    Masukkan alamat atau gunakan GPS untuk memeriksa ketersediaan port fiber optik ODP terdekat secara instan.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 
-                <!-- Left Search Console -->
+                <!-- Left Interactive Search & Result Console -->
                 <div class="lg:col-span-5 space-y-4">
                     
-                    <div class="border border-slate-200 rounded-xl p-5 space-y-4 bg-surface-offwhite">
+                    <div class="border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-4 bg-surface-offwhite shadow-sm">
                         <div class="space-y-1">
-                            <label class="font-heading text-sm font-bold text-navy-900 block">Pencarian Alamat Pemasangan</label>
-                            <p class="text-xs text-ink-muted">Ketik nama jalan, kelurahan, atau perumahan:</p>
-                        </div>
-
-                        <!-- Quick Tags -->
-                        <div class="flex items-center flex-wrap gap-1.5">
-                            <span class="text-[11px] text-ink-subtle font-medium mr-1">Area cepat:</span>
-                            <button @click="quickCheck('Dago')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-200 border border-slate-200 text-[11px] font-semibold text-ink-main transition-colors">Dago</button>
-                            <button @click="quickCheck('Braga')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-200 border border-slate-200 text-[11px] font-semibold text-ink-main transition-colors">Braga</button>
-                            <button @click="quickCheck('Buahbatu')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-200 border border-slate-200 text-[11px] font-semibold text-ink-main transition-colors">Buahbatu</button>
-                            <button @click="quickCheck('Antapani')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-200 border border-slate-200 text-[11px] font-semibold text-ink-main transition-colors">Antapani</button>
+                            <label class="font-heading text-sm font-bold text-navy-900 block">Cari Lokasi / Alamat Pemasangan</label>
+                            <p class="text-xs text-ink-muted">Ketik nama jalan atau gunakan lokasi GPS perangkat Anda:</p>
                         </div>
 
                         <!-- Search Form Input -->
-                        <form @submit.prevent="checkCoverage" class="space-y-3">
+                        <form @submit.prevent="checkCoverage" class="space-y-2.5">
                             <div class="relative">
                                 <input 
                                     type="text" 
                                     x-model="coverageInput" 
-                                    placeholder="Contoh: Jl. Dago No. 12..." 
-                                    class="w-full pl-9 pr-4 py-2.5 rounded-lg bg-white border border-slate-300 focus:border-corporate-blue text-ink-main placeholder-slate-400 text-xs sm:text-sm font-medium outline-none transition-colors"
+                                    placeholder="Contoh: Jl. Dago No. 12, Bandung..." 
+                                    class="w-full pl-9 pr-4 py-3 rounded-xl bg-white border border-slate-300 focus:border-corporate-blue text-ink-main placeholder-slate-400 text-xs sm:text-sm font-medium outline-none transition-colors shadow-sm"
                                 />
-                                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
                             </div>
 
-                            <button type="submit" class="w-full py-2.5 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs transition-colors shadow-sm">
-                                Periksa Ketersediaan Jaringan &rarr;
-                            </button>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button type="button" @click="useCurrentLocation()" class="py-2.5 px-3 rounded-lg border border-slate-300 hover:border-corporate-blue hover:bg-white bg-slate-50 text-navy-900 font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                                    <span>📍</span>
+                                    <span>Gunakan Lokasi Saya</span>
+                                </button>
+                                
+                                <button type="submit" class="py-2.5 px-3 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs transition-all flex items-center justify-center gap-1 shadow-sm">
+                                    <span>Periksa Jaringan</span>
+                                    <span class="text-accent-cyan">&rarr;</span>
+                                </button>
+                            </div>
                         </form>
 
-                        <!-- Results Readout -->
+                        <!-- Quick Popular Tags -->
+                        <div class="flex items-center flex-wrap gap-1.5 pt-1">
+                            <span class="text-[11px] text-ink-subtle font-medium mr-1">Pilih cepat:</span>
+                            <button @click="quickCheck('Dago')" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-200 border border-slate-200 text-[11px] font-semibold text-ink-main transition-colors">Dago</button>
+                            <button @click="quickCheck('Braga')" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-200 border border-slate-200 text-[11px] font-semibold text-ink-main transition-colors">Braga</button>
+                            <button @click="quickCheck('Buahbatu')" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-200 border border-slate-200 text-[11px] font-semibold text-ink-main transition-colors">Buahbatu</button>
+                            <button @click="quickCheck('Antapani')" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-200 border border-slate-200 text-[11px] font-semibold text-ink-main transition-colors">Antapani</button>
+                            <button @click="quickCheck('Sukajadi')" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-200 border border-slate-200 text-[11px] font-semibold text-ink-main transition-colors">Sukajadi</button>
+                        </div>
+
+                        <!-- Results Readout with Direct Package Selector -->
                         <div x-show="coverageChecked" x-cloak x-collapse class="pt-3 border-t border-slate-200 space-y-3">
                             
-                            <!-- Available -->
-                            <div x-show="coverageStatus === 'AVAILABLE'" class="p-3.5 rounded-lg bg-emerald-50 border border-emerald-200 text-ink-main space-y-2">
+                            <!-- AVAILABLE (ACTIVE FIBER DETECTED) -->
+                            <div x-show="coverageStatus === 'AVAILABLE'" class="p-4 rounded-xl bg-white border-2 border-emerald-500 shadow-md space-y-3">
+                                
                                 <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-                                    <strong class="font-heading text-emerald-900 font-bold text-xs sm:text-sm">Area Tercover — Jaringan Siap Pasang</strong>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500 pulse-beacon-green"></span>
+                                    <div>
+                                        <strong class="font-heading text-emerald-900 font-bold text-sm block">✓ Area Anda Tercover!</strong>
+                                        <span class="text-[11px] text-ink-muted block">Jaringan fiber optik IMS ONE aktif di <span x-text="coverageAreaName" class="font-bold text-navy-900"></span>.</span>
+                                    </div>
                                 </div>
-                                <p class="text-xs text-ink-muted leading-relaxed">
-                                    Titik ODP aktif terverifikasi di area <strong x-text="coverageAreaName" class="text-navy-900"></strong>. Jadwal instalasi 1 hari kerja.
-                                </p>
-                                <button @click="openRegister('Paket Pro (100 Mbps)')" class="w-full py-2 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs transition-colors">
-                                    Lanjut Registrasi di Area Ini &rarr;
+
+                                <!-- Package Selector for this area -->
+                                <div class="space-y-1.5 pt-2 border-t border-slate-100">
+                                    <span class="text-[11px] font-bold text-navy-900 uppercase tracking-wider block">Pilih Paket untuk Lokasi Ini:</span>
+                                    <div class="grid grid-cols-3 gap-1.5 text-xs">
+                                        <button type="button" @click="selectedCoveragePackage = 'Paket Starter (30 Mbps)'" :class="selectedCoveragePackage === 'Paket Starter (30 Mbps)' ? 'border-2 border-navy-900 bg-corporate-light font-bold text-navy-900' : 'border border-slate-200 bg-surface-offwhite text-ink-muted'" class="p-2 rounded-lg text-center transition-all">
+                                            <span class="block font-bold">30 Mbps</span>
+                                            <span class="text-[10px] text-ink-muted block">175rb/bln</span>
+                                        </button>
+                                        
+                                        <button type="button" @click="selectedCoveragePackage = 'Paket Pro (100 Mbps)'" :class="selectedCoveragePackage === 'Paket Pro (100 Mbps)' ? 'border-2 border-navy-900 bg-corporate-light font-bold text-navy-900' : 'border border-slate-200 bg-surface-offwhite text-ink-muted'" class="p-2 rounded-lg text-center transition-all relative">
+                                            <span class="block font-black text-corporate-blue">100 Mbps</span>
+                                            <span class="text-[10px] text-ink-muted block">320rb/bln</span>
+                                        </button>
+
+                                        <button type="button" @click="selectedCoveragePackage = 'Paket Ultimate (300 Mbps)'" :class="selectedCoveragePackage === 'Paket Ultimate (300 Mbps)' ? 'border-2 border-navy-900 bg-corporate-light font-bold text-navy-900' : 'border border-slate-200 bg-surface-offwhite text-ink-muted'" class="p-2 rounded-lg text-center transition-all">
+                                            <span class="block font-bold">300 Mbps</span>
+                                            <span class="text-[10px] text-ink-muted block">650rb/bln</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button @click="openRegisterWithCoverage()" class="w-full py-2.5 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs transition-all shadow-md flex items-center justify-center gap-2">
+                                    <span>Pilih Paket &amp; Pasang Sekarang</span>
+                                    <span class="text-accent-cyan">&rarr;</span>
                                 </button>
                             </div>
 
-                            <!-- Coming Soon -->
-                            <div x-show="coverageStatus === 'COMING_SOON'" class="p-3.5 rounded-lg bg-amber-50 border border-amber-200 text-ink-main space-y-1.5">
+                            <!-- COMING SOON -->
+                            <div x-show="coverageStatus === 'COMING_SOON'" class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-ink-main space-y-1.5">
                                 <div class="flex items-center gap-2">
                                     <span class="text-amber-600">⏳</span>
                                     <strong class="font-heading text-amber-900 font-bold text-xs sm:text-sm">Dalam Rencana Perluasan</strong>
@@ -747,8 +825,8 @@
                                 </p>
                             </div>
 
-                            <!-- Not Available -->
-                            <div x-show="coverageStatus === 'NOT_AVAILABLE'" class="p-3.5 rounded-lg bg-slate-100 border border-slate-200 text-ink-main space-y-1.5">
+                            <!-- NOT AVAILABLE -->
+                            <div x-show="coverageStatus === 'NOT_AVAILABLE'" class="p-3.5 rounded-xl bg-slate-100 border border-slate-200 text-ink-main space-y-1.5">
                                 <div class="flex items-center gap-2">
                                     <span class="text-slate-500">📍</span>
                                     <strong class="font-heading text-navy-900 font-bold text-xs sm:text-sm">Belum Terjangkau Jalur Utama</strong>
@@ -764,22 +842,22 @@
 
                     <div class="text-xs text-ink-muted flex items-center gap-2 px-1">
                         <span>💡</span>
-                        <span>Klik pin pada peta untuk melihat detail kapasitas slot ODP.</span>
+                        <span>Klik pin biru pada peta untuk melihat detail kapasitas slot ODP.</span>
                     </div>
 
                 </div>
 
                 <!-- Right Map View -->
                 <div class="lg:col-span-7">
-                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">
-                        <div class="flex items-center justify-between px-4 py-2.5 border-b border-slate-200 bg-surface-offwhite text-xs">
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm">
+                        <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-surface-offwhite text-xs">
                             <span class="font-bold text-navy-900 flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-corporate-blue"></span>
-                                Peta Sebaran Node Fiber Optik
+                                Live GIS Node Sebaran Fiber Optik
                             </span>
-                            <span class="text-[11px] text-ink-subtle font-mono">CartoDB Voyager • Live Data</span>
+                            <span class="text-[11px] text-ink-subtle font-mono">ODP Active Nodes • Live</span>
                         </div>
-                        <div id="landing-gis-map" class="w-full h-[400px] sm:h-[460px]"></div>
+                        <div id="landing-gis-map" class="w-full h-[420px] sm:h-[480px]"></div>
                     </div>
                 </div>
 
@@ -1112,49 +1190,127 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 5. ALUR AKTIVASI (CONTINUOUS TIMELINE PROCESS) ──
+         ── 5. ALUR PEMASANGAN (HORIZONTAL & VERTICAL PROGRESS TIMELINE) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section class="py-16 sm:py-20 bg-white border-b border-slate-200">
+    <section class="py-16 sm:py-20 bg-white border-b border-slate-200 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="mb-12 pb-6 border-b border-slate-200">
-                <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">PROSES PENDAFTARAN</span>
-                <h2 class="font-heading text-2xl sm:text-3xl font-black text-navy-900 tracking-tight">
-                    4 Tahap Pemasangan Internet
-                </h2>
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14 pb-6 border-b border-slate-200">
+                <div>
+                    <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">PROSES PENDAFTARAN</span>
+                    <h2 class="font-heading text-2xl sm:text-3xl font-black text-navy-900 tracking-tight">
+                        4 Langkah Praktis Pasang Internet IMS ONE
+                    </h2>
+                </div>
+                <p class="text-xs sm:text-sm text-ink-muted max-w-md">
+                    Dari registrasi awal hingga aktif internetan hanya membutuhkan waktu 1–2 hari kerja bersama teknisi resmi.
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Desktop Horizontal Timeline with Connected Animated Progress Line -->
+            <div class="hidden lg:block relative mb-4">
+                <!-- Background Horizontal Line with Animated Fiber Flow -->
+                <div class="absolute top-6 left-12 right-12 h-1 bg-slate-200 -z-0">
+                    <div class="h-full w-full bg-gradient-to-r from-navy-900 via-corporate-blue to-accent-cyan rounded-full opacity-90"></div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-8 relative z-10">
+                    
+                    <!-- Step 01 -->
+                    <div class="space-y-4 text-left">
+                        <div class="w-12 h-12 rounded-2xl bg-navy-900 text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-navy-900/20">
+                            01
+                        </div>
+                        <div class="space-y-1.5 pr-4">
+                            <h3 class="font-heading text-base font-bold text-navy-900">Pilih Paket</h3>
+                            <p class="text-xs text-ink-muted leading-relaxed">
+                                Tentukan kecepatan bandwidth yang cocok untuk kebutuhan rumah, streaming, atau bisnis Anda.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 02 -->
+                    <div class="space-y-4 text-left">
+                        <div class="w-12 h-12 rounded-2xl bg-corporate-blue text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-corporate-blue/20">
+                            02
+                        </div>
+                        <div class="space-y-1.5 pr-4">
+                            <h3 class="font-heading text-base font-bold text-navy-900">Registrasi Online</h3>
+                            <p class="text-xs text-ink-muted leading-relaxed">
+                                Isi data singkat pemohon via formulir atau WhatsApp untuk verifikasi ketersediaan port ODP.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 03 -->
+                    <div class="space-y-4 text-left">
+                        <div class="w-12 h-12 rounded-2xl bg-navy-900 text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-navy-900/20">
+                            03
+                        </div>
+                        <div class="space-y-1.5 pr-4">
+                            <h3 class="font-heading text-base font-bold text-navy-900">Survey &amp; Instalasi</h3>
+                            <p class="text-xs text-ink-muted leading-relaxed">
+                                Teknisi resmi menarik kabel optik dropcore dan melakukan instalasi modem WiFi 6 di lokasi Anda.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 04 -->
+                    <div class="space-y-4 text-left">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-emerald-600/20">
+                            04
+                        </div>
+                        <div class="space-y-1.5 pr-4">
+                            <h3 class="font-heading text-base font-bold text-navy-900">Aktif &amp; Siap Dipakai</h3>
+                            <p class="text-xs text-ink-muted leading-relaxed">
+                                Koneksi langsung aktif! Nikmati internet fiber simetris tanpa batasan kuota bulanan FUP.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Mobile Vertical Timeline -->
+            <div class="lg:hidden relative pl-6 space-y-8 border-l-2 border-corporate-blue/40 ml-4">
                 
-                <div class="space-y-2.5">
-                    <div class="font-mono text-xs font-bold text-corporate-blue">01 / TAHAP 1</div>
-                    <h3 class="font-heading text-base font-bold text-navy-900">Pilih Paket &amp; Cek Lokasi</h3>
+                <div class="relative space-y-1.5">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-navy-900 text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                        01
+                    </div>
+                    <h3 class="font-heading text-sm font-bold text-navy-900">Pilih Paket</h3>
                     <p class="text-xs text-ink-muted leading-relaxed">
-                        Tentukan kecepatan sesuai kebutuhan dan periksa ketersediaan port fiber di lokasi Anda.
+                        Tentukan kecepatan bandwidth yang cocok untuk kebutuhan rumah, streaming, atau kantor.
                     </p>
                 </div>
 
-                <div class="space-y-2.5">
-                    <div class="font-mono text-xs font-bold text-corporate-blue">02 / TAHAP 2</div>
-                    <h3 class="font-heading text-base font-bold text-navy-900">Registrasi Online</h3>
+                <div class="relative space-y-1.5">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-corporate-blue text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                        02
+                    </div>
+                    <h3 class="font-heading text-sm font-bold text-navy-900">Registrasi Online</h3>
                     <p class="text-xs text-ink-muted leading-relaxed">
-                        Kirim data pemohon melalui formulir WhatsApp untuk penjadwalan kunjungan tim teknisi.
+                        Isi data singkat pemohon via formulir atau WhatsApp untuk verifikasi ketersediaan port ODP.
                     </p>
                 </div>
 
-                <div class="space-y-2.5">
-                    <div class="font-mono text-xs font-bold text-corporate-blue">03 / TAHAP 3</div>
-                    <h3 class="font-heading text-base font-bold text-navy-900">Survei &amp; Instalasi</h3>
+                <div class="relative space-y-1.5">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-navy-900 text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                        03
+                    </div>
+                    <h3 class="font-heading text-sm font-bold text-navy-900">Survey &amp; Instalasi</h3>
                     <p class="text-xs text-ink-muted leading-relaxed">
-                        Teknisi tersertifikasi menarik kabel serat optik dropcore dan melakukan setup router modem.
+                        Teknisi resmi menarik kabel optik dropcore dan melakukan instalasi modem WiFi 6 di lokasi Anda.
                     </p>
                 </div>
 
-                <div class="space-y-2.5">
-                    <div class="font-mono text-xs font-bold text-corporate-blue">04 / TAHAP 4</div>
-                    <h3 class="font-heading text-base font-bold text-navy-900">Aktivasi &amp; Siap Pakai</h3>
+                <div class="relative space-y-1.5">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-emerald-600 text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                        04
+                    </div>
+                    <h3 class="font-heading text-sm font-bold text-navy-900">Aktif &amp; Siap Dipakai</h3>
                     <p class="text-xs text-ink-muted leading-relaxed">
-                        Koneksi langsung aktif dengan kecepatan simetris penuh tanpa batas kuota FUP.
+                        Koneksi langsung aktif! Nikmati internet fiber simetris tanpa batasan kuota bulanan FUP.
                     </p>
                 </div>
 
