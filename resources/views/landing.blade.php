@@ -1091,28 +1091,36 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 3. COVERAGE (VERY LIGHT BLUE #F4FAFF + NETWORK TEXTURE + GIS MAP) ──
+         ── 3. COVERAGE (VERY LIGHT BLUE #F4FAFF + VIVID NETWORK TEXTURE + GIS MAP) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="coverage" class="py-16 sm:py-20 bg-brand-pale border-b border-blue-100 relative overflow-hidden">
+    <section id="coverage" class="py-16 sm:py-20 bg-[#F4FAFF] border-b border-blue-100 relative overflow-hidden">
         
-        <!-- Elegant Network Mesh & Topology Texture Layer -->
-        <div class="absolute inset-0 pointer-events-none select-none opacity-60" aria-hidden="true">
+        <!-- High-Visibility Fiber Network Mesh & Node Texture Layer -->
+        <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
             <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <!-- Dot Network Grid -->
-                    <pattern id="cov-dot-grid" width="28" height="28" patternUnits="userSpaceOnUse">
-                        <circle cx="2" cy="2" r="1.2" fill="#0878E5" fill-opacity="0.16" />
+                    <!-- Background Precision Network Grid -->
+                    <pattern id="cov-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0878E5" stroke-width="0.75" stroke-opacity="0.12" />
+                        <circle cx="0" cy="0" r="1.5" fill="#0878E5" fill-opacity="0.22" />
                     </pattern>
-                    <!-- Connected Network Constellation Pattern -->
-                    <pattern id="cov-mesh-pattern" width="140" height="140" patternUnits="userSpaceOnUse">
-                        <path d="M 0 35 L 35 0 L 105 35 L 140 0 M 35 70 L 70 105 L 140 70 M 0 105 L 70 140" fill="none" stroke="#0878E5" stroke-width="0.8" stroke-opacity="0.10" stroke-dasharray="3,3" />
-                        <circle cx="35" cy="0" r="2.5" fill="#0878E5" fill-opacity="0.18" />
-                        <circle cx="105" cy="35" r="2.5" fill="#0878E5" fill-opacity="0.18" />
-                        <circle cx="70" cy="105" r="2.5" fill="#0878E5" fill-opacity="0.18" />
-                        <circle cx="35" cy="70" r="2.5" fill="#0878E5" fill-opacity="0.18" />
+                    <!-- Vivid Connected Network Constellation Pattern -->
+                    <pattern id="cov-mesh-pattern" width="180" height="180" patternUnits="userSpaceOnUse">
+                        <!-- Interconnected Fiber Lines -->
+                        <path d="M 0 45 L 45 0 L 135 45 L 180 0 M 45 90 L 90 135 L 180 90 M 0 135 L 90 180 M 45 0 L 45 90 M 135 45 L 135 135 M 0 45 L 90 135" fill="none" stroke="#0878E5" stroke-width="1.3" stroke-opacity="0.26" stroke-dasharray="5,4" />
+                        <path d="M 45 0 L 135 45 M 45 90 L 0 135 M 135 135 L 90 180" fill="none" stroke="#0757B8" stroke-width="1" stroke-opacity="0.20" />
+                        
+                        <!-- Network Nodes / Points -->
+                        <circle cx="45" cy="0" r="4.5" fill="#EAF5FF" stroke="#0878E5" stroke-width="2" stroke-opacity="0.65" />
+                        <circle cx="135" cy="45" r="4" fill="#EAF5FF" stroke="#0878E5" stroke-width="2" stroke-opacity="0.65" />
+                        <circle cx="90" cy="135" r="5" fill="#EAF5FF" stroke="#0878E5" stroke-width="2.2" stroke-opacity="0.75" />
+                        <circle cx="45" cy="90" r="3.5" fill="#EAF5FF" stroke="#0878E5" stroke-width="1.8" stroke-opacity="0.65" />
+                        <circle cx="180" cy="90" r="4" fill="#EAF5FF" stroke="#0878E5" stroke-width="2" stroke-opacity="0.65" />
+                        <circle cx="0" cy="45" r="3.5" fill="#EAF5FF" stroke="#0878E5" stroke-width="1.8" stroke-opacity="0.65" />
+                        <circle cx="90" cy="180" r="4" fill="#EAF5FF" stroke="#0878E5" stroke-width="2" stroke-opacity="0.65" />
                     </pattern>
                 </defs>
-                <rect width="100%" height="100%" fill="url(#cov-dot-grid)" />
+                <rect width="100%" height="100%" fill="url(#cov-grid)" />
                 <rect width="100%" height="100%" fill="url(#cov-mesh-pattern)" />
             </svg>
         </div>
