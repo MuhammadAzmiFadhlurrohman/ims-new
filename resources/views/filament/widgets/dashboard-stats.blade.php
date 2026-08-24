@@ -204,7 +204,8 @@
             if (this.mapInstance) {
                 this.selectedRegion = 'all';
                 this.mapFilter = 'INCIDENT';
-                this.renderMapPins(true);
+                this.mapInstance.setView([-6.8821, 107.6162], 16);
+                this.renderMapPins(false);
             }
         },
 
@@ -235,7 +236,7 @@
                         type="text" 
                         x-model="searchQuery" 
                         @focus="searchFocused = true"
-                        placeholder="Cari ID Pelanggan, No Tiket, Nama ODP..." 
+                        placeholder="Cari ID Pelanggan, No Tiket, Nama ODP Bandung..." 
                         class="ims-dash-search-input"
                     />
                     <span class="ims-search-badge">⌘K</span>
@@ -273,16 +274,16 @@
                     <svg class="ims-filter-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                 </div>
 
-                <!-- Region Selector -->
+                <!-- Region Selector Bandung Raya -->
                 <div class="ims-filter-pill">
                     <svg class="ims-filter-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     <select x-model="selectedRegion" class="ims-filter-select">
-                        <option value="all">Semua Wilayah (26 Node)</option>
-                        <option value="cibitung">Cluster Cibitung (2 Node)</option>
-                        <option value="cikarang">Cluster Cikarang (2 Node)</option>
-                        <option value="tambun">Cluster Tambun (1 Node)</option>
-                        <option value="bekasi">Cluster Bekasi (1 Node)</option>
-                        <option value="bandung">Cluster Bandung & Diskominfo (20 Node)</option>
+                        <option value="all">Semua Bandung ({{ count($mapPins) }} Node)</option>
+                        <option value="bandung_pusat">Bandung Pusat (Braga / Riau / DU)</option>
+                        <option value="bandung_utara">Bandung Utara (Dago / Sukajadi / Setiabudi)</option>
+                        <option value="bandung_selatan">Bandung Selatan (Buahbatu / Batununggal)</option>
+                        <option value="bandung_timur">Bandung Timur (Antapani / Gedebage)</option>
+                        <option value="bandung_kabupaten">Kab. Bandung & Cimahi (Soreang / Cimahi)</option>
                     </select>
                     <svg class="ims-filter-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                 </div>
@@ -305,11 +306,11 @@
                 <div class="ims-outage-content">
                     <div class="ims-outage-title">
                         <span class="ims-tag-critical">CRITICAL INCIDENT</span>
-                        <strong>OLT Node Cluster Melati (POP Cibitung) Offline</strong>
+                        <strong>OLT Node Cluster Dago Atas (POP Bandung Raya) Offline</strong>
                         <span class="ims-outage-count">• 48 Pelanggan Terdampak</span>
                     </div>
                     <div class="ims-outage-desc">
-                        LOS Terdeteksi pada Feeder FO Segmen 04 • Tim PIC: <strong>OT-Team 02 (Dedi Irawan)</strong> OTW ke Lokasi • Estimasi Pemulihan: <strong>35 Menit</strong>
+                        LOS Terdeteksi pada Feeder FO Segmen Dago 04 • Tim PIC: <strong>OT-Team 02 (Dedi Irawan)</strong> OTW ke Lokasi • Estimasi Pemulihan: <strong>35 Menit</strong>
                     </div>
                 </div>
             </div>

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             DummyDataSeeder::class,
             RbacPermissionSeeder::class,
             OltHierarchySeeder::class,
+            OdpBandungSeeder::class,
         ]);
     }
 }

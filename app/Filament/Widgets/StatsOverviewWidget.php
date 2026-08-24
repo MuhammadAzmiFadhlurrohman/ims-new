@@ -101,32 +101,33 @@ class StatsOverviewWidget extends Widget
         $resolvedTickets = Ticket::where('status', 'RESOLVED')->count();
         $slaRate = $totalTickets > 0 ? round(($resolvedTickets / $totalTickets) * 100, 1) : 98.4;
 
-        // ── 2. NETWORK & ODP MAP DATA (GIS) ──
+        // ── 2. NETWORK & ODP MAP DATA (GIS - 100% BANDUNG RAYA) ──
         $odps = Odp::all();
         $mapPins = [];
 
         if ($odps->isNotEmpty()) {
             foreach ($odps as $index => $odp) {
-                $lat = (float)($odp->latitude ?? -6.2587);
-                $lng = (float)($odp->longitude ?? 107.0945);
+                $lat = (float)($odp->latitude ?? -6.9175);
+                $lng = (float)($odp->longitude ?? 107.6096);
                 
-                // Determine region cluster
-                $codeUpper = strtoupper($odp->code . ' ' . $odp->name);
-                $region = 'bandung';
-                if (str_contains($codeUpper, 'CBT') || str_contains($codeUpper, 'CIBITUNG')) {
-                    $region = 'cibitung';
-                } elseif (str_contains($codeUpper, 'CKR') || str_contains($codeUpper, 'CIKARANG') || str_contains($codeUpper, 'JABABEKA')) {
-                    $region = 'cikarang';
-                } elseif (str_contains($codeUpper, 'TMN') || str_contains($codeUpper, 'TMB') || str_contains($codeUpper, 'TAMBUN')) {
-                    $region = 'tambun';
-                } elseif (str_contains($codeUpper, 'BKS') || str_contains($codeUpper, 'BEKASI')) {
-                    $region = 'bekasi';
+                // Determine Bandung cluster region
+                $codeUpper = strtoupper($odp->code . ' ' . $odp->name . ' ' . ($odp->notes ?? ''));
+                $region = 'bandung_pusat';
+                
+                if (str_contains($codeUpper, 'DAGO') || str_contains($codeUpper, 'SUKAJADI') || str_contains($codeUpper, 'SETIABUDI') || str_contains($codeUpper, 'CIHAMPELAS') || str_contains($codeUpper, 'GEGERKALONG') || str_contains($codeUpper, 'TUBAGUS')) {
+                    $region = 'bandung_utara';
+                } elseif (str_contains($codeUpper, 'BUAH') || str_contains($codeUpper, 'KORDON') || str_contains($codeUpper, 'BATUNUNGGAL') || str_contains($codeUpper, 'MOCH TOHA') || str_contains($codeUpper, 'BKR') || str_contains($codeUpper, 'CIBADUYUT') || str_contains($codeUpper, 'KOPO') || str_contains($codeUpper, 'CIJAWURA') || str_contains($codeUpper, 'SUFIA') || str_contains($codeUpper, 'SUKAMULYA') || str_contains($codeUpper, 'REOG') || str_contains($codeUpper, 'INDOMART') || str_contains($codeUpper, 'RAJA MANTRI') || str_contains($codeUpper, 'REJEKI')) {
+                    $region = 'bandung_selatan';
+                } elseif (str_contains($codeUpper, 'ANTAPANI') || str_contains($codeUpper, 'ARCAMANIK') || str_contains($codeUpper, 'GEDEBAGE') || str_contains($codeUpper, 'SUMMARECON') || str_contains($codeUpper, 'CIBIRU') || str_contains($codeUpper, 'UJUNGBERUNG')) {
+                    $region = 'bandung_timur';
+                } elseif (str_contains($codeUpper, 'SOREANG') || str_contains($codeUpper, 'GADING') || str_contains($codeUpper, 'BANJARAN') || str_contains($codeUpper, 'CIMAHI') || str_contains($codeUpper, 'PASTEUR')) {
+                    $region = 'bandung_kabupaten';
                 }
 
                 $pinStatus = 'NORMAL';
-                if ($index === 1 || str_contains($codeUpper, 'MELATI')) {
-                    $pinStatus = 'INCIDENT'; // OLT/ODP Incident
-                } elseif ($index === 4 || $index === 8 || $index === 13) {
+                if ($index === 21 || str_contains($codeUpper, 'DAGO-01')) {
+                    $pinStatus = 'INCIDENT'; // OLT Cluster Dago incident
+                } elseif ($index === 4 || $index === 8 || $index === 18 || $index === 28) {
                     $pinStatus = 'PENDING_SURVEY';
                 }
 
@@ -136,8 +137,8 @@ class StatsOverviewWidget extends Widget
                     'region' => $region,
                     'lat' => $lat,
                     'lng' => $lng,
-                    'total_ports' => (int)($odp->total_ports ?? 8),
-                    'used_ports' => (int)($odp->used_ports ?? 5),
+                    'total_ports' => (int)($odp->total_ports ?? 16),
+                    'used_ports' => (int)($odp->used_ports ?? 12),
                     'status' => $pinStatus,
                     'notes' => $odp->notes ?? ('ODP ' . $odp->name),
                 ];
