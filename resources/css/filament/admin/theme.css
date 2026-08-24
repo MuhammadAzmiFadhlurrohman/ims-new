@@ -1753,88 +1753,21 @@ html.dark table.fi-ta-table th {
     /* ══════════════════════════════════════════════════════════════
        STANDALONE DEDICATED CSS FOR SHIELD ROLE PERMISSIONS 2-COLUMN GRID
        ══════════════════════════════════════════════════════════════ */
-    .ims-shield-tabs-container,
-    .fi-fo-tabs:has([role="tabpanel"]),
-    .fi-fo-tabs {
+    .ims-shield-tabs-container {
         width: 100% !important;
         max-width: 100% !important;
-        display: block !important;
-        box-sizing: border-box !important;
     }
 
-    .ims-shield-tabs-container div[role="tabpanel"],
-    .ims-shield-tabs-container .fi-tabs-tab-content,
-    .ims-shield-tabs-container .fi-fo-tabs-tab,
-    .fi-fo-tabs div[role="tabpanel"] {
+    .ims-shield-tabs-container > .fi-tabs-tab-content,
+    .ims-shield-tabs-container > [role="tabpanel"],
+    .ims-shield-tabs-container .fi-fo-tabs-tab {
         width: 100% !important;
         max-width: 100% !important;
-        display: block !important;
-        padding: 0.5rem 0.25rem !important;
         box-sizing: border-box !important;
-    }
-
-    /* Force the grid to strictly have 2 equal 50% columns on mobile (< 1024px) */
-    @media (max-width: 1023px) {
-        .ims-shield-tabs-container div[role="tabpanel"] .fi-fo-component-ctn,
-        .ims-shield-tabs-container div[role="tabpanel"] .grid,
-        .ims-shield-tabs-container div[role="tabpanel"] .fi-grid,
-        .ims-shield-grid,
-        .fi-fo-tabs div[role="tabpanel"] .fi-fo-component-ctn,
-        .fi-fo-tabs div[role="tabpanel"] .grid,
-        .fi-fo-tabs div[role="tabpanel"] .fi-grid {
-            display: grid !important;
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            grid-auto-flow: row !important;
-            gap: 8px !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
-        }
-
-        .ims-shield-tabs-container div[role="tabpanel"] .fi-fo-component-ctn > div,
-        .ims-shield-tabs-container div[role="tabpanel"] .grid > div,
-        .ims-shield-tabs-container div[role="tabpanel"] .fi-grid > div,
-        .ims-shield-grid > div,
-        .fi-fo-tabs div[role="tabpanel"] .fi-fo-component-ctn > div,
-        .fi-fo-tabs div[role="tabpanel"] .grid > div,
-        .fi-fo-tabs div[role="tabpanel"] .fi-grid > div {
-            grid-column: span 1 / span 1 !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-            box-sizing: border-box !important;
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .ims-shield-tabs-container div[role="tabpanel"] .fi-fo-component-ctn,
-        .ims-shield-tabs-container div[role="tabpanel"] .grid,
-        .ims-shield-tabs-container div[role="tabpanel"] .fi-grid,
-        .ims-shield-grid {
-            display: grid !important;
-            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-            gap: 12px !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
-        }
-
-        .ims-shield-tabs-container div[role="tabpanel"] .fi-fo-component-ctn > div,
-        .ims-shield-tabs-container div[role="tabpanel"] .grid > div,
-        .ims-shield-tabs-container div[role="tabpanel"] .fi-grid > div,
-        .ims-shield-grid > div {
-            grid-column: span 1 / span 1 !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-            box-sizing: border-box !important;
-        }
     }
 
     /* Individual Resource Card */
-    .ims-shield-card,
-    .fi-fo-tabs .fi-section,
-    .fi-fo-tabs-tab .fi-section {
+    .ims-shield-card {
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
@@ -1847,63 +1780,56 @@ html.dark table.fi-ta-table th {
         display: block !important;
     }
 
-    html.dark .ims-shield-card,
-    html.dark .fi-fo-tabs .fi-section,
-    html.dark .fi-fo-tabs-tab .fi-section {
+    html.dark .ims-shield-card {
         background: #08192e !important;
         border-color: #14355a !important;
     }
 
     /* Card Header */
-    .ims-shield-card .fi-section-header,
-    .fi-fo-tabs .fi-section-header {
+    .ims-shield-card .fi-section-header {
         padding: 6px 8px !important;
         gap: 2px !important;
     }
 
-    .ims-shield-card .fi-section-header-heading,
-    .fi-fo-tabs .fi-section-header-heading {
+    .ims-shield-card .fi-section-header-heading {
         font-size: 11px !important;
         font-weight: 800 !important;
         line-height: 1.2 !important;
+        white-space: normal !important;
         word-break: break-word !important;
     }
 
-    .ims-shield-card .fi-section-header-description,
-    .fi-fo-tabs .fi-section-header-description {
+    .ims-shield-card .fi-section-header-description {
         font-size: 8px !important;
         line-height: 1.1 !important;
+        white-space: normal !important;
         word-break: break-all !important;
         opacity: 0.75 !important;
     }
 
     /* Card Content (Checkboxes) */
-    .ims-shield-card .fi-section-content,
-    .fi-fo-tabs .fi-section-content {
+    .ims-shield-card .fi-section-content {
         padding: 4px 8px 8px 8px !important;
         width: 100% !important;
         box-sizing: border-box !important;
         display: block !important;
     }
 
-    .ims-shield-card .fi-fo-checkbox-list,
-    .fi-fo-tabs .fi-fo-checkbox-list {
+    .ims-shield-card .fi-fo-checkbox-list {
         display: flex !important;
         flex-direction: column !important;
         gap: 3.5px !important;
         width: 100% !important;
     }
 
-    .ims-shield-card .fi-fo-checkbox-list-option,
-    .fi-fo-tabs .fi-fo-checkbox-list-option {
+    .ims-shield-card .fi-fo-checkbox-list-option {
         display: flex !important;
         align-items: center !important;
         gap: 5px !important;
         padding: 1px 0 !important;
     }
 
-    .ims-shield-card .fi-fo-checkbox-list-option label,
-    .fi-fo-tabs .fi-fo-checkbox-list-option label {
+    .ims-shield-card .fi-fo-checkbox-list-option label {
         font-size: 10.5px !important;
         font-weight: 600 !important;
         line-height: 1.15 !important;
@@ -1912,8 +1838,7 @@ html.dark table.fi-ta-table th {
         text-overflow: ellipsis !important;
     }
 
-    .ims-shield-card .fi-fo-checkbox-list button,
-    .fi-fo-tabs .fi-fo-checkbox-list button {
+    .ims-shield-card .fi-fo-checkbox-list button {
         font-size: 9.5px !important;
         font-weight: 700 !important;
         padding: 1px 0 !important;

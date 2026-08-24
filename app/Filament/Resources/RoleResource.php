@@ -93,17 +93,14 @@ class RoleResource extends ShieldRoleResource
                 ->label(__('filament-shield::filament-shield.resources'))
                 ->visible(fn (): bool => (bool) Utils::isResourceEntityEnabled())
                 ->badge(static::getResourceTabBadgeCount())
-                ->schema([
-                    Forms\Components\Grid::make([
-                        'default' => 2,
-                        'sm' => 2,
-                        'md' => 2,
-                        'lg' => 3,
-                        'xl' => 4,
-                    ])
-                        ->schema(static::getResourceEntitiesSchema())
-                        ->extraAttributes(['class' => 'ims-shield-grid']),
-                ]);
+                ->columns([
+                    'default' => 2,
+                    'sm' => 2,
+                    'md' => 2,
+                    'lg' => 3,
+                    'xl' => 4,
+                ])
+                ->schema(static::getResourceEntitiesSchema());
     }
 
     public static function getResourceEntitiesSchema(): ?array
