@@ -64,8 +64,8 @@ class PositionResource extends Resource
             ->recordAction(null)
             ->columns([
                 // ── 1. JABATAN INFO (Full Card on Mobile, Rich Info on Desktop) ──
-                Tables\Columns\TextColumn::make('code')
-                    ->label('Jabatan')
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Jabatan')
                     ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
                     ->state(function (Position $record): \Illuminate\Support\HtmlString {
@@ -76,7 +76,7 @@ class PositionResource extends Resource
 
                         return new \Illuminate\Support\HtmlString("
                             <!-- DESKTOP VIEW -->
-                            <div class='ims-desktop-view'>
+                            <div class='ims-desktop-view' style='display: flex; flex-direction: column; gap: 2px;'>
                                 <span class='text-slate-500 font-mono text-[10px] font-bold'>{$code}</span>
                                 <span class='font-bold text-slate-900 dark:text-slate-100 text-xs'>{$name}</span>
                             </div>
@@ -88,7 +88,7 @@ class PositionResource extends Resource
                                     <span class='ims-mobile-group-badge' style='background: #e0e7ff; color: #4338ca; border-color: #c7d2fe;'>🏢 {$deptName}</span>
                                 </div>
                                 <div class='ims-card-cust-info'>
-                                    <div class='ims-cust-name-text' style='font-size: 14px; font-weight: 900; color: #0f172a;'>💼 {$name}</div>
+                                    <div class='ims-cust-name-text' style='font-size: 14px; font-weight: 900;'>💼 {$name}</div>
                                 </div>
                                 <div class='ims-card-sep'></div>
                                 <div class='ims-card-status-section'>
@@ -105,14 +105,10 @@ class PositionResource extends Resource
                             ->orWhere('name', 'like', "%{$search}%")
                             ->orWhere('department_code', 'like', "%{$search}%")
                             ->orWhereHas('department', fn ($q) => $q->where('name', 'like', "%{$search}%"));
+                    })
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query->orderBy('name', $direction);
                     }),
-
-                // ── 2. NAMA JABATAN (DESKTOP) ──
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nama Jabatan')
-                    ->extraAttributes(['class' => 'ims-mobile-hide'])
-                    ->searchable()
-                    ->sortable(),
 
                 // ── 3. DEPARTEMEN (DESKTOP) ──
                 Tables\Columns\TextColumn::make('department.name')

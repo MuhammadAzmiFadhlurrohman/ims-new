@@ -104,9 +104,9 @@ class EmployeeResource extends Resource
             ->recordUrl(null)
             ->recordAction(null)
             ->columns([
-                // ── 1. KARYAWAN INFO (Full Card on Mobile, Rich Info on Desktop) ──
-                Tables\Columns\TextColumn::make('nik')
-                    ->label('Karyawan')
+                // ── 1. KARYAWAN INFO (Full Card on Mobile, Name + NIK on Desktop) ──
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Lengkap')
                     ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
                     ->state(function (Employee $record): \Illuminate\Support\HtmlString {
@@ -136,10 +136,9 @@ class EmployeeResource extends Resource
 
                         return new \Illuminate\Support\HtmlString("
                             <!-- DESKTOP VIEW -->
-                            <div class='ims-desktop-view'>
-                                <span class='text-slate-500 font-mono text-[9.5px]'>{$nik}</span>
+                            <div class='ims-desktop-view' style='display: flex; flex-direction: column; gap: 2px;'>
+                                <span class='text-slate-500 font-mono text-[10px] font-bold'>{$nik}</span>
                                 <span class='font-bold text-slate-900 dark:text-slate-100 text-xs'>{$name} ({$genderCode})</span>
-                                <span class='text-slate-600 dark:text-slate-300 text-[10.5px] font-semibold'>{$positionName}</span>
                             </div>
 
                             <!-- STANDALONE MOBILE CARD -->
@@ -150,7 +149,7 @@ class EmployeeResource extends Resource
                                 </div>
                                 <div class='ims-card-cust-info'>
                                     <div style='display: flex; align-items: center; gap: 6px;'>
-                                        <span class='ims-cust-name-text' style='font-size: 14px; font-weight: 900; color: #0f172a;'>{$name}</span>
+                                        <span class='ims-cust-name-text' style='font-size: 14px; font-weight: 900;'>{$name}</span>
                                         <span style='font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 4px; background: #e2e8f0; color: #475569;'>{$genderCode}</span>
                                     </div>
                                     <div class='ims-cust-pkg-text' style='font-size: 12px; font-weight: 700; color: #0284c7;'>💼 {$positionName}</div>
@@ -174,14 +173,10 @@ class EmployeeResource extends Resource
                             ->orWhere('company_email', 'like', "%{$search}%")
                             ->orWhere('department_code', 'like', "%{$search}%")
                             ->orWhere('position_code', 'like', "%{$search}%");
+                    })
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query->orderBy('name', $direction);
                     }),
-
-                // ── 2. NAMA & GENDER (DESKTOP) ──
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nama Lengkap')
-                    ->extraAttributes(['class' => 'ims-mobile-hide'])
-                    ->searchable()
-                    ->sortable(),
 
                 // ── 3. DEPARTEMEN (DESKTOP) ──
                 Tables\Columns\TextColumn::make('department.name')

@@ -63,8 +63,8 @@ class DepartmentResource extends Resource
             ->recordAction(null)
             ->columns([
                 // ── 1. DIVISI INFO (Full Card on Mobile, Rich Info on Desktop) ──
-                Tables\Columns\TextColumn::make('code')
-                    ->label('Divisi / Departemen')
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Departemen')
                     ->extraAttributes(['class' => 'fi-ta-cell-full-card'])
                     ->html()
                     ->state(function (Department $record): \Illuminate\Support\HtmlString {
@@ -76,7 +76,7 @@ class DepartmentResource extends Resource
 
                         return new \Illuminate\Support\HtmlString("
                             <!-- DESKTOP VIEW -->
-                            <div class='ims-desktop-view'>
+                            <div class='ims-desktop-view' style='display: flex; flex-direction: column; gap: 2px;'>
                                 <span class='text-slate-500 font-mono text-[10px] font-bold'>{$code}</span>
                                 <span class='font-bold text-slate-900 dark:text-slate-100 text-xs'>{$name}</span>
                             </div>
@@ -88,7 +88,7 @@ class DepartmentResource extends Resource
                                     <span class='ims-mobile-group-badge' style='background: #e0e7ff; color: #4338ca; border-color: #c7d2fe;'>🏢 DEPARTEMEN</span>
                                 </div>
                                 <div class='ims-card-cust-info'>
-                                    <div class='ims-cust-name-text' style='font-size: 14px; font-weight: 900; color: #0f172a;'>{$name}</div>
+                                    <div class='ims-cust-name-text' style='font-size: 14px; font-weight: 900;'>{$name}</div>
                                     <div style='font-size: 11px; color: #64748b; margin-top: 2px;'>📝 {$desc}</div>
                                 </div>
                                 <div class='ims-card-sep'></div>
@@ -105,14 +105,10 @@ class DepartmentResource extends Resource
                         return $query->where('code', 'like', "%{$search}%")
                             ->orWhere('name', 'like', "%{$search}%")
                             ->orWhere('description', 'like', "%{$search}%");
+                    })
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query->orderBy('name', $direction);
                     }),
-
-                // ── 2. NAMA DIVISI (DESKTOP) ──
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nama Departemen')
-                    ->extraAttributes(['class' => 'ims-mobile-hide'])
-                    ->searchable()
-                    ->sortable(),
 
                 // ── 3. DESKRIPSI (DESKTOP) ──
                 Tables\Columns\TextColumn::make('description')
