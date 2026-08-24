@@ -307,11 +307,12 @@
                 </a>
 
                 <!-- Desktop Navigation Menu -->
-                <div class="hidden lg:flex items-center gap-7">
+                <div class="hidden lg:flex items-center gap-6 xl:gap-7">
                     <a href="#beranda" class="text-xs font-bold text-slate-700 hover:text-brand-600 transition-colors">Beranda</a>
                     <a href="#coverage" class="text-xs font-bold text-slate-700 hover:text-brand-600 transition-colors">Cek Coverage</a>
                     <a href="#paket" class="text-xs font-bold text-slate-700 hover:text-brand-600 transition-colors">Paket Internet</a>
                     <a href="#keunggulan" class="text-xs font-bold text-slate-700 hover:text-brand-600 transition-colors">Keunggulan</a>
+                    <a href="#testimoni" class="text-xs font-bold text-slate-700 hover:text-brand-600 transition-colors">Testimoni</a>
                     <a href="#faq" class="text-xs font-bold text-slate-700 hover:text-brand-600 transition-colors">FAQ</a>
                     <a href="#kontak" class="text-xs font-bold text-slate-700 hover:text-brand-600 transition-colors">Kontak</a>
                 </div>
@@ -354,6 +355,7 @@
                 📱 Layanan Pelanggan (Portal Mandiri)
             </a>
             <a @click="mobileMenuOpen = false" href="#keunggulan" class="block px-4 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100">Keunggulan Kami</a>
+            <a @click="mobileMenuOpen = false" href="#testimoni" class="block px-4 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100">Testimoni Pelanggan</a>
             <a @click="mobileMenuOpen = false" href="#faq" class="block px-4 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100">Tanya Jawab (FAQ)</a>
             <a @click="mobileMenuOpen = false" href="#kontak" class="block px-4 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100">Kontak</a>
             <div class="pt-1.5">
@@ -904,55 +906,209 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 7. FAQ SECTION (ACCORDION) ──
+         ── 7. TESTIMONI PELANGGAN (CUSTOMER REVIEWS & RATING) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="faq" class="py-20 bg-white relative border-t border-slate-200/80">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="testimoni" class="py-20 bg-white relative border-t border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="text-center mb-14">
-                <span class="px-4 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-xs font-black uppercase tracking-wider inline-block mb-3">
-                    Pertanyaan Umum
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200/80 text-amber-700 text-xs font-black uppercase tracking-wider inline-flex items-center gap-1.5 mb-3 shadow-sm">
+                    <span>⭐ KATA PELANGGAN</span>
                 </span>
                 <h2 class="font-heading text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                    Frequently Asked Questions (FAQ)
+                    Dipercaya Oleh Ribuan Rumah &amp; Bisnis
                 </h2>
                 <p class="text-sm text-slate-600 mt-2">
-                    Jawaban atas hal-hal yang sering ditanyakan seputar layanan kami.
+                    Simak pengalaman nyata pelanggan IMS ONE dalam menikmati internet fiber super stabil.
                 </p>
             </div>
 
-            <div class="space-y-4">
+            <!-- Testimonial Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                
+                <!-- Review 1 -->
+                <div class="light-card rounded-3xl p-6 sm:p-8 light-card-hover flex flex-col justify-between border-slate-200 shadow-sm">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-1 text-amber-400 text-sm">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                            <span class="text-slate-400 text-xs ml-1 font-bold">5.0</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+                            "Kecepatan 100 Mbps simetris sangat memuaskan. Live stream 4K 60fps tanpa drop frame sama sekali. Latency ultra low 3ms sangat stabil untuk main game online e-sport!"
+                        </p>
+                    </div>
+
+                    <div class="pt-6 mt-6 border-t border-slate-100 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-cyan-400 text-white font-black text-sm flex items-center justify-center shadow-md">
+                            DP
+                        </div>
+                        <div>
+                            <strong class="font-heading text-sm font-bold text-slate-900 block">Dian Pratama</strong>
+                            <span class="text-[11px] text-slate-500 block">Content Creator • Dago, Bandung</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="light-card rounded-3xl p-6 sm:p-8 light-card-hover flex flex-col justify-between border-slate-200 shadow-sm ring-1 ring-brand-500/20 bg-gradient-to-b from-white to-sky-50/20">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-1 text-amber-400 text-sm">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                            <span class="text-slate-400 text-xs ml-1 font-bold">5.0</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+                            "Jaringan fiber optic dedicated IMS ONE sangat bisa diandalkan untuk push server dan download file puluhan GB setiap hari. SLA 99.8% terbukti nyata tanpa putus!"
+                        </p>
+                    </div>
+
+                    <div class="pt-6 mt-6 border-t border-slate-100 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 text-white font-black text-sm flex items-center justify-center shadow-md">
+                            DK
+                        </div>
+                        <div>
+                            <strong class="font-heading text-sm font-bold text-slate-900 block">PT Digital Kreasi Mandiri</strong>
+                            <span class="text-[11px] text-slate-500 block">Startup Agency • Braga, Bandung</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="light-card rounded-3xl p-6 sm:p-8 light-card-hover flex flex-col justify-between border-slate-200 shadow-sm">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-1 text-amber-400 text-sm">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                            <span class="text-slate-400 text-xs ml-1 font-bold">5.0</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+                            "Anak-anak sekolah online dan suami meeting WFH barengan tidak pernah lemot. Tagihan bulanan transparan tanpa biaya siluman. Sangat direkomendasikan untuk keluarga!"
+                        </p>
+                    </div>
+
+                    <div class="pt-6 mt-6 border-t border-slate-100 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-400 text-white font-black text-sm flex items-center justify-center shadow-md">
+                            SR
+                        </div>
+                        <div>
+                            <strong class="font-heading text-sm font-bold text-slate-900 block">Ibu Siti Rahmawati</strong>
+                            <span class="text-[11px] text-slate-500 block">Rumah Tangga &amp; WFH • Buahbatu</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Trust Badge Rating -->
+            <div class="mt-12 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center flex items-center justify-center flex-wrap gap-2 text-xs text-slate-600">
+                <span class="text-amber-500 font-black">★★★★★ 4.9/5.0</span>
+                <span class="text-slate-300">•</span>
+                <span>Tingkat kepuasan dari <strong>1.200+ pelanggan aktif</strong> terverifikasi di Jawa Barat.</span>
+            </div>
+
+        </div>
+    </section>
+
+    {{-- ══════════════════════════════════════════════════════════════
+         ── 8. FAQ SECTION (CLEAN MODERN ACCORDION) ──
+         ══════════════════════════════════════════════════════════════ --}}
+    <section id="faq" class="py-20 light-glow-bg relative border-t border-slate-200/80">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="px-3.5 py-1.5 rounded-full bg-sky-50 border border-sky-200/80 text-sky-700 text-xs font-black uppercase tracking-wider inline-block mb-3 shadow-sm">
+                    TANYA JAWAB
+                </span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                    Frequently Asked Questions
+                </h2>
+                <p class="text-sm text-slate-600 mt-2">
+                    Jawaban praktis dan transparan atas hal-hal yang sering ditanyakan seputar layanan IMS ONE.
+                </p>
+            </div>
+
+            <div class="space-y-3.5">
                 
                 <!-- FAQ Item 1 -->
-                <div class="light-card rounded-2xl border border-slate-200 overflow-hidden">
-                    <button @click="activeFaq = (activeFaq === 1 ? null : 1)" class="w-full px-6 py-4.5 text-left flex items-center justify-between text-slate-900 font-bold text-sm sm:text-base hover:bg-slate-50 transition-colors">
-                        <span>Berapa lama proses pemasangan internet baru setelah mendaftar?</span>
-                        <span x-text="activeFaq === 1 ? '−' : '+'" class="text-brand-600 font-mono text-xl font-bold"></span>
+                <div class="bg-white rounded-2xl border transition-all duration-200 overflow-hidden shadow-sm" :class="activeFaq === 1 ? 'border-brand-400 ring-2 ring-brand-400/15' : 'border-slate-200 hover:border-slate-300'">
+                    <button @click="activeFaq = (activeFaq === 1 ? null : 1)" class="w-full px-5 sm:px-6 py-4.5 text-left flex items-center justify-between gap-4 transition-colors">
+                        <span class="font-heading text-sm sm:text-base font-bold text-slate-900">
+                            Berapa lama proses pemasangan internet baru setelah mendaftar?
+                        </span>
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0" :class="activeFaq === 1 ? 'bg-brand-50 text-brand-600 rotate-180' : 'bg-slate-100 text-slate-500 rotate-0'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
                     </button>
-                    <div x-show="activeFaq === 1" x-cloak class="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
-                        Proses survei dan pemasangan biasanya diselesaikan dalam waktu <strong>1 hingga 2 hari kerja</strong> setelah jadwal disepakati bersama pelanggan.
+                    <div x-show="activeFaq === 1" x-cloak x-collapse class="px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+                        Proses verifikasi alamat dan penarikan kabel fiber optik diselesaikan dalam waktu <strong>1 hingga 2 hari kerja</strong> setelah jadwal survei disetujui. Tim teknisi kami akan mengonfirmasi kedatangan terlebih dahulu melalui WhatsApp.
                     </div>
                 </div>
 
                 <!-- FAQ Item 2 -->
-                <div class="light-card rounded-2xl border border-slate-200 overflow-hidden">
-                    <button @click="activeFaq = (activeFaq === 2 ? null : 2)" class="w-full px-6 py-4.5 text-left flex items-center justify-between text-slate-900 font-bold text-sm sm:text-base hover:bg-slate-50 transition-colors">
-                        <span>Apakah ada batas kuota harian atau bulanan (FUP)?</span>
-                        <span x-text="activeFaq === 2 ? '−' : '+'" class="text-brand-600 font-mono text-xl font-bold"></span>
+                <div class="bg-white rounded-2xl border transition-all duration-200 overflow-hidden shadow-sm" :class="activeFaq === 2 ? 'border-brand-400 ring-2 ring-brand-400/15' : 'border-slate-200 hover:border-slate-300'">
+                    <button @click="activeFaq = (activeFaq === 2 ? null : 2)" class="w-full px-5 sm:px-6 py-4.5 text-left flex items-center justify-between gap-4 transition-colors">
+                        <span class="font-heading text-sm sm:text-base font-bold text-slate-900">
+                            Apakah ada batas kuota harian atau bulanan (FUP)?
+                        </span>
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0" :class="activeFaq === 2 ? 'bg-brand-50 text-brand-600 rotate-180' : 'bg-slate-100 text-slate-500 rotate-0'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
                     </button>
-                    <div x-show="activeFaq === 2" x-cloak class="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
-                        Tidak ada. Semua paket internet IMS ONE adalah <strong>True Unlimited tanpa FUP</strong>, sehingga kecepatan internet tetap maksimal tanpa penurunan batas kuota.
+                    <div x-show="activeFaq === 2" x-cloak x-collapse class="px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+                        Sama sekali tidak ada. Semua paket internet IMS ONE berstatus <strong>True Unlimited tanpa FUP</strong>, sehingga kecepatan internet Anda tidak akan pernah diturunkan berapapun gigabyte yang telah Anda gunakan dalam sebulan.
                     </div>
                 </div>
 
                 <!-- FAQ Item 3 -->
-                <div class="light-card rounded-2xl border border-slate-200 overflow-hidden">
-                    <button @click="activeFaq = (activeFaq === 3 ? null : 3)" class="w-full px-6 py-4.5 text-left flex items-center justify-between text-slate-900 font-bold text-sm sm:text-base hover:bg-slate-50 transition-colors">
-                        <span>Bagaimana cara melaporkan jika terjadi kendala koneksi atau LOS?</span>
-                        <span x-text="activeFaq === 3 ? '−' : '+'" class="text-brand-600 font-mono text-xl font-bold"></span>
+                <div class="bg-white rounded-2xl border transition-all duration-200 overflow-hidden shadow-sm" :class="activeFaq === 3 ? 'border-brand-400 ring-2 ring-brand-400/15' : 'border-slate-200 hover:border-slate-300'">
+                    <button @click="activeFaq = (activeFaq === 3 ? null : 3)" class="w-full px-5 sm:px-6 py-4.5 text-left flex items-center justify-between gap-4 transition-colors">
+                        <span class="font-heading text-sm sm:text-base font-bold text-slate-900">
+                            Bagaimana cara melaporkan jika terjadi kendala koneksi atau lampu LOS merah?
+                        </span>
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0" :class="activeFaq === 3 ? 'bg-brand-50 text-brand-600 rotate-180' : 'bg-slate-100 text-slate-500 rotate-0'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
                     </button>
-                    <div x-show="activeFaq === 3" x-cloak class="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
-                        Anda dapat masuk ke menu <strong>Layanan Pelanggan</strong> menggunakan nomor HP WhatsApp Anda, lalu pilih tab <em>Laporkan Gangguan</em> untuk langsung terhubung dengan tim teknisi NOC kami.
+                    <div x-show="activeFaq === 3" x-cloak x-collapse class="px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+                        Pelanggan cukup masuk ke menu <strong>Layanan Pelanggan</strong> menggunakan nomor HP WhatsApp terdaftar, lalu pilih tab <em>Laporkan Gangguan</em>. Tiket penanganan teknisi akan langsung dibuat dan dipantau secara real-time.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-white rounded-2xl border transition-all duration-200 overflow-hidden shadow-sm" :class="activeFaq === 4 ? 'border-brand-400 ring-2 ring-brand-400/15' : 'border-slate-200 hover:border-slate-300'">
+                    <button @click="activeFaq = (activeFaq === 4 ? null : 4)" class="w-full px-5 sm:px-6 py-4.5 text-left flex items-center justify-between gap-4 transition-colors">
+                        <span class="font-heading text-sm sm:text-base font-bold text-slate-900">
+                            Apakah harga paket sudah termasuk PPN dan sewa modem router WiFi?
+                        </span>
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0" :class="activeFaq === 4 ? 'bg-brand-50 text-brand-600 rotate-180' : 'bg-slate-100 text-slate-500 rotate-0'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div x-show="activeFaq === 4" x-cloak x-collapse class="px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+                        Ya, harga yang tertera sudah bersifat <strong>All-in Net</strong>, mencakup biaya pemakaian internet bulanan, pajak PPN, dan fasilitas peminjaman unit Optical Network Terminal (ONT) WiFi 6 bergaransi penuh selama masa berlangganan.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="bg-white rounded-2xl border transition-all duration-200 overflow-hidden shadow-sm" :class="activeFaq === 5 ? 'border-brand-400 ring-2 ring-brand-400/15' : 'border-slate-200 hover:border-slate-300'">
+                    <button @click="activeFaq = (activeFaq === 5 ? null : 5)" class="w-full px-5 sm:px-6 py-4.5 text-left flex items-center justify-between gap-4 transition-colors">
+                        <span class="font-heading text-sm sm:text-base font-bold text-slate-900">
+                            Metode pembayaran apa saja yang didukung untuk tagihan bulanan?
+                        </span>
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0" :class="activeFaq === 5 ? 'bg-brand-50 text-brand-600 rotate-180' : 'bg-slate-100 text-slate-500 rotate-0'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div x-show="activeFaq === 5" x-cloak x-collapse class="px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+                        Kami mendukung pembayaran online otomatis melalui QRIS (Semua E-Wallet), Virtual Account Bank (BCA, Mandiri, BRI, BNI, Permata), serta pembayaran tunai di kasir gerai Indomaret &amp; Alfamart terdekat.
                     </div>
                 </div>
 
