@@ -111,6 +111,17 @@
             animation: pulseGreen 2s infinite;
         }
 
+        /* Leaflet Z-Index Isolations */
+        #landing-gis-map {
+            z-index: 10 !important;
+            position: relative;
+        }
+        .leaflet-pane {
+            z-index: 10 !important;
+        }
+        .leaflet-top, .leaflet-bottom {
+            z-index: 20 !important;
+        }
         .leaflet-container {
             font-family: 'Plus Jakarta Sans', sans-serif !important;
             border-radius: 1.25rem;
@@ -283,7 +294,7 @@
     {{-- ══════════════════════════════════════════════════════════════
          ── 1. HEADER & NAVBAR (SLEEK, CLEAN GLASS) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/80 transition-all duration-300 shadow-sm">
+    <nav class="fixed top-0 left-0 right-0 z-[100] bg-white/90 backdrop-blur-xl border-b border-slate-200/80 transition-all duration-300 shadow-sm" style="z-index: 100 !important;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14 sm:h-16">
                 
@@ -1316,7 +1327,7 @@
     {{-- ══════════════════════════════════════════════════════════════
          ── 12. MODAL REGISTRASI PASANG BARU ──
          ══════════════════════════════════════════════════════════════ --}}
-    <div x-show="showRegisterModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+    <div x-show="showRegisterModal" x-cloak class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm" style="z-index: 200 !important;">
         <div @click.away="showRegisterModal = false" class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4 relative">
             <button @click="showRegisterModal = false" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
 
