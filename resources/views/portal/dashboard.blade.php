@@ -385,10 +385,6 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
                         <div class="p-3 rounded-xl bg-white/5 border border-white/5">
-                            <span class="text-[10.5px] text-slate-400 block mb-0.5">NIK Penduduk</span>
-                            <strong class="text-white font-mono font-bold">{{ $subscription->customer_nik ?? '-' }}</strong>
-                        </div>
-                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
                             <span class="text-[10.5px] text-slate-400 block mb-0.5">Nama Lengkap Pelanggan</span>
                             <strong class="text-white font-bold">{{ $subscription->customer_name }}</strong>
                         </div>
