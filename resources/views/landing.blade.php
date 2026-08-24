@@ -1357,12 +1357,12 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 5. ALUR PEMASANGAN (LIGHT BLUE #F5FAFF + PROGRESS TIMELINE) ──
+         ── 5. ALUR PEMASANGAN (CLEAN WHITE + PROGRESS TIMELINE) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section class="py-16 sm:py-20 bg-[#F5FAFF] border-b border-sky-200/80 relative overflow-hidden">
+    <section class="py-16 sm:py-20 bg-white border-b border-slate-200 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14 pb-6 border-b border-sky-200/80">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14 pb-6 border-b border-slate-200">
                 <div>
                     <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">PROSES PENDAFTARAN</span>
                     <h2 class="font-heading text-2xl sm:text-3xl font-black text-navy-900 tracking-tight">
@@ -1487,9 +1487,9 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 6. KEUNGGULAN (EDITORIAL NUMBERED + OPTICAL BACKBONE VISUAL) ──
+         ── 6. KEUNGGULAN (LIGHT BLUE #F5FAFF + OPTICAL BACKBONE VISUAL) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="keunggulan" class="py-16 sm:py-24 bg-white border-b border-slate-200">
+    <section id="keunggulan" class="py-16 sm:py-24 bg-[#F5FAFF] border-b border-sky-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
@@ -1921,16 +1921,16 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 10. KONTAK & KANTOR OPERASIONAL ──
+         ── 10. KONTAK & KANTOR OPERASIONAL (LIGHT BLUE #F4FAFF + GRADIENT CARD) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="kontak" class="py-16 sm:py-20 bg-white border-b border-slate-200">
+    <section id="kontak" class="py-16 sm:py-20 bg-[#F4FAFF] border-b border-sky-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
                 
-                <!-- Left: Contact info -->
-                <div class="lg:col-span-6 space-y-6">
-                    <div class="space-y-1.5">
+                <!-- Left: Kantor Operasional (Clean White Card) -->
+                <div class="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col justify-between space-y-6">
+                    <div class="space-y-2">
                         <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block">HUBUNGI KAMI</span>
                         <h2 class="font-heading text-2xl sm:text-3xl font-black text-navy-900 tracking-tight">
                             Kantor Operasional &amp; Bantuan
@@ -1940,24 +1940,24 @@
                         </p>
                     </div>
 
-                    <div class="space-y-4 text-xs">
-                        <div class="border-t border-slate-100 pt-3">
-                            <span class="font-mono font-bold text-ink-subtle uppercase tracking-wider block mb-1">KANTOR PUSAT</span>
+                    <div class="space-y-4 text-xs divide-y divide-slate-100 border-t border-slate-100">
+                        <div class="pt-4">
+                            <span class="font-mono font-bold text-ink-subtle uppercase tracking-wider block mb-1">🏢 KANTOR PUSAT</span>
                             <strong class="font-heading text-sm text-navy-900 block font-bold">PT Media Sarana Network</strong>
                             <p class="text-ink-muted mt-0.5">Jl. Braga No. 109, Sumur Bandung, Kota Bandung, Jawa Barat 40111</p>
                             <span class="text-[11px] text-ink-subtle block mt-1">Senin – Sabtu, 08:00 – 17:00 WIB</span>
                         </div>
 
-                        <div class="border-t border-slate-100 pt-3">
-                            <span class="font-mono font-bold text-ink-subtle uppercase tracking-wider block mb-1">WHATSAPP RESMI</span>
+                        <div class="pt-4">
+                            <span class="font-mono font-bold text-ink-subtle uppercase tracking-wider block mb-1">💬 WHATSAPP RESMI</span>
                             <a href="https://wa.me/6281234567890" target="_blank" class="font-heading text-sm font-black text-navy-900 hover:text-corporate-blue transition-colors">
                                 +62 812-3456-7890
                             </a>
                             <p class="text-ink-muted mt-0.5">Pendaftaran, billing, dan eskalasi penanganan teknisi (24/7)</p>
                         </div>
 
-                        <div class="border-t border-slate-100 pt-3">
-                            <span class="font-mono font-bold text-ink-subtle uppercase tracking-wider block mb-1">EMAIL SUPPORT</span>
+                        <div class="pt-4">
+                            <span class="font-mono font-bold text-ink-subtle uppercase tracking-wider block mb-1">✉️ EMAIL SUPPORT</span>
                             <a href="mailto:support@imsone.net.id" class="font-heading text-sm font-bold text-navy-900 hover:text-corporate-blue transition-colors">
                                 support@imsone.net.id
                             </a>
@@ -1966,37 +1966,41 @@
                     </div>
                 </div>
 
-                <!-- Right: Quick Consultation Box -->
-                <div class="lg:col-span-6">
-                    <div class="border border-slate-200 rounded-xl p-6 bg-surface-offwhite space-y-4 shadow-sm">
-                        <div class="space-y-1">
-                            <span class="text-[11px] font-bold text-corporate-blue uppercase tracking-wider">KONSULTASI GRATIS</span>
-                            <h3 class="font-heading text-lg font-bold text-navy-900">
-                                Butuh Rekomendasi Paket Internet?
-                            </h3>
-                            <p class="text-xs text-ink-muted leading-relaxed">
-                                Diskusikan kebutuhan bandwidth rumah, kontrakan, gaming, cafe, atau kantor Anda langsung bersama tim sales IMS ONE.
-                            </p>
-                        </div>
+                <!-- Right: Quick Consultation Box (Gradient #0878E5 → #10C8E8 Card) -->
+                <div class="lg:col-span-6 bg-gradient-to-br from-[#0878E5] to-[#10C8E8] text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-sky-300/40 relative overflow-hidden flex flex-col justify-between space-y-6">
+                    
+                    <!-- Ambient Glow -->
+                    <div class="absolute -top-12 -right-12 w-48 h-48 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
 
-                        <div class="pt-2 border-t border-slate-200/80 space-y-2">
-                            <span class="text-[11px] font-medium text-ink-muted block">Pilih topik pertanyaan:</span>
-                            <div class="flex flex-wrap gap-2">
-                                <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20tanya%20promo%20pasang%20baru" target="_blank" class="px-3 py-1.5 rounded bg-white hover:bg-slate-100 border border-slate-200 text-ink-main text-xs font-semibold transition-colors">
-                                    🏷️ Promo Baru
-                                </a>
-                                <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20cek%20coverage%20di%20lokasi%20saya" target="_blank" class="px-3 py-1.5 rounded bg-white hover:bg-slate-100 border border-slate-200 text-ink-main text-xs font-semibold transition-colors">
-                                    📍 Cek Area Lokasi
-                                </a>
-                                <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20solusi%20internet%20bisnis%2Fkantor" target="_blank" class="px-3 py-1.5 rounded bg-white hover:bg-slate-100 border border-slate-200 text-ink-main text-xs font-semibold transition-colors">
-                                    🏢 Internet Bisnis
-                                </a>
-                            </div>
+                    <div class="space-y-3 relative z-10">
+                        <span class="inline-block px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-[11px] font-bold uppercase tracking-wider border border-white/30">
+                            KONSULTASI GRATIS
+                        </span>
+                        <h3 class="font-heading text-2xl sm:text-3xl font-black text-white leading-tight">
+                            Butuh Rekomendasi Paket?
+                        </h3>
+                        <p class="text-xs sm:text-sm text-sky-100 leading-relaxed max-w-lg">
+                            Diskusikan kebutuhan bandwidth rumah, kosan, gaming, cafe, atau kantor Anda langsung bersama tim sales konsultan IMS ONE.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-2 border-t border-white/25 relative z-10">
+                        <span class="text-[11px] font-bold text-sky-100 uppercase tracking-wider block">Pilih topik pertanyaan:</span>
+                        <div class="flex flex-wrap gap-2 text-xs">
+                            <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20tanya%20promo%20pasang%20baru" target="_blank" class="px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white font-bold transition-all">
+                                🏷️ Promo Baru
+                            </a>
+                            <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20cek%20coverage%20di%20lokasi%20saya" target="_blank" class="px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white font-bold transition-all">
+                                📍 Cek Area Lokasi
+                            </a>
+                            <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20solusi%20internet%20bisnis%2Fkantor" target="_blank" class="px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white font-bold transition-all">
+                                🏢 Internet Bisnis
+                            </a>
                         </div>
 
                         <div class="pt-2">
-                            <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20berkonsultasi%20paket%20internet" target="_blank" class="block w-full py-2.5 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs text-center transition-colors shadow-sm">
-                                Mulai Chat WhatsApp Sales &rarr;
+                            <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20berkonsultasi%20paket%20internet" target="_blank" class="block w-full py-3 rounded-xl bg-white hover:bg-slate-100 text-[#061B3A] font-black text-xs sm:text-sm text-center transition-all shadow-lg transform hover:-translate-y-0.5">
+                                Konsultasi Sekarang &rarr;
                             </a>
                         </div>
                     </div>
@@ -2008,75 +2012,75 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 11. FOOTER (4-COLUMN CORPORATE ISP) ──
+         ── 11. FOOTER (4-COLUMN CORPORATE ISP - DEEP NAVY #061B3A) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <footer class="bg-white border-t border-slate-200 pt-16 pb-12 text-xs text-ink-muted">
+    <footer class="bg-[#061B3A] text-slate-300 border-t border-navy-950 pt-16 pb-12 text-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-slate-200">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-navy-800">
                 
                 <!-- Col 1: IMS ONE About (lg:col-span-4) -->
                 <div class="lg:col-span-4 space-y-4">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-lg bg-navy-900 text-white flex items-center justify-center font-bold text-sm shadow-sm relative">
+                        <div class="w-8 h-8 rounded-lg bg-white/10 text-white flex items-center justify-center font-bold text-sm shadow-sm relative border border-white/20">
                             <svg class="w-4 h-4 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                             </svg>
                         </div>
-                        <span class="font-heading text-lg font-bold text-navy-900 tracking-tight">
-                            IMS<span class="text-corporate-blue">ONE</span>
+                        <span class="font-heading text-lg font-bold text-white tracking-tight">
+                            IMS<span class="text-accent-cyan">ONE</span>
                         </span>
                     </div>
 
-                    <p class="text-xs text-ink-muted leading-relaxed max-w-sm">
+                    <p class="text-xs text-slate-300 leading-relaxed max-w-sm">
                         Penyedia layanan internet berbasis serat optik murni (FTTH &amp; Dedicated Bandwidth) berkecepatan tinggi dengan uptime terjamin untuk kebutuhan hunian, bisnis, dan institusi.
                     </p>
 
-                    <div class="text-[11px] text-ink-subtle space-y-1">
-                        <p><strong>PT Media Sarana Network</strong></p>
+                    <div class="text-[11px] text-slate-400 space-y-1">
+                        <p><strong class="text-white">PT Media Sarana Network</strong></p>
                         <p>ISP Berlisensi Resmi Kominfo No. 128/TEL.02.02/2021</p>
                     </div>
                 </div>
 
                 <!-- Col 2: Layanan (lg:col-span-2) -->
                 <div class="lg:col-span-2 space-y-3.5">
-                    <strong class="font-heading text-xs font-bold text-navy-900 uppercase tracking-wider block">Layanan</strong>
+                    <strong class="font-heading text-xs font-bold text-white uppercase tracking-wider block">Layanan</strong>
                     <ul class="space-y-2.5 text-xs">
-                        <li><a href="#paket" class="text-ink-muted hover:text-navy-900 transition-colors">Internet Rumah</a></li>
-                        <li><a href="#paket" class="text-ink-muted hover:text-navy-900 transition-colors">Internet Bisnis</a></li>
-                        <li><a href="#coverage" class="text-ink-muted hover:text-navy-900 transition-colors">Coverage Area</a></li>
-                        <li><a href="#paket" class="text-ink-muted hover:text-navy-900 transition-colors">Paket Internet</a></li>
+                        <li><a href="#paket" class="text-slate-300 hover:text-white transition-colors">Internet Rumah</a></li>
+                        <li><a href="#paket" class="text-slate-300 hover:text-white transition-colors">Internet Bisnis</a></li>
+                        <li><a href="#coverage" class="text-slate-300 hover:text-white transition-colors">Coverage Area</a></li>
+                        <li><a href="#paket" class="text-slate-300 hover:text-white transition-colors">Paket Internet</a></li>
                     </ul>
                 </div>
 
                 <!-- Col 3: Bantuan & Portal (lg:col-span-2) -->
                 <div class="lg:col-span-2 space-y-3.5">
-                    <strong class="font-heading text-xs font-bold text-navy-900 uppercase tracking-wider block">Bantuan</strong>
+                    <strong class="font-heading text-xs font-bold text-white uppercase tracking-wider block">Bantuan</strong>
                     <ul class="space-y-2.5 text-xs">
-                        <li><a href="#faq" class="text-ink-muted hover:text-navy-900 transition-colors">FAQ &amp; Panduan</a></li>
-                        <li><a href="https://wa.me/6281234567890" target="_blank" class="text-ink-muted hover:text-navy-900 transition-colors">Customer Service</a></li>
-                        <li><a href="{{ route('customer.portal') }}" class="text-ink-muted hover:text-navy-900 transition-colors">Lapor Gangguan</a></li>
-                        <li><a href="{{ route('customer.portal') }}" class="text-ink-muted hover:text-navy-900 transition-colors font-medium">Portal Pelanggan</a></li>
+                        <li><a href="#faq" class="text-slate-300 hover:text-white transition-colors">FAQ &amp; Panduan</a></li>
+                        <li><a href="https://wa.me/6281234567890" target="_blank" class="text-slate-300 hover:text-white transition-colors">Customer Service</a></li>
+                        <li><a href="{{ route('customer.portal') }}" class="text-slate-300 hover:text-white transition-colors">Lapor Gangguan</a></li>
+                        <li><a href="{{ route('customer.portal') }}" class="text-accent-cyan hover:underline font-bold">Portal Pelanggan</a></li>
                     </ul>
                 </div>
 
                 <!-- Col 4: Kontak & Operasional (lg:col-span-4) -->
                 <div class="lg:col-span-4 space-y-3.5">
-                    <strong class="font-heading text-xs font-bold text-navy-900 uppercase tracking-wider block">Kontak</strong>
-                    <div class="space-y-2 text-xs text-ink-muted">
+                    <strong class="font-heading text-xs font-bold text-white uppercase tracking-wider block">Kontak</strong>
+                    <div class="space-y-2 text-xs text-slate-300">
                         <p class="leading-relaxed">
-                            <strong class="text-navy-900 block">Alamat Kantor:</strong>
+                            <strong class="text-white block">Alamat Kantor:</strong>
                             Jl. Braga No. 109, Sumur Bandung, Kota Bandung, Jawa Barat 40111
                         </p>
                         <p>
-                            <strong class="text-navy-900">WhatsApp:</strong> 
-                            <a href="https://wa.me/6281234567890" target="_blank" class="text-corporate-blue font-bold hover:underline">+62 812-3456-7890</a>
+                            <strong class="text-white">WhatsApp:</strong> 
+                            <a href="https://wa.me/6281234567890" target="_blank" class="text-[#10C8E8] font-bold hover:underline">+62 812-3456-7890</a>
                         </p>
                         <p>
-                            <strong class="text-navy-900">Email:</strong> 
-                            <a href="mailto:support@imsone.net.id" class="text-corporate-blue font-semibold hover:underline">support@imsone.net.id</a>
+                            <strong class="text-white">Email:</strong> 
+                            <a href="mailto:support@imsone.net.id" class="text-[#10C8E8] font-semibold hover:underline">support@imsone.net.id</a>
                         </p>
-                        <p class="text-[11px] text-ink-subtle">
+                        <p class="text-[11px] text-slate-400">
                             Jam Operasional: Senin – Sabtu, 08:00 – 17:00 WIB (Helpdesk NOC 24/7)
                         </p>
                     </div>
@@ -2085,24 +2089,24 @@
             </div>
 
             <!-- Bottom Copyright & Social Media Icons -->
-            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
                 <p>&copy; {{ date('Y') }} IMS ONE. All Rights Reserved.</p>
                 
-                <div class="flex items-center gap-4 text-ink-subtle">
+                <div class="flex items-center gap-4 text-slate-400">
                     <!-- Instagram -->
-                    <a href="#" class="hover:text-navy-900 transition-colors" title="Instagram">
+                    <a href="#" class="hover:text-white transition-colors" title="Instagram">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     </a>
                     <!-- Facebook -->
-                    <a href="#" class="hover:text-navy-900 transition-colors" title="Facebook">
+                    <a href="#" class="hover:text-white transition-colors" title="Facebook">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.5 5H18V0h-3.808C10.593 0 9 1.582 9 4.615V8z"/></svg>
                     </a>
                     <!-- LinkedIn -->
-                    <a href="#" class="hover:text-navy-900 transition-colors" title="LinkedIn">
+                    <a href="#" class="hover:text-white transition-colors" title="LinkedIn">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/></svg>
                     </a>
                     <!-- Twitter / X -->
-                    <a href="#" class="hover:text-navy-900 transition-colors" title="Twitter/X">
+                    <a href="#" class="hover:text-white transition-colors" title="Twitter/X">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                     </a>
                 </div>
