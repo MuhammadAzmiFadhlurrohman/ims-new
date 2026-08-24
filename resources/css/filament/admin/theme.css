@@ -1910,11 +1910,16 @@ html.dark .ims-so-sales-code {
 .ims-right-form [class*="fi-input-wrp"],
 html.dark .ims-right-form .fi-input-wrp,
 html.dark .ims-right-form [class*="fi-input-wrp"] {
+    display: flex !important;
+    align-items: center !important;
     background: rgba(14, 26, 50, 0.9) !important;
     background-color: rgba(14, 26, 50, 0.9) !important;
-    border: 1.5px solid rgba(56, 189, 248, 0.28) !important;
-    border-radius: 14px !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    border: 1.5px solid rgba(56, 189, 248, 0.3) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+    overflow: hidden !important;
+    height: 44px !important;
+    padding: 0 !important;
 }
 
 .ims-right-form .fi-input-wrp:focus-within,
@@ -1924,15 +1929,63 @@ html.dark .ims-right-form [class*="fi-input-wrp"]:focus-within {
     background: rgba(16, 32, 62, 1) !important;
     background-color: rgba(16, 32, 62, 1) !important;
     border-color: #38bdf8 !important;
-    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25), 0 0 20px rgba(56, 189, 248, 0.3) !important;
+    box-shadow: 0 0 0 3.5px rgba(56, 189, 248, 0.25) !important;
 }
 
 .ims-right-form input,
 .ims-right-form .fi-input,
+.ims-right-form input.fi-input,
 html.dark .ims-right-form input,
-html.dark .ims-right-form .fi-input {
+html.dark .ims-right-form .fi-input,
+html.dark .ims-right-form input.fi-input {
+    flex: 1 1 0% !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
-    background: transparent !important;
+    padding: 0 14px !important;
+    font-size: 13.5px !important;
     font-weight: 600 !important;
+    outline: none !important;
+}
+
+.ims-right-form .fi-input-wrp-suffix,
+.ims-right-form .fi-input-wrp-prefix,
+html.dark .ims-right-form .fi-input-wrp-suffix,
+html.dark .ims-right-form .fi-input-wrp-prefix {
+    border: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.ims-right-form .fi-input-wrp-suffix button,
+.ims-right-form .fi-input-wrp-suffix .fi-icon-btn,
+html.dark .ims-right-form .fi-input-wrp-suffix button,
+html.dark .ims-right-form .fi-input-wrp-suffix .fi-icon-btn {
+    border: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 6px !important;
+    padding: 4px !important;
+    color: #94a3b8 !important;
+    outline: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.ims-right-form .fi-input-wrp-suffix button:hover,
+html.dark .ims-right-form .fi-input-wrp-suffix button:hover {
+    color: #38bdf8 !important;
 }

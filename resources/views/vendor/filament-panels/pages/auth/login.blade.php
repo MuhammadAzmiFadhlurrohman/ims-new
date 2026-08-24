@@ -310,13 +310,17 @@
     /* Input Container with Cyan Glass Border */
     .ims-right-form .fi-input-wrp,
     .ims-right-form [class*="fi-input-wrp"] {
+        display: flex !important;
+        align-items: center !important;
         background: rgba(14, 26, 50, 0.9) !important;
         background-color: rgba(14, 26, 50, 0.9) !important;
-        border: 1.5px solid rgba(56, 189, 248, 0.28) !important;
-        border-radius: 14px !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+        border: 1.5px solid rgba(56, 189, 248, 0.3) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
         padding: 0 !important;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        height: 44px !important;
+        overflow: hidden !important;
+        transition: all 0.2s ease !important;
     }
 
     .ims-right-form .fi-input-wrp:focus-within,
@@ -324,20 +328,25 @@
         background: rgba(16, 32, 62, 1) !important;
         background-color: rgba(16, 32, 62, 1) !important;
         border-color: #38bdf8 !important;
-        box-shadow: 
-            0 0 0 4px rgba(56, 189, 248, 0.25),
-            0 0 20px rgba(56, 189, 248, 0.3) !important;
+        box-shadow: 0 0 0 3.5px rgba(56, 189, 248, 0.25) !important;
     }
 
     .ims-right-form .fi-input-wrp input,
-    .ims-right-form [class*="fi-input-wrp"] input {
-        font-size: 14px !important;
+    .ims-right-form .fi-input-wrp .fi-input,
+    .ims-right-form input.fi-input {
+        flex: 1 1 0% !important;
+        width: 100% !important;
+        height: 100% !important;
+        font-size: 13.5px !important;
         font-weight: 600 !important;
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
-        padding: 12px 16px !important;
+        padding: 0 14px !important;
         background: transparent !important;
+        background-color: transparent !important;
         border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
         outline: none !important;
     }
 
@@ -348,12 +357,36 @@
         font-weight: 500 !important;
     }
 
-    .ims-right-form .fi-input-wrp-suffix button,
-    .ims-right-form .fi-input-wrp-suffix svg {
-        color: #94a3b8 !important;
+    .ims-right-form .fi-input-wrp-suffix,
+    .ims-right-form .fi-input-wrp-prefix {
+        border: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        padding: 0 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
-    .ims-right-form .fi-input-wrp-suffix button:hover svg {
+    .ims-right-form .fi-input-wrp-suffix button,
+    .ims-right-form .fi-input-wrp-suffix .fi-icon-btn {
+        border: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border-radius: 6px !important;
+        padding: 4px !important;
+        color: #94a3b8 !important;
+        outline: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+    }
+
+    .ims-right-form .fi-input-wrp-suffix button:hover,
+    .ims-right-form .fi-input-wrp-suffix .fi-icon-btn:hover {
         color: #38bdf8 !important;
     }
 
