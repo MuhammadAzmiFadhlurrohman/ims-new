@@ -623,185 +623,137 @@
     @endif
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 1. HERO SECTION (VERY LIGHT BLUE #F4FAFF) ──
+         ── 1. HERO SECTION (CLEAN & MATURE CORPORATE ISP HERO) ──
          ══════════════════════════════════════════════════════════════ --}}
     <section id="beranda" class="pt-28 pb-16 lg:pt-36 lg:pb-24 relative overflow-hidden border-b border-slate-200/80 bg-brand-pale">
         
-        {{-- Subtle Monochromatic Blue Glow --}}
+        {{-- Subtle Single Radial Blue Glow behind Visual --}}
         <div class="absolute inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
-            <div class="absolute -top-32 right-0 w-[550px] h-[550px] bg-brand/10 rounded-full blur-3xl"></div>
-            <div class="absolute top-1/3 -left-32 w-[450px] h-[450px] bg-brand-light/15 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/4 right-10 w-[450px] h-[450px] bg-brand/8 rounded-full blur-3xl"></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
                 <!-- Left Content Column -->
                 <div class="lg:col-span-6 space-y-6 text-left">
                     
-                    <!-- Superfast Badge with Blue Pulse -->
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-blue-200/80 shadow-brand-soft">
-                        <span class="w-2.5 h-2.5 rounded-full bg-brand pulse-beacon-blue"></span>
-                        <span class="text-ink-muted text-xs font-semibold">100% Pure Fiber FTTH</span>
-                        <span class="text-slate-300">•</span>
-                        <span class="font-extrabold text-xs text-brand">
-                            Superfast Speed
-                        </span>
+                    <!-- Clean Minimal Badge -->
+                    <div class="inline-flex items-center gap-2 text-xs font-bold text-brand uppercase tracking-wider">
+                        <span class="w-2 h-2 rounded-full bg-brand"></span>
+                        <span>100% Fiber Optic</span>
                     </div>
 
-                    <!-- Main Headline with Blue Focal Accent -->
+                    <!-- Main Headline: No Gradient, Mature Typography with Single Blue Accent -->
                     <div class="space-y-3">
-                        <h1 class="font-heading text-3xl sm:text-4xl lg:text-[46px] xl:text-[50px] font-black text-brand-navy tracking-tight leading-[1.12]">
-                            Internet Fiber <span class="text-brand">Super Cepat</span> untuk Rumah &amp; Bisnis.
+                        <h1 class="font-heading text-3xl sm:text-4xl lg:text-[44px] font-black text-brand-navy tracking-tight leading-[1.18]">
+                            Internet Fiber <span class="text-brand">Cepat</span><br class="hidden sm:inline"> untuk Rumah &amp; Bisnis.
                         </h1>
-                        <p class="text-sm sm:text-base text-ink-muted max-w-xl font-normal leading-relaxed">
-                            Koneksi simetris 1:1 ultra-stabil tanpa batas kuota FUP, latensi ultra-rendah, dan siap mendukung produktivitas digital 24/7.
+                        <p class="text-sm sm:text-base text-ink-muted max-w-lg font-normal leading-relaxed">
+                            Koneksi stabil dengan fiber optik hingga ke lokasi Anda, siap mendukung kebutuhan digital setiap hari.
                         </p>
                     </div>
 
-                    <!-- CTA Buttons: Blue Primary & Crisp White Secondary -->
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
-                        <a href="#coverage" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl btn-brand-primary text-white font-extrabold text-xs sm:text-sm shadow-brand-glow flex items-center justify-center gap-2">
-                            <span>Cek Ketersediaan Area</span>
-                            <span class="text-white font-black">&rarr;</span>
+                    <!-- CTA Buttons: Dominant Primary + Clean Secondary -->
+                    <div class="flex items-center gap-3 pt-1">
+                        <a href="#coverage" class="px-5 py-3 rounded-xl btn-brand-primary text-white font-bold text-xs sm:text-sm shadow-brand-glow flex items-center justify-center gap-1.5 transition-all">
+                            <span>Cek Ketersediaan</span>
+                            <span>&rarr;</span>
                         </a>
 
-                        <a href="#paket" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-300 hover:border-brand text-brand-navy font-bold text-xs sm:text-sm shadow-sm transition-all text-center justify-center flex items-center">
-                            Lihat Pilihan Paket
+                        <a href="#paket" class="px-5 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 hover:border-brand text-brand-navy font-semibold text-xs sm:text-sm transition-all flex items-center justify-center">
+                            Lihat Paket
                         </a>
                     </div>
 
-                    <!-- 3 Stats Below Headline (All Brand Blue) -->
-                    <div class="pt-6 border-t border-slate-200/80 grid grid-cols-3 gap-2 sm:gap-6 text-center sm:text-left">
+                    <!-- 3 Statistics (Clean, Subtle Divider, No Gimmicks) -->
+                    <div class="pt-6 border-t border-slate-200/60 grid grid-cols-3 gap-3 sm:gap-6 text-left">
                         <div>
                             <div class="font-heading text-2xl sm:text-3xl font-black text-brand">1 Gbps</div>
-                            <div class="text-[11px] sm:text-xs text-ink-muted font-semibold mt-0.5">Kecepatan hingga</div>
+                            <div class="text-[11px] sm:text-xs text-ink-muted font-medium mt-0.5">Kecepatan hingga</div>
                         </div>
                         <div>
                             <div class="font-heading text-2xl sm:text-3xl font-black text-brand">100% Fiber</div>
-                            <div class="text-[11px] sm:text-xs text-ink-muted font-semibold mt-0.5">Koneksi Simetris</div>
+                            <div class="text-[11px] sm:text-xs text-ink-muted font-medium mt-0.5">Koneksi simetris</div>
                         </div>
                         <div>
                             <div class="font-heading text-2xl sm:text-3xl font-black text-brand">99.98%</div>
-                            <div class="text-[11px] sm:text-xs text-ink-muted font-semibold mt-0.5">SLA Uptime Aktif</div>
+                            <div class="text-[11px] sm:text-xs text-ink-muted font-medium mt-0.5">SLA uptime aktif</div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Right Visual Column: Living Monochromatic Blue Network Visual -->
-                <div class="lg:col-span-6 relative">
-                    
-                    <!-- Decorative Blue Glow behind Card -->
-                    <div class="absolute -inset-4 bg-brand/10 rounded-3xl blur-2xl pointer-events-none"></div>
-
-                    <div class="relative w-full max-w-lg mx-auto bg-white rounded-3xl border border-blue-100 shadow-brand-card p-4 sm:p-6 overflow-hidden">
+                <!-- Right Visual Column: Pure Authentic Fiber Infrastructure Schematic -->
+                <div class="lg:col-span-6">
+                    <div class="relative w-full max-w-md mx-auto bg-white/90 backdrop-blur-sm rounded-2xl border border-blue-100 p-6 sm:p-8 shadow-brand-soft">
                         
-                        <!-- Top Header: Title & Responsive Price Badge -->
-                        <div class="flex items-center justify-between pb-3 mb-2 border-b border-slate-100 gap-2">
-                            <div class="flex items-center gap-1.5 min-w-0">
-                                <span class="w-2.5 h-2.5 rounded-full bg-brand pulse-beacon-blue shrink-0"></span>
-                                <span class="font-heading text-xs sm:text-sm font-bold text-brand-navy truncate">Transmisi Fiber FTTH Direct</span>
-                            </div>
-                            <span class="text-[10px] sm:text-[11px] font-black px-3 py-1 rounded-full bg-brand text-white whitespace-nowrap shadow-sm shrink-0">
-                                Mulai 175rb/bln
-                            </span>
+                        <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+                            <span class="text-[11px] font-mono font-bold text-brand uppercase tracking-wider">IMS ONE NETWORK</span>
+                            <span class="text-[11px] font-mono text-ink-muted">Topology • Active</span>
                         </div>
 
-                        <!-- SVG Network Diagram (Monochromatic Blue) -->
-                        <div class="relative w-full h-[230px] sm:h-[270px]">
+                        <!-- Schematic Topology Flow (CORE → FIBER → ODP → ENDPOINT) -->
+                        <div class="space-y-4 relative">
                             
-                            <svg class="w-full h-full" viewBox="0 0 460 260" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                                
-                                <defs>
-                                    <!-- Monochromatic Blue Gradient for Cable -->
-                                    <linearGradient id="monochromeBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stop-color="#062B5C"/>
-                                        <stop offset="50%" stop-color="#0878E5"/>
-                                        <stop offset="100%" stop-color="#6FC4FF"/>
-                                    </linearGradient>
-                                </defs>
-
-                                <!-- Background Grid Subtle Hairlines -->
-                                <line x1="60" y1="20" x2="60" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
-                                <line x1="230" y1="20" x2="230" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
-                                <line x1="400" y1="20" x2="400" y2="240" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3 3"/>
-
-                                <!-- Glowing Cable 1: NOC Core (Dark Blue) -> ODP Box (Brand Blue) -->
-                                <path d="M 70 70 Q 145 70 225 125" stroke="#E2E8F0" stroke-width="4" fill="none" stroke-linecap="round"/>
-                                <path d="M 70 70 Q 145 70 225 125" stroke="url(#monochromeBlueGrad)" stroke-width="3" fill="none" stroke-linecap="round" class="animate-fiber-flow-blue"/>
-
-                                <!-- Glowing Cable 2: ODP Box -> Customer Home -->
-                                <path d="M 235 135 Q 315 150 395 175" stroke="#E2E8F0" stroke-width="4" fill="none" stroke-linecap="round"/>
-                                <path d="M 235 135 Q 315 150 395 175" stroke="url(#monochromeBlueGrad)" stroke-width="3" fill="none" stroke-linecap="round" class="animate-fiber-flow-blue"/>
-
-                                <!-- Secondary Fiber Branch -->
-                                <path d="M 235 120 Q 315 80 395 65" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="4 4" fill="none"/>
-                                <path d="M 235 120 Q 315 80 395 65" stroke="#0878E5" stroke-width="2" fill="none" class="animate-fiber-flow-blue" opacity="0.7"/>
-
-                                <!-- WiFi Expanding Waves from Smart House (Blue) -->
-                                <circle cx="395" cy="175" r="24" fill="none" stroke="#0878E5" stroke-width="1.8" class="animate-wifi-wave-blue" opacity="0.6"/>
-                                <circle cx="395" cy="175" r="40" fill="none" stroke="#6FC4FF" stroke-width="1.2" class="animate-wifi-wave-blue" opacity="0.3" style="animation-delay: 0.9s;"/>
-
-                            </svg>
-
-                            <!-- Node 1: Blue Node — IMS ONE Core NOC (Top-Left) -->
-                            <div class="absolute top-1 left-1 sm:left-2 flex flex-col items-center">
-                                <div class="w-11 h-11 sm:w-12 sm:h-12 p-2 rounded-2xl bg-brand-deep text-white shadow-md shadow-brand/20 border-2 border-white flex items-center justify-center relative">
-                                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-brand-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
-                                    </svg>
-                                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-brand rounded-full border-2 border-white pulse-beacon-blue"></span>
+                            <!-- Node 1: IMS ONE CORE -->
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-brand-deep text-brand-light flex items-center justify-center font-mono font-black text-xs shrink-0 border border-white/20 shadow-sm">
+                                    NOC
                                 </div>
-                                <span class="font-heading text-[10px] sm:text-[11px] font-black text-brand-navy mt-0.5 block">IMS ONE Core</span>
-                                <span class="text-[8.5px] sm:text-[9px] font-mono text-brand font-bold">10G NOC</span>
+                                <div>
+                                    <strong class="font-heading text-xs sm:text-sm font-bold text-brand-navy block">IMS ONE Core</strong>
+                                    <span class="text-[11px] text-ink-muted block">Direct backbone transmission</span>
+                                </div>
                             </div>
 
-                            <!-- Top-Right 4K Stream Tag -->
-                            <div class="absolute top-1 right-1 sm:right-2 bg-brand text-white px-2 py-0.5 sm:py-1 rounded-lg text-[8.5px] sm:text-[9.5px] font-mono shadow-sm flex items-center gap-1 border border-white/20">
-                                <span>📱 4K Stream</span>
-                                <span class="text-brand-light font-bold">✓</span>
+                            <!-- Connecting Line 1 (Fiber Optic) -->
+                            <div class="flex items-center gap-3.5 pl-5">
+                                <div class="w-0.5 h-7 bg-brand/50 relative">
+                                    <span class="absolute top-1/2 -translate-y-1/2 -left-1 w-2.5 h-2.5 rounded-full bg-brand pulse-beacon-blue"></span>
+                                </div>
+                                <span class="text-[10px] font-mono text-brand font-bold uppercase tracking-wider">Fiber Optic Trunk</span>
                             </div>
 
-                            <!-- Node 2: ODP Distribution (Center) -->
-                            <div class="absolute top-[48%] left-[50%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-brand text-white shadow-md shadow-brand/20 border-2 border-white flex items-center justify-center relative">
-                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                                    </svg>
-                                    <span class="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-brand-light rounded-full border-2 border-white"></span>
+                            <!-- Node 2: ODP Distribution Point -->
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-brand text-white flex items-center justify-center font-mono font-black text-xs shrink-0 shadow-sm">
+                                    ODP
                                 </div>
-                                <span class="font-heading text-[9.5px] sm:text-[10.5px] font-black text-brand-navy mt-0.5">ODP Splitter</span>
-                                <span class="text-[8px] sm:text-[8.5px] font-mono text-brand bg-brand-soft px-1.5 rounded font-bold">100% Fiber</span>
+                                <div>
+                                    <strong class="font-heading text-xs sm:text-sm font-bold text-brand-navy block">ODP Distribution Point</strong>
+                                    <span class="text-[11px] text-ink-muted block">Cluster splitter fiber optik</span>
+                                </div>
                             </div>
 
-                            <!-- Node 3: Rumah Pelanggan (Bottom-Right) -->
-                            <div class="absolute bottom-1 right-1 sm:right-2 flex flex-col items-center">
-                                <div class="w-13 h-13 sm:w-15 sm:h-15 rounded-2xl bg-white border-2 border-brand shadow-md p-1.5 flex flex-col items-center justify-center relative">
-                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-brand-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                                    </svg>
-                                    <div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-brand text-white flex items-center justify-center shadow-md">
-                                        <svg class="w-2.5 h-2.5 text-white font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01"/>
-                                        </svg>
-                                    </div>
+                            <!-- Connecting Line 2 (Drop Core) -->
+                            <div class="flex items-center gap-3.5 pl-5">
+                                <div class="w-0.5 h-7 bg-brand/50 relative">
+                                    <span class="absolute top-1/2 -translate-y-1/2 -left-1 w-2.5 h-2.5 rounded-full bg-brand pulse-beacon-blue"></span>
                                 </div>
-                                <span class="font-heading text-[10px] sm:text-xs font-black text-brand-navy mt-0.5">Rumah Pelanggan</span>
-                                <span class="text-[8px] sm:text-[9px] font-bold text-brand flex items-center gap-1">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
-                                    WiFi 6 Gigabit
-                                </span>
+                                <span class="text-[10px] font-mono text-brand font-bold uppercase tracking-wider">Dropcore FTTH</span>
+                            </div>
+
+                            <!-- Node 3: Customer Endpoints (Home & Business) -->
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-brand-soft text-brand flex items-center justify-center font-bold text-sm shrink-0 border border-blue-200">
+                                    🏠
+                                </div>
+                                <div>
+                                    <strong class="font-heading text-xs sm:text-sm font-bold text-brand-navy block">Rumah &amp; Bisnis Pelanggan</strong>
+                                    <span class="text-[11px] text-ink-muted block">Koneksi simetris aktif</span>
+                                </div>
                             </div>
 
                         </div>
 
-                        <!-- Bottom Telemetry Banner (Transmission Info) -->
-                        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-[9.5px] sm:text-[11px] text-ink-muted">
-                            <span class="flex items-center gap-1 font-medium">
-                                <span class="text-brand-navy font-bold">IMS ONE</span> &rarr; <span class="text-brand font-bold">Fiber Optic</span> &rarr; <span class="text-brand font-bold">Pelanggan</span>
+                        <!-- Clean Footer Note -->
+                        <div class="mt-6 pt-3.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-ink-muted font-mono">
+                            <span class="flex items-center gap-1.5 font-bold text-brand">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                                100% Pure Fiber FTTH
                             </span>
-                            <span class="font-bold text-brand-navy whitespace-nowrap">True Unlimited</span>
+                            <span>Direct Endpoint</span>
                         </div>
 
                     </div>
