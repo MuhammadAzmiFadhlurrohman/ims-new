@@ -421,7 +421,7 @@
                     }
                 },
 
-                connectToNearestOdp(userLat, userLng, userLabel) {
+                async connectToNearestOdp(userLat, userLng, userLabel) {
                     if (!this.mapInstance) return;
 
                     // Remove previous line and user marker
@@ -450,11 +450,11 @@
                         });
                     }
 
-                    const distMeters = nearestOdp ? Math.round(minDistance * 111000) : 120;
+                    const approxDistMeters = nearestOdp ? Math.round(minDistance * 111000) : 120;
                     this.nearestOdpInfo = nearestOdp ? {
                         name: nearestOdp.name,
                         code: nearestOdp.code,
-                        distance: distMeters > 0 ? distMeters : 85
+                        distance: approxDistMeters > 0 ? approxDistMeters : 85
                     } : null;
 
                     // Create User Marker with pulsating house icon
@@ -480,76 +480,138 @@
                         </div>
                     `).openPopup();
 
-                    if (nearestOdp) {
-                        this.connectionLineLayer = L.layerGroup().addTo(this.mapInstance);
+                    if (!nearestOdp) {
+                        this.mapInstance.flyTo([userLat, userLng], 15);
+                        return;
+                    }
 
-                        // 1. Soft Cyan Glow under-cable
-                        const glowLine = L.polyline([[userLat, userLng], [userLat, userLng]], {
-                            color: '#55C7FF',
-                            weight: 7,
-                            opacity: 0.5,
-                            lineCap: 'round'
-                        }).addTo(this.connectionLineLayer);
-
-                        // 2. Animated Flowing Dashed Fiber Cable
-                        const fiberLine = L.polyline([[userLat, userLng], [userLat, userLng]], {
-                            color: '#0878E5',
-                            weight: 3.5,
-                            dashArray: '10, 8',
-                            className: 'animated-fiber-cable',
-                            lineCap: 'round'
-                        }).addTo(this.connectionLineLayer);
-
-                        // 3. Leading Laser Light Spark (Leading head of the expanding fiber cable)
-                        const sparkIcon = L.divIcon({
-                            className: 'fiber-lead-spark',
-                            html: `<div style="width: 14px; height: 14px; border-radius: 50%; background: #55C7FF; border: 2.5px solid #ffffff; box-shadow: 0 0 16px #0878E5; animation: pulseBlue 0.8s infinite;"></div>`,
-                            iconSize: [14, 14],
-                            iconAnchor: [7, 7]
-                        });
-                        const sparkMarker = L.marker([userLat, userLng], { icon: sparkIcon }).addTo(this.connectionLineLayer);
-
-                        // Fit bounds to show both user pin and nearest ODP clearly
-                        const bounds = L.latLngBounds([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]]);
-                        this.mapInstance.fitBounds(bounds.pad(0.35), {
-                            animate: true,
-                            duration: 1.0
-                        });
-
-                        // Progressive Line Propagation Animation ("Menjalar Maju")
-                        const startTime = performance.now();
-                        const duration = 1100; // 1.1 seconds progressive propagation
-
-                        const animatePropagation = (currentTime) => {
-                            const elapsed = currentTime - startTime;
-                            const progress = Math.min(elapsed / duration, 1);
-                            
-                            // Smooth easeOutCubic interpolation
-                            const ease = 1 - Math.pow(1 - progress, 3);
-
-                            const curLat = userLat + ease * (nearestOdp.lat - userLat);
-                            const curLng = userLng + ease * (nearestOdp.lng - userLng);
-
-                            glowLine.setLatLngs([[userLat, userLng], [curLat, curLng]]);
-                            fiberLine.setLatLngs([[userLat, userLng], [curLat, curLng]]);
-                            sparkMarker.setLatLng([curLat, curLng]);
-
-                            if (progress < 1) {
-                                requestAnimationFrame(animatePropagation);
-                            } else {
-                                // Line reached destination ODP
-                                glowLine.setLatLngs([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]]);
-                                fiberLine.setLatLngs([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]]);
-                                if (sparkMarker && this.connectionLineLayer.hasLayer(sparkMarker)) {
-                                    this.connectionLineLayer.removeLayer(sparkMarker);
+                    // Fetch Real Street Route (Mengikuti Jalan Raya/Gang)
+                    let routeCoords = [];
+                    try {
+                        const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${nearestOdp.lng},${nearestOdp.lat}?overview=full&geometries=geojson`;
+                        const ctrl = new AbortController();
+                        const timeoutId = setTimeout(() => ctrl.abort(), 2500);
+                        const res = await fetch(osrmUrl, { signal: ctrl.signal });
+                        clearTimeout(timeoutId);
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (data.routes && data.routes[0] && data.routes[0].geometry) {
+                                routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                                if (data.routes[0].distance) {
+                                    this.nearestOdpInfo.distance = Math.round(data.routes[0].distance);
                                 }
                             }
-                        };
-
-                        requestAnimationFrame(animatePropagation);
-                    } else {
-                        this.mapInstance.flyTo([userLat, userLng], 15);
+                        }
+                    } catch (e) {
+                        console.log('OSRM routing fallback to street turns:', e);
                     }
+
+                    // Fallback: If network offline, construct realistic multi-point street turns
+                    if (!routeCoords || routeCoords.length < 2) {
+                        const midLat = userLat + (nearestOdp.lat - userLat) * 0.55;
+                        const midLng = userLng + (nearestOdp.lng - userLng) * 0.45;
+                        routeCoords = [
+                            [userLat, userLng],
+                            [midLat, userLng],
+                            [midLat, nearestOdp.lng],
+                            [nearestOdp.lat, nearestOdp.lng]
+                        ];
+                    }
+
+                    // Setup connection layer
+                    this.connectionLineLayer = L.layerGroup().addTo(this.mapInstance);
+
+                    // 1. Soft Cyan Glow under-cable
+                    const glowLine = L.polyline([[userLat, userLng]], {
+                        color: '#55C7FF',
+                        weight: 7,
+                        opacity: 0.5,
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }).addTo(this.connectionLineLayer);
+
+                    // 2. Animated Flowing Dashed Fiber Cable
+                    const fiberLine = L.polyline([[userLat, userLng]], {
+                        color: '#0878E5',
+                        weight: 3.5,
+                        dashArray: '10, 8',
+                        className: 'animated-fiber-cable',
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }).addTo(this.connectionLineLayer);
+
+                    // 3. Leading Laser Spark
+                    const sparkIcon = L.divIcon({
+                        className: 'fiber-lead-spark',
+                        html: `<div style="width: 14px; height: 14px; border-radius: 50%; background: #55C7FF; border: 2.5px solid #ffffff; box-shadow: 0 0 16px #0878E5; animation: pulseBlue 0.8s infinite;"></div>`,
+                        iconSize: [14, 14],
+                        iconAnchor: [7, 7]
+                    });
+                    const sparkMarker = L.marker(routeCoords[0], { icon: sparkIcon }).addTo(this.connectionLineLayer);
+
+                    // Fit bounds to show both user pin and nearest ODP clearly
+                    const bounds = L.latLngBounds(routeCoords);
+                    this.mapInstance.fitBounds(bounds.pad(0.35), {
+                        animate: true,
+                        duration: 0.8
+                    });
+
+                    // Progressive Propagation Animation along the Road Curve ("Menjalar Mengikuti Jalan")
+                    let totalLength = 0;
+                    const segmentLengths = [];
+                    for (let i = 0; i < routeCoords.length - 1; i++) {
+                        const dLat = routeCoords[i+1][0] - routeCoords[i][0];
+                        const dLng = routeCoords[i+1][1] - routeCoords[i][1];
+                        const segDist = Math.sqrt(dLat * dLat + dLng * dLng);
+                        segmentLengths.push(segDist);
+                        totalLength += segDist;
+                    }
+
+                    const startTime = performance.now();
+                    const duration = 1400; // 1.4s smooth propagation along road turns
+
+                    const animatePropagation = (currentTime) => {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const ease = 1 - Math.pow(1 - progress, 3); // smooth ease-out
+                        const targetDist = ease * totalLength;
+
+                        let distAccum = 0;
+                        const currentPoints = [routeCoords[0]];
+                        let currentHead = routeCoords[0];
+
+                        for (let i = 0; i < segmentLengths.length; i++) {
+                            const segDist = segmentLengths[i];
+                            if (distAccum + segDist <= targetDist) {
+                                currentPoints.push(routeCoords[i + 1]);
+                                distAccum += segDist;
+                                currentHead = routeCoords[i + 1];
+                            } else {
+                                const segT = (targetDist - distAccum) / (segDist || 1);
+                                const pLat = routeCoords[i][0] + segT * (routeCoords[i + 1][0] - routeCoords[i][0]);
+                                const pLng = routeCoords[i][1] + segT * (routeCoords[i + 1][1] - routeCoords[i][1]);
+                                currentPoints.push([pLat, pLng]);
+                                currentHead = [pLat, pLng];
+                                break;
+                            }
+                        }
+
+                        glowLine.setLatLngs(currentPoints);
+                        fiberLine.setLatLngs(currentPoints);
+                        sparkMarker.setLatLng(currentHead);
+
+                        if (progress < 1) {
+                            requestAnimationFrame(animatePropagation);
+                        } else {
+                            glowLine.setLatLngs(routeCoords);
+                            fiberLine.setLatLngs(routeCoords);
+                            if (sparkMarker && this.connectionLineLayer.hasLayer(sparkMarker)) {
+                                this.connectionLineLayer.removeLayer(sparkMarker);
+                            }
+                        }
+                    };
+
+                    requestAnimationFrame(animatePropagation);
                 },
 
                 checkCoverage() {
