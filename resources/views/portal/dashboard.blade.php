@@ -277,7 +277,7 @@
              ══════════════════════════════════════════════════════════════ --}}
         <div x-show="currentNav === 'dashboard'" x-transition class="space-y-6">
             
-            <!-- Row: Identitas & Overview Layanan -->
+            <!-- Row 1: Header Profil Akun & Status Billing -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
                 <!-- Profil Akun Pelanggan -->
@@ -313,23 +313,23 @@
                         </p>
                     </div>
 
-                    <!-- 2x2 on Mobile, 4-column on Desktop -->
+                    <!-- 2x2 on Mobile, 4-column on Desktop: Kontak & Node ODP (Bukan Duplikasi Paket) -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-5 border-t border-white/10 text-xs">
                         <div class="p-2.5 rounded-xl bg-white/5 sm:bg-transparent">
-                            <span class="text-[10.5px] text-slate-400 block mb-0.5 font-medium">Paket</span>
-                            <strong class="text-white text-xs sm:text-sm block truncate">{{ $currentPackage->name ?? ($subscription->package_code ?? 'Home Fiber 50M') }}</strong>
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5 font-medium">No. WhatsApp</span>
+                            <strong class="text-white text-xs sm:text-sm block truncate">{{ $subscription->phone_number ?? '-' }}</strong>
                         </div>
                         <div class="p-2.5 rounded-xl bg-white/5 sm:bg-transparent">
-                            <span class="text-[10.5px] text-slate-400 block mb-0.5 font-medium">Speed Fiber</span>
-                            <strong class="text-cyan-400 font-bold text-xs sm:text-sm block">{{ $currentPackage->speed_mbps ?? 50 }} Mbps Simetris</strong>
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5 font-medium">Email Pelanggan</span>
+                            <strong class="text-cyan-400 font-bold text-xs sm:text-sm block truncate">{{ $subscription->email ?? '-' }}</strong>
                         </div>
                         <div class="p-2.5 rounded-xl bg-white/5 sm:bg-transparent">
                             <span class="text-[10.5px] text-slate-400 block mb-0.5 font-medium">Titik ODP Node</span>
                             <strong class="text-white text-xs sm:text-sm block truncate">{{ $subscription->odp_code ?? 'ODP-BDG-BRAGA-01' }} (Port {{ $subscription->odp_port ?? '03' }})</strong>
                         </div>
                         <div class="p-2.5 rounded-xl bg-white/5 sm:bg-transparent">
-                            <span class="text-[10.5px] text-slate-400 block mb-0.5 font-medium">No. WhatsApp</span>
-                            <strong class="text-white text-xs sm:text-sm block truncate">{{ $subscription->phone_number ?? '-' }}</strong>
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5 font-medium">Tgl Terdaftar</span>
+                            <strong class="text-white text-xs sm:text-sm block truncate">{{ $subscription->created_at ? $subscription->created_at->format('d M Y') : '-' }}</strong>
                         </div>
                     </div>
                 </div>
@@ -368,43 +368,135 @@
 
             </div>
 
-            <!-- Row 2: DETAIL SPESIFIKASI LAYANAN FIBER -->
-            <div class="glass-card rounded-3xl p-5 sm:p-8 shadow-xl border border-brand-400/20">
-                <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
-                    <div class="flex items-center gap-2.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
-                        <h3 class="font-heading text-lg sm:text-xl font-black text-white">Detail Layanan yang Digunakan</h3>
+            <!-- Row 2: DATA REGISTRASI LENGKAP DARI DATABASE (FORM SCHEMA PERSIS FORM PENDAFTARAN) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- KARTU 1: IDENTITAS PELANGGAN & KTP -->
+                <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-xl border border-white/10 space-y-5">
+                    <div class="flex items-center gap-3 pb-3 border-b border-white/10">
+                        <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-black text-sm">
+                            1
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-base sm:text-lg font-black text-white">Identitas Pelanggan &amp; KTP</h3>
+                            <p class="text-[11px] text-slate-400">Data kependudukan pemohon sesuai identitas resmi di database</p>
+                        </div>
                     </div>
-                    <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-[10.5px] sm:text-xs font-bold">
-                        ⚡ Dedicated FTTH Gigabit
-                    </span>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">NIK Penduduk</span>
+                            <strong class="text-white font-mono font-bold">{{ $subscription->customer_nik ?? '-' }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">Nama Lengkap Pelanggan</span>
+                            <strong class="text-white font-bold">{{ $subscription->customer_name }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">Jenis Kelamin</span>
+                            <strong class="text-white">{{ $subscription->gender === 'female' || $subscription->gender === 'Perempuan' ? 'Perempuan' : 'Laki-Laki' }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">Tanggal Lahir</span>
+                            <strong class="text-white">{{ $subscription->birth_date ? \Carbon\Carbon::parse($subscription->birth_date)->translatedFormat('d F Y') : '-' }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">Tipe Pelanggan</span>
+                            <strong class="text-white">{{ $subscription->is_corporate ? 'Instansi / Corporate (' . ($subscription->pic_name ?? 'PIC') . ')' : 'Perorangan / Rumah' }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">Alamat Email</span>
+                            <strong class="text-cyan-300 font-bold">{{ $subscription->email ?? '-' }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">No. Handphone (WhatsApp)</span>
+                            <strong class="text-white font-mono">{{ $subscription->phone_number ?? '-' }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">No. HP Keluarga / Darurat</span>
+                            <strong class="text-white font-mono">{{ $subscription->alt_phone_number ?? '-' }}</strong>
+                        </div>
+                    </div>
+
+                    <!-- Alamat KTP -->
+                    <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 text-xs">
+                        <span class="text-[10.5px] text-slate-400 block mb-1 font-bold">📍 ALAMAT DOMISILI KTP:</span>
+                        <p class="text-slate-200 leading-relaxed font-medium">
+                            {{ $subscription->address_ktp ? ($subscription->address_ktp . ($subscription->rt_ktp ? ' RT ' . $subscription->rt_ktp . '/RW ' . $subscription->rw_ktp : '') . ($subscription->village_ktp ? ', Kel. ' . $subscription->village_ktp : '') . ($subscription->district_ktp ? ', Kec. ' . $subscription->district_ktp : '') . ($subscription->city_ktp ? ', ' . $subscription->city_ktp : '')) : ($subscription->installation_address ?? '-') }}
+                        </p>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
-                        <span class="text-[11px] text-slate-400 block mb-1 font-medium">Nama Paket Aktif</span>
-                        <strong class="text-white text-sm font-black block">{{ $currentPackage->name ?? ($subscription->package_code ?? 'Home Fiber 50M') }}</strong>
-                        <span class="text-[10.5px] text-emerald-400 mt-1 block">True Unlimited (Tanpa FUP)</span>
+                <!-- KARTU 2: LAYANAN INTERNET & DETAIL PEMASANGAN -->
+                <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-xl border border-white/10 space-y-5">
+                    <div class="flex items-center gap-3 pb-3 border-b border-white/10">
+                        <div class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-black text-sm">
+                            2
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-base sm:text-lg font-black text-white">Layanan Internet &amp; Pemasangan</h3>
+                            <p class="text-[11px] text-slate-400">Spesifikasi paket berlangganan dan detail lokasi instalasi</p>
+                        </div>
                     </div>
 
-                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
-                        <span class="text-[11px] text-slate-400 block mb-1 font-medium">Kecepatan Internet</span>
-                        <strong class="text-cyan-400 text-sm font-black block">{{ $currentPackage->speed_mbps ?? 50 }} Mbps Simetris</strong>
-                        <span class="text-[10.5px] text-slate-400 mt-1 block">1:1 Download &amp; Upload</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">Jenis Bangunan</span>
+                            <strong class="text-white uppercase font-bold">{{ str_replace('_', ' ', $subscription->building_type ?? 'Rumah Tinggal') }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">No. Bangunan / Blok</span>
+                            <strong class="text-white font-bold">{{ $subscription->building_number ?? '-' }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">Paket Layanan</span>
+                            <strong class="text-cyan-400 font-black text-sm">{{ $currentPackage->name ?? ($subscription->package_code ?? 'Home Fiber') }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">Kecepatan Internet</span>
+                            <strong class="text-white font-bold">{{ $currentPackage->speed_mbps ?? 50 }} Mbps Simetris (1:1)</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">Media Access &amp; Group</span>
+                            <strong class="text-white">{{ $subscription->media_access ?? 'FIBER OPTIC' }} • {{ $subscription->group_service ?? 'MEDIANET' }}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+                            <span class="text-[10.5px] text-slate-400 block mb-0.5">Titik Koordinat GPS</span>
+                            <strong class="text-white font-mono text-[11px]">{{ $subscription->lat_long ?? '-6.917464, 107.619123' }}</strong>
+                        </div>
                     </div>
 
-                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
-                        <span class="text-[11px] text-slate-400 block mb-1 font-medium">Alokasi IP Address</span>
-                        <strong class="text-white text-sm font-mono font-bold block">{{ $subscription->ip_address ?? 'Dynamic IP Public' }}</strong>
-                        <span class="text-[10.5px] text-slate-400 mt-1 block">SLA Jaringan 99.8% Uptime</span>
+                    <!-- Alamat Pemasangan & Google Maps -->
+                    <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 text-xs space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10.5px] text-slate-400 font-bold">📍 ALAMAT &amp; LOKASI PEMASANGAN:</span>
+                            @if($subscription->maps_url)
+                                <a href="{{ $subscription->maps_url }}" target="_blank" class="text-[10.5px] text-cyan-400 hover:text-cyan-300 font-bold inline-flex items-center gap-1">
+                                    <span>Buka Google Maps &rarr;</span>
+                                </a>
+                            @endif
+                        </div>
+                        <p class="text-slate-200 leading-relaxed font-medium">
+                            {{ $subscription->installation_address ?? 'Bandung Raya, Jawa Barat' }}
+                            @if($subscription->rt || $subscription->rw)
+                                (RT {{ $subscription->rt ?? '-' }}/RW {{ $subscription->rw ?? '-' }})
+                            @endif
+                        </p>
                     </div>
 
-                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
-                        <span class="text-[11px] text-slate-400 block mb-1 font-medium">Titik Distribusi ODP</span>
-                        <strong class="text-white text-sm font-bold block truncate">{{ $subscription->odp_code ?? 'ODP-BDG-BRAGA-01' }}</strong>
-                        <span class="text-[10.5px] text-slate-400 mt-1 block">Port {{ $subscription->odp_port ?? '03' }} (Koneksi Fiber Aktif)</span>
+                    <!-- Administrasi & Petugas -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-white/10 text-xs">
+                        <div>
+                            <span class="text-[10.5px] text-slate-400 block">Sales PIC / Petugas:</span>
+                            <strong class="text-white">{{ $subscription->sales_name ?? 'NUNU NUGRAHA' }}</strong>
+                        </div>
+                        <div>
+                            <span class="text-[10.5px] text-slate-400 block">Permintaan Khusus:</span>
+                            <span class="text-slate-300">{{ $subscription->special_request ?? 'Tidak ada' }}</span>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- Row 3: DAFTAR PERANGKAT & MATERIAL YANG DIPINJAMKAN (INPUT SAAT INSTALASI) -->
@@ -413,7 +505,7 @@
                     <div class="flex items-center gap-2.5">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
                         <div>
-                            <h3 class="font-heading text-lg sm:text-xl font-black text-white">Daftar Perangkat yang Dipinjamkan</h3>
+                            <h3 class="font-heading text-lg sm:text-xl font-black text-white">Daftar Perangkat &amp; Material yang Dipinjamkan</h3>
                             <p class="text-xs text-slate-400">Peralatan dan material yang diinput teknisi saat proses instalasi terpasang di lokasi Anda.</p>
                         </div>
                     </div>
@@ -472,8 +564,8 @@
 
                                 <div class="grid grid-cols-2 gap-2 pt-3 border-t border-white/5 text-[11px]">
                                     <div>
-                                        <span class="text-slate-400 block text-[10px]">Serial / No. Registrasi:</span>
-                                        <strong class="font-mono text-cyan-300">{{ $eq['sn'] ?? '-' }}</strong>
+                                        <span class="text-slate-400 block text-[10px]">Serial / Keterangan:</span>
+                                        <strong class="font-mono text-cyan-300">{{ $eq['sn'] ?? ($eq['type'] ?? '-') }}</strong>
                                     </div>
                                     <div>
                                         <span class="text-slate-400 block text-[10px]">Kuantitas / Panjang:</span>
