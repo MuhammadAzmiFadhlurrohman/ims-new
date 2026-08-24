@@ -614,7 +614,7 @@
                 <!-- Desktop Action Buttons -->
                 <div class="hidden sm:flex items-center gap-3">
                     <!-- Button 2: Portal Pelanggan (Dark Navy) -->
-                    <a href="{{ route('customer.portal') }}" class="h-10 px-4.5 rounded-xl bg-electric-deep hover:bg-electric-navy text-white text-xs font-bold transition-all shadow-sm flex items-center gap-2 whitespace-nowrap shrink-0 border border-electric-deep/50 hover:shadow-md">
+                    <a href="{{ route('customer.portal') }}" class="h-10 px-5 rounded-full bg-electric-deep hover:bg-electric-navy text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 whitespace-nowrap shrink-0 border border-white/10 hover:shadow-md">
                         <svg class="w-4 h-4 text-electric-cyan shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
@@ -622,7 +622,7 @@
                     </a>
 
                     <!-- Button 1: Cek Ketersediaan (Gradient #0066FF → #00CFFF) -->
-                    <a href="#coverage" class="h-10 px-5 rounded-xl ims-cyan-btn text-white text-xs font-black shadow-md shadow-electric-blue/20 flex items-center gap-1.5 whitespace-nowrap shrink-0 hover:shadow-lg">
+                    <a href="#coverage" class="h-10 px-6 rounded-full ims-cyan-btn text-white text-xs font-black shadow-md shadow-electric-blue/25 flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 hover:shadow-lg">
                         <span>Cek Ketersediaan</span>
                         <span class="text-white font-black ml-0.5">&rarr;</span>
                     </a>
