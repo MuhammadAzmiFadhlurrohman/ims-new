@@ -481,35 +481,72 @@
                     `).openPopup();
 
                     if (nearestOdp) {
-                        this.connectionLineLayer = L.layerGroup();
+                        this.connectionLineLayer = L.layerGroup().addTo(this.mapInstance);
 
                         // 1. Soft Cyan Glow under-cable
-                        const glowLine = L.polyline([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]], {
+                        const glowLine = L.polyline([[userLat, userLng], [userLat, userLng]], {
                             color: '#55C7FF',
                             weight: 7,
                             opacity: 0.5,
                             lineCap: 'round'
-                        });
+                        }).addTo(this.connectionLineLayer);
 
                         // 2. Animated Flowing Dashed Fiber Cable
-                        const fiberLine = L.polyline([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]], {
+                        const fiberLine = L.polyline([[userLat, userLng], [userLat, userLng]], {
                             color: '#0878E5',
                             weight: 3.5,
                             dashArray: '10, 8',
                             className: 'animated-fiber-cable',
                             lineCap: 'round'
-                        });
+                        }).addTo(this.connectionLineLayer);
 
-                        this.connectionLineLayer.addLayer(glowLine);
-                        this.connectionLineLayer.addLayer(fiberLine);
-                        this.connectionLineLayer.addTo(this.mapInstance);
+                        // 3. Leading Laser Light Spark (Leading head of the expanding fiber cable)
+                        const sparkIcon = L.divIcon({
+                            className: 'fiber-lead-spark',
+                            html: `<div style="width: 14px; height: 14px; border-radius: 50%; background: #55C7FF; border: 2.5px solid #ffffff; box-shadow: 0 0 16px #0878E5; animation: pulseBlue 0.8s infinite;"></div>`,
+                            iconSize: [14, 14],
+                            iconAnchor: [7, 7]
+                        });
+                        const sparkMarker = L.marker([userLat, userLng], { icon: sparkIcon }).addTo(this.connectionLineLayer);
 
                         // Fit bounds to show both user pin and nearest ODP clearly
                         const bounds = L.latLngBounds([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]]);
                         this.mapInstance.fitBounds(bounds.pad(0.35), {
                             animate: true,
-                            duration: 1.2
+                            duration: 1.0
                         });
+
+                        // Progressive Line Propagation Animation ("Menjalar Maju")
+                        const startTime = performance.now();
+                        const duration = 1100; // 1.1 seconds progressive propagation
+
+                        const animatePropagation = (currentTime) => {
+                            const elapsed = currentTime - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            
+                            // Smooth easeOutCubic interpolation
+                            const ease = 1 - Math.pow(1 - progress, 3);
+
+                            const curLat = userLat + ease * (nearestOdp.lat - userLat);
+                            const curLng = userLng + ease * (nearestOdp.lng - userLng);
+
+                            glowLine.setLatLngs([[userLat, userLng], [curLat, curLng]]);
+                            fiberLine.setLatLngs([[userLat, userLng], [curLat, curLng]]);
+                            sparkMarker.setLatLng([curLat, curLng]);
+
+                            if (progress < 1) {
+                                requestAnimationFrame(animatePropagation);
+                            } else {
+                                // Line reached destination ODP
+                                glowLine.setLatLngs([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]]);
+                                fiberLine.setLatLngs([[userLat, userLng], [nearestOdp.lat, nearestOdp.lng]]);
+                                if (sparkMarker && this.connectionLineLayer.hasLayer(sparkMarker)) {
+                                    this.connectionLineLayer.removeLayer(sparkMarker);
+                                }
+                            }
+                        };
+
+                        requestAnimationFrame(animatePropagation);
                     } else {
                         this.mapInstance.flyTo([userLat, userLng], 15);
                     }
