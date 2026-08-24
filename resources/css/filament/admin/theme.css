@@ -1904,3 +1904,35 @@ html.dark .ims-so-sales-code {
 ::view-transition-new(root) {
     z-index: 9999999 !important;
 }
+
+/* ── SCOPED LOGIN CYBER-GLASS STYLING ── */
+.ims-right-form .fi-input-wrp,
+.ims-right-form [class*="fi-input-wrp"],
+html.dark .ims-right-form .fi-input-wrp,
+html.dark .ims-right-form [class*="fi-input-wrp"] {
+    background: rgba(14, 26, 50, 0.9) !important;
+    background-color: rgba(14, 26, 50, 0.9) !important;
+    border: 1.5px solid rgba(56, 189, 248, 0.28) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+.ims-right-form .fi-input-wrp:focus-within,
+.ims-right-form [class*="fi-input-wrp"]:focus-within,
+html.dark .ims-right-form .fi-input-wrp:focus-within,
+html.dark .ims-right-form [class*="fi-input-wrp"]:focus-within {
+    background: rgba(16, 32, 62, 1) !important;
+    background-color: rgba(16, 32, 62, 1) !important;
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25), 0 0 20px rgba(56, 189, 248, 0.3) !important;
+}
+
+.ims-right-form input,
+.ims-right-form .fi-input,
+html.dark .ims-right-form input,
+html.dark .ims-right-form .fi-input {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: transparent !important;
+    font-weight: 600 !important;
+}
