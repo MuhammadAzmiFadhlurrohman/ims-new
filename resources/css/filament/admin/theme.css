@@ -1980,9 +1980,17 @@ html.dark .ims-right-form .fi-input-wrp-suffix .fi-icon-btn {
     padding: 4px !important;
     color: #94a3b8 !important;
     outline: none !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    cursor: pointer !important;
+}
+
+.ims-right-form .fi-input-wrp-suffix button[style*="display: none"],
+.ims-right-form .fi-input-wrp-suffix .fi-icon-btn[style*="display: none"],
+.ims-right-form .fi-input-wrp-suffix [style*="display: none"],
+.ims-right-form .fi-input-wrp-suffix button[hidden],
+.ims-right-form .fi-input-wrp-suffix .fi-icon-btn[hidden],
+.ims-right-form .fi-input-wrp-suffix [hidden],
+.ims-right-form .fi-input-wrp-suffix .hidden {
+    display: none !important;
 }
 
 .ims-right-form .fi-input-wrp-suffix button:hover,
