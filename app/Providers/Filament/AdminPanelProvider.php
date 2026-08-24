@@ -313,9 +313,10 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
                     ->gridColumns([
-                        'default' => 1,
+                        'default' => 2,
                         'sm' => 2,
                         'lg' => 3,
+                        'xl' => 4,
                     ])
                     ->sectionColumnSpan(1)
                     ->checkboxListColumns([
