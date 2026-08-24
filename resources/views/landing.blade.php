@@ -614,17 +614,17 @@
                 <!-- Desktop Action Buttons -->
                 <div class="hidden sm:flex items-center gap-3">
                     <!-- Button 2: Portal Pelanggan (Dark Navy) -->
-                    <a href="{{ route('customer.portal') }}" class="px-4 py-2.5 rounded-xl bg-electric-deep hover:bg-electric-navy text-white text-xs font-bold transition-all shadow-sm flex items-center gap-2">
-                        <svg class="w-3.5 h-3.5 text-electric-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('customer.portal') }}" class="h-10 px-4.5 rounded-xl bg-electric-deep hover:bg-electric-navy text-white text-xs font-bold transition-all shadow-sm flex items-center gap-2 whitespace-nowrap shrink-0 border border-electric-deep/50 hover:shadow-md">
+                        <svg class="w-4 h-4 text-electric-cyan shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
                         <span>Portal Pelanggan</span>
                     </a>
 
                     <!-- Button 1: Cek Ketersediaan (Gradient #0066FF → #00CFFF) -->
-                    <a href="#coverage" class="px-4.5 py-2.5 rounded-xl ims-cyan-btn text-white text-xs font-bold shadow-md shadow-electric-blue/25 flex items-center gap-1.5">
+                    <a href="#coverage" class="h-10 px-5 rounded-xl ims-cyan-btn text-white text-xs font-black shadow-md shadow-electric-blue/20 flex items-center gap-1.5 whitespace-nowrap shrink-0 hover:shadow-lg">
                         <span>Cek Ketersediaan</span>
-                        <span class="text-white">&rarr;</span>
+                        <span class="text-white font-black ml-0.5">&rarr;</span>
                     </a>
                 </div>
 
@@ -969,10 +969,10 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
                 
                 <!-- Left Interactive Search & Result Console -->
-                <div class="lg:col-span-5 space-y-4">
+                <div class="lg:col-span-6 space-y-3.5">
                     
                     <div class="border border-slate-200/90 rounded-3xl p-5 sm:p-6 space-y-4 bg-white shadow-md">
                         <div class="space-y-1">
@@ -987,20 +987,20 @@
                                     type="text" 
                                     x-model="coverageInput" 
                                     placeholder="Contoh: Jl. Dago No. 12, Bandung..." 
-                                    class="w-full pl-9 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-300 focus:border-electric-blue focus:bg-white text-electric-deep placeholder-slate-400 text-xs sm:text-sm font-medium outline-none transition-colors shadow-inner"
+                                    class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 focus:border-electric-blue focus:bg-white text-electric-deep placeholder-slate-400 text-xs sm:text-sm font-medium outline-none transition-colors shadow-inner"
                                 />
-                                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
                             </div>
 
                             <div class="grid grid-cols-2 gap-2">
-                                <button type="button" @click="useCurrentLocation()" class="py-2.5 px-3 rounded-xl border border-slate-300 hover:border-electric-blue hover:bg-white bg-slate-100 text-electric-deep font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                                <button type="button" @click="useCurrentLocation()" class="py-2 px-3 rounded-xl border border-slate-300 hover:border-electric-blue hover:bg-white bg-slate-100 text-electric-deep font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
                                     <span>📍</span>
                                     <span>Gunakan GPS</span>
                                 </button>
                                 
-                                <button type="submit" class="py-2.5 px-3 rounded-xl ims-gradient-btn text-white font-black text-xs transition-all flex items-center justify-center gap-1 shadow-md">
+                                <button type="submit" class="py-2 px-3 rounded-xl ims-gradient-btn text-white font-black text-xs transition-all flex items-center justify-center gap-1 shadow-md">
                                     <span>Periksa Jaringan</span>
                                     <span class="text-electric-yellow">&rarr;</span>
                                 </button>
@@ -1103,17 +1103,17 @@
 
                 </div>
 
-                <!-- Right Map View -->
-                <div class="lg:col-span-7">
+                <!-- Right Map View (Compact & Proportional) -->
+                <div class="lg:col-span-6">
                     <div class="border border-slate-200/90 rounded-3xl overflow-hidden bg-white shadow-md">
-                        <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 bg-white text-xs">
+                        <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-white text-xs">
                             <span class="font-bold text-electric-deep flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-electric-blue"></span>
                                 Live GIS Node Sebaran Fiber Optik
                             </span>
-                            <span class="text-[11px] text-electric-violet font-mono font-bold">ODP Active Nodes • Live</span>
+                            <span class="text-[11px] text-electric-violet font-mono font-bold">ODP Active • Live</span>
                         </div>
-                        <div id="landing-gis-map" class="w-full h-[300px] sm:h-[420px] lg:h-[480px]"></div>
+                        <div id="landing-gis-map" class="w-full h-[220px] sm:h-[260px] lg:h-[290px]"></div>
                     </div>
                 </div>
 
