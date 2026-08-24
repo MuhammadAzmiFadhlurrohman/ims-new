@@ -270,6 +270,9 @@
                     }
                 ],
 
+                // Navbar Transparent on Jumbotron state
+                isScrolled: false,
+
                 // Real Network Stats Counters
                 statsAnimated: false,
                 statAreas: 0,
@@ -280,6 +283,11 @@
                 activeFaq: 1,
 
                 init() {
+                    this.isScrolled = window.scrollY > 50;
+                    window.addEventListener('scroll', () => {
+                        this.isScrolled = window.scrollY > 50;
+                    }, { passive: true });
+
                     this.$nextTick(() => {
                         this.initMap();
                         this.startTestimonialAuto();
@@ -712,13 +720,15 @@
 <body x-data="landingApp" class="bg-white text-ink-body selection:bg-brand selection:text-white">
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── NAVBAR (WHITE GLASS + BRAND BLUE ACCENTS) ──
+         ── NAVBAR (TRANSPARENT ON JUMBOTRON, WHITE GLASS ON SCROLL) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <nav class="fixed top-0 left-0 right-0 z-[100] bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-200" style="z-index: 100 !important;">
+    <nav :class="isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm text-brand-navy' : 'bg-transparent border-b border-white/10 text-white'" 
+         class="fixed top-0 left-0 right-0 z-[100] transition-all duration-300" 
+         style="z-index: 100 !important;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14 sm:h-16">
                 
-                <!-- Logo: IMS ONE (Brand Blue) -->
+                <!-- Logo: IMS ONE -->
                 <a href="#beranda" class="flex items-center gap-2 group">
                     <div class="w-8 h-8 rounded-xl bg-brand text-white flex items-center justify-center font-bold text-xs shadow-sm group-hover:scale-105 transition-transform">
                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -726,38 +736,38 @@
                         </svg>
                     </div>
                     <div>
-                        <span class="font-heading text-lg font-black text-brand-navy tracking-tight leading-none block">
-                            IMS<span class="text-brand">ONE</span>
+                        <span class="font-heading text-lg font-black tracking-tight leading-none block transition-colors" :class="isScrolled ? 'text-brand-navy' : 'text-white'">
+                            IMS<span :class="isScrolled ? 'text-brand' : 'text-[#55C7FF]'">ONE</span>
                         </span>
-                        <span class="text-[9px] font-bold tracking-widest text-brand uppercase block mt-0.5">
+                        <span class="text-[9px] font-bold tracking-widest uppercase block mt-0.5 transition-colors" :class="isScrolled ? 'text-brand' : 'text-[#55C7FF]'">
                             Fiber Network
                         </span>
                     </div>
                 </a>
 
-                <!-- Desktop Menu Links with Blue Active Underline -->
+                <!-- Desktop Menu Links with Dynamic State -->
                 <div class="hidden lg:flex items-center gap-7">
-                    <a href="#beranda" class="text-xs font-bold text-brand transition-colors relative py-1 group">
+                    <a href="#beranda" class="text-xs font-bold transition-colors relative py-1 group" :class="isScrolled ? 'text-brand' : 'text-[#55C7FF]'">
                         <span>Beranda</span>
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-brand rounded-full"></span>
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 rounded-full" :class="isScrolled ? 'bg-brand' : 'bg-[#55C7FF]'"></span>
                     </a>
-                    <a href="#coverage" class="text-xs font-semibold text-ink-muted hover:text-brand transition-colors relative py-1 group">
+                    <a href="#coverage" class="text-xs font-semibold transition-colors relative py-1 group" :class="isScrolled ? 'text-ink-muted hover:text-brand' : 'text-slate-300 hover:text-white'">
                         <span>Coverage</span>
                         <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand rounded-full transition-all group-hover:w-full"></span>
                     </a>
-                    <a href="#paket" class="text-xs font-semibold text-ink-muted hover:text-brand transition-colors relative py-1 group">
+                    <a href="#paket" class="text-xs font-semibold transition-colors relative py-1 group" :class="isScrolled ? 'text-ink-muted hover:text-brand' : 'text-slate-300 hover:text-white'">
                         <span>Paket</span>
                         <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand rounded-full transition-all group-hover:w-full"></span>
                     </a>
-                    <a href="#keunggulan" class="text-xs font-semibold text-ink-muted hover:text-brand transition-colors relative py-1 group">
+                    <a href="#keunggulan" class="text-xs font-semibold transition-colors relative py-1 group" :class="isScrolled ? 'text-ink-muted hover:text-brand' : 'text-slate-300 hover:text-white'">
                         <span>Keunggulan</span>
                         <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand rounded-full transition-all group-hover:w-full"></span>
                     </a>
-                    <a href="#faq" class="text-xs font-semibold text-ink-muted hover:text-brand transition-colors relative py-1 group">
+                    <a href="#faq" class="text-xs font-semibold transition-colors relative py-1 group" :class="isScrolled ? 'text-ink-muted hover:text-brand' : 'text-slate-300 hover:text-white'">
                         <span>FAQ</span>
                         <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand rounded-full transition-all group-hover:w-full"></span>
                     </a>
-                    <a href="#kontak" class="text-xs font-semibold text-ink-muted hover:text-brand transition-colors relative py-1 group">
+                    <a href="#kontak" class="text-xs font-semibold transition-colors relative py-1 group" :class="isScrolled ? 'text-ink-muted hover:text-brand' : 'text-slate-300 hover:text-white'">
                         <span>Kontak</span>
                         <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand rounded-full transition-all group-hover:w-full"></span>
                     </a>
@@ -765,8 +775,10 @@
 
                 <!-- Desktop Action Buttons (Sleek Height h-9) -->
                 <div class="hidden sm:flex items-center gap-2.5">
-                    <!-- Button 2: Portal Pelanggan (Dark Navy) -->
-                    <a href="{{ route('customer.portal') }}" class="h-9 px-4 rounded-full bg-brand-navy hover:bg-brand-deep text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 border border-white/10 hover:shadow-md">
+                    <!-- Button 2: Portal Pelanggan -->
+                    <a href="{{ route('customer.portal') }}" 
+                       :class="isScrolled ? 'bg-brand-navy hover:bg-brand-deep text-white border-white/10' : 'bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm'"
+                       class="h-9 px-4 rounded-full text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 border hover:shadow-md">
                         <svg class="w-3.5 h-3.5 text-brand-light shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
@@ -782,10 +794,15 @@
 
                 <!-- Mobile Menu Hamburger Button -->
                 <div class="flex items-center gap-2 lg:hidden">
-                    <a href="{{ route('customer.portal') }}" class="px-3 py-1 rounded-full bg-brand-navy text-white text-xs font-bold">
+                    <a href="{{ route('customer.portal') }}" 
+                       :class="isScrolled ? 'bg-brand-navy text-white' : 'bg-white/15 text-white border border-white/25'"
+                       class="px-3 py-1 rounded-full text-xs font-bold">
                         Portal
                     </a>
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-1.5 text-brand-navy hover:text-brand focus:outline-none" aria-label="Menu">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" 
+                            :class="isScrolled ? 'text-brand-navy' : 'text-white'"
+                            class="p-1.5 hover:text-brand focus:outline-none transition-colors" 
+                            aria-label="Menu">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16"/>
                             <path x-show="mobileMenuOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/>
