@@ -51,6 +51,7 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::HEAD_START,
                 fn () => Blade::render('
+                    <link rel="icon" type="image/svg+xml" href="' . asset('images/favicon.svg') . '">
                     <link rel="icon" type="image/png" href="' . asset('images/favicon.png') . '">
                     <link rel="shortcut icon" href="' . asset('favicon.ico') . '">
                     <link rel="apple-touch-icon" href="' . asset('images/favicon.png') . '">
