@@ -421,12 +421,12 @@
                         <div class="ims-card-panel-sub">Visualisasi Real-time Titik ODP, OLT, dan Area Insiden Jaringan</div>
                     </div>
                     
-                    <!-- Map Filter Chips -->
+                    <!-- Map Filter Chips (Dynamic Counts) -->
                     <div class="ims-map-filter-chips">
-                        <button @click="filterMap('all')" :class="{'active': mapFilter === 'all'}" class="ims-chip">Semua Node ({{ count($mapPins) }})</button>
-                        <button @click="filterMap('NORMAL')" :class="{'active': mapFilter === 'NORMAL'}" class="ims-chip ims-chip-green">🟢 Normal</button>
-                        <button @click="filterMap('INCIDENT')" :class="{'active': mapFilter === 'INCIDENT'}" class="ims-chip ims-chip-red">🔴 Gangguan (1)</button>
-                        <button @click="filterMap('PENDING_SURVEY')" :class="{'active': mapFilter === 'PENDING_SURVEY'}" class="ims-chip ims-chip-yellow">🟡 Survey (2)</button>
+                        <button @click="filterMap('all')" :class="{'active': mapFilter === 'all'}" class="ims-chip">Semua Bandung (<span x-text="mapPins.length"></span>)</button>
+                        <button @click="filterMap('NORMAL')" :class="{'active': mapFilter === 'NORMAL'}" class="ims-chip ims-chip-green">🟢 Normal (<span x-text="mapPins.filter(p => p.status === 'NORMAL').length"></span>)</button>
+                        <button @click="filterMap('INCIDENT')" :class="{'active': mapFilter === 'INCIDENT'}" class="ims-chip ims-chip-red">🔴 Gangguan (<span x-text="mapPins.filter(p => p.status === 'INCIDENT').length"></span>)</button>
+                        <button @click="filterMap('PENDING_SURVEY')" :class="{'active': mapFilter === 'PENDING_SURVEY'}" class="ims-chip ims-chip-yellow">🟡 Survey (<span x-text="mapPins.filter(p => p.status === 'PENDING_SURVEY').length"></span>)</button>
                     </div>
                 </div>
 

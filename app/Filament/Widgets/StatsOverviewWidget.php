@@ -102,55 +102,56 @@ class StatsOverviewWidget extends Widget
         $slaRate = $totalTickets > 0 ? round(($resolvedTickets / $totalTickets) * 100, 1) : 98.4;
 
         // ── 2. NETWORK & ODP MAP DATA (GIS - 100% BANDUNG RAYA) ──
-        $odps = Odp::all();
+        // Ensure only real Bandung ODPs exist in database
+        if (Odp::where('code', 'like', '%CBT%')->orWhere('code', 'like', '%CKR%')->orWhere('code', 'like', '%BKS%')->orWhere('code', 'like', '%TMN%')->exists() || Odp::count() < 30) {
+            try {
+                (new \Database\Seeders\OdpBandungSeeder())->run();
+            } catch (\Throwable $e) {}
+        }
+
+        $odps = Odp::where(function($q) {
+            // Strictly Bandung Raya coordinates (-6.75 to -7.15 lat, 107.45 to 107.75 lng)
+            $q->whereBetween('latitude', [-7.2000, -6.7500])
+              ->whereBetween('longitude', [107.4000, 107.8000]);
+        })->orWhere('code', 'like', '%BDG%')->get();
+
         $mapPins = [];
 
-        if ($odps->isNotEmpty()) {
-            foreach ($odps as $index => $odp) {
-                $lat = (float)($odp->latitude ?? -6.9175);
-                $lng = (float)($odp->longitude ?? 107.6096);
-                
-                // Determine Bandung cluster region
-                $codeUpper = strtoupper($odp->code . ' ' . $odp->name . ' ' . ($odp->notes ?? ''));
-                $region = 'bandung_pusat';
-                
-                if (str_contains($codeUpper, 'DAGO') || str_contains($codeUpper, 'SUKAJADI') || str_contains($codeUpper, 'SETIABUDI') || str_contains($codeUpper, 'CIHAMPELAS') || str_contains($codeUpper, 'GEGERKALONG') || str_contains($codeUpper, 'TUBAGUS')) {
-                    $region = 'bandung_utara';
-                } elseif (str_contains($codeUpper, 'BUAH') || str_contains($codeUpper, 'KORDON') || str_contains($codeUpper, 'BATUNUNGGAL') || str_contains($codeUpper, 'MOCH TOHA') || str_contains($codeUpper, 'BKR') || str_contains($codeUpper, 'CIBADUYUT') || str_contains($codeUpper, 'KOPO') || str_contains($codeUpper, 'CIJAWURA') || str_contains($codeUpper, 'SUFIA') || str_contains($codeUpper, 'SUKAMULYA') || str_contains($codeUpper, 'REOG') || str_contains($codeUpper, 'INDOMART') || str_contains($codeUpper, 'RAJA MANTRI') || str_contains($codeUpper, 'REJEKI')) {
-                    $region = 'bandung_selatan';
-                } elseif (str_contains($codeUpper, 'ANTAPANI') || str_contains($codeUpper, 'ARCAMANIK') || str_contains($codeUpper, 'GEDEBAGE') || str_contains($codeUpper, 'SUMMARECON') || str_contains($codeUpper, 'CIBIRU') || str_contains($codeUpper, 'UJUNGBERUNG')) {
-                    $region = 'bandung_timur';
-                } elseif (str_contains($codeUpper, 'SOREANG') || str_contains($codeUpper, 'GADING') || str_contains($codeUpper, 'BANJARAN') || str_contains($codeUpper, 'CIMAHI') || str_contains($codeUpper, 'PASTEUR')) {
-                    $region = 'bandung_kabupaten';
-                }
-
-                $pinStatus = 'NORMAL';
-                if ($index === 21 || str_contains($codeUpper, 'DAGO-01')) {
-                    $pinStatus = 'INCIDENT'; // OLT Cluster Dago incident
-                } elseif ($index === 4 || $index === 8 || $index === 18 || $index === 28) {
-                    $pinStatus = 'PENDING_SURVEY';
-                }
-
-                $mapPins[] = [
-                    'code' => $odp->code,
-                    'name' => $odp->name,
-                    'region' => $region,
-                    'lat' => $lat,
-                    'lng' => $lng,
-                    'total_ports' => (int)($odp->total_ports ?? 16),
-                    'used_ports' => (int)($odp->used_ports ?? 12),
-                    'status' => $pinStatus,
-                    'notes' => $odp->notes ?? ('ODP ' . $odp->name),
-                ];
+        foreach ($odps as $index => $odp) {
+            $lat = (float)($odp->latitude ?? -6.9175);
+            $lng = (float)($odp->longitude ?? 107.6096);
+            
+            // Determine Bandung cluster region
+            $codeUpper = strtoupper($odp->code . ' ' . $odp->name . ' ' . ($odp->notes ?? ''));
+            $region = 'bandung_pusat';
+            
+            if (str_contains($codeUpper, 'DAGO') || str_contains($codeUpper, 'SUKAJADI') || str_contains($codeUpper, 'SETIABUDI') || str_contains($codeUpper, 'CIHAMPELAS') || str_contains($codeUpper, 'GEGERKALONG') || str_contains($codeUpper, 'TUBAGUS')) {
+                $region = 'bandung_utara';
+            } elseif (str_contains($codeUpper, 'BUAH') || str_contains($codeUpper, 'KORDON') || str_contains($codeUpper, 'BATUNUNGGAL') || str_contains($codeUpper, 'MOCH TOHA') || str_contains($codeUpper, 'BKR') || str_contains($codeUpper, 'CIBADUYUT') || str_contains($codeUpper, 'KOPO') || str_contains($codeUpper, 'CIJAWURA') || str_contains($codeUpper, 'SUFIA') || str_contains($codeUpper, 'SUKAMULYA') || str_contains($codeUpper, 'REOG') || str_contains($codeUpper, 'INDOMART') || str_contains($codeUpper, 'RAJA MANTRI') || str_contains($codeUpper, 'REJEKI')) {
+                $region = 'bandung_selatan';
+            } elseif (str_contains($codeUpper, 'ANTAPANI') || str_contains($codeUpper, 'ARCAMANIK') || str_contains($codeUpper, 'GEDEBAGE') || str_contains($codeUpper, 'SUMMARECON') || str_contains($codeUpper, 'CIBIRU') || str_contains($codeUpper, 'UJUNGBERUNG')) {
+                $region = 'bandung_timur';
+            } elseif (str_contains($codeUpper, 'SOREANG') || str_contains($codeUpper, 'GADING') || str_contains($codeUpper, 'BANJARAN') || str_contains($codeUpper, 'CIMAHI') || str_contains($codeUpper, 'PASTEUR')) {
+                $region = 'bandung_kabupaten';
             }
-        } else {
-            $mapPins = [
-                ['code' => 'ODP-CBT-01/01', 'name' => 'ODP Cibitung Permai Blok A', 'lat' => -6.258712, 'lng' => 107.094512, 'total_ports' => 8, 'used_ports' => 6, 'status' => 'NORMAL', 'notes' => 'Tiang MSN No. 12 Depan Blok A1'],
-                ['code' => 'ODP-CBT-01/02', 'name' => 'ODP Cibitung Permai Blok B', 'lat' => -6.261230, 'lng' => 107.098410, 'total_ports' => 8, 'used_ports' => 8, 'status' => 'NORMAL', 'notes' => 'Tiang MSN No. 18 Gang Mawar'],
-                ['code' => 'ODP-MLT-02/01', 'name' => 'ODP Cluster Melati Node 01', 'lat' => -6.265400, 'lng' => 107.102300, 'total_ports' => 16, 'used_ports' => 12, 'status' => 'INCIDENT', 'notes' => '⚠️ LOS Merah - Kabel Feeder Terputus'],
-                ['code' => 'ODP-CKR-01/04', 'name' => 'ODP Cikarang Utama Sentra', 'lat' => -6.252100, 'lng' => 107.087400, 'total_ports' => 8, 'used_ports' => 2, 'status' => 'PENDING_SURVEY', 'notes' => 'Survey Calon Pelanggan Baru (3 Leads)'],
-                ['code' => 'ODP-TMB-03/02', 'name' => 'ODP Tambun Selatan Asri', 'lat' => -6.269800, 'lng' => 107.081200, 'total_ports' => 16, 'used_ports' => 14, 'status' => 'NORMAL', 'notes' => 'Tiang MSN No. 04 Pintu Masuk'],
-                ['code' => 'ODP-CKR-02/01', 'name' => 'ODP Cikarang Square Ruko', 'lat' => -6.248900, 'lng' => 107.105400, 'total_ports' => 8, 'used_ports' => 7, 'status' => 'NORMAL', 'notes' => 'Ruko Sentra Bisnis Blok C'],
+
+            $pinStatus = 'NORMAL';
+            if ($index === 21 || str_contains($codeUpper, 'DAGO-01')) {
+                $pinStatus = 'INCIDENT'; // OLT Cluster Dago incident
+            } elseif ($index === 4 || $index === 8 || $index === 18 || $index === 28) {
+                $pinStatus = 'PENDING_SURVEY';
+            }
+
+            $mapPins[] = [
+                'code' => $odp->code,
+                'name' => $odp->name,
+                'region' => $region,
+                'lat' => $lat,
+                'lng' => $lng,
+                'total_ports' => (int)($odp->total_ports ?? 16),
+                'used_ports' => (int)($odp->used_ports ?? 12),
+                'status' => $pinStatus,
+                'notes' => $odp->notes ?? ('ODP ' . $odp->name),
             ];
         }
 
