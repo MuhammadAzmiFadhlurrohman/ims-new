@@ -1143,53 +1143,151 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 10. KONTAK & KANTOR ──
+         ── 10. KONTAK & KANTOR (RAPI & MODERN) ──
          ══════════════════════════════════════════════════════════════ --}}
     <section id="kontak" class="py-16 sm:py-20 relative border-t border-slate-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 
-                <div class="space-y-5">
-                    <span class="px-3.5 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-xs font-black uppercase tracking-wider inline-block">
-                        HUBUNGI KAMI
-                    </span>
-                    <h2 class="font-heading text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                        Pusat Bantuan &amp; Kantor Operasional
-                    </h2>
-                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                        Kami selalu siap melayani kebutuhan internet rumah, perkantoran, instansi, dan UMKM Anda.
-                    </p>
+                <!-- Left Column: Contact Cards -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="space-y-2">
+                        <span class="px-3.5 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-xs font-black uppercase tracking-wider inline-block shadow-sm">
+                            HUBUNGI KAMI
+                        </span>
+                        <h2 class="font-heading text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
+                            Pusat Bantuan &amp; Kantor Operasional
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-lg">
+                            Kami selalu siap melayani kebutuhan internet rumah, perkantoran, instansi, dan UMKM Anda dengan dukungan teknisi profesional.
+                        </p>
+                    </div>
 
-                    <div class="space-y-3.5 text-xs sm:text-sm text-slate-700">
-                        <div class="flex items-start gap-3">
-                            <span class="text-lg shrink-0 text-brand-600">📍</span>
-                            <span>Jl. Braga No. 109, Sumur Bandung, Kota Bandung, Jawa Barat 40111</span>
+                    <div class="space-y-3 pt-1">
+                        
+                        <!-- Contact Card 1: Address -->
+                        <div class="card-elevation rounded-2xl p-4 sm:p-5 flex items-start gap-4 bg-white">
+                            <div class="w-11 h-11 rounded-xl bg-sky-50 text-sky-600 border border-sky-200/70 flex items-center justify-center shrink-0 shadow-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <div class="space-y-1 flex-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[11px] font-black text-slate-400 uppercase tracking-wider">KANTOR PUSAT</span>
+                                    <span class="text-[10.5px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-bold">Buka 08:00 - 17:00</span>
+                                </div>
+                                <strong class="font-heading text-sm font-bold text-slate-900 block">PT Media Sarana Network</strong>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Jl. Braga No. 109, Sumur Bandung, Kota Bandung, Jawa Barat 40111
+                                </p>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <span class="text-lg shrink-0 text-brand-600">📱</span>
-                            <span>WhatsApp CS &amp; Pendaftaran: <strong>+62 812-3456-7890</strong></span>
+
+                        <!-- Contact Card 2: WhatsApp -->
+                        <div class="card-elevation rounded-2xl p-4 sm:p-5 flex items-start gap-4 bg-white ring-1 ring-emerald-500/20">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200/70 flex items-center justify-center shrink-0 shadow-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                </svg>
+                            </div>
+                            <div class="space-y-1 flex-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[11px] font-black text-emerald-600 uppercase tracking-wider">WHATSAPP RESMI</span>
+                                    <span class="text-[10.5px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-extrabold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 pulse-beacon-green"></span>
+                                        Siaga 24/7
+                                    </span>
+                                </div>
+                                <a href="https://wa.me/6281234567890" target="_blank" class="font-heading text-sm sm:text-base font-black text-slate-900 hover:text-brand-600 block transition-colors">
+                                    +62 812-3456-7890
+                                </a>
+                                <p class="text-[11.5px] text-slate-500">
+                                    Pendaftaran pasang baru, informasi billing, dan bantuan teknisi.
+                                </p>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <span class="text-lg shrink-0 text-brand-600">✉️</span>
-                            <span>Email Resmi: <strong>support@imsone.net.id</strong></span>
+
+                        <!-- Contact Card 3: Email -->
+                        <div class="card-elevation rounded-2xl p-4 sm:p-5 flex items-start gap-4 bg-white">
+                            <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200/70 flex items-center justify-center shrink-0 shadow-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div class="space-y-1 flex-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[11px] font-black text-slate-400 uppercase tracking-wider">EMAIL BANTUAN</span>
+                                    <span class="text-[10.5px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-bold">Surat &amp; B2B</span>
+                                </div>
+                                <a href="mailto:support@imsone.net.id" class="font-heading text-sm font-bold text-slate-900 hover:text-brand-600 block transition-colors">
+                                    support@imsone.net.id
+                                </a>
+                                <p class="text-[11.5px] text-slate-500">
+                                    Untuk kemitraan bisnis, instansi perumahan, dan pengaduan resmi.
+                                </p>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
-                <div class="card-elevation rounded-3xl p-7 text-center space-y-4 bg-white">
-                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mx-auto shadow-sm">
-                        💬
+                <!-- Right Column: Interactive Consultation Card -->
+                <div class="lg:col-span-6">
+                    <div class="card-elevation rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-white via-white to-emerald-50/30 border border-emerald-200/80 space-y-6 shadow-xl relative overflow-hidden">
+                        
+                        <div class="space-y-3">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-extrabold shadow-sm">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-beacon-green"></span>
+                                <span>Customer Service Online</span>
+                            </div>
+
+                            <h3 class="font-heading text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                                Butuh Rekomendasi Paket Internet?
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                Konsultasikan kebutuhan internet rumah, kontrakan, gaming, cafe, atau kantor Anda langsung bersama perwakilan resmi IMS ONE.
+                            </p>
+                        </div>
+
+                        <!-- Quick Topics -->
+                        <div class="space-y-2 pt-1 border-t border-slate-100">
+                            <span class="text-[11px] font-bold text-slate-400 block uppercase tracking-wider">Topik Cepat:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20tanya%20promo%20pasang%20baru" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-100 hover:text-emerald-800 text-slate-700 text-xs font-bold transition-colors">
+                                    🏷️ Promo Pasang Baru
+                                </a>
+                                <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20cek%20coverage%20di%20lokasi%20saya" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-100 hover:text-emerald-800 text-slate-700 text-xs font-bold transition-colors">
+                                    📍 Cek Jaringan di Alamat Saya
+                                </a>
+                                <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20solusi%20internet%20bisnis%2Fkantor" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-100 hover:text-emerald-800 text-slate-700 text-xs font-bold transition-colors">
+                                    🏢 Internet Bisnis &amp; Kantor
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Main CTA Button -->
+                        <div class="space-y-2.5 pt-2">
+                            <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20berkonsultasi%20paket%20internet" target="_blank" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-xs sm:text-sm shadow-lg shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
+                                <span>💬 Mulai Chat WhatsApp Sekarang</span>
+                                <span>&rarr;</span>
+                            </a>
+                            <div class="flex items-center justify-center gap-2 text-[11px] text-slate-500">
+                                <span>✓ Gratis Konsultasi</span>
+                                <span>•</span>
+                                <span>✓ Respon Cepat &lt; 15 Menit</span>
+                                <span>•</span>
+                                <span>✓ Tanpa Komitmen Awal</span>
+                            </div>
+                        </div>
+
                     </div>
-                    <h3 class="font-heading text-xl font-black text-slate-900">Konsultasi Gratis via WhatsApp</h3>
-                    <p class="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed">
-                        Tanyakan rekomendasi paket terbaik untuk lokasi Anda langsung bersama tim representatif kami.
-                    </p>
-                    <a href="https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20berkonsultasi%20paket%20internet" target="_blank" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-lg shadow-emerald-600/20 transition-all">
-                        <span>Mulai Chat WhatsApp Sekarang &rarr;</span>
-                    </a>
                 </div>
 
             </div>
+
         </div>
     </section>
 
