@@ -410,8 +410,8 @@
             </svg>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-12 lg:py-16">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 xl:gap-20 items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-12 lg:py-14">
+            <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-8 xl:gap-10 items-center">
 
                 {{-- Left Content Column --}}
                 <div class="space-y-5 text-center lg:text-left">
