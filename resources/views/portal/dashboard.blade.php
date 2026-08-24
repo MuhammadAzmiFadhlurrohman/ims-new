@@ -399,8 +399,8 @@
                         <button @click="activeTicketTab = 'relokasi'" :class="{'bg-brand-600 text-white shadow-lg': activeTicketTab === 'relokasi', 'bg-white/5 text-slate-300 hover:bg-white/10': activeTicketTab !== 'relokasi'}" class="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 shrink-0">
                             <span>🏠 Relokasi</span>
                         </button>
-                        <button @click="activeTicketTab = 'wifi'" :class="{'bg-brand-600 text-white shadow-lg': activeTicketTab === 'wifi', 'bg-white/5 text-slate-300 hover:bg-white/10': activeTicketTab !== 'wifi'}" class="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 shrink-0">
-                            <span>📶 Ganti WiFi</span>
+                        <button @click="activeTicketTab = 'password'" :class="{'bg-brand-600 text-white shadow-lg': activeTicketTab === 'password', 'bg-white/5 text-slate-300 hover:bg-white/10': activeTicketTab !== 'password'}" class="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 shrink-0">
+                            <span>🔑 Ganti Password</span>
                         </button>
                     </div>
                 </div>
@@ -499,28 +499,28 @@
                         </button>
                     </div>
 
-                    <!-- TAB 4: BANTUAN WIFI & MODEM -->
-                    <div x-show="activeTicketTab === 'wifi'" x-cloak class="space-y-4 sm:space-y-5">
-                        <input type="hidden" name="category" value="BANTUAN_WIFI">
+                    <!-- TAB 4: GANTI PASSWORD -->
+                    <div x-show="activeTicketTab === 'password'" x-cloak class="space-y-4 sm:space-y-5">
+                        <input type="hidden" name="category" value="GANTI_PASSWORD">
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                             <div>
-                                <label class="block font-bold text-slate-300 mb-1.5">Nama WiFi (SSID) Baru yang Diinginkan</label>
-                                <input type="text" name="wifi_ssid" placeholder="Contoh: Rumah_Bambang_5G" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white focus:border-brand-400 outline-none text-xs">
+                                <label class="block font-bold text-slate-300 mb-1.5">Password WiFi Baru * (Min 8 Karakter)</label>
+                                <input type="text" name="new_password" placeholder="Contoh: b4ndung2026!" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white focus:border-brand-400 outline-none text-xs">
                             </div>
                             <div>
-                                <label class="block font-bold text-slate-300 mb-1.5">Password WiFi Baru (Min 8 Karakter)</label>
-                                <input type="text" name="wifi_password" placeholder="Contoh: b4ndung2026!" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white focus:border-brand-400 outline-none text-xs">
+                                <label class="block font-bold text-slate-300 mb-1.5">Konfirmasi Password Baru *</label>
+                                <input type="text" name="confirm_password" placeholder="Ketik ulang password baru" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white focus:border-brand-400 outline-none text-xs">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block font-bold text-slate-300 mb-1.5">Detail Bantuan yang Dibutuhkan *</label>
-                            <textarea name="description" rows="3" placeholder="Contoh: Mohon bantu ganti password WiFi router atau remote reboot router..." required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white focus:border-brand-400 outline-none text-xs"></textarea>
+                            <label class="block font-bold text-slate-300 mb-1.5">Catatan Tambahan (Opsional)</label>
+                            <textarea name="description" rows="2" placeholder="Catatan tambahan untuk tim teknisi (misal: jika ingin sekaligus ganti nama WiFi/SSID)..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white focus:border-brand-400 outline-none text-xs"></textarea>
                         </div>
 
-                        <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-black text-xs shadow-lg shadow-cyan-600/25 transition-all flex items-center justify-center">
-                            <span>📶 Kirim Permintaan Bantuan Router</span>
+                        <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-black text-xs shadow-lg shadow-cyan-600/25 transition-all flex items-center justify-center gap-2">
+                            <span>🔑 Simpan &amp; Ajukan Ganti Password</span>
                         </button>
                     </div>
 

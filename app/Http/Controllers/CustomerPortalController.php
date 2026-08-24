@@ -150,13 +150,14 @@ class CustomerPortalController extends Controller
         $category = $request->input('category');
         $desc = $request->input('description');
 
-        // Append custom request context if upgrade/downgrade or relocation
+        // Append custom request context if upgrade/downgrade, relocation, or change password
         if ($category === 'REQ_UPGRADE_DOWNGRADE' && $request->filled('target_package')) {
             $desc = "[Permohonan Ubah Paket]: Target paket baru: " . $request->input('target_package') . "\nCatatan: " . $desc;
         } elseif ($category === 'REQ_RELOKASI' && $request->filled('new_address')) {
             $desc = "[Permohonan Relokasi/Pindah Alamat]: Alamat Baru: " . $request->input('new_address') . "\nCatatan: " . $desc;
-        } elseif ($category === 'BANTUAN_WIFI' && $request->filled('wifi_ssid')) {
-            $desc = "[Bantuan Setting Router/WiFi]: Nama SSID/Pass Baru: " . $request->input('wifi_ssid') . "\nCatatan: " . $desc;
+        } elseif ($category === 'GANTI_PASSWORD' || $category === 'BANTUAN_WIFI') {
+            $newPass = $request->input('new_password') ?? $request->input('wifi_password', '-');
+            $desc = "[Permohonan Ganti Password]: Password Baru: " . $newPass . "\nCatatan: " . ($desc ?: 'Mohon bantu update password WiFi modem router.');
         }
 
         $randomNo = rand(100, 999);
