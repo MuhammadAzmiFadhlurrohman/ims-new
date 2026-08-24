@@ -263,6 +263,7 @@ body.fi-body {
 .ims-card-blue::before { background: linear-gradient(90deg, #2563eb, #38bdf8); }
 .ims-card-green::before { background: linear-gradient(90deg, #16a34a, #4ade80); }
 .ims-card-amber::before { background: linear-gradient(90deg, #ea580c, #f59e0b); }
+.ims-card-rose::before { background: linear-gradient(90deg, #e11d48, #f43f5e); }
 
 .ims-card-header {
     display: flex;
@@ -294,6 +295,7 @@ body.fi-body {
 .ims-bubble-blue { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
 .ims-bubble-green { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
 .ims-bubble-amber { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
+.ims-bubble-rose { background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; }
 
 .ims-stat-number {
     font-size: 3.1rem;
@@ -311,6 +313,7 @@ body.fi-body {
 .ims-num-blue { color: #1d4ed8; }
 .ims-num-green { color: #15803d; }
 .ims-num-amber { color: #c2410c; }
+.ims-num-rose { color: #e11d48; }
 
 .ims-card-footer {
     display: flex;
@@ -633,86 +636,107 @@ html.dark .ims-modal-content div[style*="color: #0f172a"] {
         right: 14px !important;
     }
 
-    /* Stats Grid & Cards */
+    /* Stats Grid & Cards (Modern 2x2 Grid on Mobile) */
     .ims-stats-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 0.75rem !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
         width: 100% !important;
+        box-sizing: border-box !important;
+        margin-bottom: 1rem !important;
     }
 
     .ims-stat-card {
-        padding: 1rem 1.15rem !important;
+        padding: 0.85rem 0.95rem 0.65rem 0.95rem !important;
         border-radius: 14px !important;
+        min-height: auto !important;
         width: 100% !important;
         box-sizing: border-box !important;
-    }
-
-    .ims-stat-number {
-        font-size: 2.2rem !important;
-        margin: 0.4rem 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
     }
 
     .ims-card-header {
-        margin-bottom: 0.25rem !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: space-between !important;
+        gap: 4px !important;
+        margin-bottom: 0.2rem !important;
+    }
+
+    .ims-card-title {
+        font-size: 0.65rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.02em !important;
+        line-height: 1.2 !important;
+    }
+
+    .ims-icon-bubble {
+        width: 30px !important;
+        height: 30px !important;
+        border-radius: 9px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .ims-icon-bubble svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .ims-stat-number {
+        font-size: 1.85rem !important;
+        font-weight: 900 !important;
+        margin: 0.15rem 0 0.35rem 0 !important;
+        display: flex !important;
+        align-items: baseline !important;
+        gap: 4px !important;
     }
 
     .ims-card-footer {
-        padding: 0.65rem 0.85rem !important;
-        font-size: 0.74rem !important;
-        border-radius: 10px !important;
-        margin-top: 0.5rem !important;
+        padding: 0.35rem 0 0 0 !important;
+        font-size: 0.68rem !important;
+        margin-top: 0.2rem !important;
+        border-top: 1px solid rgba(148, 163, 184, 0.15) !important;
     }
 
-    .ims-quick-kpi {
-        padding: 0.85rem !important;
+    .ims-top-command-bar {
+        padding: 0.65rem 0.95rem !important;
         border-radius: 14px !important;
-    }
-
-    .ims-kpi-counter {
-        font-size: 1.6rem !important;
-    }
-
-    .ims-kpi-label {
-        font-size: 0.72rem !important;
-    }
-
-    .ims-status-card {
-        padding: 0.85rem !important;
-        border-radius: 14px !important;
-    }
-
-    .ims-status-card h4 {
-        font-size: 0.82rem !important;
+        margin-bottom: 0.85rem !important;
     }
 
     .ims-distribution-card {
-        padding: 1rem !important;
+        padding: 0.85rem 1rem !important;
         border-radius: 14px !important;
+        margin-bottom: 1rem !important;
     }
 
     .ims-distribution-card h3,
     .ims-dist-title,
     h3.ims-dist-title {
-        font-size: 0.88rem !important;
+        font-size: 0.85rem !important;
     }
 
     .ims-dist-sub {
+        font-size: 0.7rem !important;
+    }
+
+    .ims-bar-container {
+        height: 24px !important;
+        margin: 0.75rem 0 0.5rem 0 !important;
+    }
+
+    .ims-legend-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        margin-top: 0.75rem !important;
+    }
+
+    .ims-legend-box {
+        padding: 0.5rem 0.75rem !important;
         font-size: 0.72rem !important;
-    }
-
-    .ims-bubble-green,
-    .ims-bubble-rose,
-    .ims-bubble-amber {
-        font-size: 0.68rem !important;
-        padding: 0.15rem 0.5rem !important;
-    }
-
-    .ims-legend-green,
-    .ims-legend-amber,
-    .ims-legend-rose {
-        font-size: 0.68rem !important;
-        padding: 0.2rem 0.5rem !important;
+        border-radius: 10px !important;
     }
 
     /* Modal on mobile */
@@ -726,26 +750,14 @@ html.dark .ims-modal-content div[style*="color: #0f172a"] {
 /* ── Extra Small Dashboard (< 480px) ── */
 @media (max-width: 479px) {
     .ims-slide-item {
-        padding: 0.75rem 0.85rem 1.5rem 0.85rem !important;
+        padding: 0.75rem 0.85rem 1.25rem 0.85rem !important;
     }
 
     .ims-stat-number {
-        font-size: 1.9rem !important;
+        font-size: 1.65rem !important;
     }
 
-    .ims-quick-kpi {
-        padding: 0.65rem !important;
-    }
-
-    .ims-kpi-counter {
-        font-size: 1.4rem !important;
-    }
-
-    .ims-status-card {
-        padding: 0.65rem !important;
-    }
-
-    .ims-distribution-card {
-        padding: 0.75rem !important;
+    .ims-stat-card {
+        padding: 0.75rem 0.8rem 0.55rem 0.8rem !important;
     }
 }

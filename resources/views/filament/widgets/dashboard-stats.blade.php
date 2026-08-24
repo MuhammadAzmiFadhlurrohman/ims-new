@@ -262,28 +262,58 @@
             <!-- ── Card 3: PELANGGAN ISOLIR ── -->
             <div @click="showModal = 'isolated'" class="ims-stat-card ims-card-amber">
                 <div class="ims-card-header">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span class="ims-card-title">TERISOLIR (SUSPEND)</span>
-                        <span style="background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; font-size: 0.68rem; font-weight: 800; padding: 0.15rem 0.5rem; border-radius: 9999px;">
+                    <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+                        <span class="ims-card-title">ISOLIR / SUSPEND</span>
+                        <span style="background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; font-size: 0.65rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 9999px;">
                             Tunggakan
                         </span>
                     </div>
                     <div class="ims-icon-bubble ims-bubble-amber">
-                        <svg style="width: 22px; height: 22px;" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" /></svg>
+                        <svg style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" /></svg>
                     </div>
                 </div>
 
                 <div class="ims-stat-number ims-num-amber">
                     <span x-text="displayIsolated">0</span>
-                    <span style="font-size: 1rem; font-weight: 700; color: #94a3b8;">User</span>
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #94a3b8;">User</span>
                 </div>
 
                 <div class="ims-card-footer">
                     <span style="display: flex; align-items: center; gap: 0.35rem; color: #9a3412;">
-                        <svg style="width: 14px; height: 14px; color: #ea580c;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                        Follow up billing
+                        <svg style="width: 13px; height: 13px; color: #ea580c;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        Follow up
                     </span>
-                    <span style="color: #ea580c; font-weight: 800;">Buka Modal &rarr;</span>
+                    <span style="color: #ea580c; font-weight: 800;">Detail &rarr;</span>
+                </div>
+            </div>
+
+            <!-- ── Card 4: PELANGGAN TERMINASI ── -->
+            <div @click="showModal = 'terminated'" class="ims-stat-card ims-card-rose">
+                <div class="ims-card-header">
+                    <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+                        <span class="ims-card-title">TERMINASI (OFF)</span>
+                        <span style="background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; font-size: 0.65rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 9999px;">
+                            Non-Aktif
+                        </span>
+                    </div>
+                    <div class="ims-icon-bubble ims-bubble-rose">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                    </div>
+                </div>
+
+                <div class="ims-stat-number ims-num-rose">
+                    <span>{{ number_format($terminatedCustomers) }}</span>
+                    <span style="font-size: 0.78rem; font-weight: 800; background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; padding: 0.15rem 0.4rem; border-radius: 6px;">
+                        {{ $terminatedPercentage }}%
+                    </span>
+                </div>
+
+                <div class="ims-card-footer">
+                    <span style="display: flex; align-items: center; gap: 0.35rem; color: #9f1239;">
+                        <svg style="width: 13px; height: 13px; color: #e11d48;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        Histori OFF
+                    </span>
+                    <span style="color: #e11d48; font-weight: 800;">Detail &rarr;</span>
                 </div>
             </div>
         </div>
@@ -450,6 +480,30 @@
                 <div style="margin-top: 1.25rem; text-align: right;">
                     <a href="{{ url('/admin/service-suspensions') }}" style="display: inline-block; padding: 0.6rem 1.2rem; background: #ea580c; color: #ffffff; font-weight: 800; font-size: 0.78rem; border-radius: 12px; text-decoration: none;">
                         Buka Menu Suspend & Isolir &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: DETAIL TERMINASI -->
+        <div x-show="showModal === 'terminated'" x-cloak class="ims-modal-backdrop" @click="showModal = null">
+            <div class="ims-modal-content" @click.stop>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.75rem; border-bottom: 1px solid #f1f5f9; margin-bottom: 1rem;">
+                    <div>
+                        <h4 style="font-size: 1rem; font-weight: 900; color: #0f172a; margin: 0;">🔴 Pelanggan Terminasi (Berhenti Langganan)</h4>
+                        <p style="font-size: 0.75rem; color: #64748b; margin: 2px 0 0 0;">Total pelanggan yang telah diputus permanen</p>
+                    </div>
+                    <button type="button" @click="showModal = null" style="border: none; background: #f1f5f9; width: 32px; height: 32px; border-radius: 50%; font-weight: 900; font-size: 1.1rem; cursor: pointer; color: #64748b;">&times;</button>
+                </div>
+
+                <div style="padding: 1.25rem; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; text-align: center; margin-bottom: 1rem;">
+                    <div style="font-size: 2rem; font-weight: 900; color: #e11d48;">{{ number_format($terminatedCustomers) }} <span style="font-size: 0.9rem; font-weight: 700; color: #9f1239;">User ({{ $terminatedPercentage }}%)</span></div>
+                    <div style="font-size: 0.78rem; color: #be123c; font-weight: 700; margin-top: 4px;">Status Berhenti Berlangganan / Perangkat Ditarik</div>
+                </div>
+
+                <div style="text-align: right;">
+                    <a href="{{ url('/admin/service-terminations') }}" style="display: inline-block; padding: 0.6rem 1.2rem; background: #e11d48; color: #ffffff; font-weight: 800; font-size: 0.78rem; border-radius: 12px; text-decoration: none;">
+                        Buka Menu Terminasi &rarr;
                     </a>
                 </div>
             </div>
