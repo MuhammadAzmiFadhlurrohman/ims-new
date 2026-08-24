@@ -85,7 +85,8 @@
         }
 
         h1, h2, h3, h4, h5, .font-heading {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
         }
 
         @keyframes pulseGreen {
@@ -95,7 +96,7 @@
         }
 
         .pulse-beacon-green {
-            animation: pulseGreen 2s infinite ease-in-out;
+            animation: pulseGreen 2.4s infinite ease-in-out;
         }
 
         @keyframes fiberFlow {
@@ -106,31 +107,39 @@
 
         .animate-fiber-flow {
             stroke-dasharray: 8 6;
-            animation: fiberFlow 1.8s linear infinite;
+            animation: fiberFlow 2.4s linear infinite;
         }
 
         .animate-fiber-flow-fast {
             stroke-dasharray: 6 4;
-            animation: fiberFlow 1.2s linear infinite;
+            animation: fiberFlow 1.6s linear infinite;
         }
 
         @keyframes waveExpand {
-            0% { transform: scale(0.5); opacity: 0.9; }
-            100% { transform: scale(1.8); opacity: 0; }
+            0% { transform: scale(0.6); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
         }
 
         .animate-wifi-wave {
             transform-origin: center;
-            animation: waveExpand 2.2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+            animation: waveExpand 2.8s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
         }
 
-        @keyframes floatCardSlow {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
+        /* Subtle interactive card hover */
+        .card-interactive {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-interactive:hover {
+            transform: translateY(-3px);
         }
 
-        .animate-float-badge {
-            animation: floatCardSlow 4s ease-in-out infinite;
+        /* Hide scrollbar for clean horizontal snap scroll on mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         /* Leaflet Z-Index Isolations */
@@ -473,15 +482,15 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 
-                <!-- Logo -->
+                <!-- Logo: Logo | ☰ -->
                 <a href="#beranda" class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-lg bg-navy-900 text-white flex items-center justify-center font-black text-sm shadow-sm relative">
+                    <div class="w-8 h-8 rounded-lg bg-navy-900 text-white flex items-center justify-center font-bold text-sm shadow-sm relative">
                         <svg class="w-4 h-4 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                         </svg>
                     </div>
                     <div>
-                        <span class="font-heading text-lg font-black text-navy-900 tracking-tight leading-none block">
+                        <span class="font-heading text-lg font-bold text-navy-900 tracking-tight leading-none block">
                             IMS<span class="text-corporate-blue">ONE</span>
                         </span>
                         <span class="text-[9px] font-semibold tracking-widest text-ink-subtle uppercase block mt-0.5">
@@ -491,12 +500,11 @@
                 </a>
 
                 <!-- Desktop Menu Links -->
-                <div class="hidden lg:flex items-center gap-8">
+                <div class="hidden lg:flex items-center gap-7">
                     <a href="#beranda" class="text-xs font-semibold text-ink-muted hover:text-navy-900 transition-colors">Beranda</a>
-                    <a href="#coverage" class="text-xs font-semibold text-ink-muted hover:text-navy-900 transition-colors">Cek Coverage</a>
-                    <a href="#paket" class="text-xs font-semibold text-ink-muted hover:text-navy-900 transition-colors">Paket Internet</a>
-                    <a href="#keunggulan" class="text-xs font-semibold text-ink-muted hover:text-navy-900 transition-colors">Keunggulan</a>
-                    <a href="#testimoni" class="text-xs font-semibold text-ink-muted hover:text-navy-900 transition-colors">Testimoni</a>
+                    <a href="#paket" class="text-xs font-semibold text-ink-muted hover:text-navy-900 transition-colors">Paket</a>
+                    <a href="#coverage" class="text-xs font-semibold text-ink-muted hover:text-navy-900 transition-colors">Coverage</a>
+                    <a href="#keunggulan" class="text-xs font-semibold text-ink-muted hover:text-navy-900 transition-colors">Tentang</a>
                     <a href="#faq" class="text-xs font-semibold text-ink-muted hover:text-navy-900 transition-colors">FAQ</a>
                     <a href="#kontak" class="text-xs font-semibold text-ink-muted hover:text-navy-900 transition-colors">Kontak</a>
                 </div>
@@ -511,19 +519,19 @@
                     </a>
 
                     <button @click="openRegister('Paket Pro (100 Mbps)')" class="px-4 py-2 rounded-lg bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold transition-colors shadow-sm">
-                        Pasang Baru &rarr;
+                        Pasang Sekarang &rarr;
                     </button>
                 </div>
 
-                <!-- Mobile Menu Hamburger -->
+                <!-- Mobile Menu Hamburger Button (Logo | ☰) -->
                 <div class="flex items-center gap-2 lg:hidden">
                     <a href="{{ route('customer.portal') }}" class="px-2.5 py-1.5 rounded-lg border border-slate-200 text-ink-main text-xs font-semibold">
                         Portal
                     </a>
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 text-ink-muted hover:text-navy-900 focus:outline-none">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                            <path x-show="mobileMenuOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 text-navy-900 hover:text-corporate-blue focus:outline-none" aria-label="Menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16"/>
+                            <path x-show="mobileMenuOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>
                     </button>
                 </div>
@@ -531,18 +539,19 @@
             </div>
         </div>
 
-        <!-- Mobile Drawer -->
-        <div x-show="mobileMenuOpen" x-cloak x-collapse class="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-5 space-y-2">
-            <a href="#beranda" @click="mobileMenuOpen = false" class="block py-2 text-xs font-semibold text-ink-main">Beranda</a>
-            <a href="#coverage" @click="mobileMenuOpen = false" class="block py-2 text-xs font-semibold text-ink-main">Cek Coverage</a>
-            <a href="#paket" @click="mobileMenuOpen = false" class="block py-2 text-xs font-semibold text-ink-main">Paket Internet</a>
-            <a href="#keunggulan" @click="mobileMenuOpen = false" class="block py-2 text-xs font-semibold text-ink-main">Keunggulan</a>
-            <a href="#testimoni" @click="mobileMenuOpen = false" class="block py-2 text-xs font-semibold text-ink-main">Testimoni</a>
-            <a href="#faq" @click="mobileMenuOpen = false" class="block py-2 text-xs font-semibold text-ink-main">FAQ</a>
-            <a href="#kontak" @click="mobileMenuOpen = false" class="block py-2 text-xs font-semibold text-ink-main">Kontak</a>
-            <div class="pt-2 border-t border-slate-100">
-                <button @click="mobileMenuOpen = false; openRegister('Paket Pro (100 Mbps)')" class="w-full py-2.5 rounded-lg bg-navy-900 text-white font-bold text-xs text-center">
-                    Pasang Baru &rarr;
+        <!-- Mobile Drawer Menu: Beranda, Paket, Coverage, Tentang, FAQ, Kontak, CTA Pasang Sekarang -->
+        <div x-show="mobileMenuOpen" x-cloak x-collapse class="lg:hidden border-t border-slate-200 bg-white px-5 pt-3 pb-6 space-y-1 shadow-lg">
+            <a href="#beranda" @click="mobileMenuOpen = false" class="block py-2.5 text-sm font-semibold text-navy-900 border-b border-slate-100">Beranda</a>
+            <a href="#paket" @click="mobileMenuOpen = false" class="block py-2.5 text-sm font-semibold text-navy-900 border-b border-slate-100">Paket</a>
+            <a href="#coverage" @click="mobileMenuOpen = false" class="block py-2.5 text-sm font-semibold text-navy-900 border-b border-slate-100">Coverage</a>
+            <a href="#keunggulan" @click="mobileMenuOpen = false" class="block py-2.5 text-sm font-semibold text-navy-900 border-b border-slate-100">Tentang</a>
+            <a href="#faq" @click="mobileMenuOpen = false" class="block py-2.5 text-sm font-semibold text-navy-900 border-b border-slate-100">FAQ</a>
+            <a href="#kontak" @click="mobileMenuOpen = false" class="block py-2.5 text-sm font-semibold text-navy-900">Kontak</a>
+            
+            <div class="pt-3">
+                <button @click="mobileMenuOpen = false; openRegister('Paket Pro (100 Mbps)')" class="w-full py-3 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs text-center shadow-md flex items-center justify-center gap-1.5">
+                    <span>Pasang Sekarang</span>
+                    <span class="text-accent-cyan">&rarr;</span>
                 </button>
             </div>
         </div>
@@ -963,7 +972,7 @@
                             </span>
                             <span class="text-[11px] text-ink-subtle font-mono">ODP Active Nodes • Live</span>
                         </div>
-                        <div id="landing-gis-map" class="w-full h-[420px] sm:h-[480px]"></div>
+                        <div id="landing-gis-map" class="w-full h-[280px] sm:h-[420px] lg:h-[480px]"></div>
                     </div>
                 </div>
 
@@ -1013,10 +1022,10 @@
             </div>
 
             {{-- ── TAB 1: PAKET RUMAH & KELUARGA ── --}}
-            <div x-show="pricingTab === 'rumah'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-center">
+            <div x-show="pricingTab === 'rumah'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="flex md:grid md:grid-cols-3 overflow-x-auto pb-4 md:pb-0 snap-x snap-mandatory gap-6 lg:gap-8 items-stretch no-scrollbar">
                 
                 <!-- Package 1: Basic (30 Mbps) -->
-                <div class="bg-white border border-slate-200 rounded-xl p-6 sm:p-7 flex flex-col justify-between shadow-sm h-full">
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive h-full">
                     <div class="space-y-5">
                         <div>
                             <span class="text-[11px] font-bold text-ink-subtle uppercase tracking-wider block mb-1">STARTER HOME</span>
@@ -1059,8 +1068,8 @@
                 </div>
 
                 <!-- Package 2: HERO PACKAGE - Family Pro (100 Mbps) -->
-                <div class="bg-white border-2 border-navy-900 rounded-2xl p-7 sm:p-8 flex flex-col justify-between relative shadow-xl shadow-navy-900/10 lg:-mt-3 lg:-mb-3">
-                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-navy-900 text-accent-cyan text-[10.5px] font-black uppercase tracking-wider shadow-md border border-navy-800 flex items-center gap-1.5">
+                <div class="bg-white border-2 border-navy-900 rounded-2xl p-7 sm:p-8 flex flex-col justify-between relative shadow-xl shadow-navy-900/10 min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive lg:-mt-3 lg:-mb-3 h-full">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-navy-900 text-accent-cyan text-[10.5px] font-black uppercase tracking-wider shadow-md border border-navy-800 flex items-center gap-1.5 whitespace-nowrap">
                         <span>🔥</span>
                         <span>PALING POPULER</span>
                     </div>
@@ -1108,7 +1117,7 @@
                 </div>
 
                 <!-- Package 3: Ultimate (300 Mbps) -->
-                <div class="bg-white border border-slate-200 rounded-xl p-6 sm:p-7 flex flex-col justify-between shadow-sm h-full">
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive h-full">
                     <div class="space-y-5">
                         <div>
                             <span class="text-[11px] font-bold text-ink-subtle uppercase tracking-wider block mb-1">CREATOR &amp; HEAVY USER</span>
@@ -1153,10 +1162,10 @@
             </div>
 
             {{-- ── TAB 2: PAKET BISNIS & KORPORAT ── --}}
-            <div x-show="pricingTab === 'bisnis'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-center">
+            <div x-show="pricingTab === 'bisnis'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="flex md:grid md:grid-cols-3 overflow-x-auto pb-4 md:pb-0 snap-x snap-mandatory gap-6 lg:gap-8 items-stretch no-scrollbar">
                 
                 <!-- Business 1: SME Pro -->
-                <div class="bg-white border border-slate-200 rounded-xl p-6 sm:p-7 flex flex-col justify-between shadow-sm h-full">
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive h-full">
                     <div class="space-y-5">
                         <div>
                             <span class="text-[11px] font-bold text-ink-subtle uppercase tracking-wider block mb-1">BUSINESS STARTER</span>
@@ -1199,8 +1208,8 @@
                 </div>
 
                 <!-- Business 2: HERO PACKAGE - Enterprise Pro (300 Mbps Dedicated) -->
-                <div class="bg-white border-2 border-navy-900 rounded-2xl p-7 sm:p-8 flex flex-col justify-between relative shadow-xl shadow-navy-900/10 lg:-mt-3 lg:-mb-3">
-                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-navy-900 text-accent-cyan text-[10.5px] font-black uppercase tracking-wider shadow-md border border-navy-800 flex items-center gap-1.5">
+                <div class="bg-white border-2 border-navy-900 rounded-2xl p-7 sm:p-8 flex flex-col justify-between relative shadow-xl shadow-navy-900/10 min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive lg:-mt-3 lg:-mb-3 h-full">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-navy-900 text-accent-cyan text-[10.5px] font-black uppercase tracking-wider shadow-md border border-navy-800 flex items-center gap-1.5 whitespace-nowrap">
                         <span>⭐</span>
                         <span>PILIHAN UTAMA KORPORASI</span>
                     </div>
@@ -1248,7 +1257,7 @@
                 </div>
 
                 <!-- Business 3: Corporate Gigabit (1 Gbps) -->
-                <div class="bg-white border border-slate-200 rounded-xl p-6 sm:p-7 flex flex-col justify-between shadow-sm h-full">
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive h-full">
                     <div class="space-y-5">
                         <div>
                             <span class="text-[11px] font-bold text-ink-subtle uppercase tracking-wider block mb-1">HIGH-CAPACITY BACKBONE</span>
@@ -1901,20 +1910,106 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 11. FOOTER ──
+         ── 11. FOOTER (4-COLUMN CORPORATE ISP) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <footer class="bg-white py-8 text-xs text-ink-muted border-t border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-2.5">
-                <span class="font-heading text-base font-black text-navy-900">
-                    IMS<span class="text-corporate-blue">ONE</span>
-                </span>
-                <span class="text-slate-300">•</span>
-                <span>PT Media Sarana Network (ISP Berlisensi Kominfo)</span>
+    <footer class="bg-white border-t border-slate-200 pt-16 pb-12 text-xs text-ink-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-slate-200">
+                
+                <!-- Col 1: IMS ONE About (lg:col-span-4) -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-navy-900 text-white flex items-center justify-center font-bold text-sm shadow-sm relative">
+                            <svg class="w-4 h-4 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                            </svg>
+                        </div>
+                        <span class="font-heading text-lg font-bold text-navy-900 tracking-tight">
+                            IMS<span class="text-corporate-blue">ONE</span>
+                        </span>
+                    </div>
+
+                    <p class="text-xs text-ink-muted leading-relaxed max-w-sm">
+                        Penyedia layanan internet berbasis serat optik murni (FTTH &amp; Dedicated Bandwidth) berkecepatan tinggi dengan uptime terjamin untuk kebutuhan hunian, bisnis, dan institusi.
+                    </p>
+
+                    <div class="text-[11px] text-ink-subtle space-y-1">
+                        <p><strong>PT Media Sarana Network</strong></p>
+                        <p>ISP Berlisensi Resmi Kominfo No. 128/TEL.02.02/2021</p>
+                    </div>
+                </div>
+
+                <!-- Col 2: Layanan (lg:col-span-2) -->
+                <div class="lg:col-span-2 space-y-3.5">
+                    <strong class="font-heading text-xs font-bold text-navy-900 uppercase tracking-wider block">Layanan</strong>
+                    <ul class="space-y-2.5 text-xs">
+                        <li><a href="#paket" class="text-ink-muted hover:text-navy-900 transition-colors">Internet Rumah</a></li>
+                        <li><a href="#paket" class="text-ink-muted hover:text-navy-900 transition-colors">Internet Bisnis</a></li>
+                        <li><a href="#coverage" class="text-ink-muted hover:text-navy-900 transition-colors">Coverage Area</a></li>
+                        <li><a href="#paket" class="text-ink-muted hover:text-navy-900 transition-colors">Paket Internet</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Bantuan & Portal (lg:col-span-2) -->
+                <div class="lg:col-span-2 space-y-3.5">
+                    <strong class="font-heading text-xs font-bold text-navy-900 uppercase tracking-wider block">Bantuan</strong>
+                    <ul class="space-y-2.5 text-xs">
+                        <li><a href="#faq" class="text-ink-muted hover:text-navy-900 transition-colors">FAQ &amp; Panduan</a></li>
+                        <li><a href="https://wa.me/6281234567890" target="_blank" class="text-ink-muted hover:text-navy-900 transition-colors">Customer Service</a></li>
+                        <li><a href="{{ route('customer.portal') }}" class="text-ink-muted hover:text-navy-900 transition-colors">Lapor Gangguan</a></li>
+                        <li><a href="{{ route('customer.portal') }}" class="text-ink-muted hover:text-navy-900 transition-colors font-medium">Portal Pelanggan</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Kontak & Operasional (lg:col-span-4) -->
+                <div class="lg:col-span-4 space-y-3.5">
+                    <strong class="font-heading text-xs font-bold text-navy-900 uppercase tracking-wider block">Kontak</strong>
+                    <div class="space-y-2 text-xs text-ink-muted">
+                        <p class="leading-relaxed">
+                            <strong class="text-navy-900 block">Alamat Kantor:</strong>
+                            Jl. Braga No. 109, Sumur Bandung, Kota Bandung, Jawa Barat 40111
+                        </p>
+                        <p>
+                            <strong class="text-navy-900">WhatsApp:</strong> 
+                            <a href="https://wa.me/6281234567890" target="_blank" class="text-corporate-blue font-bold hover:underline">+62 812-3456-7890</a>
+                        </p>
+                        <p>
+                            <strong class="text-navy-900">Email:</strong> 
+                            <a href="mailto:support@imsone.net.id" class="text-corporate-blue font-semibold hover:underline">support@imsone.net.id</a>
+                        </p>
+                        <p class="text-[11px] text-ink-subtle">
+                            Jam Operasional: Senin – Sabtu, 08:00 – 17:00 WIB (Helpdesk NOC 24/7)
+                        </p>
+                    </div>
+                </div>
+
             </div>
-            <div>
-                &copy; {{ date('Y') }} IMS ONE. All rights reserved.
+
+            <!-- Bottom Copyright & Social Media Icons -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+                <p>&copy; {{ date('Y') }} IMS ONE. All Rights Reserved.</p>
+                
+                <div class="flex items-center gap-4 text-ink-subtle">
+                    <!-- Instagram -->
+                    <a href="#" class="hover:text-navy-900 transition-colors" title="Instagram">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <!-- Facebook -->
+                    <a href="#" class="hover:text-navy-900 transition-colors" title="Facebook">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.5 5H18V0h-3.808C10.593 0 9 1.582 9 4.615V8z"/></svg>
+                    </a>
+                    <!-- LinkedIn -->
+                    <a href="#" class="hover:text-navy-900 transition-colors" title="LinkedIn">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/></svg>
+                    </a>
+                    <!-- Twitter / X -->
+                    <a href="#" class="hover:text-navy-900 transition-colors" title="Twitter/X">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                </div>
             </div>
+
         </div>
     </footer>
 
