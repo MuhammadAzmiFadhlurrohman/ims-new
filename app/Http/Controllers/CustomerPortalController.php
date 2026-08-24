@@ -50,10 +50,18 @@ class CustomerPortalController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
+        $activeTickets = $tickets->where('status', '!=', 'RESOLVED');
+        $resolvedTickets = $tickets->where('status', 'RESOLVED');
+
         // Customer Invoices
         $invoices = MonthlyInvoice::where('internet_number', $subscription->internet_number)
             ->orderByDesc('created_at')
             ->get();
+
+        $unpaidInvoices = $invoices->where('payment_status', '!=', 'PAID');
+        $paidInvoices = $invoices->where('payment_status', 'PAID');
+        $totalArrears = $unpaidInvoices->sum('total_amount');
+        $hasArrears = $unpaidInvoices->count() > 0;
 
         // ODP Data
         $odp = Odp::where('code', $subscription->odp_code)->first();
@@ -63,7 +71,13 @@ class CustomerPortalController extends Controller
             'currentPackage',
             'availablePackages',
             'tickets',
+            'activeTickets',
+            'resolvedTickets',
             'invoices',
+            'unpaidInvoices',
+            'paidInvoices',
+            'totalArrears',
+            'hasArrears',
             'odp',
             'remainingSeconds'
         ));
