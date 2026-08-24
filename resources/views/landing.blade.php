@@ -371,6 +371,27 @@
         </div>
     </nav>
 
+    <!-- Session Expired Floating Alert -->
+    @if(session('session_expired'))
+        <div class="fixed top-24 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[92%] p-4 rounded-2xl bg-amber-500/20 backdrop-blur-xl border border-amber-500/40 text-amber-300 text-xs font-semibold shadow-2xl flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+                <span class="text-base shrink-0">⏱️</span>
+                <span>{{ session('session_expired') }}</span>
+            </div>
+            <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+        </div>
+    @endif
+
+    @if(session('info'))
+        <div class="fixed top-24 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[92%] p-4 rounded-2xl bg-sky-500/20 backdrop-blur-xl border border-sky-500/40 text-sky-300 text-xs font-semibold shadow-2xl flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+                <span class="text-base shrink-0">ℹ️</span>
+                <span>{{ session('info') }}</span>
+            </div>
+            <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+        </div>
+    @endif
+
     {{-- ══════════════════════════════════════════════════════════════
          ── 2. HERO SECTION ──
          ══════════════════════════════════════════════════════════════ --}}

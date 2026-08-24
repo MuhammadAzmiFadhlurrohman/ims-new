@@ -12,20 +12,32 @@ use Illuminate\Support\Facades\Session;
 
 class CustomerPortalController extends Controller
 {
+    const SESSION_LIFETIME_SECONDS = 3600; // 1 Jam Maksimal
+
     public function index()
     {
         $internetNumber = Session::get('customer_internet_number');
+        $loginAt = Session::get('customer_login_at');
 
         if (!$internetNumber) {
             return view('portal.login');
         }
 
+        // Check if session has exceeded 1 hour (3600s)
+        if ($loginAt && (now()->timestamp - $loginAt > self::SESSION_LIFETIME_SECONDS)) {
+            Session::forget(['customer_internet_number', 'customer_login_at']);
+            return redirect('/')->with('session_expired', 'Sesi layanan Anda telah berakhir setelah 1 jam untuk menghemat beban server. Silakan masukkan nomor HP kembali jika diperlukan.');
+        }
+
         $subscription = CustomerSubscription::where('internet_number', $internetNumber)->first();
 
         if (!$subscription) {
-            Session::forget('customer_internet_number');
+            Session::forget(['customer_internet_number', 'customer_login_at']);
             return view('portal.login');
         }
+
+        // Remaining seconds in session
+        $remainingSeconds = max(0, self::SESSION_LIFETIME_SECONDS - (now()->timestamp - ($loginAt ?? now()->timestamp)));
 
         // Active Package Details
         $currentPackage = BandwidthPackage::where('code', $subscription->package_code)->first();
@@ -52,7 +64,8 @@ class CustomerPortalController extends Controller
             'availablePackages',
             'tickets',
             'invoices',
-            'odp'
+            'odp',
+            'remainingSeconds'
         ));
     }
 
@@ -90,6 +103,7 @@ class CustomerPortalController extends Controller
 
         if ($subscription) {
             Session::put('customer_internet_number', $subscription->internet_number);
+            Session::put('customer_login_at', now()->timestamp);
             return redirect()->route('customer.portal')->with('success', 'Selamat datang kembali, ' . $subscription->customer_name . '!');
         }
 
@@ -98,16 +112,18 @@ class CustomerPortalController extends Controller
 
     public function logout()
     {
-        Session::forget('customer_internet_number');
-        return redirect()->route('customer.portal')->with('info', 'Anda telah keluar dari Portal Layanan Pelanggan.');
+        Session::forget(['customer_internet_number', 'customer_login_at']);
+        return redirect('/')->with('info', 'Anda telah keluar dari Portal Layanan Pelanggan.');
     }
 
     public function submitTicket(Request $request)
     {
         $internetNumber = Session::get('customer_internet_number');
+        $loginAt = Session::get('customer_login_at');
 
-        if (!$internetNumber) {
-            return redirect()->route('customer.portal')->with('error', 'Sesi Anda telah berakhir, silakan login kembali.');
+        if (!$internetNumber || ($loginAt && (now()->timestamp - $loginAt > self::SESSION_LIFETIME_SECONDS))) {
+            Session::forget(['customer_internet_number', 'customer_login_at']);
+            return redirect('/')->with('session_expired', 'Sesi Anda telah berakhir setelah 1 jam. Silakan login kembali.');
         }
 
         $subscription = CustomerSubscription::where('internet_number', $internetNumber)->firstOrFail();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark h-full bg-[#08111e]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,11 +52,12 @@
     </script>
 
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #08111e;
+        * { box-sizing: border-box; }
+        html, body {
+            background-color: #08111e !important;
             color: #f1f5f9;
-            min-height: 100vh;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100%;
         }
 
         .cyber-glow-bg {
@@ -63,7 +65,7 @@
         }
 
         .glass-card {
-            background: rgba(13, 29, 51, 0.8);
+            background: rgba(13, 29, 51, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -91,7 +93,25 @@
 <body x-data="{
     activeTab: 'gangguan',
     selectedNewPackage: '{{ $availablePackages->first()->name ?? 'Paket 100 Mbps' }}',
-}" class="cyber-glow-bg flex flex-col min-h-screen">
+    remainingSeconds: {{ $remainingSeconds ?? 3600 }},
+    formattedTime: '60:00',
+    init() {
+        this.updateTime();
+        setInterval(() => {
+            if (this.remainingSeconds > 0) {
+                this.remainingSeconds--;
+                this.updateTime();
+            } else {
+                window.location.href = '{{ route('customer.logout') }}';
+            }
+        }, 1000);
+    },
+    updateTime() {
+        const m = Math.floor(this.remainingSeconds / 60).toString().padStart(2, '0');
+        const s = (this.remainingSeconds % 60).toString().padStart(2, '0');
+        this.formattedTime = `${m}:${s}`;
+    }
+}" class="bg-[#08111e] cyber-glow-bg flex flex-col min-h-screen text-slate-100">
 
     {{-- ══════════════════════════════════════════════════════════════
          ── TOP NAVBAR ──
@@ -102,9 +122,9 @@
                 
                 <!-- Logo -->
                 <div class="flex items-center gap-3">
-                    <a href="{{ url('/') }}" class="flex items-center gap-2.5">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-400 p-0.5 flex items-center justify-center shadow-lg shadow-brand-500/20">
-                            <div class="w-full h-full bg-[#08111e] rounded-[10px] flex items-center justify-center">
+                    <a href="{{ url('/') }}" class="flex items-center gap-2.5 group">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-cyan-400 p-0.5 flex items-center justify-center shadow-lg shadow-brand-500/20 transform group-hover:scale-105 transition-transform">
+                            <div class="w-full h-full bg-[#08111e] rounded-[14px] flex items-center justify-center">
                                 <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                                 </svg>
@@ -123,7 +143,14 @@
 
                 <!-- Customer Account Pill & Actions -->
                 <div class="flex items-center gap-3">
-                    <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs">
+                    <!-- Session 1-Hour Countdown Badge -->
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono">
+                        <span class="text-[11px]">⏱️</span>
+                        <span class="hidden sm:inline text-[11px] font-sans font-semibold">Sesi:</span>
+                        <span x-text="formattedTime" class="font-black text-amber-400"></span>
+                    </div>
+
+                    <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-beacon-green"></span>
                         <span class="font-bold text-slate-300">{{ $subscription->customer_name }}</span>
                         <span class="text-slate-500">•</span>
