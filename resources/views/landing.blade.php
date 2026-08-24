@@ -193,6 +193,13 @@
 
                         this.markersLayer = L.layerGroup().addTo(this.mapInstance);
                         this.renderPins();
+
+                        setTimeout(() => {
+                            if (this.mapInstance) {
+                                this.mapInstance.invalidateSize();
+                                this.renderPins();
+                            }
+                        }, 350);
                     } catch (e) {
                         console.error('Landing map init error:', e);
                     }
@@ -234,7 +241,7 @@
                     });
 
                     if (markers.length > 0) {
-                        this.mapInstance.fitBounds(L.featureGroup(markers).getBounds().pad(0.15));
+                        this.mapInstance.fitBounds(L.featureGroup(markers).getBounds().pad(0.12));
                     }
                 },
 
@@ -249,9 +256,19 @@
                     this.coverageChecked = true;
                     this.notifySubmitted = false;
 
-                    // Match against available keywords
-                    if (q.includes('dago') || q.includes('braga') || q.includes('riau') || q.includes('buahbatu') || q.includes('antapani') || q.includes('sukajadi') || q.includes('merdeka') || q.includes('gedebage') || q.includes('summarecon') || q.includes('kordon') || q.includes('sudirman') || q.includes('jakarta') || q.includes('bekasi') || q.includes('soreang') || q.includes('cimahi')) {
+                    // Match against available keywords & animate map
+                    if (q.includes('dago') || q.includes('braga') || q.includes('riau') || q.includes('buahbatu') || q.includes('antapani') || q.includes('sukajadi') || q.includes('merdeka') || q.includes('gedebage') || q.includes('summarecon') || q.includes('kordon') || q.includes('sudirman') || q.includes('jakarta') || q.includes('bekasi') || q.includes('soreang') || q.includes('cimahi') || q.includes('setia')) {
                         this.coverageStatus = 'AVAILABLE';
+                        if (this.mapInstance) {
+                            if (q.includes('dago')) this.mapInstance.flyTo([-6.8821, 107.6162], 15);
+                            else if (q.includes('braga')) this.mapInstance.flyTo([-6.9175, 107.6096], 15);
+                            else if (q.includes('buahbatu') || q.includes('kordon')) this.mapInstance.flyTo([-6.9385, 107.6258], 15);
+                            else if (q.includes('antapani')) this.mapInstance.flyTo([-6.9142, 107.6587], 15);
+                            else if (q.includes('gedebage')) this.mapInstance.flyTo([-6.9482, 107.7034], 15);
+                            else if (q.includes('sukajadi')) this.mapInstance.flyTo([-6.8904, 107.5975], 15);
+                            else if (q.includes('soreang')) this.mapInstance.flyTo([-7.0289, 107.5189], 15);
+                            else this.mapInstance.flyTo([-6.9175, 107.6096], 13);
+                        }
                     } else if (q.includes('ujungberung') || q.includes('cibiru') || q.includes('banjaran') || q.includes('lembang') || q.includes('padalarang') || q.includes('depok') || q.includes('bogor')) {
                         this.coverageStatus = 'COMING_SOON';
                     } else {
@@ -551,82 +568,99 @@
                 </p>
             </div>
 
-            <!-- Form Pengecekan Coverage -->
-            <div class="max-w-2xl mx-auto mb-10">
-                <div class="glass-card rounded-2xl p-2.5 shadow-2xl border border-brand-400/30 flex flex-col sm:flex-row gap-2">
-                    <div class="flex-1 flex items-center px-4 py-2">
-                        <svg class="w-5 h-5 text-brand-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-                        <input 
-                            type="text" 
-                            x-model="coverageInput" 
-                            @keydown.enter="checkCoverage()"
-                            placeholder="Masukkan Alamat / Nama Jalan / Kelurahan..." 
-                            class="w-full bg-transparent text-white placeholder-slate-400 text-xs sm:text-sm outline-none"
-                        />
-                    </div>
-                    <button @click="checkCoverage()" class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 hover:from-brand-500 hover:to-cyan-400 text-white font-extrabold text-xs shadow-lg shadow-brand-500/25 transition-all">
-                        Cek Coverage
-                    </button>
-                </div>
-
-                <!-- Hasil Pengecekan (Muncul setelah submit) -->
-                <div x-show="coverageChecked" x-cloak class="mt-6">
-                    
-                    <!-- 1. Status: TERSEDIA -->
-                    <template x-if="coverageStatus === 'AVAILABLE'">
-                        <div class="glass-card rounded-2xl p-6 border-emerald-500/40 bg-emerald-950/20 text-center">
-                            <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-xl">✅</div>
-                            <h4 class="font-heading text-lg font-black text-emerald-400 mb-2">Selamat! Jaringan Kami Sudah Tersedia!</h4>
-                            <p class="text-xs text-slate-300 mb-5">
-                                Jaringan fiber kami sudah tersedia di area <strong class="text-white" x-text="coverageAreaName"></strong>. Pasang sekarang dan nikmati internet cepat!
-                            </p>
-                            <a href="#paket" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#08111e] font-black text-xs shadow-lg transition-all">
-                                <span>Lihat Paket Internet</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-                            </a>
+            <!-- 2-COLUMN GRID (KIRI: FORM & HASIL | KANAN: PETA INTERAKTIF) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- KOLOM KIRI (FORM PENGECEKAN & HASIL) -->
+                <div class="lg:col-span-5 flex flex-col gap-6">
+                    <!-- Form Input -->
+                    <div class="glass-card rounded-3xl p-6 shadow-2xl border border-brand-400/30">
+                        <label class="block font-bold text-xs text-slate-300 mb-2">Cari Wilayah / Alamat Pemasangan</label>
+                        <div class="flex flex-col gap-3">
+                            <div class="flex items-center px-4 py-3 rounded-2xl bg-white/5 border border-white/15 focus-within:border-brand-400">
+                                <svg class="w-5 h-5 text-brand-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                                <input 
+                                    type="text" 
+                                    x-model="coverageInput" 
+                                    @keydown.enter="checkCoverage()"
+                                    placeholder="Masukkan Alamat / Nama Jalan / Kelurahan..." 
+                                    class="w-full bg-transparent text-white placeholder-slate-400 text-xs outline-none"
+                                />
+                            </div>
+                            <button @click="checkCoverage()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 hover:from-brand-500 hover:to-cyan-400 text-white font-extrabold text-xs shadow-lg shadow-brand-500/25 transition-all flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                <span>Cek Coverage</span>
+                            </button>
                         </div>
-                    </template>
+                    </div>
 
-                    <!-- 2. Status: SEGERA HADIR -->
-                    <template x-if="coverageStatus === 'COMING_SOON'">
-                        <div class="glass-card rounded-2xl p-6 border-amber-500/40 bg-amber-950/20 text-center">
+                    <!-- Area Hasil Pengecekan (Muncul di Bawah Form) -->
+                    <div>
+                        <!-- Panduan Awal Sebelum Cek -->
+                        <div x-show="!coverageChecked" class="glass-card rounded-3xl p-6 border border-white/10 text-xs text-slate-400 space-y-3">
+                            <strong class="text-white block text-sm font-bold">💡 Tips Pengecekan Cepat:</strong>
+                            <ul class="space-y-2 list-disc list-inside">
+                                <li>Ketik nama jalan utama atau kelurahan (Contoh: <em>Dago, Braga, Buahbatu, Antapani, Sukajadi</em>).</li>
+                                <li>Atau klik langsung pada <strong>pin hijau</strong> di peta sebelah kanan untuk mengecek status tiang ODP fiber terdekat.</li>
+                            </ul>
+                        </div>
+
+                        <!-- 1. Status: TERSEDIA -->
+                        <div x-show="coverageChecked && coverageStatus === 'AVAILABLE'" x-cloak class="glass-card rounded-3xl p-6 border-emerald-500/40 bg-emerald-950/20 text-center shadow-xl">
+                            <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-xl">✅</div>
+                            <h4 class="font-heading text-lg font-black text-emerald-400 mb-2">Selamat! Jaringan Kami Tersedia!</h4>
+                            <p class="text-xs text-slate-300 mb-5 leading-relaxed">
+                                Jaringan fiber optik kami sudah aktif di area <strong class="text-white" x-text="coverageAreaName"></strong>. Pasang sekarang dan nikmati internet super cepat!
+                            </p>
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                                <a href="#paket" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#08111e] font-black text-xs shadow-lg transition-all">
+                                    Lihat Paket Internet
+                                </a>
+                                <button @click="openRegister('Paket Premium (100 Mbps)')" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs">
+                                    Pasang Sekarang
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 2. Status: SEGERA HADIR -->
+                        <div x-show="coverageChecked && coverageStatus === 'COMING_SOON'" x-cloak class="glass-card rounded-3xl p-6 border-amber-500/40 bg-amber-950/20 text-center shadow-xl">
                             <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto mb-3 text-xl">🟡</div>
                             <h4 class="font-heading text-lg font-black text-amber-400 mb-2">Segera Hadir di Wilayah Anda!</h4>
-                            <p class="text-xs text-slate-300 mb-4">
-                                Area <strong class="text-white" x-text="coverageAreaName"></strong> dalam tahap pengembangan jaringan fiber kami. Ditunggu ya! Tinggalkan nomor HP untuk notifikasi saat jaringan aktif.
+                            <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                                Area <strong class="text-white" x-text="coverageAreaName"></strong> dalam tahap pengembangan jaringan kami. Ditunggu ya! Tinggalkan nomor HP untuk notifikasi saat siap pasang.
                             </p>
-                            <div class="max-w-md mx-auto flex gap-2" x-show="!notifySubmitted">
-                                <input type="text" x-model="phoneForNotification" placeholder="Masukkan No WhatsApp..." class="flex-1 px-4 py-2 rounded-xl bg-white/5 border border-white/15 text-xs text-white outline-none">
-                                <button @click="submitCoverageNotify()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-[#08111e] font-black text-xs">
+                            <div class="flex flex-col gap-2" x-show="!notifySubmitted">
+                                <input type="text" x-model="phoneForNotification" placeholder="Masukkan No WhatsApp Anda..." class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-xs text-white outline-none">
+                                <button @click="submitCoverageNotify()" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-[#08111e] font-black text-xs">
                                     Beri Tahu Saya
                                 </button>
                             </div>
                             <p x-show="notifySubmitted" class="text-xs text-emerald-400 font-bold mt-2">
-                                ✓ Terima kasih! Kami akan mengirimkan pesan WhatsApp saat tiang ODP di area Anda telah terpasang.
+                                ✓ Terima kasih! Kami akan mengirimkan notifikasi WhatsApp saat tiang ODP di area Anda telah siap.
                             </p>
                         </div>
-                    </template>
 
-                    <!-- 3. Status: BELUM TERSEDIA -->
-                    <template x-if="coverageStatus === 'NOT_AVAILABLE'">
-                        <div class="glass-card rounded-2xl p-6 border-rose-500/40 bg-rose-950/20 text-center">
+                        <!-- 3. Status: BELUM TERSEDIA -->
+                        <div x-show="coverageChecked && coverageStatus === 'NOT_AVAILABLE'" x-cloak class="glass-card rounded-3xl p-6 border-rose-500/40 bg-rose-950/20 text-center shadow-xl">
                             <div class="w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center mx-auto mb-3 text-xl">❌</div>
                             <h4 class="font-heading text-lg font-black text-rose-400 mb-2">Belum Terjangkau</h4>
-                            <p class="text-xs text-slate-300 mb-5">
-                                Maaf, area <strong class="text-white" x-text="coverageAreaName"></strong> belum terjangkau jaringan fiber saat ini. Hubungi CS kami untuk informasi rencana ekspansi terbaru.
+                            <p class="text-xs text-slate-300 mb-5 leading-relaxed">
+                                Maaf, area <strong class="text-white" x-text="coverageAreaName"></strong> belum terjangkau saat ini. Hubungi CS kami untuk informasi rencana ekspansi jaringan.
                             </p>
                             <a :href="'https://wa.me/6281234567890?text=' + encodeURIComponent('Halo CS IMS ONE, saya ingin menanyakan rencana coverage untuk area ' + coverageAreaName)" target="_blank" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-black text-xs shadow-lg transition-all">
                                 <span>Hubungi CS via WhatsApp</span>
                             </a>
                         </div>
-                    </template>
-
+                    </div>
                 </div>
-            </div>
 
-            <!-- Peta Interaktif Coverage Area -->
-            <div class="glass-card rounded-3xl p-4 shadow-2xl border border-brand-500/20">
-                <div id="landing-gis-map" class="w-full h-[420px] rounded-2xl"></div>
+                <!-- KOLOM KANAN (PETA GIS INTERAKTIF SETENGAH LAYAR) -->
+                <div class="lg:col-span-7">
+                    <div class="glass-card rounded-3xl p-3 shadow-2xl border border-brand-500/25">
+                        <div id="landing-gis-map" class="w-full h-[520px] rounded-2xl"></div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
