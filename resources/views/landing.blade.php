@@ -614,60 +614,54 @@
                     requestAnimationFrame(animatePropagation);
                 },
 
+                parseCoordinates(input) {
+                    if (!input) return null;
+                    const str = input.trim();
+
+                    // Match floating point numbers (e.g. -6.9175, 107.6096 or @-6.9175,107.6096)
+                    const matches = str.match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/g);
+                    if (matches && matches.length >= 2) {
+                        const lat = parseFloat(matches[0]);
+                        const lng = parseFloat(matches[1]);
+                        if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                            return { lat, lng };
+                        }
+                    }
+                    return null;
+                },
+
                 checkCoverage() {
                     if (!this.coverageInput.trim()) {
-                        alert('Silakan masukkan nama alamat, jalan, atau kelurahan Anda.');
+                        alert('Silakan masukkan titik koordinat (contoh: -6.9175, 107.6096) atau klik tombol "Gunakan GPS".');
                         return;
                     }
 
-                    const q = this.coverageInput.toLowerCase();
-                    this.coverageAreaName = this.coverageInput.trim();
+                    const coords = this.parseCoordinates(this.coverageInput);
+                    if (!coords) {
+                        alert('Format koordinat tidak valid.\n\nContoh format yang benar:\n-6.9175, 107.6096\n(Atau gunakan tombol "Gunakan GPS" untuk mendeteksi posisi Anda).');
+                        return;
+                    }
+
+                    this.coverageAreaName = `Titik Koordinat (${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)})`;
                     this.coverageChecked = true;
                     this.notifySubmitted = false;
+                    this.coverageStatus = 'AVAILABLE';
 
-                    if (q.includes('dago') || q.includes('braga') || q.includes('riau') || q.includes('buahbatu') || q.includes('antapani') || q.includes('sukajadi') || q.includes('merdeka') || q.includes('gedebage') || q.includes('summarecon') || q.includes('kordon') || q.includes('sudirman') || q.includes('jakarta') || q.includes('bekasi') || q.includes('cibitung') || q.includes('soreang') || q.includes('cimahi') || q.includes('setia')) {
-                        this.coverageStatus = 'AVAILABLE';
-                        
-                        let targetLat = -6.9175;
-                        let targetLng = 107.6096;
-
-                        if (q.includes('dago')) { targetLat = -6.8821; targetLng = 107.6162; }
-                        else if (q.includes('braga')) { targetLat = -6.9175; targetLng = 107.6096; }
-                        else if (q.includes('buahbatu') || q.includes('kordon')) { targetLat = -6.9385; targetLng = 107.6258; }
-                        else if (q.includes('antapani')) { targetLat = -6.9142; targetLng = 107.6587; }
-                        else if (q.includes('gedebage') || q.includes('summarecon')) { targetLat = -6.9482; targetLng = 107.7034; }
-                        else if (q.includes('sukajadi')) { targetLat = -6.8904; targetLng = 107.5975; }
-                        else if (q.includes('soreang')) { targetLat = -7.0289; targetLng = 107.5189; }
-                        else if (q.includes('cimahi')) { targetLat = -6.8833; targetLng = 107.5417; }
-
-                        this.connectToNearestOdp(targetLat, targetLng, this.coverageAreaName);
-                    } else {
-                        this.coverageStatus = 'NOT_AVAILABLE';
-                        this.nearestOdpInfo = null;
-                        if (this.connectionLineLayer && this.mapInstance) {
-                            this.mapInstance.removeLayer(this.connectionLineLayer);
-                            this.connectionLineLayer = null;
-                        }
-                    }
-                },
-
-                quickCheck(area) {
-                    this.coverageInput = area;
-                    this.checkCoverage();
+                    this.connectToNearestOdp(coords.lat, coords.lng, this.coverageAreaName);
                 },
 
                 useCurrentLocation() {
                     if (!navigator.geolocation) {
-                        alert('Fitur geolokasi tidak didukung oleh browser Anda.');
+                        alert('Fitur geolokasi GPS tidak didukung oleh browser Anda.');
                         return;
                     }
-                    this.coverageInput = 'Mendeteksi lokasi GPS...';
+                    this.coverageInput = 'Mendeteksi koordinat GPS...';
                     navigator.geolocation.getCurrentPosition(
                         (pos) => {
                             const lat = pos.coords.latitude;
                             const lng = pos.coords.longitude;
-                            this.coverageInput = 'Lokasi Terdeteksi (GPS Presisi)';
-                            this.coverageAreaName = 'Lokasi Anda (' + lat.toFixed(4) + ', ' + lng.toFixed(4) + ')';
+                            this.coverageInput = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                            this.coverageAreaName = `Lokasi GPS (${lat.toFixed(5)}, ${lng.toFixed(5)})`;
                             this.coverageChecked = true;
                             this.coverageStatus = 'AVAILABLE';
                             
@@ -675,9 +669,9 @@
                         },
                         (err) => {
                             this.coverageInput = '';
-                            alert('Tidak dapat mendeteksi lokasi otomatis. Silakan ketik nama jalan Anda.');
+                            alert('Gagal mendeteksi sinyal GPS. Silakan masukkan titik koordinat secara manual (contoh: -6.9175, 107.6096).');
                         },
-                        { timeout: 8000 }
+                        { timeout: 8000, enableHighAccuracy: true }
                     );
                 },
 
@@ -1104,45 +1098,41 @@
                     
                     <div class="border border-blue-100 rounded-3xl p-5 sm:p-6 space-y-4 bg-white shadow-brand-soft">
                         <div class="space-y-1">
-                            <label class="font-heading text-sm font-black text-brand-navy block">Cari Lokasi / Alamat Pemasangan</label>
-                            <p class="text-xs text-ink-muted">Ketik nama jalan atau gunakan lokasi GPS perangkat Anda:</p>
+                            <label class="font-heading text-sm font-black text-brand-navy block">Cek Titik Koordinat / GPS Lokasi</label>
+                            <p class="text-xs text-ink-muted">Gunakan tombol GPS otomatis atau masukkan titik koordinat lokasi pemasangan Anda:</p>
                         </div>
 
-                        <!-- Search Form Input -->
+                        <!-- Coordinate & GPS Form -->
                         <form @submit.prevent="checkCoverage" class="space-y-2.5">
                             <div class="relative">
                                 <input 
                                     type="text" 
                                     x-model="coverageInput" 
-                                    placeholder="Contoh: Jl. Dago No. 12, Bandung..." 
+                                    placeholder="Contoh: -6.9175, 107.6096 (Latitude, Longitude)..." 
                                     class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-brand-pale border border-slate-200 focus:border-brand focus:bg-white text-brand-navy placeholder-slate-400 text-xs sm:text-sm font-medium outline-none transition-colors shadow-inner"
                                 />
                                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
                             </div>
 
                             <div class="grid grid-cols-2 gap-2">
-                                <button type="button" @click="useCurrentLocation()" class="py-2 px-3 rounded-xl border border-slate-200 hover:border-brand hover:bg-brand-soft bg-white text-brand-navy font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                                <button type="button" @click="useCurrentLocation()" class="py-2.5 px-3 rounded-xl border border-blue-200 hover:border-brand hover:bg-brand-soft bg-white text-brand-navy font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
                                     <span>📍</span>
                                     <span>Gunakan GPS</span>
                                 </button>
                                 
-                                <button type="submit" class="py-2 px-3 rounded-xl btn-brand-primary text-white font-black text-xs transition-all flex items-center justify-center gap-1 shadow-md">
-                                    <span>Periksa Jaringan</span>
+                                <button type="submit" class="py-2.5 px-3 rounded-xl btn-brand-primary text-white font-black text-xs transition-all flex items-center justify-center gap-1 shadow-md">
+                                    <span>Periksa Koordinat</span>
                                     <span class="text-white">&rarr;</span>
                                 </button>
                             </div>
                         </form>
 
-                        <!-- Quick Popular Tags -->
-                        <div class="flex items-center flex-wrap gap-1.5 pt-1">
-                            <span class="text-[11px] text-ink-subtle font-medium mr-1">Pilih cepat:</span>
-                            <button @click="quickCheck('Dago')" class="px-2.5 py-1 rounded-lg bg-brand-pale hover:bg-brand-soft text-[11px] font-semibold text-brand-navy transition-colors">Dago</button>
-                            <button @click="quickCheck('Braga')" class="px-2.5 py-1 rounded-lg bg-brand-pale hover:bg-brand-soft text-[11px] font-semibold text-brand-navy transition-colors">Braga</button>
-                            <button @click="quickCheck('Buahbatu')" class="px-2.5 py-1 rounded-lg bg-brand-pale hover:bg-brand-soft text-[11px] font-semibold text-brand-navy transition-colors">Buahbatu</button>
-                            <button @click="quickCheck('Antapani')" class="px-2.5 py-1 rounded-lg bg-brand-pale hover:bg-brand-soft text-[11px] font-semibold text-brand-navy transition-colors">Antapani</button>
-                            <button @click="quickCheck('Sukajadi')" class="px-2.5 py-1 rounded-lg bg-brand-pale hover:bg-brand-soft text-[11px] font-semibold text-brand-navy transition-colors">Sukajadi</button>
+                        <div class="text-[11px] text-ink-subtle flex items-center gap-1">
+                            <span>💡</span>
+                            <span>Format: <b>Latitude, Longitude</b> atau klik <b>Gunakan GPS</b>.</span>
                         </div>
 
                         <!-- Results Readout with Direct Package Selector -->
