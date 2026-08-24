@@ -201,22 +201,24 @@
                 <!-- Tab 1: Dashboard / Info Pelanggan -->
                 <button 
                     @click="currentNav = 'dashboard'" 
-                    :class="currentNav === 'dashboard' ? 'bg-gradient-to-r from-brand-600 to-cyan-500 text-white shadow-lg shadow-cyan-500/20 font-black' : 'bg-white/5 sm:bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white font-bold'" 
+                    :class="currentNav === 'dashboard' ? 'bg-gradient-to-r from-brand-600 to-cyan-500 text-white shadow-lg shadow-cyan-500/20 font-black' : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white font-bold'" 
                     class="py-2.5 px-2 sm:px-5 rounded-xl text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-center">
                     <span class="text-sm">📊</span>
-                    <span class="truncate">Info Akun</span>
+                    <span class="sm:hidden">Info</span>
+                    <span class="hidden sm:inline">Dashboard Informasi</span>
                 </button>
 
                 <!-- Tab 2: Menu Tiket & Layanan -->
                 <button 
                     @click="currentNav = 'tiket'" 
-                    :class="currentNav === 'tiket' ? 'bg-gradient-to-r from-brand-600 to-cyan-500 text-white shadow-lg shadow-cyan-500/20 font-black' : 'bg-white/5 sm:bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white font-bold'" 
+                    :class="currentNav === 'tiket' ? 'bg-gradient-to-r from-brand-600 to-cyan-500 text-white shadow-lg shadow-cyan-500/20 font-black' : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white font-bold'" 
                     class="py-2.5 px-2 sm:px-5 rounded-xl text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-center relative">
                     <span class="text-sm">🎫</span>
-                    <span class="truncate">Tiket</span>
+                    <span class="sm:hidden">Tiket</span>
+                    <span class="hidden sm:inline">Menu Tiket &amp; Layanan</span>
                     @if($activeTickets->count() > 0)
-                        <span class="w-2 h-2 sm:w-auto sm:h-auto sm:px-1.5 sm:py-0.5 rounded-full bg-amber-400 text-[#08111e] text-[9px] font-black absolute sm:relative top-1.5 right-1.5 sm:top-0 sm:right-0">
-                            <span class="hidden sm:inline">{{ $activeTickets->count() }}</span>
+                        <span class="px-1.5 py-0.5 rounded-full bg-amber-400 text-[#08111e] text-[9.5px] font-black ml-1">
+                            {{ $activeTickets->count() }}
                         </span>
                     @endif
                 </button>
@@ -224,13 +226,14 @@
                 <!-- Tab 3: Menu Tagihan & Pembayaran -->
                 <button 
                     @click="currentNav = 'tagihan'" 
-                    :class="currentNav === 'tagihan' ? 'bg-gradient-to-r from-brand-600 to-cyan-500 text-white shadow-lg shadow-cyan-500/20 font-black' : 'bg-white/5 sm:bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white font-bold'" 
+                    :class="currentNav === 'tagihan' ? 'bg-gradient-to-r from-brand-600 to-cyan-500 text-white shadow-lg shadow-cyan-500/20 font-black' : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white font-bold'" 
                     class="py-2.5 px-2 sm:px-5 rounded-xl text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-center relative">
                     <span class="text-sm">💳</span>
-                    <span class="truncate">Tagihan</span>
+                    <span class="sm:hidden">Tagihan</span>
+                    <span class="hidden sm:inline">Menu Tagihan &amp; Riwayat</span>
                     @if($hasArrears)
-                        <span class="w-2 h-2 sm:w-auto sm:h-auto sm:px-1.5 sm:py-0.5 rounded-full bg-rose-500 text-white text-[9px] font-black absolute sm:relative top-1.5 right-1.5 sm:top-0 sm:right-0">
-                            <span class="hidden sm:inline">!</span>
+                        <span class="px-1.5 py-0.5 rounded-full bg-rose-500 text-white text-[9.5px] font-black ml-1">
+                            !
                         </span>
                     @endif
                 </button>
@@ -274,7 +277,7 @@
              ══════════════════════════════════════════════════════════════ --}}
         <div x-show="currentNav === 'dashboard'" x-transition class="space-y-6">
             
-            <!-- Row 1: Identitas & Overview Layanan -->
+            <!-- Row: Identitas & Overview Layanan -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
                 <!-- Profil Akun Pelanggan -->
@@ -298,7 +301,7 @@
                                     </span>
                                 @endif
                             </div>
-                            <span class="text-[11px] text-slate-400">Siklus: <strong>Tgl {{ $subscription->billing_cycle_day ?? '05' }}</strong></span>
+                            <span class="text-[11px] text-slate-400">Siklus Tagihan: <strong>Tgl {{ $subscription->billing_cycle_day ?? '05' }}</strong></span>
                         </div>
 
                         <h1 class="font-heading text-2xl sm:text-3xl font-black text-white mb-2">
@@ -322,7 +325,7 @@
                         </div>
                         <div class="p-2.5 rounded-xl bg-white/5 sm:bg-transparent">
                             <span class="text-[10.5px] text-slate-400 block mb-0.5 font-medium">Titik ODP Node</span>
-                            <strong class="text-white text-xs sm:text-sm block truncate">{{ $subscription->odp_code ?? 'ODP-BDG-BRAGA-01' }} (P.{{ $subscription->odp_port ?? '03' }})</strong>
+                            <strong class="text-white text-xs sm:text-sm block truncate">{{ $subscription->odp_code ?? 'ODP-BDG-BRAGA-01' }} (Port {{ $subscription->odp_port ?? '03' }})</strong>
                         </div>
                         <div class="p-2.5 rounded-xl bg-white/5 sm:bg-transparent">
                             <span class="text-[10.5px] text-slate-400 block mb-0.5 font-medium">No. WhatsApp</span>
@@ -335,7 +338,7 @@
                 <div class="lg:col-span-4 glass-card rounded-3xl p-5 sm:p-8 flex flex-col justify-between border-brand-400/25 shadow-xl">
                     <div>
                         <div class="flex items-center justify-between pb-3 sm:pb-4 border-b border-white/10 mb-4">
-                            <span class="text-[11px] sm:text-xs font-black text-slate-300 uppercase tracking-wider">STATUS BULAN INI</span>
+                            <span class="text-[11px] sm:text-xs font-black text-slate-300 uppercase tracking-wider">TAGIHAN BULAN INI</span>
                             @if(!$hasArrears)
                                 <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-extrabold">
                                     ✓ LUNAS
@@ -357,53 +360,9 @@
                     </div>
 
                     <div class="space-y-2.5 pt-4 border-t border-white/10">
-                        <button @click="currentNav = 'tagihan'" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-slate-200 transition-all flex items-center justify-center gap-2">
-                            <span>💳 Lihat Rincian Tagihan &rarr;</span>
-                        </button>
-                        <a href="https://wa.me/6281234567890?text=Halo%20CS%20IMS%20ONE%2C%20saya%20pelanggan%20{{ urlencode($subscription->customer_name) }}%20(CID%3A%20{{ $subscription->internet_number }})%20ingin%20berkonsultasi" target="_blank" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
+                        <a href="https://wa.me/6281234567890?text=Halo%20CS%20IMS%20ONE%2C%20saya%20pelanggan%20{{ urlencode($subscription->customer_name) }}%20(CID%3A%20{{ $subscription->internet_number }})%20ingin%20berkonsultasi" target="_blank" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
                             <span>💬 Chat CS WhatsApp 24/7</span>
                         </a>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Row 2: Pintasan Menu Cepat -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-                
-                <!-- Quick Card: Lapor Gangguan -->
-                <div @click="currentNav = 'tiket'; activeTicketTab = 'gangguan'" class="glass-card rounded-3xl p-5 sm:p-6 glass-card-hover cursor-pointer border border-rose-500/20 flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0">
-                    <div class="w-12 h-12 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-2xl sm:mb-4 shrink-0">
-                        🚨
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-heading text-base sm:text-lg font-black text-white mb-0.5 sm:mb-1">Laporkan Gangguan</h4>
-                        <p class="text-xs text-slate-400 mb-2 sm:mb-4 leading-relaxed hidden sm:block">LOS merah, internet lemot, atau kabel putus? Lapor langsung ke tim NOC.</p>
-                        <span class="text-xs font-extrabold text-rose-400 flex items-center gap-1">Buat Laporan &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Quick Card: Upgrade / Downgrade -->
-                <div @click="currentNav = 'tiket'; activeTicketTab = 'upgrade'" class="glass-card rounded-3xl p-5 sm:p-6 glass-card-hover cursor-pointer border border-cyan-500/20 flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0">
-                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl sm:mb-4 shrink-0">
-                        🚀
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-heading text-base sm:text-lg font-black text-white mb-0.5 sm:mb-1">Ubah Paket Speed</h4>
-                        <p class="text-xs text-slate-400 mb-2 sm:mb-4 leading-relaxed hidden sm:block">Upgrade speed ke 100 Mbps atau 1 Gbps tanpa ganti modem router.</p>
-                        <span class="text-xs font-extrabold text-cyan-400 flex items-center gap-1">Ajukan Perubahan &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Quick Card: Tagihan & Pembayaran -->
-                <div @click="currentNav = 'tagihan'" class="glass-card rounded-3xl p-5 sm:p-6 glass-card-hover cursor-pointer border border-brand-500/20 flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0">
-                    <div class="w-12 h-12 rounded-2xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-2xl sm:mb-4 shrink-0">
-                        💳
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-heading text-base sm:text-lg font-black text-white mb-0.5 sm:mb-1">Riwayat &amp; Tagihan</h4>
-                        <p class="text-xs text-slate-400 mb-2 sm:mb-4 leading-relaxed hidden sm:block">Cek invoice bulan berjalan, riwayat bayar, dan status lunas bulanan.</p>
-                        <span class="text-xs font-extrabold text-brand-400 flex items-center gap-1">Buka Tagihan &rarr;</span>
                     </div>
                 </div>
 
