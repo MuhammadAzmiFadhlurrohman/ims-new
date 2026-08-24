@@ -203,8 +203,11 @@
                     {
                         quote: "Koneksi stabil dan proses pemasangan sangat cepat. Tim teknisi datang tepat waktu dan konfigurasi router WiFi 6 langsung tuntas siap pakai.",
                         name: "Budi Santoso",
-                        role: "Pelanggan IMS ONE • Rumah Tangga",
+                        role: "Pelanggan Rumah Tangga",
                         area: "Dago, Bandung",
+                        avatarColor: "bg-[#0878E5]",
+                        initials: "BS",
+                        badge: "Home Customer",
                         stars: 5
                     },
                     {
@@ -212,6 +215,9 @@
                         name: "Dian Pratama",
                         role: "Content Creator & Streamer",
                         area: "Braga, Bandung",
+                        avatarColor: "bg-[#7C3AED]",
+                        initials: "DP",
+                        badge: "Content Creator",
                         stars: 5
                     },
                     {
@@ -219,6 +225,9 @@
                         name: "PT Digital Kreasi Mandiri",
                         role: "Enterprise & Software Studio",
                         area: "Buahbatu, Bandung",
+                        avatarColor: "bg-[#061B3A]",
+                        initials: "DK",
+                        badge: "Business Customer",
                         stars: 5
                     },
                     {
@@ -226,6 +235,9 @@
                         name: "Ibu Siti Rahmawati",
                         role: "Pelanggan Rumah Tangga",
                         area: "Antapani, Bandung",
+                        avatarColor: "bg-[#18B981]",
+                        initials: "SR",
+                        badge: "Home Customer",
                         stars: 5
                     }
                 ],
@@ -1345,12 +1357,12 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 5. ALUR PEMASANGAN (HORIZONTAL & VERTICAL PROGRESS TIMELINE) ──
+         ── 5. ALUR PEMASANGAN (LIGHT BLUE #F5FAFF + PROGRESS TIMELINE) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section class="py-16 sm:py-20 bg-white border-b border-slate-200 relative overflow-hidden">
+    <section class="py-16 sm:py-20 bg-[#F5FAFF] border-b border-sky-200/80 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14 pb-6 border-b border-slate-200">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14 pb-6 border-b border-sky-200/80">
                 <div>
                     <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">PROSES PENDAFTARAN</span>
                     <h2 class="font-heading text-2xl sm:text-3xl font-black text-navy-900 tracking-tight">
@@ -1362,18 +1374,18 @@
                 </p>
             </div>
 
-            <!-- Desktop Horizontal Timeline with Connected Animated Progress Line -->
+            <!-- Desktop Horizontal Timeline with Connected Animated Progress Line (Blue → Cyan → Blue → Green) -->
             <div class="hidden lg:block relative mb-4">
                 <!-- Background Horizontal Line with Animated Fiber Flow -->
-                <div class="absolute top-6 left-12 right-12 h-1 bg-slate-200 -z-0">
-                    <div class="h-full w-full bg-gradient-to-r from-navy-900 via-corporate-blue to-accent-cyan rounded-full opacity-90"></div>
+                <div class="absolute top-6 left-12 right-12 h-1.5 bg-slate-200/80 rounded-full -z-0 overflow-hidden">
+                    <div class="h-full w-full bg-gradient-to-r from-[#0878E5] via-[#10C8E8] via-[#0878E5] to-[#18B981] rounded-full opacity-90"></div>
                 </div>
 
                 <div class="grid grid-cols-4 gap-8 relative z-10">
                     
-                    <!-- Step 01 -->
+                    <!-- Step 01: Blue -->
                     <div class="space-y-4 text-left">
-                        <div class="w-12 h-12 rounded-2xl bg-navy-900 text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-navy-900/20">
+                        <div class="w-12 h-12 rounded-2xl bg-[#0878E5] text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-[#0878E5]/30">
                             01
                         </div>
                         <div class="space-y-1.5 pr-4">
@@ -1384,9 +1396,9 @@
                         </div>
                     </div>
 
-                    <!-- Step 02 -->
+                    <!-- Step 02: Cyan -->
                     <div class="space-y-4 text-left">
-                        <div class="w-12 h-12 rounded-2xl bg-corporate-blue text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-corporate-blue/20">
+                        <div class="w-12 h-12 rounded-2xl bg-[#10C8E8] text-[#061B3A] font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-[#10C8E8]/40">
                             02
                         </div>
                         <div class="space-y-1.5 pr-4">
@@ -1397,9 +1409,9 @@
                         </div>
                     </div>
 
-                    <!-- Step 03 -->
+                    <!-- Step 03: Blue -->
                     <div class="space-y-4 text-left">
-                        <div class="w-12 h-12 rounded-2xl bg-navy-900 text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-navy-900/20">
+                        <div class="w-12 h-12 rounded-2xl bg-[#0878E5] text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-[#0878E5]/30">
                             03
                         </div>
                         <div class="space-y-1.5 pr-4">
@@ -1410,9 +1422,9 @@
                         </div>
                     </div>
 
-                    <!-- Step 04 -->
+                    <!-- Step 04: Green -->
                     <div class="space-y-4 text-left">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-emerald-600/20">
+                        <div class="w-12 h-12 rounded-2xl bg-[#18B981] text-white font-heading font-black text-base flex items-center justify-center border-4 border-white shadow-lg ring-2 ring-[#18B981]/30">
                             04
                         </div>
                         <div class="space-y-1.5 pr-4">
@@ -1430,7 +1442,7 @@
             <div class="lg:hidden relative pl-6 space-y-8 border-l-2 border-corporate-blue/40 ml-4">
                 
                 <div class="relative space-y-1.5">
-                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-navy-900 text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-[#0878E5] text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
                         01
                     </div>
                     <h3 class="font-heading text-sm font-bold text-navy-900">Pilih Paket</h3>
@@ -1440,7 +1452,7 @@
                 </div>
 
                 <div class="relative space-y-1.5">
-                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-corporate-blue text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-[#10C8E8] text-[#061B3A] font-heading font-black text-xs flex items-center justify-center border-2 border-white shadow">
                         02
                     </div>
                     <h3 class="font-heading text-sm font-bold text-navy-900">Registrasi Online</h3>
@@ -1450,7 +1462,7 @@
                 </div>
 
                 <div class="relative space-y-1.5">
-                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-navy-900 text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-[#0878E5] text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
                         03
                     </div>
                     <h3 class="font-heading text-sm font-bold text-navy-900">Survey &amp; Instalasi</h3>
@@ -1460,7 +1472,7 @@
                 </div>
 
                 <div class="relative space-y-1.5">
-                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-emerald-600 text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
+                    <div class="absolute -left-[35px] top-0 w-8 h-8 rounded-xl bg-[#18B981] text-white font-heading font-bold text-xs flex items-center justify-center border-2 border-white shadow">
                         04
                     </div>
                     <h3 class="font-heading text-sm font-bold text-navy-900">Aktif &amp; Siap Dipakai</h3>
@@ -1475,9 +1487,9 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 6. KEUNGGULAN (EDITORIAL NUMBERED WITH SIDE VISUAL) ──
+         ── 6. KEUNGGULAN (EDITORIAL NUMBERED + OPTICAL BACKBONE VISUAL) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="keunggulan" class="py-16 sm:py-24 bg-surface-offwhite border-b border-slate-200">
+    <section id="keunggulan" class="py-16 sm:py-24 bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
@@ -1539,57 +1551,78 @@
                     </div>
                 </div>
 
-                <!-- Right Big Infrastructure Visual -->
+                <!-- Right Big Infrastructure Signature Visual (Cyan Glow + Realtime-Looking Metrics) -->
                 <div class="lg:col-span-6">
-                    <div class="rounded-3xl bg-navy-900 text-white p-7 sm:p-9 border border-navy-800 shadow-2xl relative overflow-hidden space-y-6">
+                    <div class="rounded-3xl bg-[#061B3A] text-white p-7 sm:p-9 border border-navy-800 shadow-2xl relative overflow-hidden space-y-6">
                         
-                        <!-- Background Glow Accent -->
-                        <div class="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-corporate-blue/20 blur-3xl pointer-events-none"></div>
-                        <div class="absolute -left-20 -bottom-20 w-64 h-64 rounded-full bg-accent-cyan/15 blur-3xl pointer-events-none"></div>
+                        <!-- Cyan Glow Background Accent -->
+                        <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#10C8E8]/20 blur-3xl pointer-events-none"></div>
+                        <div class="absolute -left-16 -bottom-16 w-64 h-64 rounded-full bg-[#0878E5]/20 blur-3xl pointer-events-none"></div>
 
-                        <!-- Top Header -->
+                        <!-- Top Header: NETWORK STATUS ● ONLINE -->
                         <div class="flex items-center justify-between border-b border-navy-800 pb-4 relative z-10">
                             <div>
                                 <span class="font-mono text-[10.5px] font-bold text-accent-cyan uppercase tracking-wider block">INFRASTRUCTURE SPEC</span>
-                                <h4 class="font-heading text-lg font-black text-white">IMS Optical Backbone Engine</h4>
+                                <h4 class="font-heading text-lg font-black text-white">IMS Optimal Backbone Engine</h4>
                             </div>
-                            <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[11px] font-bold">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-beacon-green"></span>
-                                <span>ONLINE</span>
+                            <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-[#18B981]/15 border border-[#18B981]/40 text-[#18B981] font-mono text-[11px] font-bold shadow-sm">
+                                <span class="w-2 h-2 rounded-full bg-[#18B981] pulse-beacon-green"></span>
+                                <span>NETWORK STATUS ● ONLINE</span>
                             </div>
                         </div>
 
-                        <!-- Architecture Highlights -->
-                        <div class="grid grid-cols-2 gap-3.5 relative z-10 text-xs">
-                            <div class="p-3.5 rounded-xl bg-navy-800/80 border border-navy-700/60 space-y-1">
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider font-mono">LATENCY PERFORMANCE</span>
-                                <div class="font-heading text-xl font-black text-accent-cyan">2.4 ms</div>
-                                <span class="text-[11px] text-slate-300">Ultra-Low Latency Direct Route</span>
+                        <!-- 4 Realtime-Looking Tech Metrics -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 relative z-10 text-xs">
+                            <div class="p-3 rounded-xl bg-navy-800/80 border border-navy-700/60 text-center space-y-0.5">
+                                <div class="font-heading text-xl font-black text-[#10C8E8]">2.4 ms</div>
+                                <span class="text-[10px] text-slate-300 font-medium block">Latency</span>
                             </div>
 
-                            <div class="p-3.5 rounded-xl bg-navy-800/80 border border-navy-700/60 space-y-1">
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider font-mono">CORE UPTIME SLA</span>
-                                <div class="font-heading text-xl font-black text-emerald-400">99.98%</div>
-                                <span class="text-[11px] text-slate-300">High Availability Guaranteed</span>
+                            <div class="p-3 rounded-xl bg-navy-800/80 border border-navy-700/60 text-center space-y-0.5">
+                                <div class="font-heading text-xl font-black text-[#18B981]">99.98%</div>
+                                <span class="text-[10px] text-slate-300 font-medium block">Availability</span>
                             </div>
+
+                            <div class="p-3 rounded-xl bg-navy-800/80 border border-navy-700/60 text-center space-y-0.5">
+                                <div class="font-heading text-xl font-black text-[#0878E5]">10 Gbps</div>
+                                <span class="text-[10px] text-slate-300 font-medium block">Backbone</span>
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-navy-800/80 border border-navy-700/60 text-center space-y-0.5">
+                                <div class="font-heading text-xl font-black text-purple-400">24/7</div>
+                                <span class="text-[10px] text-slate-300 font-medium block">Monitoring</span>
+                            </div>
+                        </div>
+
+                        <!-- Status Indicators Row -->
+                        <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-navy-950/70 border border-navy-800 text-[11px] font-mono relative z-10">
+                            <span class="flex items-center gap-1.5 text-emerald-400 font-semibold">
+                                <span class="w-2 h-2 rounded-full bg-[#18B981]"></span> 🟢 Online
+                            </span>
+                            <span class="flex items-center gap-1.5 text-sky-400 font-semibold">
+                                <span class="w-2 h-2 rounded-full bg-[#0878E5]"></span> 🔵 Active
+                            </span>
+                            <span class="flex items-center gap-1.5 text-purple-400 font-semibold">
+                                <span class="w-2 h-2 rounded-full bg-[#7C3AED]"></span> 🟣 Monitoring
+                            </span>
                         </div>
 
                         <!-- Direct Peering List -->
-                        <div class="p-4 rounded-xl bg-navy-800/60 border border-navy-700/60 space-y-2 relative z-10">
+                        <div class="p-3.5 rounded-xl bg-navy-800/60 border border-navy-700/60 space-y-2 relative z-10">
                             <span class="text-[11px] font-bold text-slate-300 block">Direct IX &amp; Content Peering:</span>
                             <div class="flex flex-wrap gap-1.5 text-[10.5px] font-mono font-semibold">
-                                <span class="px-2 py-1 rounded bg-navy-950/80 text-accent-cyan border border-navy-700">OpenIXP Direct</span>
-                                <span class="px-2 py-1 rounded bg-navy-950/80 text-accent-cyan border border-navy-700">IIX APJII</span>
-                                <span class="px-2 py-1 rounded bg-navy-950/80 text-accent-cyan border border-navy-700">Google CDN</span>
-                                <span class="px-2 py-1 rounded bg-navy-950/80 text-accent-cyan border border-navy-700">Cloudflare Edge</span>
-                                <span class="px-2 py-1 rounded bg-navy-950/80 text-accent-cyan border border-navy-700">SingTel / Equinix SG</span>
+                                <span class="px-2 py-0.5 rounded bg-navy-950/90 text-accent-cyan border border-navy-700">OpenIXP Direct</span>
+                                <span class="px-2 py-0.5 rounded bg-navy-950/90 text-accent-cyan border border-navy-700">IIX APJII</span>
+                                <span class="px-2 py-0.5 rounded bg-navy-950/90 text-accent-cyan border border-navy-700">Google CDN</span>
+                                <span class="px-2 py-0.5 rounded bg-navy-950/90 text-accent-cyan border border-navy-700">Cloudflare Edge</span>
+                                <span class="px-2 py-0.5 rounded bg-navy-950/90 text-accent-cyan border border-navy-700">SingTel / Equinix SG</span>
                             </div>
                         </div>
 
                         <!-- Fiber Diagram Schematic -->
                         <div class="p-3 rounded-xl bg-navy-950 border border-navy-800 text-[11px] font-mono text-slate-300 flex items-center justify-between">
                             <span class="flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-corporate-blue"></span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#0878E5]"></span>
                                 Core NOC 100G Trunk
                             </span>
                             <span class="text-accent-cyan">&rarr;</span>
@@ -1607,7 +1640,7 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 7. REAL NETWORK (METRIK & JANGKAUAN DENGAN ANIMASI COUNTER) ──
+         ── 7. REAL NETWORK (COLORFUL METRICS WITH IDENTITIES) ──
          ══════════════════════════════════════════════════════════════ --}}
     <section id="real-network" class="py-16 sm:py-20 bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1626,37 +1659,49 @@
 
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <!-- Stat 1: 50+ Area -->
-                <div class="p-6 rounded-2xl bg-surface-offwhite border border-slate-200 text-center space-y-2 shadow-sm">
-                    <div class="font-heading text-4xl sm:text-5xl font-black text-navy-900 tracking-tight">
+                <!-- Stat 1: 50+ Area (Blue) -->
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 text-center space-y-2 shadow-sm card-interactive">
+                    <div class="font-heading text-4xl sm:text-5xl font-black text-[#0878E5] tracking-tight">
                         <span x-text="statAreas">50</span><span>+</span>
+                    </div>
+                    <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#E8F6FF] text-[#0878E5] text-xs font-bold border border-sky-200">
+                        <span>🔵 Coverage</span>
                     </div>
                     <strong class="font-heading text-sm font-bold text-navy-900 block">Area Tercover</strong>
                     <p class="text-[11px] text-ink-muted">Cluster perumahan &amp; sentra bisnis aktif.</p>
                 </div>
 
-                <!-- Stat 2: 10K+ Pelanggan -->
-                <div class="p-6 rounded-2xl bg-surface-offwhite border border-slate-200 text-center space-y-2 shadow-sm">
-                    <div class="font-heading text-4xl sm:text-5xl font-black text-corporate-blue tracking-tight">
+                <!-- Stat 2: 10K+ Pelanggan (Cyan) -->
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 text-center space-y-2 shadow-sm card-interactive">
+                    <div class="font-heading text-4xl sm:text-5xl font-black text-[#10C8E8] tracking-tight">
                         <span x-text="statClients">10</span><span>K+</span>
+                    </div>
+                    <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#F3E8FF] text-[#7C3AED] text-xs font-bold border border-purple-200">
+                        <span>🟣 Customers</span>
                     </div>
                     <strong class="font-heading text-sm font-bold text-navy-900 block">Pelanggan Aktif</strong>
                     <p class="text-[11px] text-ink-muted">Rumah tangga, kreator, dan korporasi.</p>
                 </div>
 
-                <!-- Stat 3: 99.9% Uptime -->
-                <div class="p-6 rounded-2xl bg-surface-offwhite border border-slate-200 text-center space-y-2 shadow-sm">
-                    <div class="font-heading text-4xl sm:text-5xl font-black text-navy-900 tracking-tight">
+                <!-- Stat 3: 99.9% Uptime (Green) -->
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 text-center space-y-2 shadow-sm card-interactive">
+                    <div class="font-heading text-4xl sm:text-5xl font-black text-[#18B981] tracking-tight">
                         <span x-text="statUptime">99.9</span><span>%</span>
                     </div>
-                    <strong class="font-heading text-sm font-bold text-navy-900 block">Network Availability</strong>
+                    <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#ECFDF5] text-[#18B981] text-xs font-bold border border-emerald-200">
+                        <span>🟢 Availability</span>
+                    </div>
+                    <strong class="font-heading text-sm font-bold text-navy-900 block">Network SLA</strong>
                     <p class="text-[11px] text-ink-muted">Garansi SLA Uptime dengan sistem failover.</p>
                 </div>
 
-                <!-- Stat 4: 24/7 Support -->
-                <div class="p-6 rounded-2xl bg-surface-offwhite border border-slate-200 text-center space-y-2 shadow-sm">
-                    <div class="font-heading text-4xl sm:text-5xl font-black text-corporate-blue tracking-tight">
+                <!-- Stat 4: 24/7 Support (Purple / Blue) -->
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 text-center space-y-2 shadow-sm card-interactive">
+                    <div class="font-heading text-4xl sm:text-5xl font-black text-[#7C3AED] tracking-tight">
                         24/7
+                    </div>
+                    <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#E0F7FA] text-[#0097A7] text-xs font-bold border border-cyan-200">
+                        <span>🔷 Support</span>
                     </div>
                     <strong class="font-heading text-sm font-bold text-navy-900 block">Dedicated Support</strong>
                     <p class="text-[11px] text-ink-muted">Monitoring NOC &amp; teknisi siaga.</p>
@@ -1668,24 +1713,29 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 8. CUSTOMER PORTAL GATEWAY (DEEP NAVY RIBBON) ──
+         ── 8. CUSTOMER PORTAL GATEWAY (DEEP NAVY → BLUE GRADIENT + CYAN GLOW) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section class="py-12 sm:py-16 bg-navy-900 text-white border-b border-navy-950">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="py-14 sm:py-18 bg-gradient-to-r from-[#061B3A] via-[#08356E] to-[#0878E5] text-white border-b border-navy-950 relative overflow-hidden shadow-2xl">
+        
+        <!-- Ambient Subtle Cyan Radial Glow -->
+        <div class="absolute -top-16 -right-16 w-80 h-80 bg-[#10C8E8]/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-16 -left-16 w-80 h-80 bg-[#0878E5]/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                 
                 <div class="space-y-2 max-w-2xl">
-                    <span class="font-mono text-xs font-semibold text-accent-cyan tracking-wider uppercase">PORTAL LAYANAN MANDIRI</span>
+                    <span class="font-mono text-xs font-bold text-accent-cyan tracking-wider uppercase">PORTAL LAYANAN MANDIRI</span>
                     <h3 class="font-heading text-2xl sm:text-3xl font-black text-white tracking-tight">
-                        Sudah Terdaftar Sebagai Pelanggan?
+                        SUDAH MENJADI PELANGGAN IMS ONE?
                     </h3>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        Cek tagihan bulanan, status jaringan aktif, lapor gangguan ke teknisi, atau ajukan upgrade paket mandiri dengan nomor WhatsApp Anda.
+                    <p class="text-xs sm:text-sm text-sky-100 leading-relaxed">
+                        Kelola layanan internet Anda dengan mudah. Cek tagihan bulanan, status jaringan aktif, lapor gangguan ke teknisi, atau ajukan upgrade paket mandiri.
                     </p>
                 </div>
 
                 <div class="shrink-0 w-full sm:w-auto">
-                    <a href="{{ route('customer.portal') }}" class="inline-block w-full sm:w-auto px-6 py-3 rounded-xl bg-corporate-blue hover:bg-corporate-hover text-white font-bold text-xs sm:text-sm transition-colors text-center shadow-md">
+                    <a href="{{ route('customer.portal') }}" class="inline-block w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-[#061B3A] font-black text-xs sm:text-sm transition-all text-center shadow-xl transform hover:-translate-y-0.5">
                         Buka Portal Pelanggan &rarr;
                     </a>
                 </div>
@@ -1695,12 +1745,12 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 9. TESTIMONI PELANGGAN (AUTO CAROUSEL SLIDER) ──
+         ── 9. TESTIMONI PELANGGAN (LIGHT BLUE #F0F8FF + GOLD STARS) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="testimoni" class="py-16 sm:py-24 bg-surface-offwhite border-b border-slate-200">
+    <section id="testimoni" class="py-16 sm:py-24 bg-[#F0F8FF] border-b border-sky-200/80">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-slate-200">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-sky-200/80">
                 <div>
                     <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">TESTIMONI PELANGGAN</span>
                     <h2 class="font-heading text-2xl sm:text-3xl font-black text-navy-900 tracking-tight">
@@ -1712,14 +1762,14 @@
                 </div>
             </div>
 
-            <!-- Carousel Box -->
-            <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative overflow-hidden" @mouseenter="if(testimonialTimer) clearInterval(testimonialTimer)" @mouseleave="startTestimonialAuto()">
+            <!-- Carousel Box (Pure White Card on #F0F8FF) -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-md relative overflow-hidden" @mouseenter="if(testimonialTimer) clearInterval(testimonialTimer)" @mouseleave="startTestimonialAuto()">
                 
                 <template x-for="(t, index) in testimonials" :key="index">
                     <div x-show="activeTestimonial === index" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-6 text-center">
                         
-                        <!-- 5 Stars -->
-                        <div class="flex items-center justify-center gap-1 text-amber-400 text-lg">
+                        <!-- 5 Stars with Gold Color -->
+                        <div class="flex items-center justify-center gap-1.5 text-amber-400 text-xl">
                             <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                         </div>
 
@@ -1727,10 +1777,18 @@
                         <p class="font-heading text-lg sm:text-2xl font-bold text-navy-900 leading-relaxed max-w-2xl mx-auto" x-text="'“' + t.quote + '”'">
                         </p>
 
-                        <!-- Author -->
-                        <div class="pt-2">
-                            <strong class="font-heading text-sm sm:text-base font-black text-navy-900 block" x-text="t.name"></strong>
-                            <span class="text-xs text-corporate-blue font-semibold block mt-0.5" x-text="t.role + ' • ' + t.area"></span>
+                        <!-- Author with Colored Avatar Initials -->
+                        <div class="flex items-center justify-center gap-3 pt-2">
+                            <div :class="t.avatarColor" class="w-11 h-11 rounded-xl text-white font-black text-sm flex items-center justify-center shadow-md ring-2 ring-white">
+                                <span x-text="t.initials"></span>
+                            </div>
+                            <div class="text-left">
+                                <strong class="font-heading text-sm sm:text-base font-black text-navy-900 block" x-text="t.name"></strong>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-sky-100 text-corporate-blue" x-text="t.badge"></span>
+                                    <span class="text-xs text-ink-muted" x-text="'• ' + t.area"></span>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
