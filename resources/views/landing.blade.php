@@ -71,6 +71,17 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html {
+            font-size: 14.8px;
+            scroll-behavior: smooth;
+        }
+
+        @media (min-width: 1280px) {
+            html {
+                font-size: 14.5px;
+            }
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #FFFFFF;
@@ -81,7 +92,7 @@
         h1, h2, h3, h4, h5, .font-heading {
             font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
             font-weight: 800;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.025em;
         }
 
         /* ── BRAND BLUE GRADIENT & BUTTONS ── */
