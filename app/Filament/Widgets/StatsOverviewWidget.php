@@ -107,25 +107,39 @@ class StatsOverviewWidget extends Widget
 
         if ($odps->isNotEmpty()) {
             foreach ($odps as $index => $odp) {
-                $lat = $odp->latitude ? (float)$odp->latitude : (-6.2580 + (($index % 5) * 0.008) - (($index % 3) * 0.004));
-                $lng = $odp->longitude ? (float)$odp->longitude : (107.0940 + (($index % 4) * 0.009) - (($index % 2) * 0.005));
+                $lat = (float)($odp->latitude ?? -6.2587);
+                $lng = (float)($odp->longitude ?? 107.0945);
                 
+                // Determine region cluster
+                $codeUpper = strtoupper($odp->code . ' ' . $odp->name);
+                $region = 'bandung';
+                if (str_contains($codeUpper, 'CBT') || str_contains($codeUpper, 'CIBITUNG')) {
+                    $region = 'cibitung';
+                } elseif (str_contains($codeUpper, 'CKR') || str_contains($codeUpper, 'CIKARANG') || str_contains($codeUpper, 'JABABEKA')) {
+                    $region = 'cikarang';
+                } elseif (str_contains($codeUpper, 'TMN') || str_contains($codeUpper, 'TMB') || str_contains($codeUpper, 'TAMBUN')) {
+                    $region = 'tambun';
+                } elseif (str_contains($codeUpper, 'BKS') || str_contains($codeUpper, 'BEKASI')) {
+                    $region = 'bekasi';
+                }
+
                 $pinStatus = 'NORMAL';
-                if ($index === 2) {
-                    $pinStatus = 'INCIDENT';
-                } elseif ($index === 4 || $index === 8) {
+                if ($index === 1 || str_contains($codeUpper, 'MELATI')) {
+                    $pinStatus = 'INCIDENT'; // OLT/ODP Incident
+                } elseif ($index === 4 || $index === 8 || $index === 13) {
                     $pinStatus = 'PENDING_SURVEY';
                 }
 
                 $mapPins[] = [
                     'code' => $odp->code,
                     'name' => $odp->name,
+                    'region' => $region,
                     'lat' => $lat,
                     'lng' => $lng,
                     'total_ports' => (int)($odp->total_ports ?? 8),
                     'used_ports' => (int)($odp->used_ports ?? 5),
                     'status' => $pinStatus,
-                    'notes' => $odp->notes ?? 'Tiang FO MSN Cluster',
+                    'notes' => $odp->notes ?? ('ODP ' . $odp->name),
                 ];
             }
         } else {

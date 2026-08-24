@@ -37,6 +37,7 @@
         init() {
             this.animateCounters();
             this.loadLeafletAndInitMap();
+            this.$watch('selectedRegion', () => this.renderMapPins(true));
         },
 
         animateCounters() {
@@ -90,10 +91,7 @@
             if (!mapContainer || this.mapInstance) return;
 
             try {
-                // Center on Cibitung / Bekasi area
                 this.mapInstance = L.map('ims-gis-map', {
-                    center: [-6.2587, 107.0945],
-                    zoom: 14,
                     zoomControl: true,
                     attributionControl: false
                 });
@@ -105,27 +103,49 @@
                 }).addTo(this.mapInstance);
 
                 this.markersLayer = L.layerGroup().addTo(this.mapInstance);
-                this.renderMapPins();
+                this.renderMapPins(true);
                 this.mapReady = true;
 
                 setTimeout(() => {
-                    if (this.mapInstance) this.mapInstance.invalidateSize();
-                }, 200);
-                setTimeout(() => {
-                    if (this.mapInstance) this.mapInstance.invalidateSize();
-                }, 800);
+                    if (this.mapInstance) {
+                        this.mapInstance.invalidateSize();
+                        this.renderMapPins(true);
+                    }
+                }, 300);
             } catch (e) {
                 console.error('Error initializing Leaflet GIS Map:', e);
             }
         },
 
-        renderMapPins() {
+        renderMapPins(fitBounds = false) {
             if (!this.mapInstance || !this.markersLayer) return;
             this.markersLayer.clearLayers();
 
-            this.mapPins.forEach(pin => {
+            const markers = [];
+            const coordMap = {};
+
+            this.mapPins.forEach((pin, idx) => {
+                if (this.selectedRegion !== 'all' && pin.region !== this.selectedRegion) {
+                    return;
+                }
+
                 if (this.mapFilter !== 'all' && pin.status !== this.mapFilter) {
                     return;
+                }
+
+                // Handle overlapping coordinates with slight spiral offset so all pins are clearly visible
+                const coordKey = `${pin.lat.toFixed(4)}_${pin.lng.toFixed(4)}`;
+                let offsetLat = pin.lat;
+                let offsetLng = pin.lng;
+                if (coordMap[coordKey]) {
+                    const count = coordMap[coordKey];
+                    const angle = count * 1.2;
+                    const dist = 0.0007 * Math.sqrt(count);
+                    offsetLat += Math.sin(angle) * dist;
+                    offsetLng += Math.cos(angle) * dist;
+                    coordMap[coordKey]++;
+                } else {
+                    coordMap[coordKey] = 1;
                 }
 
                 let color = '#10b981'; // Green (Normal)
@@ -148,10 +168,13 @@
                     iconAnchor: [14, 14]
                 });
 
-                const marker = L.marker([pin.lat, pin.lng], { icon: customIcon });
+                const marker = L.marker([offsetLat, offsetLng], { icon: customIcon });
                 marker.bindPopup(`
-                    <div style='font-family: Inter, sans-serif; padding: 4px; min-width: 160px;'>
-                        <div style='font-size: 11px; font-weight: 800; color: #0284c7;'>${pin.code}</div>
+                    <div style='font-family: Inter, sans-serif; padding: 4px; min-width: 170px;'>
+                        <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;'>
+                            <span style='font-size: 11px; font-weight: 800; color: #0284c7;'>${pin.code}</span>
+                            <span style='font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; background: #e2e8f0; color: #334155; text-transform: uppercase;'>${pin.region || 'Node'}</span>
+                        </div>
                         <div style='font-size: 13px; font-weight: 900; color: #0f172a; margin: 2px 0 4px;'>${pin.name}</div>
                         <div style='font-size: 11px; color: #475569;'>Port Aktif: <strong>${pin.used_ports}/${pin.total_ports}</strong> (${Math.round((pin.used_ports/pin.total_ports)*100)}%)</div>
                         <div style='font-size: 10.5px; color: #64748b; margin-top: 3px;'>📍 ${pin.notes}</div>
@@ -161,18 +184,27 @@
                     </div>
                 `);
                 this.markersLayer.addLayer(marker);
+                markers.push(marker);
             });
+
+            if (fitBounds && markers.length > 0) {
+                const group = L.featureGroup(markers);
+                this.mapInstance.fitBounds(group.getBounds().pad(0.18));
+            } else if (markers.length === 0) {
+                this.mapInstance.setView([-6.2587, 107.0945], 13);
+            }
         },
 
         filterMap(type) {
             this.mapFilter = type;
-            this.renderMapPins();
+            this.renderMapPins(false);
         },
 
         focusIncidentOnMap() {
             if (this.mapInstance) {
-                this.mapInstance.setView([-6.2654, 107.1023], 16);
-                this.filterMap('all');
+                this.selectedRegion = 'all';
+                this.mapFilter = 'INCIDENT';
+                this.renderMapPins(true);
             }
         },
 
@@ -245,10 +277,12 @@
                 <div class="ims-filter-pill">
                     <svg class="ims-filter-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     <select x-model="selectedRegion" class="ims-filter-select">
-                        <option value="all">Semua Wilayah</option>
-                        <option value="cibitung">Cluster Cibitung</option>
-                        <option value="cikarang">Cluster Cikarang</option>
-                        <option value="tambun">Cluster Tambun</option>
+                        <option value="all">Semua Wilayah (26 Node)</option>
+                        <option value="cibitung">Cluster Cibitung (2 Node)</option>
+                        <option value="cikarang">Cluster Cikarang (2 Node)</option>
+                        <option value="tambun">Cluster Tambun (1 Node)</option>
+                        <option value="bekasi">Cluster Bekasi (1 Node)</option>
+                        <option value="bandung">Cluster Bandung & Diskominfo (20 Node)</option>
                     </select>
                     <svg class="ims-filter-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                 </div>
