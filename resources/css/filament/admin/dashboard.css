@@ -180,40 +180,76 @@ html.dark .ims-search-res-name {
 }
 
 .ims-filter-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: #f8fafc;
-    border: 1.5px solid #cbd5e1;
-    border-radius: 10px;
-    padding: 0 0.75rem;
-    height: 38px;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: #f8fafc !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    padding: 0 0.65rem 0 0.75rem !important;
+    height: 38px !important;
+    cursor: pointer !important;
+    position: relative !important;
 }
 
 html.dark .ims-filter-pill {
-    background: #08192e;
-    border-color: #1e3a5f;
+    background: #08192e !important;
+    border-color: #1e3a5f !important;
 }
 
 .ims-filter-icon {
-    width: 15px;
-    height: 15px;
-    color: #0284c7;
-    flex-shrink: 0;
+    width: 15px !important;
+    height: 15px !important;
+    color: #0284c7 !important;
+    flex-shrink: 0 !important;
+    pointer-events: none !important;
 }
 
-.ims-filter-select {
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #334155;
-    cursor: pointer;
+.ims-filter-select,
+select.ims-filter-select,
+html.dark select.ims-filter-select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+    cursor: pointer !important;
+    padding: 0 4px !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
 }
 
-html.dark .ims-filter-select {
-    color: #cbd5e1;
+html.dark .ims-filter-select,
+html.dark select.ims-filter-select {
+    color: #f1f5f9 !important;
+}
+
+.ims-filter-select option {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-weight: 600 !important;
+    padding: 6px !important;
+}
+
+html.dark .ims-filter-select option {
+    background: #0b1727 !important;
+    color: #f8fafc !important;
+}
+
+.ims-filter-chevron {
+    width: 13px !important;
+    height: 13px !important;
+    color: #64748b !important;
+    pointer-events: none !important;
+    flex-shrink: 0 !important;
+    margin-left: 2px !important;
 }
 
 .ims-live-sync-badge {

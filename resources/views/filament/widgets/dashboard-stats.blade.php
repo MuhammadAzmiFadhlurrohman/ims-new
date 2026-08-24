@@ -238,6 +238,7 @@
                         <option value="month" selected>Bulan Ini (Agustus 2026)</option>
                         <option value="year">Tahun 2026</option>
                     </select>
+                    <svg class="ims-filter-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                 </div>
 
                 <!-- Region Selector -->
@@ -249,6 +250,7 @@
                         <option value="cikarang">Cluster Cikarang</option>
                         <option value="tambun">Cluster Tambun</option>
                     </select>
+                    <svg class="ims-filter-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                 </div>
 
                 <!-- Live Sync Status Indicator -->
