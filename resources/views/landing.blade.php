@@ -634,21 +634,29 @@
     @endif
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── CONTINUOUS DIAGONAL FIBER THREAD (RUNS FROM JUMBOTRON TO FOOTER) ──
+         ── CONTINUOUS WINDING FIBER THREAD (MELEOK DI BACKGROUND HINGGA FOOTER) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <div class="fixed inset-0 pointer-events-none select-none z-[40] overflow-hidden" aria-hidden="true">
-        <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1440 900" fill="none">
+    <div class="absolute inset-0 h-full w-full pointer-events-none select-none z-0 overflow-hidden" aria-hidden="true">
+        <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 1000" fill="none">
             <defs>
-                <linearGradient id="continuousFiberGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#0878E5" stop-opacity="0.45"/>
-                    <stop offset="50%" stop-color="#55C7FF" stop-opacity="0.75"/>
-                    <stop offset="100%" stop-color="#0878E5" stop-opacity="0.45"/>
+                <linearGradient id="windingFiberGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#55C7FF" stop-opacity="0.75"/>
+                    <stop offset="12%" stop-color="#0878E5" stop-opacity="0.35"/>
+                    <stop offset="30%" stop-color="#55C7FF" stop-opacity="0.45"/>
+                    <stop offset="50%" stop-color="#0878E5" stop-opacity="0.35"/>
+                    <stop offset="70%" stop-color="#55C7FF" stop-opacity="0.5"/>
+                    <stop offset="88%" stop-color="#0878E5" stop-opacity="0.6"/>
+                    <stop offset="100%" stop-color="#55C7FF" stop-opacity="0.75"/>
                 </linearGradient>
             </defs>
-            <!-- Primary Continuous Fiber Thread (Diagonal Dashed) -->
-            <path d="M -100 850 L 1540 100" stroke="url(#continuousFiberGrad)" stroke-width="1.8" stroke-dasharray="14 10" class="animate-fiber-flow-blue"/>
-            <!-- Secondary Parallel Diagonal Fiber Stream -->
-            <path d="M -100 960 L 1540 210" stroke="#0878E5" stroke-width="1.2" stroke-dasharray="8 8" class="animate-fiber-flow-blue" opacity="0.35"/>
+            
+            <!-- Primary Winding Dashed Fiber Optic Cable (Meleok dari Atas ke Bawah) -->
+            <path d="M 850 0 C 150 70, 50 150, 220 230 C 420 310, 950 370, 800 460 C 650 540, 100 590, 250 680 C 400 760, 900 820, 750 910 C 600 970, 300 990, 500 1000" 
+                  stroke="url(#windingFiberGrad)" stroke-width="2.2" stroke-dasharray="14 10" class="animate-fiber-flow-blue"/>
+            
+            <!-- Secondary Parallel Winding Cable -->
+            <path d="M 880 0 C 180 70, 80 150, 250 230 C 450 310, 980 370, 830 460 C 680 540, 130 590, 280 680 C 430 760, 930 820, 780 910 C 630 970, 330 990, 530 1000" 
+                  stroke="#0878E5" stroke-width="1.2" stroke-dasharray="8 8" class="animate-fiber-flow-blue" opacity="0.3"/>
         </svg>
     </div>
 
