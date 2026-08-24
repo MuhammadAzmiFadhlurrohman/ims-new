@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->brandName('IMS ONE')
             ->brandLogo(fn () => view('filament.components.brand-logo'))
+            ->favicon(asset('images/logo.png'))
             ->darkMode(false)
             ->colors([
                 'primary' => Color::Blue,
@@ -50,6 +51,9 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::HEAD_START,
                 fn () => Blade::render('
+                    <link rel="icon" type="image/png" href="' . asset('images/logo.png') . '">
+                    <link rel="shortcut icon" type="image/png" href="' . asset('images/logo.png') . '">
+                    <link rel="apple-touch-icon" href="' . asset('images/logo.png') . '">
                     <script>
                         (function() {
                             try {
