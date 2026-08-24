@@ -389,18 +389,14 @@
     {{-- ══════════════════════════════════════════════════════════════
          ── 2. HERO JUMBOTRON (PREMIUM ELEGANT) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="beranda" class="relative min-h-[calc(100vh-64px)] flex items-center overflow-hidden pt-16">
+    <section id="beranda" class="relative flex items-center overflow-hidden" style="min-height: calc(100vh - 64px); padding-top: 64px;">
 
         {{-- Decorative Background --}}
         <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-            {{-- Gradient wash --}}
-            <div class="absolute inset-0" style="background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 40%, #eff6ff 100%);"></div>
-            {{-- Soft glow top-left --}}
-            <div class="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full opacity-40" style="background: radial-gradient(circle, rgba(14,165,233,0.18) 0%, transparent 70%);"></div>
-            {{-- Soft glow bottom-right --}}
-            <div class="absolute -bottom-40 -right-20 w-[500px] h-[500px] rounded-full opacity-30" style="background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, transparent 70%);"></div>
-            {{-- Dot grid pattern --}}
-            <svg class="absolute inset-0 w-full h-full opacity-[0.045]" xmlns="http://www.w3.org/2000/svg">
+            <div class="absolute inset-0" style="background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 45%, #eff6ff 100%);"></div>
+            <div class="absolute -top-32 -left-40 w-[560px] h-[560px] rounded-full opacity-35" style="background: radial-gradient(circle, rgba(14,165,233,0.18) 0%, transparent 70%);"></div>
+            <div class="absolute -bottom-32 -right-20 w-[480px] h-[480px] rounded-full opacity-25" style="background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, transparent 70%);"></div>
+            <svg class="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <pattern id="dotgrid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
                         <circle cx="1.5" cy="1.5" r="1.5" fill="#0284c7"/>
@@ -408,134 +404,130 @@
                 </defs>
                 <rect width="100%" height="100%" fill="url(#dotgrid)"/>
             </svg>
-            {{-- Decorative fiber line --}}
-            <svg class="absolute right-0 top-0 h-full w-1/2 opacity-[0.06]" viewBox="0 0 600 900" fill="none" preserveAspectRatio="xMidYMid slice">
-                <path d="M600 0 Q 300 200 400 450 Q 500 700 200 900" stroke="#0284c7" stroke-width="2" fill="none"/>
-                <path d="M650 0 Q 350 250 450 500 Q 550 750 250 900" stroke="#0ea5e9" stroke-width="1.5" fill="none"/>
-                <path d="M550 0 Q 250 150 350 400 Q 450 650 150 900" stroke="#38bdf8" stroke-width="1" fill="none"/>
+            <svg class="absolute right-0 top-0 h-full w-1/2 opacity-[0.05]" viewBox="0 0 600 800" fill="none" preserveAspectRatio="xMidYMid slice">
+                <path d="M600 0 Q 300 200 400 400 Q 500 600 200 800" stroke="#0284c7" stroke-width="2" fill="none"/>
+                <path d="M640 0 Q 340 220 440 440 Q 540 660 240 800" stroke="#0ea5e9" stroke-width="1.5" fill="none"/>
             </svg>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-10 lg:py-0">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-12 lg:py-16">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 xl:gap-20 items-center">
 
                 {{-- Left Content Column --}}
-                <div class="space-y-6 text-center lg:text-left">
+                <div class="space-y-5 text-center lg:text-left">
 
-                    {{-- Status Badge --}}
-                    <div class="flex items-center gap-2.5 justify-center lg:justify-start flex-wrap">
-                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-extrabold tracking-wide uppercase border shadow-sm" style="background:#f0fdf4; border-color:#bbf7d0; color:#15803d;">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-beacon-green"></span>
+                    {{-- Status Badges --}}
+                    <div class="flex items-center gap-2 justify-center lg:justify-start flex-wrap">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide uppercase border shadow-sm" style="background:#f0fdf4; border-color:#bbf7d0; color:#15803d;">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 pulse-beacon-green"></span>
                             Jaringan Aktif & Stabil
                         </span>
-                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-extrabold tracking-wide uppercase border shadow-sm" style="background:#f0f9ff; border-color:#bae6fd; color:#0369a1;">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide uppercase border shadow-sm" style="background:#f0f9ff; border-color:#bae6fd; color:#0369a1;">
                             100% Fiber Optic FTTH
                         </span>
                     </div>
 
                     {{-- Headline --}}
-                    <div class="space-y-3">
-                        <h1 class="font-heading font-black text-slate-900 tracking-tight" style="font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15;">
+                    <div class="space-y-2.5">
+                        <h1 class="font-heading font-black text-slate-900 tracking-tight leading-tight" style="font-size: clamp(1.65rem, 3.5vw, 2.5rem);">
                             Internet Fiber
                             <span class="relative inline-block">
                                 <span class="text-gradient-primary">Super Cepat</span>
-                                {{-- Underline accent --}}
-                                <svg class="absolute -bottom-1 left-0 w-full" height="6" viewBox="0 0 200 6" preserveAspectRatio="none">
-                                    <path d="M0 5 Q 50 1 100 4 Q 150 7 200 3" stroke="#0ea5e9" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                <svg class="absolute -bottom-0.5 left-0 w-full" height="5" viewBox="0 0 200 5" preserveAspectRatio="none">
+                                    <path d="M0 4 Q 50 1 100 3.5 Q 150 6 200 2.5" stroke="#0ea5e9" stroke-width="2" fill="none" stroke-linecap="round"/>
                                 </svg>
                             </span>
-                            <br>untuk Rumah & Bisnis Anda.
+                            <span class="block">untuk Rumah & Bisnis Anda.</span>
                         </h1>
-                        <p class="text-sm sm:text-[15px] text-slate-500 max-w-lg mx-auto lg:mx-0 font-medium leading-relaxed">
-                            Nikmati koneksi hingga <strong class="text-slate-700">1 Gbps</strong> dengan teknologi serat optik langsung ke rumah. True Unlimited, tanpa FUP, dengan uptime <strong class="text-slate-700">99.8%</strong> dan dukungan NOC 24/7.
+                        <p class="text-sm text-slate-500 max-w-md mx-auto lg:mx-0 font-medium leading-relaxed">
+                            Nikmati koneksi hingga <strong class="text-slate-700">1 Gbps</strong> dengan teknologi serat optik FTTH. True Unlimited, tanpa FUP, uptime <strong class="text-slate-700">99.8%</strong> dan NOC 24/7.
                         </p>
                     </div>
 
                     {{-- CTA Buttons --}}
-                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2.5">
                         <button @click="openRegister('Paket Pro (100 Mbps)')"
-                            class="group w-full sm:w-auto px-7 py-3 rounded-xl text-white font-extrabold text-sm shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-xl flex items-center justify-center gap-2.5"
-                            style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 60%, #1d4ed8 100%); box-shadow: 0 8px 25px -5px rgba(14,165,233,0.45);">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            class="group w-full sm:w-auto px-6 py-2.5 rounded-xl text-white font-extrabold text-sm transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                            style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 60%, #1d4ed8 100%); box-shadow: 0 6px 20px -4px rgba(14,165,233,0.45);">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                             Pasang Sekarang
                             <span class="group-hover:translate-x-0.5 transition-transform">→</span>
                         </button>
 
                         <a href="#coverage"
-                            class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-white border border-slate-200 hover:border-sky-300 text-slate-700 hover:text-brand-600 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-sm bg-white border border-slate-200 hover:border-sky-300 text-slate-600 hover:text-brand-600 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             Cek Coverage Area
                         </a>
                     </div>
 
                     {{-- Trust Stats --}}
-                    <div class="pt-5 border-t border-slate-200/80 grid grid-cols-3 gap-4">
+                    <div class="pt-4 border-t border-slate-200/70 grid grid-cols-3 gap-3">
                         <div class="text-center lg:text-left">
-                            <div class="font-heading text-xl sm:text-2xl font-black text-slate-900">1 Gbps</div>
-                            <span class="text-[11px] text-slate-400 font-semibold">Max Speed Fiber</span>
+                            <div class="font-heading text-lg sm:text-xl font-black text-slate-900">1 Gbps</div>
+                            <span class="text-[10px] text-slate-400 font-semibold">Max Speed Fiber</span>
                         </div>
                         <div class="text-center lg:text-left">
-                            <div class="font-heading text-xl sm:text-2xl font-black text-slate-900">99.8%</div>
-                            <span class="text-[11px] text-slate-400 font-semibold">Garansi Uptime</span>
+                            <div class="font-heading text-lg sm:text-xl font-black text-slate-900">99.8%</div>
+                            <span class="text-[10px] text-slate-400 font-semibold">Garansi Uptime</span>
                         </div>
                         <div class="text-center lg:text-left">
-                            <div class="font-heading text-xl sm:text-2xl font-black text-slate-900">&lt;15 Mnt</div>
-                            <span class="text-[11px] text-slate-400 font-semibold">Respon Tiket CS</span>
+                            <div class="font-heading text-lg sm:text-xl font-black text-slate-900">&lt;15 Mnt</div>
+                            <span class="text-[10px] text-slate-400 font-semibold">Respon Tiket CS</span>
                         </div>
                     </div>
                 </div>
 
                 {{-- Right Visual — Premium Network Widget --}}
-                <div class="relative flex justify-center lg:justify-end">
-                    {{-- Outer glow ring --}}
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div class="w-80 h-80 rounded-full opacity-20 animate-pulse" style="background: radial-gradient(circle, #0ea5e9 0%, transparent 70%); animation-duration: 3s;"></div>
-                    </div>
+                <div class="flex justify-center lg:justify-end">
+                    {{-- Wrapper with padding to accommodate floating chips --}}
+                    <div class="relative w-full max-w-[340px] mt-6 mb-6">
 
-                    <div class="relative w-full max-w-sm">
+                        {{-- Subtle glow behind card --}}
+                        <div class="absolute inset-0 rounded-2xl blur-2xl opacity-20 pointer-events-none" style="background: radial-gradient(circle, #0ea5e9 0%, transparent 70%); transform: scale(1.1);"></div>
+
                         {{-- Main Card --}}
-                        <div class="rounded-2xl p-5 sm:p-6 bg-white border border-slate-200/80 shadow-2xl" style="box-shadow: 0 25px 60px -15px rgba(14,165,233,0.18), 0 4px 20px -5px rgba(15,23,42,0.08);">
+                        <div class="relative rounded-2xl p-5 bg-white border border-slate-200/80" style="box-shadow: 0 20px 50px -12px rgba(14,165,233,0.18), 0 4px 16px -4px rgba(15,23,42,0.08);">
+
                             {{-- Card Header --}}
                             <div class="flex items-center justify-between mb-4 pb-3.5 border-b border-slate-100">
                                 <div class="flex items-center gap-2.5">
-                                    <div class="w-9 h-9 rounded-xl flex items-center justify-center shadow-md text-base" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">
-                                        <svg class="w-4.5 h-4.5 text-white" style="width:18px;height:18px;" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
+                                    <div class="w-9 h-9 rounded-xl flex items-center justify-center shadow-md" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">
+                                        <svg style="width:17px;height:17px;" fill="none" stroke="white" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
                                     </div>
                                     <div>
-                                        <span class="font-heading text-sm font-extrabold text-slate-900 block leading-none">Jaringan FTTH Aktif</span>
+                                        <span class="font-heading text-[13px] font-extrabold text-slate-900 block leading-none">Jaringan FTTH Aktif</span>
                                         <span class="text-[10px] text-emerald-600 font-bold flex items-center gap-1 mt-0.5">
                                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block pulse-beacon-green"></span>
                                             Latency 3ms · Ultra Low Ping
                                         </span>
                                     </div>
                                 </div>
-                                <span class="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border" style="background:#f0f9ff;border-color:#bae6fd;color:#0369a1;">LIVE</span>
+                                <span class="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border" style="background:#f0f9ff;border-color:#bae6fd;color:#0369a1;">LIVE</span>
                             </div>
 
                             {{-- Speed Gauges --}}
-                            <div class="space-y-3 mb-4">
-                                {{-- Download --}}
-                                <div class="p-3.5 rounded-xl border" style="background:#f8fafc;border-color:#e2e8f0;">
-                                    <div class="flex items-center justify-between mb-2">
+                            <div class="space-y-2.5 mb-4">
+                                <div class="p-3 rounded-xl border" style="background:#f8fafc;border-color:#e2e8f0;">
+                                    <div class="flex items-center justify-between mb-1.5">
                                         <div class="flex items-center gap-2">
-                                            <div class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-emerald-600" style="background:#dcfce7;">↓</div>
+                                            <div class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black text-emerald-600" style="background:#dcfce7;">↓</div>
                                             <span class="text-xs text-slate-500 font-semibold">Download</span>
                                         </div>
-                                        <span class="font-heading text-base font-black text-slate-900">100.4 <span class="text-xs font-bold text-slate-400">Mbps</span></span>
+                                        <span class="font-heading text-[13px] font-black text-slate-900">100.4 <span class="text-[10px] font-bold text-slate-400">Mbps</span></span>
                                     </div>
                                     <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
                                         <div class="h-full rounded-full" style="width:84%; background: linear-gradient(90deg, #10b981, #34d399);"></div>
                                     </div>
                                 </div>
 
-                                {{-- Upload --}}
-                                <div class="p-3.5 rounded-xl border" style="background:#f8fafc;border-color:#e2e8f0;">
-                                    <div class="flex items-center justify-between mb-2">
+                                <div class="p-3 rounded-xl border" style="background:#f8fafc;border-color:#e2e8f0;">
+                                    <div class="flex items-center justify-between mb-1.5">
                                         <div class="flex items-center gap-2">
-                                            <div class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-sky-600" style="background:#e0f2fe;">↑</div>
+                                            <div class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black text-sky-600" style="background:#e0f2fe;">↑</div>
                                             <span class="text-xs text-slate-500 font-semibold">Upload</span>
                                         </div>
-                                        <span class="font-heading text-base font-black text-slate-900">100.2 <span class="text-xs font-bold text-slate-400">Mbps</span></span>
+                                        <span class="font-heading text-[13px] font-black text-slate-900">100.2 <span class="text-[10px] font-bold text-slate-400">Mbps</span></span>
                                     </div>
                                     <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
                                         <div class="h-full rounded-full" style="width:82%; background: linear-gradient(90deg, #0ea5e9, #38bdf8);"></div>
@@ -545,20 +537,17 @@
 
                             {{-- Footer Row --}}
                             <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
-                                <div class="flex items-center gap-1.5 text-slate-500 font-semibold">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
-                                    Paket Terpasang:
-                                </div>
+                                <span class="text-slate-400 font-semibold">Paket Terpasang:</span>
                                 <span class="font-extrabold text-brand-600">Ultra Home 100M</span>
                             </div>
                         </div>
 
-                        {{-- Floating mini info cards --}}
-                        <div class="absolute -top-4 -right-4 sm:-right-6 bg-white border border-slate-200 rounded-xl px-3 py-2 shadow-lg flex items-center gap-2 text-xs font-bold text-slate-700">
-                            <span class="text-amber-500 text-sm">⭐</span> Rating 4.9/5
+                        {{-- Floating Chips — inside padded wrapper so they don't overflow --}}
+                        <div class="absolute -top-3 right-2 bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 shadow-lg flex items-center gap-1.5 text-xs font-bold text-slate-700" style="white-space:nowrap;">
+                            <span class="text-amber-400">⭐</span> Rating 4.9/5
                         </div>
-                        <div class="absolute -bottom-4 -left-4 sm:-left-6 bg-white border border-slate-200 rounded-xl px-3 py-2 shadow-lg flex items-center gap-2 text-xs font-bold text-emerald-700">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-beacon-green"></span>
+                        <div class="absolute -bottom-3 left-2 bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 shadow-lg flex items-center gap-1.5 text-xs font-bold text-emerald-700" style="white-space:nowrap;">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 pulse-beacon-green"></span>
                             NOC Online 24/7
                         </div>
                     </div>
@@ -567,8 +556,6 @@
             </div>
         </div>
     </section>
-
-
     {{-- ══════════════════════════════════════════════════════════════
          ── 3. CEK COVERAGE & GIS MAP (2-COLUMN SPLIT) ──
          ══════════════════════════════════════════════════════════════ --}}
