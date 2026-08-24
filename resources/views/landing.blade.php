@@ -634,6 +634,25 @@
     @endif
 
     {{-- ══════════════════════════════════════════════════════════════
+         ── CONTINUOUS DIAGONAL FIBER THREAD (RUNS FROM JUMBOTRON TO FOOTER) ──
+         ══════════════════════════════════════════════════════════════ --}}
+    <div class="fixed inset-0 pointer-events-none select-none z-[40] overflow-hidden" aria-hidden="true">
+        <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1440 900" fill="none">
+            <defs>
+                <linearGradient id="continuousFiberGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#0878E5" stop-opacity="0.45"/>
+                    <stop offset="50%" stop-color="#55C7FF" stop-opacity="0.75"/>
+                    <stop offset="100%" stop-color="#0878E5" stop-opacity="0.45"/>
+                </linearGradient>
+            </defs>
+            <!-- Primary Continuous Fiber Thread (Diagonal Dashed) -->
+            <path d="M -100 850 L 1540 100" stroke="url(#continuousFiberGrad)" stroke-width="1.8" stroke-dasharray="14 10" class="animate-fiber-flow-blue"/>
+            <!-- Secondary Parallel Diagonal Fiber Stream -->
+            <path d="M -100 960 L 1540 210" stroke="#0878E5" stroke-width="1.2" stroke-dasharray="8 8" class="animate-fiber-flow-blue" opacity="0.35"/>
+        </svg>
+    </div>
+
+    {{-- ══════════════════════════════════════════════════════════════
          ── 1. HERO JUMBOTRON (DARK PREMIUM DEEP NAVY & FIBER OPTIC FLOW) ──
          ══════════════════════════════════════════════════════════════ --}}
     <section id="beranda" class="pt-28 pb-12 lg:pt-36 lg:pb-16 relative overflow-hidden bg-gradient-to-b from-[#020B1D] via-[#062A5C] to-[#03132D] text-white border-b border-blue-950">
