@@ -142,16 +142,15 @@
     }
 
     .ims-cube-icon {
-        width: 48px;
-        height: 48px;
-        background: rgba(255, 255, 255, 0.12);
-        border: 1.5px solid rgba(255, 255, 255, 0.28);
-        backdrop-filter: blur(12px);
-        border-radius: 15px;
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+        border: 2px solid rgba(255, 255, 255, 0.45);
+        border-radius: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
     .ims-hero-content {
@@ -456,7 +455,12 @@
         <!-- Logo & Enterprise Brand -->
         <div class="ims-brand-badge">
             <div class="ims-cube-icon">
-                <img src="{{ asset('images/favicon.svg') }}" alt="IMS Logo" style="width: 28px; height: 28px;" onerror="this.onerror=null; this.src='{{ asset('images/favicon.png') }}';">
+                <svg viewBox="0 0 100 85" style="width: 30px; height: 30px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));" fill="none">
+                    <path d="M 10,30 A 54,54 0 0,1 90,30" stroke="#ffffff" stroke-width="10" stroke-linecap="round" />
+                    <path d="M 24,45 A 36,36 0 0,1 76,45" stroke="#ffffff" stroke-width="10" stroke-linecap="round" />
+                    <path d="M 38,60 A 18,18 0 0,1 62,60" stroke="#ffffff" stroke-width="10" stroke-linecap="round" />
+                    <polygon points="50,78 40,67 60,67" fill="#ffffff" />
+                </svg>
             </div>
             <div>
                 <div style="font-size: 19px; font-weight: 900; letter-spacing: -0.02em; color: #ffffff;">IMS ONE</div>
