@@ -114,14 +114,11 @@
             <!-- Glow Accent -->
             <div class="absolute -top-20 -right-20 w-36 h-36 bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
-            <div class="text-center mb-4 sm:mb-5 relative z-10">
-                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-brand-600/30 to-cyan-400/20 border border-brand-400/30 flex items-center justify-center mx-auto mb-2 text-xl shadow-inner">
-                    📱
-                </div>
-                <h1 class="font-heading text-xl sm:text-2xl font-black text-white mb-1 tracking-tight">
+            <div class="text-center mb-5 relative z-10">
+                <h1 class="font-heading text-xl sm:text-2xl font-black text-white mb-1.5 tracking-tight">
                     Layanan Pelanggan
                 </h1>
-                <p class="text-[11.5px] text-slate-300 leading-relaxed font-medium">
+                <p class="text-xs text-slate-300 leading-relaxed font-medium">
                     Masukkan nomor WhatsApp Anda untuk mengakses info langganan, tiket, dan tagihan.
                 </p>
             </div>
@@ -142,11 +139,11 @@
             @endif
 
             <!-- Login Form -->
-            <form action="{{ route('customer.login') }}" method="POST" class="space-y-3 sm:space-y-3.5 relative z-10">
+            <form action="{{ route('customer.login') }}" method="POST" class="space-y-4 relative z-10">
                 @csrf
                 
                 <div>
-                    <label class="block font-bold text-[11px] text-slate-300 mb-1.5">
+                    <label class="block font-bold text-xs text-slate-300 mb-1.5">
                         Nomor Telepon / WhatsApp Terdaftar *
                     </label>
                     <div class="flex items-center h-12 px-3 rounded-xl bg-white/5 border border-white/15 focus-within:border-cyan-400 focus-within:ring-2 focus-within:ring-cyan-400/20 focus-within:bg-[#0c1b30] transition-all shadow-inner">
@@ -170,7 +167,7 @@
                         />
                     </div>
                     
-                    <span class="text-[10px] text-slate-400 mt-1 block leading-tight">
+                    <span class="text-[10.5px] text-slate-400 mt-1.5 block leading-tight">
                         💡 Bisa juga menggunakan Nomor Pelanggan (CID).
                     </span>
                 </div>
@@ -178,12 +175,6 @@
                 <button type="submit" class="w-full h-12 rounded-xl bg-gradient-to-r from-cyan-400 via-brand-500 to-brand-600 hover:from-cyan-300 hover:to-brand-500 text-white font-black text-xs sm:text-sm shadow-xl shadow-cyan-500/25 transition-all transform active:scale-[0.99] flex items-center justify-center gap-2">
                     <span>Masuk ke Portal Layanan &rarr;</span>
                 </button>
-
-                <!-- Session Policy Notice -->
-                <div class="py-2 px-3 rounded-lg bg-white/5 border border-white/5 text-[10px] text-slate-400 text-center flex items-center justify-center gap-1.5">
-                    <span>⏱️</span>
-                    <span>Sesi berlaku <strong>1 Jam</strong> untuk menghemat beban server.</span>
-                </div>
             </form>
 
             <div class="mt-4 pt-3.5 border-t border-white/10 text-center relative z-10">
