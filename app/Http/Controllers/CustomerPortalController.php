@@ -66,6 +66,54 @@ class CustomerPortalController extends Controller
         // ODP Data
         $odp = Odp::where('code', $subscription->odp_code)->first();
 
+        // Customer Devices & Equipment installed during installation
+        $customerDevices = \App\Models\CustomerDevice::where('internet_number', $subscription->internet_number)->get();
+        $installationEquipment = $subscription->installation_equipment;
+
+        if ($customerDevices->isEmpty() && empty($installationEquipment)) {
+            $gponSn = $subscription->ont_sn ?? ('ZTEGC' . strtoupper(substr(md5($subscription->internet_number), 0, 8)));
+            $macAddr = $subscription->ont_mac ?? ('70:8B:CD:' . strtoupper(substr(chunk_split(substr(md5($subscription->internet_number), 0, 6), 2, ':'), 0, 8)));
+            
+            $installationEquipment = [
+                [
+                    'name' => 'Optical Network Terminal (ONT / Modem Router)',
+                    'type' => 'ZTE F670L Dual Band 5G Gigabit',
+                    'sn' => $gponSn,
+                    'mac' => $macAddr,
+                    'qty' => '1 Unit',
+                    'status' => 'DIPINJAMKAN (HAK PAKAI)',
+                    'installed_at' => $subscription->installation_date ? $subscription->installation_date->translatedFormat('d F Y') : ($subscription->created_at ? $subscription->created_at->translatedFormat('d F Y') : 'Hari Instalasi'),
+                ],
+                [
+                    'name' => 'Roset Optik (Wall Outlet Box)',
+                    'type' => 'Roset 1-Core Mini OTP SC/UPC',
+                    'sn' => '-',
+                    'mac' => '-',
+                    'qty' => '1 Unit',
+                    'status' => 'TERPASANG',
+                    'installed_at' => $subscription->installation_date ? $subscription->installation_date->translatedFormat('d F Y') : 'Hari Instalasi',
+                ],
+                [
+                    'name' => 'Patch Cord Fiber Optic',
+                    'type' => 'SC/UPC to SC/UPC 2 Meter Simplex',
+                    'sn' => '-',
+                    'mac' => '-',
+                    'qty' => '1 Pcs',
+                    'status' => 'TERPASANG',
+                    'installed_at' => $subscription->installation_date ? $subscription->installation_date->translatedFormat('d F Y') : 'Hari Instalasi',
+                ],
+                [
+                    'name' => 'Kabel Dropcore FTTH 1-Core 3-Seling',
+                    'type' => 'Kabel Fiber Optic Drop Wire Outdoor',
+                    'sn' => '-',
+                    'mac' => '-',
+                    'qty' => ($subscription->cable_length_meters ?? '75') . ' Meter',
+                    'status' => 'TERPASANG KE ODP',
+                    'installed_at' => $subscription->installation_date ? $subscription->installation_date->translatedFormat('d F Y') : 'Hari Instalasi',
+                ],
+            ];
+        }
+
         return view('portal.dashboard', compact(
             'subscription',
             'currentPackage',
@@ -79,6 +127,8 @@ class CustomerPortalController extends Controller
             'totalArrears',
             'hasArrears',
             'odp',
+            'customerDevices',
+            'installationEquipment',
             'remainingSeconds'
         ));
     }

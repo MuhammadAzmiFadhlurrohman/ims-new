@@ -368,6 +368,133 @@
 
             </div>
 
+            <!-- Row 2: DETAIL SPESIFIKASI LAYANAN FIBER -->
+            <div class="glass-card rounded-3xl p-5 sm:p-8 shadow-xl border border-brand-400/20">
+                <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+                        <h3 class="font-heading text-lg sm:text-xl font-black text-white">Detail Layanan yang Digunakan</h3>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-[10.5px] sm:text-xs font-bold">
+                        ⚡ Dedicated FTTH Gigabit
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <span class="text-[11px] text-slate-400 block mb-1 font-medium">Nama Paket Aktif</span>
+                        <strong class="text-white text-sm font-black block">{{ $currentPackage->name ?? ($subscription->package_code ?? 'Home Fiber 50M') }}</strong>
+                        <span class="text-[10.5px] text-emerald-400 mt-1 block">True Unlimited (Tanpa FUP)</span>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <span class="text-[11px] text-slate-400 block mb-1 font-medium">Kecepatan Internet</span>
+                        <strong class="text-cyan-400 text-sm font-black block">{{ $currentPackage->speed_mbps ?? 50 }} Mbps Simetris</strong>
+                        <span class="text-[10.5px] text-slate-400 mt-1 block">1:1 Download &amp; Upload</span>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <span class="text-[11px] text-slate-400 block mb-1 font-medium">Alokasi IP Address</span>
+                        <strong class="text-white text-sm font-mono font-bold block">{{ $subscription->ip_address ?? 'Dynamic IP Public' }}</strong>
+                        <span class="text-[10.5px] text-slate-400 mt-1 block">SLA Jaringan 99.8% Uptime</span>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <span class="text-[11px] text-slate-400 block mb-1 font-medium">Titik Distribusi ODP</span>
+                        <strong class="text-white text-sm font-bold block truncate">{{ $subscription->odp_code ?? 'ODP-BDG-BRAGA-01' }}</strong>
+                        <span class="text-[10.5px] text-slate-400 mt-1 block">Port {{ $subscription->odp_port ?? '03' }} (Koneksi Fiber Aktif)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: DAFTAR PERANGKAT & MATERIAL YANG DIPINJAMKAN (INPUT SAAT INSTALASI) -->
+            <div class="glass-card rounded-3xl p-5 sm:p-8 shadow-xl border border-white/10">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 mb-6 gap-2">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                        <div>
+                            <h3 class="font-heading text-lg sm:text-xl font-black text-white">Daftar Perangkat yang Dipinjamkan</h3>
+                            <p class="text-xs text-slate-400">Peralatan dan material yang diinput teknisi saat proses instalasi terpasang di lokasi Anda.</p>
+                        </div>
+                    </div>
+                    <span class="self-start sm:self-auto px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[10.5px] sm:text-xs font-bold shrink-0">
+                        🛡️ Hak Pakai (Rental Termasuk)
+                    </span>
+                </div>
+
+                <!-- Device Grid Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @if($customerDevices->isNotEmpty())
+                        @foreach($customerDevices as $dev)
+                            <div class="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between space-y-3">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="px-2.5 py-0.5 rounded-full bg-brand-500/20 text-brand-300 text-[10px] font-black uppercase tracking-wider">
+                                            {{ $dev->device_type ?? 'ONT MODEM' }}
+                                        </span>
+                                        <span class="text-[10px] text-emerald-400 font-bold">
+                                            {{ $dev->ownership_status === 'PURCHASED' ? 'MILIK SENDIRI' : 'DIPINJAMKAN (HAK PAKAI)' }}
+                                        </span>
+                                    </div>
+                                    <h4 class="font-heading text-base font-bold text-white mb-1">
+                                        {{ $dev->brand ?? 'ZTE' }} {{ $dev->model ?? 'F670L Dual Band' }}
+                                    </h4>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 pt-3 border-t border-white/5 text-[11px]">
+                                    <div>
+                                        <span class="text-slate-400 block text-[10px]">Serial Number (SN):</span>
+                                        <strong class="font-mono text-cyan-300">{{ $dev->serial_number ?? '-' }}</strong>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-400 block text-[10px]">MAC Address:</span>
+                                        <strong class="font-mono text-slate-300">{{ $dev->mac_address ?? '-' }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @elseif(!empty($installationEquipment))
+                        @foreach($installationEquipment as $eq)
+                            <div class="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between space-y-3">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="px-2.5 py-0.5 rounded-full bg-brand-500/20 text-brand-300 text-[10px] font-black uppercase tracking-wider">
+                                            {{ $eq['name'] ?? 'Peralatan Fiber' }}
+                                        </span>
+                                        <span class="text-[10px] text-emerald-400 font-bold">
+                                            {{ $eq['status'] ?? 'DIPINJAMKAN (HAK PAKAI)' }}
+                                        </span>
+                                    </div>
+                                    <h4 class="font-heading text-sm sm:text-base font-bold text-white mb-1">
+                                        {{ $eq['type'] ?? '-' }}
+                                    </h4>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 pt-3 border-t border-white/5 text-[11px]">
+                                    <div>
+                                        <span class="text-slate-400 block text-[10px]">Serial / No. Registrasi:</span>
+                                        <strong class="font-mono text-cyan-300">{{ $eq['sn'] ?? '-' }}</strong>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-400 block text-[10px]">Kuantitas / Panjang:</span>
+                                        <strong class="text-white">{{ $eq['qty'] ?? '1 Unit' }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+
+                <!-- Warranty Notice -->
+                <div class="mt-5 p-4 rounded-2xl bg-brand-500/10 border border-brand-400/20 text-xs text-slate-300 flex items-start gap-3">
+                    <span class="text-brand-400 text-lg shrink-0">🛡️</span>
+                    <div>
+                        <strong class="text-white block font-bold mb-0.5">Garansi Penuh &amp; Penggantian Unit Gratis</strong>
+                        <span class="text-[11px] text-slate-400">Seluruh perangkat yang dipinjamkan bergaransi penuh. Jika terjadi kerusakan perangkat akibat faktor usia pakai atau sambaran petir, teknisi kami akan mengganti unit modem baru secara cuma-cuma.</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         {{-- ══════════════════════════════════════════════════════════════
