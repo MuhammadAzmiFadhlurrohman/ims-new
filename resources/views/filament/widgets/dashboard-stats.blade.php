@@ -32,16 +32,15 @@
         searchItems: {{ json_encode($searchItems) }},
         mapInstance: null,
         markersLayer: null,
+        mapReady: false,
 
         init() {
             this.animateCounters();
-            this.$nextTick(() => {
-                this.initMap();
-            });
+            this.loadLeafletAndInitMap();
         },
 
         animateCounters() {
-            const duration = 1200;
+            const duration = 1000;
             const startTime = performance.now();
 
             const step = (currentTime) => {
@@ -62,31 +61,62 @@
             requestAnimationFrame(step);
         },
 
+        loadLeafletAndInitMap() {
+            const checkAndInit = () => {
+                if (typeof L !== 'undefined') {
+                    this.initMap();
+                } else {
+                    setTimeout(checkAndInit, 120);
+                }
+            };
+
+            if (typeof L === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+                script.onload = () => checkAndInit();
+                document.head.appendChild(script);
+
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+                document.head.appendChild(link);
+            } else {
+                checkAndInit();
+            }
+        },
+
         initMap() {
             const mapContainer = document.getElementById('ims-gis-map');
             if (!mapContainer || this.mapInstance) return;
 
-            // Center on Cibitung / Bekasi area
-            this.mapInstance = L.map('ims-gis-map', {
-                center: [-6.2587, 107.0945],
-                zoom: 14,
-                zoomControl: true,
-                attributionControl: false
-            });
+            try {
+                // Center on Cibitung / Bekasi area
+                this.mapInstance = L.map('ims-gis-map', {
+                    center: [-6.2587, 107.0945],
+                    zoom: 14,
+                    zoomControl: true,
+                    attributionControl: false
+                });
 
-            // Modern CartoDB Voyager / Dark tiles
-            const isDark = document.documentElement.classList.contains('dark');
-            const tileUrl = isDark 
-                ? 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-                : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+                // High reliability tile layer (OSM & CartoDB)
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 19,
+                    subdomains: 'abcd',
+                }).addTo(this.mapInstance);
 
-            L.tileLayer(tileUrl, {
-                maxZoom: 19,
-                subdomains: 'abcd',
-            }).addTo(this.mapInstance);
+                this.markersLayer = L.layerGroup().addTo(this.mapInstance);
+                this.renderMapPins();
+                this.mapReady = true;
 
-            this.markersLayer = L.layerGroup().addTo(this.mapInstance);
-            this.renderMapPins();
+                setTimeout(() => {
+                    if (this.mapInstance) this.mapInstance.invalidateSize();
+                }, 200);
+                setTimeout(() => {
+                    if (this.mapInstance) this.mapInstance.invalidateSize();
+                }, 800);
+            } catch (e) {
+                console.error('Error initializing Leaflet GIS Map:', e);
+            }
         },
 
         renderMapPins() {
@@ -120,12 +150,12 @@
 
                 const marker = L.marker([pin.lat, pin.lng], { icon: customIcon });
                 marker.bindPopup(`
-                    <div style='font-family: Inter, sans-serif; padding: 4px;'>
+                    <div style='font-family: Inter, sans-serif; padding: 4px; min-width: 160px;'>
                         <div style='font-size: 11px; font-weight: 800; color: #0284c7;'>${pin.code}</div>
                         <div style='font-size: 13px; font-weight: 900; color: #0f172a; margin: 2px 0 4px;'>${pin.name}</div>
-                        <div style='font-size: 11px; color: #475569;'>Port: <strong>${pin.used_ports}/${pin.total_ports}</strong> (${Math.round((pin.used_ports/pin.total_ports)*100)}%)</div>
+                        <div style='font-size: 11px; color: #475569;'>Port Aktif: <strong>${pin.used_ports}/${pin.total_ports}</strong> (${Math.round((pin.used_ports/pin.total_ports)*100)}%)</div>
                         <div style='font-size: 10.5px; color: #64748b; margin-top: 3px;'>📍 ${pin.notes}</div>
-                        <div style='margin-top: 6px; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 800; text-align: center; background: ${color}20; color: ${color};'>
+                        <div style='margin-top: 6px; padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 800; text-align: center; background: ${color}20; color: ${color};'>
                             Status: ${pin.status}
                         </div>
                     </div>
@@ -260,14 +290,14 @@
         </div>
 
         {{-- ══════════════════════════════════════════════════════════════
-             ── 2. ROW 1: 5 KPI STAT CARDS (TOP SUMMARY METRICS) ──
+             ── 2. ROW 1: 5 KPI STAT CARDS (ALL IN ONE ROW - SIDE BY SIDE) ──
              ══════════════════════════════════════════════════════════════ --}}
         <div class="ims-kpi-grid">
             <!-- 1. Total Pelanggan Aktif -->
             <div class="ims-kpi-card">
                 <div class="ims-kpi-head">
                     <div class="ims-kpi-icon ims-icon-green">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     </div>
                     <span class="ims-kpi-trend ims-trend-up">+4.8% MoM</span>
                 </div>
@@ -282,7 +312,7 @@
             <div class="ims-kpi-card">
                 <div class="ims-kpi-head">
                     <div class="ims-kpi-icon ims-icon-blue">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <span class="ims-kpi-trend ims-trend-up">+7.2% Growth</span>
                 </div>
@@ -297,7 +327,7 @@
             <div class="ims-kpi-card">
                 <div class="ims-kpi-head">
                     <div class="ims-kpi-icon ims-icon-yellow">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     </div>
                     <span class="ims-kpi-badge-yellow">Antrean Pasang</span>
                 </div>
@@ -312,7 +342,7 @@
             <div class="ims-kpi-card">
                 <div class="ims-kpi-head">
                     <div class="ims-kpi-icon ims-icon-red">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                     </div>
                     <span class="ims-kpi-badge-red">NOC Active</span>
                 </div>
@@ -327,7 +357,7 @@
             <div class="ims-kpi-card">
                 <div class="ims-kpi-head">
                     <div class="ims-kpi-icon ims-icon-cyan">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                     </div>
                     <span class="ims-kpi-trend ims-trend-up">Target ≥98%</span>
                 </div>
@@ -399,7 +429,7 @@
                         </div>
                     </div>
 
-                    <!-- Package Distribution Donut / Bars -->
+                    <!-- Package Distribution -->
                     <div class="ims-package-column">
                         <div class="ims-sub-section-title">Paket Internet Terpopuler</div>
                         <div class="ims-pkg-dist-list">
@@ -544,8 +574,8 @@
                 
                 <div class="ims-table-tabs">
                     <button @click="activeTab = 'all'" :class="{'active': activeTab === 'all'}" class="ims-tab-btn">Semua ({{ count($liveWorkOrders) }})</button>
-                    <button @click="activeTab = 'PASANG_BARU'" :class="{'active': activeTab === 'PASANG_BARU'}" class="ims-tab-btn">⚡ Pasang Baru (2)</button>
-                    <button @click="activeTab = 'GANGGUAN'" :class="{'active': activeTab === 'GANGGUAN'}" class="ims-tab-btn">🔴 Gangguan (3)</button>
+                    <button @click="activeTab = 'PASANG_BARU'" :class="{'active': activeTab === 'PASANG_BARU'}" class="ims-tab-btn">⚡ Pasang Baru</button>
+                    <button @click="activeTab = 'GANGGUAN'" :class="{'active': activeTab === 'GANGGUAN'}" class="ims-tab-btn">🔴 Gangguan</button>
                 </div>
             </div>
 
