@@ -70,20 +70,13 @@
             font-family: 'Outfit', sans-serif;
         }
 
-        /* Modern Atmospheric Background */
+        /* Ambient Mesh Light Background */
         .ambient-mesh {
             background-color: #f8fafc;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.10) 0px, transparent 50%),
+                radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.12) 0px, transparent 50%),
                 radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
                 radial-gradient(at 50% 50%, rgba(2, 132, 199, 0.04) 0px, transparent 60%);
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(226, 232, 240, 0.85);
         }
 
         .card-elevation {
@@ -284,13 +277,13 @@
 <body x-data="landingApp" class="ambient-mesh text-slate-800 selection:bg-brand-500 selection:text-white">
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 1. HEADER & NAVBAR (ULTRA-CLEAN GLASS) ──
+         ── 1. HEADER & NAVBAR (SLEEK, CLEAN GLASS) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl border-b border-slate-200/80 transition-all duration-300 shadow-sm">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/80 transition-all duration-300 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14 sm:h-16">
                 
-                <!-- Brand Logo -->
+                <!-- Logo -->
                 <a href="#beranda" class="flex items-center gap-2.5 group">
                     <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-cyan-400 p-0.5 shadow-md shadow-brand-500/20 flex items-center justify-center transform group-hover:scale-105 transition-transform">
                         <div class="w-full h-full bg-white rounded-[10px] flex items-center justify-center">
@@ -310,10 +303,10 @@
                 </a>
 
                 <!-- Desktop Menu Links -->
-                <div class="hidden lg:flex items-center gap-6 xl:gap-8">
+                <div class="hidden lg:flex items-center gap-6 xl:gap-7">
                     <a href="#beranda" class="text-xs font-bold text-slate-600 hover:text-brand-600 transition-colors">Beranda</a>
-                    <a href="#coverage" class="text-xs font-bold text-slate-600 hover:text-brand-600 transition-colors">Cek Jangkauan</a>
-                    <a href="#paket" class="text-xs font-bold text-slate-600 hover:text-brand-600 transition-colors">Paket &amp; Harga</a>
+                    <a href="#coverage" class="text-xs font-bold text-slate-600 hover:text-brand-600 transition-colors">Cek Coverage</a>
+                    <a href="#paket" class="text-xs font-bold text-slate-600 hover:text-brand-600 transition-colors">Paket Internet</a>
                     <a href="#keunggulan" class="text-xs font-bold text-slate-600 hover:text-brand-600 transition-colors">Keunggulan</a>
                     <a href="#testimoni" class="text-xs font-bold text-slate-600 hover:text-brand-600 transition-colors">Testimoni</a>
                     <a href="#faq" class="text-xs font-bold text-slate-600 hover:text-brand-600 transition-colors">FAQ</a>
@@ -322,11 +315,11 @@
 
                 <!-- Desktop Action Buttons -->
                 <div class="hidden md:flex items-center gap-2.5">
-                    <a href="{{ route('customer.portal') }}" class="px-3.5 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-700 hover:text-sky-800 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
+                    <a href="{{ route('customer.portal') }}" class="px-3.5 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-700 hover:text-sky-800 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
                         <span>📱 Layanan Pelanggan</span>
                     </a>
 
-                    <button @click="openRegister('Paket Pro (100 Mbps)')" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 via-brand-600 to-blue-600 hover:from-cyan-400 hover:to-brand-500 text-white text-xs font-black shadow-md shadow-cyan-500/20 transition-all transform hover:-translate-y-0.5">
+                    <button @click="openRegister('Paket Pro (100 Mbps)')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 via-brand-600 to-blue-600 hover:from-cyan-400 hover:to-brand-500 text-white text-xs font-black shadow-md shadow-cyan-500/20 transition-all transform hover:-translate-y-0.5">
                         ⚡ Pasang Sekarang
                     </button>
                 </div>
@@ -367,7 +360,7 @@
         </div>
     </nav>
 
-    <!-- Floating Alerts -->
+    <!-- Session Expired Alert -->
     @if(session('session_expired'))
         <div class="fixed top-20 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[92%] p-3.5 rounded-2xl bg-amber-500 text-white text-xs font-bold shadow-2xl flex items-center justify-between gap-3">
             <div class="flex items-center gap-2">
@@ -379,7 +372,7 @@
     @endif
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 2. HERO JUMBOTRON SECTION (CLEAN, PROPORTIONAL & STUNNING) ──
+         ── 2. HERO JUMBOTRON (CLEAN, PROPORTIONAL & BALANCED) ──
          ══════════════════════════════════════════════════════════════ --}}
     <section id="beranda" class="pt-24 sm:pt-28 lg:pt-32 pb-14 sm:pb-18 lg:pb-20 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -399,14 +392,14 @@
                         </span>
                     </div>
 
-                    <!-- Clean Headline (No Colliding Text) -->
+                    <!-- Clean Headline -->
                     <div class="space-y-2">
                         <h1 class="font-heading text-2xl sm:text-3xl lg:text-[36px] xl:text-[40px] font-black text-slate-900 tracking-tight leading-[1.25]">
                             Koneksi Internet Fiber Super Cepat.
                             <span class="text-gradient-primary block mt-1">Stabil, Simetris &amp; Tanpa Kuota!</span>
                         </h1>
                         <p class="text-xs sm:text-sm lg:text-[15px] text-slate-600 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed pt-1">
-                            Nikmati internet bebas hambatan dengan kecepatan hingga <strong>1 Gbps</strong>. True Unlimited tanpa FUP dengan dukungan teknisi responsif 24/7.
+                            Nikmati internet bebas hambatan dengan kecepatan hingga <strong>1 Gbps</strong>. True Unlimited tanpa batas FUP dengan dukungan teknisi responsif 24/7.
                         </p>
                     </div>
 
@@ -515,7 +508,6 @@
                 </p>
             </div>
 
-            <!-- 2-Column Split View -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
                 
                 <!-- Left Search & Status Card -->
@@ -625,7 +617,7 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 4. PAKET & PRICING (CLEAN & ELEGANT TIER CARDS) ──
+         ── 4. PAKET & PRICING (TIER CARDS) ──
          ══════════════════════════════════════════════════════════════ --}}
     <section id="paket" class="py-16 sm:py-20 relative border-t border-slate-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -780,38 +772,76 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 5. CUSTOMER PORTAL BANNER (CENTERPIECE) ──
+         ── 5. ALUR PEMASANGAN MUDAH (4 LANGKAH PRAKTIS) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section class="py-12 sm:py-16 bg-white border-t border-slate-200/80">
+    <section class="py-16 sm:py-20 bg-white relative border-t border-slate-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="rounded-3xl bg-gradient-to-r from-slate-900 via-sky-950 to-blue-950 p-7 sm:p-10 lg:p-12 shadow-2xl border border-sky-500/20 text-white relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8">
-                
-                <div class="absolute -right-20 -bottom-20 w-72 h-72 bg-sky-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
+                <span class="px-3.5 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-xs font-black uppercase tracking-wider inline-block mb-2.5 shadow-sm">
+                    PROSES CEPAT &amp; MUDAH
+                </span>
+                <h2 class="font-heading text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
+                    4 Langkah Praktis Pasang Internet IMS ONE
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-600 mt-1.5">
+                    Dari pendaftaran hingga aktif internetan hanya membutuhkan waktu 1–2 hari kerja.
+                </p>
+            </div>
 
-                <div class="space-y-3 max-w-2xl text-center lg:text-left relative z-10">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-sky-300 text-[11px] font-extrabold">
-                        <span>📱 Portal Layanan Mandiri Pelanggan</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Step 1 -->
+                <div class="card-elevation rounded-2xl p-6 relative bg-white space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-sky-100 text-brand-600 font-black text-sm flex items-center justify-center">
+                        01
                     </div>
-                    <h3 class="font-heading text-2xl sm:text-3xl font-black text-white tracking-tight">
-                        Sudah Terdaftar Sebagai Pelanggan?
-                    </h3>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
-                        Cek tagihan, status koneksi, lapor gangguan teknisi, dan ubah paket layanan secara mandiri cukup dengan nomor WhatsApp terdaftar Anda.
+                    <h3 class="font-heading text-base font-bold text-slate-900">Pilih Paket &amp; Cek Area</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Tentukan paket internet sesuai kebutuhan dan cek ketersediaan slot jaringan fiber optik di lokasi Anda.
                     </p>
                 </div>
 
-                <div class="shrink-0 relative z-10 w-full sm:w-auto text-center">
-                    <a href="{{ route('customer.portal') }}" class="inline-block w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-brand-500 hover:from-cyan-300 hover:to-brand-400 text-slate-950 font-black text-xs sm:text-sm shadow-xl shadow-cyan-500/30 transition-all transform hover:-translate-y-0.5">
-                        Buka Portal Layanan &rarr;
-                    </a>
+                <!-- Step 2 -->
+                <div class="card-elevation rounded-2xl p-6 relative bg-white space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 font-black text-sm flex items-center justify-center">
+                        02
+                    </div>
+                    <h3 class="font-heading text-base font-bold text-slate-900">Registrasi Online</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Isi data singkat pemohon via WhatsApp dan tentukan jadwal kunjungan tim teknisi kami.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="card-elevation rounded-2xl p-6 relative bg-white space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 font-black text-sm flex items-center justify-center">
+                        03
+                    </div>
+                    <h3 class="font-heading text-base font-bold text-slate-900">Survei &amp; Instalasi</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Teknisi tersertifikasi datang ke lokasi untuk menarik kabel dropcore optik dan memasang router modem WiFi.
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="card-elevation rounded-2xl p-6 relative bg-white space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 font-black text-sm flex items-center justify-center">
+                        04
+                    </div>
+                    <h3 class="font-heading text-base font-bold text-slate-900">Aktivasi &amp; Siap Pakai</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Koneksi langsung aktif! Nikmati internet fiber super kencang, stabil, dan tanpa batas kuota.
+                    </p>
                 </div>
 
             </div>
+
         </div>
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 6. KEUNGGULAN (6 INTERACTIVE CARDS) ──
+         ── 6. KEUNGGULAN (6 CARDS) ──
          ══════════════════════════════════════════════════════════════ --}}
     <section id="keunggulan" class="py-16 sm:py-20 relative border-t border-slate-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -896,9 +926,40 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 7. TESTIMONI PELANGGAN ──
+         ── 7. CUSTOMER PORTAL BANNER (CENTERPIECE) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="testimoni" class="py-16 sm:py-20 bg-white relative border-t border-slate-200/80">
+    <section class="py-12 sm:py-16 bg-white border-t border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="rounded-3xl bg-gradient-to-r from-slate-900 via-sky-950 to-blue-950 p-7 sm:p-10 lg:p-12 shadow-2xl border border-sky-500/20 text-white relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8">
+                
+                <div class="absolute -right-20 -bottom-20 w-72 h-72 bg-sky-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="space-y-3 max-w-2xl text-center lg:text-left relative z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-sky-300 text-[11px] font-extrabold">
+                        <span>📱 Portal Layanan Mandiri Pelanggan</span>
+                    </div>
+                    <h3 class="font-heading text-2xl sm:text-3xl font-black text-white tracking-tight">
+                        Sudah Terdaftar Sebagai Pelanggan?
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                        Cek tagihan, status koneksi, lapor gangguan teknisi, dan ubah paket layanan secara mandiri cukup dengan nomor WhatsApp terdaftar Anda.
+                    </p>
+                </div>
+
+                <div class="shrink-0 relative z-10 w-full sm:w-auto text-center">
+                    <a href="{{ route('customer.portal') }}" class="inline-block w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-brand-500 hover:from-cyan-300 hover:to-brand-400 text-slate-950 font-black text-xs sm:text-sm shadow-xl shadow-cyan-500/30 transition-all transform hover:-translate-y-0.5">
+                        Buka Portal Layanan &rarr;
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {{-- ══════════════════════════════════════════════════════════════
+         ── 8. TESTIMONI PELANGGAN ──
+         ══════════════════════════════════════════════════════════════ --}}
+    <section id="testimoni" class="py-16 sm:py-20 relative border-t border-slate-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
@@ -993,9 +1054,9 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 8. FAQ ACCORDION ──
+         ── 9. FAQ ACCORDION ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="faq" class="py-16 sm:py-20 relative border-t border-slate-200/80">
+    <section id="faq" class="py-16 sm:py-20 bg-white relative border-t border-slate-200/80">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
@@ -1082,9 +1143,9 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 9. KONTAK & KANTOR ──
+         ── 10. KONTAK & KANTOR ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="kontak" class="py-16 sm:py-20 bg-white relative border-t border-slate-200/80">
+    <section id="kontak" class="py-16 sm:py-20 relative border-t border-slate-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                 
@@ -1115,7 +1176,7 @@
                     </div>
                 </div>
 
-                <div class="card-elevation rounded-3xl p-7 text-center space-y-4 bg-slate-50/50">
+                <div class="card-elevation rounded-3xl p-7 text-center space-y-4 bg-white">
                     <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mx-auto shadow-sm">
                         💬
                     </div>
@@ -1133,7 +1194,7 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 10. FOOTER ──
+         ── 11. FOOTER ──
          ══════════════════════════════════════════════════════════════ --}}
     <footer class="bg-white border-t border-slate-200 py-8 text-xs text-slate-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -1151,7 +1212,7 @@
     </footer>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 11. MODAL REGISTRASI PASANG BARU ──
+         ── 12. MODAL REGISTRASI PASANG BARU ──
          ══════════════════════════════════════════════════════════════ --}}
     <div x-show="showRegisterModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
         <div @click.away="showRegisterModal = false" class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4 relative">
