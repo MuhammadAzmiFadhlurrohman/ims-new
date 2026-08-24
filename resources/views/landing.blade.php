@@ -1547,63 +1547,95 @@
             
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
                 
-                <!-- Left: Why IMS ONE Editorial Specs -->
-                <div class="lg:col-span-6 space-y-8">
+                <!-- Left: Why IMS ONE Editorial Master Architecture -->
+                <div class="lg:col-span-6 space-y-6">
                     <div>
                         <span class="text-xs font-black tracking-widest text-brand uppercase block mb-2">KENAPA MEMILIH IMS ONE?</span>
                         <h2 class="font-heading text-3xl sm:text-4xl font-black text-brand-navy tracking-tight leading-tight">
-                            Internet yang dirancang untuk <span class="text-brand">Kebutuhan Nyata</span>
+                            Bukan Sekadar Cepat. <span class="text-brand">Dibuat untuk Tetap Stabil.</span>
                         </h2>
-                        <p class="text-xs sm:text-sm text-ink-muted leading-relaxed mt-2">
-                            Infrastruktur serat optik murni end-to-end tanpa perantara tembaga untuk koneksi yang stabil, konsisten, dan bebas hambatan.
+                        <p class="text-xs sm:text-sm text-ink-muted leading-relaxed mt-2.5 max-w-xl">
+                            IMS ONE menghadirkan koneksi fiber yang dirancang untuk kebutuhan rumah, bisnis, dan aktivitas digital tanpa kompromi.
                         </p>
                     </div>
 
-                    <!-- Monochromatic Blue Feature Cards with #EAF5FF icon backgrounds -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Professional Corporate Architecture Container -->
+                    <div class="border border-blue-100 rounded-3xl bg-brand-pale p-5 sm:p-6 shadow-brand-soft space-y-4">
                         
-                        <!-- 01 Full Fiber -->
-                        <div class="p-4 rounded-2xl border border-blue-100 bg-brand-pale shadow-sm space-y-2 card-interactive">
-                            <div class="w-10 h-10 rounded-xl bg-brand-soft text-brand flex items-center justify-center font-bold text-lg">
-                                🌐
+                        <!-- 01 Master Featured Card: FULL FIBER NETWORK with Mini Schematic Visual -->
+                        <div class="bg-white rounded-2xl p-5 border border-blue-100/80 shadow-sm space-y-4">
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                                <div class="space-y-1.5 max-w-sm">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-mono text-sm font-black text-brand px-2 py-0.5 rounded-md bg-brand-soft border border-blue-200">01</span>
+                                        <h3 class="font-heading text-base font-black text-brand-navy">Full Fiber Network</h3>
+                                    </div>
+                                    <strong class="text-xs font-bold text-brand block">Koneksi fiber hingga ke lokasi Anda.</strong>
+                                    <p class="text-xs text-ink-muted leading-relaxed">
+                                        Serat optik langsung memberikan koneksi yang stabil tanpa ketergantungan pada kabel tembaga.
+                                    </p>
+                                </div>
+
+                                <!-- Mini Fiber Schematic Diagram -->
+                                <div class="p-3 rounded-xl bg-brand-pale border border-blue-100/90 flex flex-col justify-center shrink-0 min-w-[150px]">
+                                    <span class="text-[9.5px] font-mono font-bold text-brand uppercase tracking-wider block mb-2 text-center">FIBER TOPOLOGY</span>
+                                    <div class="flex items-center justify-between text-[10px] font-mono text-brand-navy">
+                                        <span class="font-bold text-brand">ISP</span>
+                                        <span class="text-blue-300">──●──</span>
+                                        <span class="font-bold text-brand">ODP</span>
+                                        <span class="text-blue-300">──●──</span>
+                                        <span class="font-bold text-brand-navy">HOME</span>
+                                    </div>
+                                    <div class="mt-1.5 pt-1.5 border-t border-blue-200/60 flex items-center justify-center gap-1 text-[9px] text-brand font-bold">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-brand pulse-beacon-blue"></span>
+                                        <span>Direct FTTH Line</span>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 class="font-heading text-sm font-black text-brand-navy">Full Fiber Network</h3>
-                            <p class="text-xs text-ink-muted leading-relaxed">
-                                Serat optik langsung ke ruangan tanpa kabel tembaga, bebas induksi petir.
-                            </p>
                         </div>
 
-                        <!-- 02 True Unlimited -->
-                        <div class="p-4 rounded-2xl border border-blue-100 bg-brand-pale shadow-sm space-y-2 card-interactive">
-                            <div class="w-10 h-10 rounded-xl bg-brand-soft text-brand flex items-center justify-center font-bold text-lg">
-                                🚀
+                        <!-- Supporting 3 Items Row (02, 03, 04) -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                            
+                            <!-- 02 True Unlimited -->
+                            <div class="p-3.5 rounded-2xl bg-white border border-blue-100/80 shadow-sm space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs font-black text-brand">02</span>
+                                    <span class="text-brand font-mono font-bold text-sm">∞</span>
+                                </div>
+                                <h4 class="font-heading text-xs sm:text-sm font-black text-brand-navy">True Unlimited</h4>
+                                <span class="text-[11px] font-semibold text-brand block">Internet tanpa batas</span>
+                                <p class="text-[11px] text-ink-muted leading-relaxed">
+                                    Kecepatan konsisten tanpa FUP yang mengurangi pengalaman Anda.
+                                </p>
                             </div>
-                            <h3 class="font-heading text-sm font-black text-brand-navy">True Unlimited (No FUP)</h3>
-                            <p class="text-xs text-ink-muted leading-relaxed">
-                                Kecepatan konstan tanpa penurunan bandwidth di akhir bulan.
-                            </p>
-                        </div>
 
-                        <!-- 03 Support 24/7 -->
-                        <div class="p-4 rounded-2xl border border-blue-100 bg-brand-pale shadow-sm space-y-2 card-interactive">
-                            <div class="w-10 h-10 rounded-xl bg-brand-soft text-brand flex items-center justify-center font-bold text-lg">
-                                🛡️
+                            <!-- 03 Support NOC 24/7 -->
+                            <div class="p-3.5 rounded-2xl bg-white border border-blue-100/80 shadow-sm space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs font-black text-brand">03</span>
+                                    <span class="text-brand font-mono font-bold text-sm">◎</span>
+                                </div>
+                                <h4 class="font-heading text-xs sm:text-sm font-black text-brand-navy">Support NOC 24/7</h4>
+                                <span class="text-[11px] font-semibold text-brand block">Tim pemantau aktif</span>
+                                <p class="text-[11px] text-ink-muted leading-relaxed">
+                                    NOC IMS ONE bekerja sepanjang waktu menjaga kualitas jaringan.
+                                </p>
                             </div>
-                            <h3 class="font-heading text-sm font-black text-brand-navy">Support NOC 24/7</h3>
-                            <p class="text-xs text-ink-muted leading-relaxed">
-                                Tim monitoring non-stop dengan teknisi lapangan yang responsif.
-                            </p>
-                        </div>
 
-                        <!-- 04 Simetris 1:1 -->
-                        <div class="p-4 rounded-2xl border border-blue-100 bg-brand-pale shadow-sm space-y-2 card-interactive">
-                            <div class="w-10 h-10 rounded-xl bg-brand-soft text-brand flex items-center justify-center font-bold text-lg">
-                                ⚡
+                            <!-- 04 Simetris 1:1 -->
+                            <div class="p-3.5 rounded-2xl bg-white border border-blue-100/80 shadow-sm space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs font-black text-brand">04</span>
+                                    <span class="text-brand font-mono font-bold text-sm">↕</span>
+                                </div>
+                                <h4 class="font-heading text-xs sm:text-sm font-black text-brand-navy">Simetris 1:1</h4>
+                                <span class="text-[11px] font-semibold text-brand block">Upload = Download</span>
+                                <p class="text-[11px] text-ink-muted leading-relaxed">
+                                    Ideal untuk video meeting, cloud, live stream, dan WFH.
+                                </p>
                             </div>
-                            <h3 class="font-heading text-sm font-black text-brand-navy">Simetris 1:1</h3>
-                            <p class="text-xs text-ink-muted leading-relaxed">
-                                Upload sama kencang dengan download untuk live stream &amp; WFH lancar.
-                            </p>
+
                         </div>
 
                     </div>
