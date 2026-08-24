@@ -6,7 +6,37 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/admin');
+    $odps = \App\Models\Odp::where(function($q) {
+        $q->whereBetween('latitude', [-7.2000, -6.7500])
+          ->whereBetween('longitude', [107.4000, 107.8000]);
+    })->orWhere('code', 'like', '%BDG%')->get();
+
+    $mapPins = [];
+    foreach ($odps as $odp) {
+        $codeUpper = strtoupper($odp->code . ' ' . $odp->name . ' ' . ($odp->notes ?? ''));
+        $region = 'bandung_pusat';
+        if (str_contains($codeUpper, 'DAGO') || str_contains($codeUpper, 'SUKAJADI') || str_contains($codeUpper, 'SETIABUDI') || str_contains($codeUpper, 'CIHAMPELAS') || str_contains($codeUpper, 'GEGERKALONG') || str_contains($codeUpper, 'TUBAGUS')) {
+            $region = 'bandung_utara';
+        } elseif (str_contains($codeUpper, 'BUAH') || str_contains($codeUpper, 'KORDON') || str_contains($codeUpper, 'BATUNUNGGAL') || str_contains($codeUpper, 'MOCH TOHA') || str_contains($codeUpper, 'BKR') || str_contains($codeUpper, 'CIBADUYUT') || str_contains($codeUpper, 'KOPO') || str_contains($codeUpper, 'CIJAWURA')) {
+            $region = 'bandung_selatan';
+        } elseif (str_contains($codeUpper, 'ANTAPANI') || str_contains($codeUpper, 'ARCAMANIK') || str_contains($codeUpper, 'GEDEBAGE') || str_contains($codeUpper, 'SUMMARECON') || str_contains($codeUpper, 'CIBIRU') || str_contains($codeUpper, 'UJUNGBERUNG')) {
+            $region = 'bandung_timur';
+        } elseif (str_contains($codeUpper, 'SOREANG') || str_contains($codeUpper, 'GADING') || str_contains($codeUpper, 'BANJARAN') || str_contains($codeUpper, 'CIMAHI') || str_contains($codeUpper, 'PASTEUR')) {
+            $region = 'bandung_kabupaten';
+        }
+
+        $mapPins[] = [
+            'code' => $odp->code,
+            'name' => $odp->name,
+            'region' => $region,
+            'lat' => (float)($odp->latitude ?? -6.9175),
+            'lng' => (float)($odp->longitude ?? 107.6096),
+            'notes' => $odp->notes ?? ('ODP ' . $odp->name),
+            'status' => 'NORMAL',
+        ];
+    }
+
+    return view('landing', compact('mapPins'));
 });
 
 Route::middleware(['web', 'auth'])->group(function () {
