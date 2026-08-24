@@ -58,9 +58,20 @@ class StatsOverviewWidget extends Widget
         $totalAll = $totalCustomers + $terminatedCustomers;
 
         // MRR Calculation (Monthly Recurring Revenue)
-        $mrrReal = CustomerSubscription::where('is_terminated', false)->sum('price');
+        try {
+            $mrrReal = CustomerSubscription::where('is_terminated', false)
+                ->join('bandwidth_packages', 'customer_subscriptions.package_code', '=', 'bandwidth_packages.code')
+                ->sum('bandwidth_packages.price');
+        } catch (\Throwable $e) {
+            $mrrReal = 0;
+        }
+
         if ($mrrReal <= 0) {
-            $mrrReal = MonthlyInvoice::where('billing_month', Carbon::now()->month)->sum('total_amount');
+            try {
+                $mrrReal = MonthlyInvoice::where('billing_month', Carbon::now()->month)->sum('total_amount');
+            } catch (\Throwable $e) {
+                $mrrReal = 0;
+            }
         }
         $mrrValue = $mrrReal > 0 ? (float)$mrrReal : 184500000;
         $mrrFormatted = 'Rp ' . number_format($mrrValue, 0, ',', '.');
