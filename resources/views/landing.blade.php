@@ -1091,25 +1091,42 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 3. COVERAGE (DARK PREMIUM DEEP NAVY + BLUE GIS MAP) ──
+         ── 3. COVERAGE (VERY LIGHT BLUE #F4FAFF + NETWORK TEXTURE + GIS MAP) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="coverage" class="py-16 sm:py-20 bg-gradient-to-b from-[#020B1D] via-[#062A5C] to-[#03132D] text-white border-b border-blue-950 relative overflow-hidden">
+    <section id="coverage" class="py-16 sm:py-20 bg-brand-pale border-b border-blue-100 relative overflow-hidden">
         
-        {{-- Subtle Ambient Glow --}}
-        <div class="absolute inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
-            <div class="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-[#0878E5]/15 rounded-full blur-3xl"></div>
+        <!-- Elegant Network Mesh & Topology Texture Layer -->
+        <div class="absolute inset-0 pointer-events-none select-none opacity-60" aria-hidden="true">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Dot Network Grid -->
+                    <pattern id="cov-dot-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+                        <circle cx="2" cy="2" r="1.2" fill="#0878E5" fill-opacity="0.16" />
+                    </pattern>
+                    <!-- Connected Network Constellation Pattern -->
+                    <pattern id="cov-mesh-pattern" width="140" height="140" patternUnits="userSpaceOnUse">
+                        <path d="M 0 35 L 35 0 L 105 35 L 140 0 M 35 70 L 70 105 L 140 70 M 0 105 L 70 140" fill="none" stroke="#0878E5" stroke-width="0.8" stroke-opacity="0.10" stroke-dasharray="3,3" />
+                        <circle cx="35" cy="0" r="2.5" fill="#0878E5" fill-opacity="0.18" />
+                        <circle cx="105" cy="35" r="2.5" fill="#0878E5" fill-opacity="0.18" />
+                        <circle cx="70" cy="105" r="2.5" fill="#0878E5" fill-opacity="0.18" />
+                        <circle cx="35" cy="70" r="2.5" fill="#0878E5" fill-opacity="0.18" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#cov-dot-grid)" />
+                <rect width="100%" height="100%" fill="url(#cov-mesh-pattern)" />
+            </svg>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-white/10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-blue-200/60">
                 <div>
-                    <span class="text-xs font-black tracking-widest text-[#55C7FF] uppercase block mb-1">INTERACTIVE COVERAGE CHECKER</span>
-                    <h2 class="font-heading text-2xl sm:text-3xl font-black text-white tracking-tight">
-                        Cek Apakah Jaringan IMS ONE <span class="text-[#55C7FF]">Tersedia di Lokasi Anda</span>
+                    <span class="text-xs font-black tracking-widest text-brand uppercase block mb-1">INTERACTIVE COVERAGE CHECKER</span>
+                    <h2 class="font-heading text-2xl sm:text-3xl font-black text-brand-navy tracking-tight">
+                        Cek Apakah Jaringan IMS ONE <span class="text-brand">Tersedia di Lokasi Anda</span>
                     </h2>
                 </div>
-                <p class="text-xs sm:text-sm text-slate-300 max-w-md">
+                <p class="text-xs sm:text-sm text-ink-muted max-w-md">
                     Gunakan GPS presisi atau masukkan titik koordinat untuk memeriksa ketersediaan port fiber optik ODP terdekat secara instan.
                 </p>
             </div>
@@ -1119,10 +1136,10 @@
                 <!-- Left Search Form & Results -->
                 <div class="lg:col-span-6 space-y-3.5">
                     
-                    <div class="border border-white/15 rounded-3xl p-5 sm:p-6 space-y-4 bg-[#062B5C]/80 backdrop-blur-md shadow-2xl">
+                    <div class="border border-blue-100 rounded-3xl p-5 sm:p-6 space-y-4 bg-white shadow-brand-soft">
                         <div class="space-y-1">
-                            <label class="font-heading text-sm font-black text-white block">Cek Titik Koordinat / GPS Lokasi</label>
-                            <p class="text-xs text-slate-300">Gunakan tombol GPS otomatis atau masukkan titik koordinat lokasi pemasangan Anda:</p>
+                            <label class="font-heading text-sm font-black text-brand-navy block">Cek Titik Koordinat / GPS Lokasi</label>
+                            <p class="text-xs text-ink-muted">Gunakan tombol GPS otomatis atau masukkan titik koordinat lokasi pemasangan Anda:</p>
                         </div>
 
                         <!-- Coordinate & GPS Form -->
@@ -1132,7 +1149,7 @@
                                     type="text" 
                                     x-model="coverageInput" 
                                     placeholder="Contoh: -6.9175, 107.6096 (Latitude, Longitude)..." 
-                                    class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-[#020B1D]/80 border border-white/20 focus:border-[#55C7FF] text-white placeholder-slate-400 text-xs sm:text-sm font-medium outline-none transition-colors shadow-inner"
+                                    class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-brand-pale border border-slate-200 focus:border-brand focus:bg-white text-brand-navy placeholder-slate-400 text-xs sm:text-sm font-medium outline-none transition-colors shadow-inner"
                                 />
                                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -1141,7 +1158,7 @@
                             </div>
 
                             <div class="grid grid-cols-2 gap-2">
-                                <button type="button" @click="useCurrentLocation()" class="py-2.5 px-3 rounded-xl border border-white/20 hover:border-[#55C7FF] hover:bg-white/10 bg-white/5 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                                <button type="button" @click="useCurrentLocation()" class="py-2.5 px-3 rounded-xl border border-blue-200 hover:border-brand hover:bg-brand-soft bg-white text-brand-navy font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
                                     <span>📍</span>
                                     <span>Gunakan GPS</span>
                                 </button>
@@ -1153,53 +1170,53 @@
                             </div>
                         </form>
 
-                        <div class="text-[11px] text-slate-400 flex items-center gap-1">
+                        <div class="text-[11px] text-ink-subtle flex items-center gap-1">
                             <span>💡</span>
                             <span>Format: <b>Latitude, Longitude</b> atau klik <b>Gunakan GPS</b>.</span>
                         </div>
 
                         <!-- Results Readout with Direct Package Selector -->
-                        <div x-show="coverageChecked" x-cloak x-collapse class="pt-3 border-t border-white/10 space-y-3">
+                        <div x-show="coverageChecked" x-cloak x-collapse class="pt-3 border-t border-slate-200 space-y-3">
                             
-                            <!-- AVAILABLE (ACTIVE FIBER DETECTED) -->
-                            <div x-show="coverageStatus === 'AVAILABLE'" class="p-4 rounded-2xl bg-[#0878E5]/20 border-2 border-[#0878E5] text-white shadow-sm space-y-3">
+                            <!-- AVAILABLE (ACTIVE FIBER DETECTED IN MONOCHROMATIC BLUE) -->
+                            <div x-show="coverageStatus === 'AVAILABLE'" class="p-4 rounded-2xl bg-brand-soft border-2 border-brand shadow-sm space-y-3">
                                 
                                 <div class="flex items-center gap-2.5">
-                                    <span class="w-3.5 h-3.5 rounded-full bg-[#55C7FF] pulse-beacon-blue shrink-0"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full bg-brand pulse-beacon-blue shrink-0"></span>
                                     <div class="min-w-0">
-                                        <strong class="font-heading text-[#55C7FF] font-bold text-sm block">● Area Tercover</strong>
-                                        <span class="text-[11px] text-slate-200 block">Jaringan IMS ONE tersedia di <span x-text="coverageAreaName" class="font-bold text-white"></span>.</span>
+                                        <strong class="font-heading text-brand font-bold text-sm block">● Area Tercover</strong>
+                                        <span class="text-[11px] text-brand-navy block">Jaringan IMS ONE tersedia di <span x-text="coverageAreaName" class="font-bold text-brand-navy"></span>.</span>
                                     </div>
                                 </div>
 
                                 <!-- Real-time ODP Link Telemetry -->
                                 <template x-if="nearestOdpInfo">
-                                    <div class="p-2 rounded-xl bg-[#020B1D]/80 border border-white/15 text-[10.5px] text-[#55C7FF] flex items-center justify-between font-mono font-bold">
+                                    <div class="p-2 rounded-xl bg-white border border-blue-200 text-[10.5px] text-brand flex items-center justify-between font-mono font-bold">
                                         <span class="flex items-center gap-1.5 truncate">
                                             <span>⚡ Jalur Fiber Aktif:</span>
-                                            <strong class="text-white" x-text="nearestOdpInfo.name"></strong>
+                                            <strong class="text-brand-navy" x-text="nearestOdpInfo.name"></strong>
                                         </span>
-                                        <span class="text-[#55C7FF] shrink-0">~<span x-text="nearestOdpInfo.distance"></span>m dropcore</span>
+                                        <span class="text-brand shrink-0">~<span x-text="nearestOdpInfo.distance"></span>m dropcore</span>
                                     </div>
                                 </template>
 
                                 <!-- Package Selector for this area -->
-                                <div class="space-y-1.5 pt-2 border-t border-white/10">
-                                    <span class="text-[11px] font-black text-white uppercase tracking-wider block">Pilih Paket untuk Lokasi Ini:</span>
+                                <div class="space-y-1.5 pt-2 border-t border-blue-200">
+                                    <span class="text-[11px] font-black text-brand-navy uppercase tracking-wider block">Pilih Paket untuk Lokasi Ini:</span>
                                     <div class="grid grid-cols-3 gap-1.5 text-xs">
-                                        <button type="button" @click="selectedCoveragePackage = 'Paket Starter (30 Mbps)'" :class="selectedCoveragePackage === 'Paket Starter (30 Mbps)' ? 'border-2 border-[#55C7FF] bg-[#0878E5]/40 font-black text-white shadow-sm' : 'border border-white/15 bg-[#020B1D]/50 text-slate-300'" class="p-2 rounded-xl text-center transition-all">
+                                        <button type="button" @click="selectedCoveragePackage = 'Paket Starter (30 Mbps)'" :class="selectedCoveragePackage === 'Paket Starter (30 Mbps)' ? 'border-2 border-brand bg-white font-black text-brand shadow-sm' : 'border border-blue-200 bg-white/70 text-ink-muted'" class="p-2 rounded-xl text-center transition-all">
                                             <span class="block font-bold">30 Mbps</span>
-                                            <span class="text-[10px] text-slate-400 block">175rb/bln</span>
+                                            <span class="text-[10px] text-ink-muted block">175rb/bln</span>
                                         </button>
                                         
-                                        <button type="button" @click="selectedCoveragePackage = 'Paket Pro (100 Mbps)'" :class="selectedCoveragePackage === 'Paket Pro (100 Mbps)' ? 'border-2 border-[#55C7FF] bg-[#0878E5]/40 font-black text-white shadow-sm' : 'border border-white/15 bg-[#020B1D]/50 text-slate-300'" class="p-2 rounded-xl text-center transition-all relative">
-                                            <span class="block font-black text-[#55C7FF]">100 Mbps</span>
-                                            <span class="text-[10px] text-slate-400 block">320rb/bln</span>
+                                        <button type="button" @click="selectedCoveragePackage = 'Paket Pro (100 Mbps)'" :class="selectedCoveragePackage === 'Paket Pro (100 Mbps)' ? 'border-2 border-brand bg-white font-black text-brand shadow-sm' : 'border border-blue-200 bg-white/70 text-ink-muted'" class="p-2 rounded-xl text-center transition-all relative">
+                                            <span class="block font-black text-brand">100 Mbps</span>
+                                            <span class="text-[10px] text-ink-muted block">320rb/bln</span>
                                         </button>
 
-                                        <button type="button" @click="selectedCoveragePackage = 'Paket Ultimate (300 Mbps)'" :class="selectedCoveragePackage === 'Paket Ultimate (300 Mbps)' ? 'border-2 border-[#55C7FF] bg-[#0878E5]/40 font-black text-white shadow-sm' : 'border border-white/15 bg-[#020B1D]/50 text-slate-300'" class="p-2 rounded-xl text-center transition-all">
+                                        <button type="button" @click="selectedCoveragePackage = 'Paket Ultimate (300 Mbps)'" :class="selectedCoveragePackage === 'Paket Ultimate (300 Mbps)' ? 'border-2 border-brand bg-white font-black text-brand shadow-sm' : 'border border-blue-200 bg-white/70 text-ink-muted'" class="p-2 rounded-xl text-center transition-all">
                                             <span class="block font-bold">300 Mbps</span>
-                                            <span class="text-[10px] text-slate-400 block">650rb/bln</span>
+                                            <span class="text-[10px] text-ink-muted block">650rb/bln</span>
                                         </button>
                                     </div>
                                 </div>
@@ -1211,23 +1228,23 @@
                             </div>
 
                             <!-- NOT AVAILABLE WITH WA NOTIFY FORM -->
-                            <div x-show="coverageStatus === 'NOT_AVAILABLE'" class="p-4 rounded-2xl bg-[#020B1D]/80 border-2 border-slate-700 text-slate-200 space-y-3">
+                            <div x-show="coverageStatus === 'NOT_AVAILABLE'" class="p-4 rounded-2xl bg-slate-50 border-2 border-slate-300 text-ink-body space-y-3">
                                 <div class="flex items-center gap-2">
                                     <span class="w-3.5 h-3.5 rounded-full bg-slate-400"></span>
                                     <div>
-                                        <strong class="font-heading text-white font-bold text-sm block">Belum Tercover</strong>
-                                        <span class="text-[11px] text-slate-400 block leading-tight">Tinggalkan kontak Anda dan kami akan menginformasikan ketika fiber masuk ke area ini.</span>
+                                        <strong class="font-heading text-brand-navy font-bold text-sm block">Belum Tercover</strong>
+                                        <span class="text-[11px] text-ink-muted block leading-tight">Tinggalkan kontak Anda dan kami akan menginformasikan ketika fiber masuk ke area ini.</span>
                                     </div>
                                 </div>
 
-                                <div x-show="!notifySubmitted" class="space-y-2 pt-1 border-t border-white/10">
+                                <div x-show="!notifySubmitted" class="space-y-2 pt-1 border-t border-slate-200">
                                     <div class="flex gap-2">
                                         <input 
                                             type="tel" 
                                             inputmode="numeric" 
                                             x-model="phoneForNotification" 
                                             placeholder="Nomor WhatsApp Anda..." 
-                                            class="w-full px-3 py-2 text-xs bg-[#020B1D] rounded-xl border border-white/20 focus:border-[#55C7FF] outline-none text-white font-medium"
+                                            class="w-full px-3 py-2 text-xs bg-white rounded-xl border border-slate-300 focus:border-brand outline-none text-ink-body font-medium"
                                         />
                                         <button 
                                             type="button" 
@@ -1248,22 +1265,22 @@
 
                     </div>
 
-                    <div class="text-xs text-slate-400 flex items-center gap-2 px-1">
-                        <span class="text-[#55C7FF]">💡</span>
+                    <div class="text-xs text-ink-muted flex items-center gap-2 px-1">
+                        <span class="text-brand">💡</span>
                         <span>Klik pin pada peta untuk melihat detail kapasitas slot ODP.</span>
                     </div>
 
                 </div>
 
-                <!-- Right Map View (Dark Frame) -->
+                <!-- Right Map View (Compact Monochromatic Blue) -->
                 <div class="lg:col-span-6">
-                    <div class="border border-white/15 rounded-3xl overflow-hidden bg-[#062B5C]/80 shadow-2xl backdrop-blur-md">
-                        <div class="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-[#020B1D]/90 text-xs">
-                            <span class="font-bold text-white flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-[#55C7FF] pulse-beacon-blue"></span>
+                    <div class="border border-blue-100 rounded-3xl overflow-hidden bg-white shadow-brand-soft">
+                        <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-white text-xs">
+                            <span class="font-bold text-brand-navy flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand"></span>
                                 Live GIS Node Sebaran Fiber Optik
                             </span>
-                            <span class="text-[11px] text-[#55C7FF] font-mono font-bold">ODP Active • Live</span>
+                            <span class="text-[11px] text-brand font-mono font-bold">ODP Active • Live</span>
                         </div>
                         <div id="landing-gis-map" class="w-full h-[220px] sm:h-[260px] lg:h-[290px]"></div>
                     </div>
