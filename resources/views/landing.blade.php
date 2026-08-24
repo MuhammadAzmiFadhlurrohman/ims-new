@@ -181,13 +181,119 @@
                 // Selected package for coverage result
                 selectedCoveragePackage: 'Paket Pro (100 Mbps)',
 
+                // Testimonial Carousel State
+                activeTestimonial: 0,
+                testimonialTimer: null,
+                testimonials: [
+                    {
+                        quote: "Koneksi stabil dan proses pemasangan sangat cepat. Tim teknisi datang tepat waktu dan konfigurasi router WiFi 6 langsung tuntas siap pakai.",
+                        name: "Budi Santoso",
+                        role: "Pelanggan IMS ONE • Rumah Tangga",
+                        area: "Dago, Bandung",
+                        stars: 5
+                    },
+                    {
+                        quote: "Kecepatan 100 Mbps simetris sangat memuaskan. Live stream 4K 60fps tanpa drop frame sama sekali. Latensi ultra-low sangat stabil untuk game kompetitif.",
+                        name: "Dian Pratama",
+                        role: "Content Creator & Streamer",
+                        area: "Braga, Bandung",
+                        stars: 5
+                    },
+                    {
+                        quote: "Jaringan dedicated fiber IMS ONE sangat bisa diandalkan untuk push server dan download file puluhan GB setiap hari. SLA 99.9% terbukti nyata.",
+                        name: "PT Digital Kreasi Mandiri",
+                        role: "Enterprise & Software Studio",
+                        area: "Buahbatu, Bandung",
+                        stars: 5
+                    },
+                    {
+                        quote: "Anak-anak sekolah daring dan suami meeting WFH barengan tidak pernah tersendat. Tagihan bulanan transparan tanpa biaya siluman.",
+                        name: "Ibu Siti Rahmawati",
+                        role: "Pelanggan Rumah Tangga",
+                        area: "Antapani, Bandung",
+                        stars: 5
+                    }
+                ],
+
+                // Real Network Stats Counters
+                statsAnimated: false,
+                statAreas: 0,
+                statClients: 0,
+                statUptime: 0,
+
                 // FAQ Accordion State
                 activeFaq: 1,
 
                 init() {
                     this.$nextTick(() => {
                         this.initMap();
+                        this.startTestimonialAuto();
+                        this.initStatsObserver();
                     });
+                },
+
+                startTestimonialAuto() {
+                    if (this.testimonialTimer) clearInterval(this.testimonialTimer);
+                    this.testimonialTimer = setInterval(() => {
+                        this.activeTestimonial = (this.activeTestimonial + 1) % this.testimonials.length;
+                    }, 5000);
+                },
+
+                setTestimonial(idx) {
+                    this.activeTestimonial = idx;
+                    this.startTestimonialAuto();
+                },
+
+                nextTestimonial() {
+                    this.activeTestimonial = (this.activeTestimonial + 1) % this.testimonials.length;
+                    this.startTestimonialAuto();
+                },
+
+                prevTestimonial() {
+                    this.activeTestimonial = (this.activeTestimonial - 1 + this.testimonials.length) % this.testimonials.length;
+                    this.startTestimonialAuto();
+                },
+
+                initStatsObserver() {
+                    const el = document.getElementById('real-network');
+                    if (!el) return;
+
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting && !this.statsAnimated) {
+                                this.statsAnimated = true;
+                                this.animateStats();
+                            }
+                        });
+                    }, { threshold: 0.25 });
+
+                    observer.observe(el);
+                },
+
+                animateStats() {
+                    // Areas: 0 to 50
+                    let a = 0;
+                    const timerA = setInterval(() => {
+                        a += 2;
+                        if (a >= 50) { this.statAreas = 50; clearInterval(timerA); }
+                        else { this.statAreas = a; }
+                    }, 30);
+
+                    // Clients: 0 to 10
+                    let c = 0;
+                    const timerC = setInterval(() => {
+                        c += 1;
+                        if (c >= 10) { this.statClients = 10; clearInterval(timerC); }
+                        else { this.statClients = c; }
+                    }, 80);
+
+                    // Uptime: 0 to 99.9
+                    let u = 80;
+                    const timerU = setInterval(() => {
+                        u += 1;
+                        if (u >= 99) { this.statUptime = 99.9; clearInterval(timerU); }
+                        else { this.statUptime = u; }
+                    }, 40);
                 },
 
                 initMap() {
@@ -1320,80 +1426,130 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 6. KEUNGGULAN (EDITORIAL NUMBERED LAYOUT) ──
+         ── 6. KEUNGGULAN (EDITORIAL NUMBERED WITH SIDE VISUAL) ──
          ══════════════════════════════════════════════════════════════ --}}
     <section id="keunggulan" class="py-16 sm:py-24 bg-surface-offwhite border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
                 
-                <!-- Left Sticky Statement -->
-                <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-4">
-                    <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block">SPESIFIKASI INFRASTRUKTUR</span>
-                    <h2 class="font-heading text-3xl sm:text-4xl font-black text-navy-900 tracking-tight leading-tight">
-                        Internet yang dirancang untuk kebutuhan nyata.
-                    </h2>
-                    <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
-                        Dibangun di atas jaringan serat optik murni end-to-end guna memberikan transmisi data berlatensi rendah dan performa stabil tanpa kompromi.
-                    </p>
-                    <div class="pt-4">
-                        <button @click="openRegister('Paket Pro (100 Mbps)')" class="px-5 py-2.5 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs transition-colors shadow-sm">
-                            Konsultasikan Kebutuhan Anda &rarr;
+                <!-- Left Editorial Specification -->
+                <div class="lg:col-span-6 space-y-8">
+                    <div>
+                        <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-2">KENAPA MEMILIH IMS ONE?</span>
+                        <h2 class="font-heading text-3xl sm:text-4xl font-black text-navy-900 tracking-tight leading-tight">
+                            Internet yang dirancang untuk kebutuhan nyata.
+                        </h2>
+                        <p class="text-xs sm:text-sm text-ink-muted leading-relaxed mt-2">
+                            Infrastruktur serat optik murni end-to-end tanpa perantara tembaga untuk koneksi yang stabil, konsisten, dan bebas hambatan.
+                        </p>
+                    </div>
+
+                    <!-- Editorial List (No Card Fatigue) -->
+                    <div class="divide-y divide-slate-200 border-t border-b border-slate-200">
+                        
+                        <div class="py-5 space-y-1.5">
+                            <div class="font-mono text-xs font-bold text-corporate-blue">01 — Full Fiber Network</div>
+                            <h3 class="font-heading text-base font-bold text-navy-900">Koneksi serat optik langsung ke lokasi pelanggan</h3>
+                            <p class="text-xs text-ink-muted leading-relaxed">
+                                Jalur optik ditarik langsung ke dalam ruangan tanpa kabel tembaga, menghasilkan transmisi data berlatensi ultra-rendah dan kebal induksi petir.
+                            </p>
+                        </div>
+
+                        <div class="py-5 space-y-1.5">
+                            <div class="font-mono text-xs font-bold text-corporate-blue">02 — True Unlimited</div>
+                            <h3 class="font-heading text-base font-bold text-navy-900">Nikmati internet tanpa khawatir batas pemakaian (No FUP)</h3>
+                            <p class="text-xs text-ink-muted leading-relaxed">
+                                Kecepatan konstan sepanjang hari tanpa penurunan bandwidth di akhir bulan. Bebas streaming, unduh, dan unggah berkas sepuasnya.
+                            </p>
+                        </div>
+
+                        <div class="py-5 space-y-1.5">
+                            <div class="font-mono text-xs font-bold text-corporate-blue">03 — Support 24/7</div>
+                            <h3 class="font-heading text-base font-bold text-navy-900">Tim support dan teknisi siap membantu kapan pun dibutuhkan</h3>
+                            <p class="text-xs text-ink-muted leading-relaxed">
+                                Network Operations Center (NOC) memantau performa jaringan secara non-stop dengan tim teknisi lapangan yang responsif.
+                            </p>
+                        </div>
+
+                        <div class="py-5 space-y-1.5">
+                            <div class="font-mono text-xs font-bold text-corporate-blue">04 — Kecepatan Simetris 1:1</div>
+                            <h3 class="font-heading text-base font-bold text-navy-900">Kecepatan upload sama cepatnya dengan download</h3>
+                            <p class="text-xs text-ink-muted leading-relaxed">
+                                Sangat ideal untuk kebutuhan video conference definisi tinggi, live streaming gaming, hingga backup berkas besar ke cloud server.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <button @click="openRegister('Paket Pro (100 Mbps)')" class="px-6 py-3 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2">
+                            <span>Pasang IMS ONE Sekarang</span>
+                            <span class="text-accent-cyan">&rarr;</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Right Editorial List -->
-                <div class="lg:col-span-7 divide-y divide-slate-200 border-t border-b border-slate-200">
-                    
-                    <div class="py-6 space-y-1.5">
-                        <div class="font-mono text-xs font-bold text-corporate-blue">01 — Full Fiber Optic FTTH</div>
-                        <h3 class="font-heading text-lg font-bold text-navy-900">Koneksi serat optik murni langsung ke lokasi pelanggan</h3>
-                        <p class="text-xs text-ink-muted leading-relaxed">
-                            Kabel optik ditarik langsung ke dalam hunian tanpa perantara kabel tembaga, bebas dari induksi petir dan gangguan interferensi cuaca.
-                        </p>
-                    </div>
+                <!-- Right Big Infrastructure Visual -->
+                <div class="lg:col-span-6">
+                    <div class="rounded-3xl bg-navy-900 text-white p-7 sm:p-9 border border-navy-800 shadow-2xl relative overflow-hidden space-y-6">
+                        
+                        <!-- Background Glow Accent -->
+                        <div class="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-corporate-blue/20 blur-3xl pointer-events-none"></div>
+                        <div class="absolute -left-20 -bottom-20 w-64 h-64 rounded-full bg-accent-cyan/15 blur-3xl pointer-events-none"></div>
 
-                    <div class="py-6 space-y-1.5">
-                        <div class="font-mono text-xs font-bold text-corporate-blue">02 — Kecepatan Simetris 1:1</div>
-                        <h3 class="font-heading text-lg font-bold text-navy-900">Upload dan download dengan kecepatan setara</h3>
-                        <p class="text-xs text-ink-muted leading-relaxed">
-                            Performa seimbang untuk meeting online, live streaming resolusi tinggi, backup file cloud, dan transfer data berukuran besar.
-                        </p>
-                    </div>
+                        <!-- Top Header -->
+                        <div class="flex items-center justify-between border-b border-navy-800 pb-4 relative z-10">
+                            <div>
+                                <span class="font-mono text-[10.5px] font-bold text-accent-cyan uppercase tracking-wider block">INFRASTRUCTURE SPEC</span>
+                                <h4 class="font-heading text-lg font-black text-white">IMS Optical Backbone Engine</h4>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[11px] font-bold">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-beacon-green"></span>
+                                <span>ONLINE</span>
+                            </div>
+                        </div>
 
-                    <div class="py-6 space-y-1.5">
-                        <div class="font-mono text-xs font-bold text-corporate-blue">03 — True Unlimited</div>
-                        <h3 class="font-heading text-lg font-bold text-navy-900">Bebas kuota tanpa penurunan kecepatan bulanan (No FUP)</h3>
-                        <p class="text-xs text-ink-muted leading-relaxed">
-                            Gunakan internet sepuasnya tanpa khawatir batas kuota pemakaian wajar (FUP) yang menurunkan kecepatan di akhir bulan.
-                        </p>
-                    </div>
+                        <!-- Architecture Highlights -->
+                        <div class="grid grid-cols-2 gap-3.5 relative z-10 text-xs">
+                            <div class="p-3.5 rounded-xl bg-navy-800/80 border border-navy-700/60 space-y-1">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider font-mono">LATENCY PERFORMANCE</span>
+                                <div class="font-heading text-xl font-black text-accent-cyan">2.4 ms</div>
+                                <span class="text-[11px] text-slate-300">Ultra-Low Latency Direct Route</span>
+                            </div>
 
-                    <div class="py-6 space-y-1.5">
-                        <div class="font-mono text-xs font-bold text-corporate-blue">04 — Dukungan NOC &amp; Teknisi 24/7</div>
-                        <h3 class="font-heading text-lg font-bold text-navy-900">Tim teknis siap siaga memantau dan menangani kendala</h3>
-                        <p class="text-xs text-ink-muted leading-relaxed">
-                            Pemantauan jaringan secara real-time oleh Network Operations Center dengan alur tiket bantuan yang responsif dan terstruktur.
-                        </p>
-                    </div>
+                            <div class="p-3.5 rounded-xl bg-navy-800/80 border border-navy-700/60 space-y-1">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider font-mono">CORE UPTIME SLA</span>
+                                <div class="font-heading text-xl font-black text-emerald-400">99.98%</div>
+                                <span class="text-[11px] text-slate-300">High Availability Guaranteed</span>
+                            </div>
+                        </div>
 
-                    <div class="py-6 space-y-1.5">
-                        <div class="font-mono text-xs font-bold text-corporate-blue">05 — Router WiFi Gigabit Modern</div>
-                        <h3 class="font-heading text-lg font-bold text-navy-900">Perangkat modem dual-band dengan jangkauan luas</h3>
-                        <p class="text-xs text-ink-muted leading-relaxed">
-                            Dilengkapi unit router modem WiFi 6 berkinerja tinggi untuk mendukung banyak perangkat aktif secara simultan tanpa lag.
-                        </p>
-                    </div>
+                        <!-- Direct Peering List -->
+                        <div class="p-4 rounded-xl bg-navy-800/60 border border-navy-700/60 space-y-2 relative z-10">
+                            <span class="text-[11px] font-bold text-slate-300 block">Direct IX &amp; Content Peering:</span>
+                            <div class="flex flex-wrap gap-1.5 text-[10.5px] font-mono font-semibold">
+                                <span class="px-2 py-1 rounded bg-navy-950/80 text-accent-cyan border border-navy-700">OpenIXP Direct</span>
+                                <span class="px-2 py-1 rounded bg-navy-950/80 text-accent-cyan border border-navy-700">IIX APJII</span>
+                                <span class="px-2 py-1 rounded bg-navy-950/80 text-accent-cyan border border-navy-700">Google CDN</span>
+                                <span class="px-2 py-1 rounded bg-navy-950/80 text-accent-cyan border border-navy-700">Cloudflare Edge</span>
+                                <span class="px-2 py-1 rounded bg-navy-950/80 text-accent-cyan border border-navy-700">SingTel / Equinix SG</span>
+                            </div>
+                        </div>
 
-                    <div class="py-6 space-y-1.5">
-                        <div class="font-mono text-xs font-bold text-corporate-blue">06 — Kanal Pembayaran Lengkap</div>
-                        <h3 class="font-heading text-lg font-bold text-navy-900">Otomasi pembayaran melalui berbagai kanal perbankan &amp; retail</h3>
-                        <p class="text-xs text-ink-muted leading-relaxed">
-                            Mendukung verifikasi otomatis via QRIS, Virtual Account seluruh bank nasional, hingga gerai Alfamart dan Indomaret.
-                        </p>
-                    </div>
+                        <!-- Fiber Diagram Schematic -->
+                        <div class="p-3 rounded-xl bg-navy-950 border border-navy-800 text-[11px] font-mono text-slate-300 flex items-center justify-between">
+                            <span class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-corporate-blue"></span>
+                                Core NOC 100G Trunk
+                            </span>
+                            <span class="text-accent-cyan">&rarr;</span>
+                            <span>ODP Distribution</span>
+                            <span class="text-accent-cyan">&rarr;</span>
+                            <span class="text-white font-bold">Pelanggan 1 Gbps</span>
+                        </div>
 
+                    </div>
                 </div>
 
             </div>
@@ -1402,7 +1558,68 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 7. CUSTOMER PORTAL GATEWAY (DEEP NAVY RIBBON) ──
+         ── 7. REAL NETWORK (METRIK & JANGKAUAN DENGAN ANIMASI COUNTER) ──
+         ══════════════════════════════════════════════════════════════ --}}
+    <section id="real-network" class="py-16 sm:py-20 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12 pb-6 border-b border-slate-200">
+                <div>
+                    <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">REAL NETWORK METRICS</span>
+                    <h2 class="font-heading text-2xl sm:text-3xl font-black text-navy-900 tracking-tight">
+                        Jaringan yang Terus Berkembang
+                    </h2>
+                </div>
+                <p class="text-xs sm:text-sm text-ink-muted max-w-md">
+                    IMS ONE terus memperluas jaringan fiber optik untuk menghadirkan koneksi internet yang lebih dekat, lebih cepat, dan lebih stabil.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Stat 1: 50+ Area -->
+                <div class="p-6 rounded-2xl bg-surface-offwhite border border-slate-200 text-center space-y-2 shadow-sm">
+                    <div class="font-heading text-4xl sm:text-5xl font-black text-navy-900 tracking-tight">
+                        <span x-text="statAreas">50</span><span>+</span>
+                    </div>
+                    <strong class="font-heading text-sm font-bold text-navy-900 block">Area Tercover</strong>
+                    <p class="text-[11px] text-ink-muted">Cluster perumahan &amp; sentra bisnis aktif.</p>
+                </div>
+
+                <!-- Stat 2: 10K+ Pelanggan -->
+                <div class="p-6 rounded-2xl bg-surface-offwhite border border-slate-200 text-center space-y-2 shadow-sm">
+                    <div class="font-heading text-4xl sm:text-5xl font-black text-corporate-blue tracking-tight">
+                        <span x-text="statClients">10</span><span>K+</span>
+                    </div>
+                    <strong class="font-heading text-sm font-bold text-navy-900 block">Pelanggan Aktif</strong>
+                    <p class="text-[11px] text-ink-muted">Rumah tangga, kreator, dan korporasi.</p>
+                </div>
+
+                <!-- Stat 3: 99.9% Uptime -->
+                <div class="p-6 rounded-2xl bg-surface-offwhite border border-slate-200 text-center space-y-2 shadow-sm">
+                    <div class="font-heading text-4xl sm:text-5xl font-black text-navy-900 tracking-tight">
+                        <span x-text="statUptime">99.9</span><span>%</span>
+                    </div>
+                    <strong class="font-heading text-sm font-bold text-navy-900 block">Network Availability</strong>
+                    <p class="text-[11px] text-ink-muted">Garansi SLA Uptime dengan sistem failover.</p>
+                </div>
+
+                <!-- Stat 4: 24/7 Support -->
+                <div class="p-6 rounded-2xl bg-surface-offwhite border border-slate-200 text-center space-y-2 shadow-sm">
+                    <div class="font-heading text-4xl sm:text-5xl font-black text-corporate-blue tracking-tight">
+                        24/7
+                    </div>
+                    <strong class="font-heading text-sm font-bold text-navy-900 block">Dedicated Support</strong>
+                    <p class="text-[11px] text-ink-muted">Monitoring NOC &amp; teknisi siaga.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    {{-- ══════════════════════════════════════════════════════════════
+         ── 8. CUSTOMER PORTAL GATEWAY (DEEP NAVY RIBBON) ──
          ══════════════════════════════════════════════════════════════ --}}
     <section class="py-12 sm:py-16 bg-navy-900 text-white border-b border-navy-950">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1419,7 +1636,7 @@
                 </div>
 
                 <div class="shrink-0 w-full sm:w-auto">
-                    <a href="{{ route('customer.portal') }}" class="inline-block w-full sm:w-auto px-6 py-3 rounded-lg bg-corporate-blue hover:bg-corporate-hover text-white font-bold text-xs sm:text-sm transition-colors text-center shadow-md">
+                    <a href="{{ route('customer.portal') }}" class="inline-block w-full sm:w-auto px-6 py-3 rounded-xl bg-corporate-blue hover:bg-corporate-hover text-white font-bold text-xs sm:text-sm transition-colors text-center shadow-md">
                         Buka Portal Pelanggan &rarr;
                     </a>
                 </div>
@@ -1429,53 +1646,71 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 8. TESTIMONI PELANGGAN (EDITORIAL QUOTES) ──
+         ── 9. TESTIMONI PELANGGAN (AUTO CAROUSEL SLIDER) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="testimoni" class="py-16 sm:py-20 bg-white border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="testimoni" class="py-16 sm:py-24 bg-surface-offwhite border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12 pb-6 border-b border-slate-200">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-slate-200">
                 <div>
-                    <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">TESTIMONI</span>
+                    <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">TESTIMONI PELANGGAN</span>
                     <h2 class="font-heading text-2xl sm:text-3xl font-black text-navy-900 tracking-tight">
                         Pengalaman Pengguna IMS ONE
                     </h2>
                 </div>
                 <div class="text-xs text-ink-muted font-medium">
-                    Rating kepuasan <strong class="text-navy-900">4.9 / 5.0</strong> dari 1.200+ pengguna aktif.
+                    Rating kepuasan <strong class="text-navy-900">4.9 / 5.0</strong> dari 1.200+ pengguna.
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Carousel Box -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm relative overflow-hidden" @mouseenter="if(testimonialTimer) clearInterval(testimonialTimer)" @mouseleave="startTestimonialAuto()">
                 
-                <div class="space-y-4">
-                    <p class="text-xs sm:text-sm text-ink-muted leading-relaxed font-normal">
-                        "Kecepatan 100 Mbps simetris sangat memuaskan. Live stream 4K 60fps tanpa drop frame sama sekali. Latensi ultra low 3ms sangat stabil untuk game online."
-                    </p>
-                    <div class="pt-4 border-t border-slate-100">
-                        <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">Dian Pratama</strong>
-                        <span class="text-[11px] text-ink-subtle block">Content Creator • Dago, Bandung</span>
-                    </div>
-                </div>
+                <template x-for="(t, index) in testimonials" :key="index">
+                    <div x-show="activeTestimonial === index" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-6 text-center">
+                        
+                        <!-- 5 Stars -->
+                        <div class="flex items-center justify-center gap-1 text-amber-400 text-lg">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        </div>
 
-                <div class="space-y-4">
-                    <p class="text-xs sm:text-sm text-ink-muted leading-relaxed font-normal">
-                        "Jaringan dedicated fiber IMS ONE sangat bisa diandalkan untuk push server dan download file puluhan GB setiap hari. SLA 99.8% terbukti nyata."
-                    </p>
-                    <div class="pt-4 border-t border-slate-100">
-                        <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">PT Digital Kreasi Mandiri</strong>
-                        <span class="text-[11px] text-ink-subtle block">Startup Agency • Braga, Bandung</span>
-                    </div>
-                </div>
+                        <!-- Quote -->
+                        <p class="font-heading text-lg sm:text-2xl font-bold text-navy-900 leading-relaxed max-w-2xl mx-auto" x-text="'“' + t.quote + '”'">
+                        </p>
 
-                <div class="space-y-4">
-                    <p class="text-xs sm:text-sm text-ink-muted leading-relaxed font-normal">
-                        "Anak-anak sekolah daring dan suami meeting WFH barengan tidak pernah tersendat. Tagihan bulanan transparan tanpa biaya tersembunyi."
-                    </p>
-                    <div class="pt-4 border-t border-slate-100">
-                        <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">Ibu Siti Rahmawati</strong>
-                        <span class="text-[11px] text-ink-subtle block">Pelanggan Rumah Tangga • Buahbatu</span>
+                        <!-- Author -->
+                        <div class="pt-2">
+                            <strong class="font-heading text-sm sm:text-base font-black text-navy-900 block" x-text="t.name"></strong>
+                            <span class="text-xs text-corporate-blue font-semibold block mt-0.5" x-text="t.role + ' • ' + t.area"></span>
+                        </div>
+
                     </div>
+                </template>
+
+                <!-- Navigation Controls & Dots -->
+                <div class="flex items-center justify-between pt-8 border-t border-slate-100 mt-6">
+                    
+                    <button type="button" @click="prevTestimonial()" class="w-9 h-9 rounded-full border border-slate-300 hover:border-navy-900 hover:bg-slate-50 flex items-center justify-center text-navy-900 text-sm transition-all font-bold">
+                        &larr;
+                    </button>
+
+                    <!-- Indicator Dots: ● ○ ○ ○ -->
+                    <div class="flex items-center gap-2">
+                        <template x-for="(t, index) in testimonials" :key="index">
+                            <button 
+                                type="button" 
+                                @click="setTestimonial(index)"
+                                :class="activeTestimonial === index ? 'w-6 bg-navy-900' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                                class="h-2 rounded-full transition-all duration-300"
+                                :title="'Slide ' + (index + 1)"
+                            ></button>
+                        </template>
+                    </div>
+
+                    <button type="button" @click="nextTestimonial()" class="w-9 h-9 rounded-full border border-slate-300 hover:border-navy-900 hover:bg-slate-50 flex items-center justify-center text-navy-900 text-sm transition-all font-bold">
+                        &rarr;
+                    </button>
+
                 </div>
 
             </div>
@@ -1484,9 +1719,9 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 9. FAQ (CLEAN LINE-DIVIDED ACCORDION) ──
+         ── 10. FAQ (MODERN ACCORDION DENGAN ANIMASI HALUS) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="faq" class="py-16 sm:py-20 bg-surface-offwhite border-b border-slate-200">
+    <section id="faq" class="py-16 sm:py-20 bg-white border-b border-slate-200">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="mb-10 pb-6 border-b border-slate-200 text-center sm:text-left">
@@ -1498,51 +1733,78 @@
 
             <div class="divide-y divide-slate-200 border-t border-b border-slate-200">
                 
-                <div class="py-4">
-                    <button @click="activeFaq = (activeFaq === 1 ? null : 1)" class="w-full text-left flex items-center justify-between gap-4 py-1">
-                        <span class="font-heading text-xs sm:text-sm font-bold text-navy-900">
+                <!-- FAQ 1 -->
+                <div class="py-4 sm:py-5">
+                    <button @click="activeFaq = (activeFaq === 1 ? null : 1)" class="w-full text-left flex items-center justify-between gap-4 group">
+                        <span class="font-heading text-sm sm:text-base font-bold text-navy-900 group-hover:text-corporate-blue transition-colors">
+                            Apakah jaringan IMS ONE tersedia di lokasi saya?
+                        </span>
+                        <span class="w-7 h-7 rounded-full bg-surface-offwhite flex items-center justify-center text-corporate-blue font-bold text-sm shrink-0 border border-slate-200 transition-transform duration-200" :class="activeFaq === 1 ? 'rotate-45 text-navy-900 bg-slate-200' : ''">
+                            ＋
+                        </span>
+                    </button>
+                    <div x-show="activeFaq === 1" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-ink-muted leading-relaxed">
+                        Masukkan alamat atau kelurahan Anda pada fitur <a href="#coverage" class="text-corporate-blue font-bold underline">Interactive Coverage Checker</a> di atas untuk mengetahui titik ketersediaan jaringan fiber IMS ONE secara instan.
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="py-4 sm:py-5">
+                    <button @click="activeFaq = (activeFaq === 2 ? null : 2)" class="w-full text-left flex items-center justify-between gap-4 group">
+                        <span class="font-heading text-sm sm:text-base font-bold text-navy-900 group-hover:text-corporate-blue transition-colors">
                             Berapa lama proses pemasangan internet baru setelah mendaftar?
                         </span>
-                        <span class="text-corporate-blue font-mono text-base shrink-0 font-bold" x-text="activeFaq === 1 ? '−' : '+'"></span>
+                        <span class="w-7 h-7 rounded-full bg-surface-offwhite flex items-center justify-center text-corporate-blue font-bold text-sm shrink-0 border border-slate-200 transition-transform duration-200" :class="activeFaq === 2 ? 'rotate-45 text-navy-900 bg-slate-200' : ''">
+                            ＋
+                        </span>
                     </button>
-                    <div x-show="activeFaq === 1" x-cloak x-collapse class="pt-2 pb-1 text-xs text-ink-muted leading-relaxed">
-                        Proses verifikasi alamat dan instalasi kabel fiber optik diselesaikan dalam waktu <strong class="text-navy-900">1 hingga 2 hari kerja</strong> setelah jadwal survei disetujui.
+                    <div x-show="activeFaq === 2" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-ink-muted leading-relaxed">
+                        Proses verifikasi alamat dan instalasi kabel serat optik diselesaikan dalam waktu <strong class="text-navy-900">1 hingga 2 hari kerja</strong> setelah jadwal kunjungan teknisi disetujui.
                     </div>
                 </div>
 
-                <div class="py-4">
-                    <button @click="activeFaq = (activeFaq === 2 ? null : 2)" class="w-full text-left flex items-center justify-between gap-4 py-1">
-                        <span class="font-heading text-xs sm:text-sm font-bold text-navy-900">
+                <!-- FAQ 3 -->
+                <div class="py-4 sm:py-5">
+                    <button @click="activeFaq = (activeFaq === 3 ? null : 3)" class="w-full text-left flex items-center justify-between gap-4 group">
+                        <span class="font-heading text-sm sm:text-base font-bold text-navy-900 group-hover:text-corporate-blue transition-colors">
                             Apakah ada batas kuota harian atau bulanan (FUP)?
                         </span>
-                        <span class="text-corporate-blue font-mono text-base shrink-0 font-bold" x-text="activeFaq === 2 ? '−' : '+'"></span>
+                        <span class="w-7 h-7 rounded-full bg-surface-offwhite flex items-center justify-center text-corporate-blue font-bold text-sm shrink-0 border border-slate-200 transition-transform duration-200" :class="activeFaq === 3 ? 'rotate-45 text-navy-900 bg-slate-200' : ''">
+                            ＋
+                        </span>
                     </button>
-                    <div x-show="activeFaq === 2" x-cloak x-collapse class="pt-2 pb-1 text-xs text-ink-muted leading-relaxed">
-                        Sama sekali tidak ada. Semua paket internet IMS ONE berstatus <strong class="text-navy-900">True Unlimited tanpa FUP</strong>, kecepatan konstan sepanjang bulan.
+                    <div x-show="activeFaq === 3" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-ink-muted leading-relaxed">
+                        Sama sekali tidak ada. Semua paket internet IMS ONE berstatus <strong class="text-navy-900">True Unlimited tanpa FUP</strong>, kecepatan konstan sepanjang bulan tanpa penurunan sepihak.
                     </div>
                 </div>
 
-                <div class="py-4">
-                    <button @click="activeFaq = (activeFaq === 3 ? null : 3)" class="w-full text-left flex items-center justify-between gap-4 py-1">
-                        <span class="font-heading text-xs sm:text-sm font-bold text-navy-900">
-                            Bagaimana cara melaporkan jika terjadi kendala koneksi atau LOS?
+                <!-- FAQ 4 -->
+                <div class="py-4 sm:py-5">
+                    <button @click="activeFaq = (activeFaq === 4 ? null : 4)" class="w-full text-left flex items-center justify-between gap-4 group">
+                        <span class="font-heading text-sm sm:text-base font-bold text-navy-900 group-hover:text-corporate-blue transition-colors">
+                            Bagaimana cara melapor jika terjadi kendala koneksi atau LOS?
                         </span>
-                        <span class="text-corporate-blue font-mono text-base shrink-0 font-bold" x-text="activeFaq === 3 ? '−' : '+'"></span>
+                        <span class="w-7 h-7 rounded-full bg-surface-offwhite flex items-center justify-center text-corporate-blue font-bold text-sm shrink-0 border border-slate-200 transition-transform duration-200" :class="activeFaq === 4 ? 'rotate-45 text-navy-900 bg-slate-200' : ''">
+                            ＋
+                        </span>
                     </button>
-                    <div x-show="activeFaq === 3" x-cloak x-collapse class="pt-2 pb-1 text-xs text-ink-muted leading-relaxed">
-                        Pelanggan cukup masuk ke menu <strong class="text-navy-900">Layanan Pelanggan</strong> menggunakan nomor WhatsApp terdaftar, lalu pilih tab <em>Laporkan Gangguan</em> untuk langsung membuat tiket teknisi.
+                    <div x-show="activeFaq === 4" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-ink-muted leading-relaxed">
+                        Pelanggan cukup masuk ke menu <strong class="text-navy-900">Layanan Pelanggan</strong> menggunakan nomor WhatsApp terdaftar, lalu pilih tab <em>Laporkan Gangguan</em> untuk langsung membuat tiket investigasi teknisi.
                     </div>
                 </div>
 
-                <div class="py-4">
-                    <button @click="activeFaq = (activeFaq === 4 ? null : 4)" class="w-full text-left flex items-center justify-between gap-4 py-1">
-                        <span class="font-heading text-xs sm:text-sm font-bold text-navy-900">
-                            Apakah harga paket sudah termasuk PPN dan sewa router WiFi?
+                <!-- FAQ 5 -->
+                <div class="py-4 sm:py-5">
+                    <button @click="activeFaq = (activeFaq === 5 ? null : 5)" class="w-full text-left flex items-center justify-between gap-4 group">
+                        <span class="font-heading text-sm sm:text-base font-bold text-navy-900 group-hover:text-corporate-blue transition-colors">
+                            Apakah tarif paket sudah termasuk PPN dan sewa modem WiFi?
                         </span>
-                        <span class="text-corporate-blue font-mono text-base shrink-0 font-bold" x-text="activeFaq === 4 ? '−' : '+'"></span>
+                        <span class="w-7 h-7 rounded-full bg-surface-offwhite flex items-center justify-center text-corporate-blue font-bold text-sm shrink-0 border border-slate-200 transition-transform duration-200" :class="activeFaq === 5 ? 'rotate-45 text-navy-900 bg-slate-200' : ''">
+                            ＋
+                        </span>
                     </button>
-                    <div x-show="activeFaq === 4" x-cloak x-collapse class="pt-2 pb-1 text-xs text-ink-muted leading-relaxed">
-                        Ya, harga yang tertera sudah bersifat <strong class="text-navy-900">All-in Net</strong>, sudah termasuk biaya internet, PPN, dan fasilitas peminjaman unit router WiFi 6.
+                    <div x-show="activeFaq === 5" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-ink-muted leading-relaxed">
+                        Ya, harga yang tertera sudah bersifat <strong class="text-navy-900">All-in Net</strong>, sudah mencakup biaya internet, PPN, dan fasilitas peminjaman unit router modem WiFi 6 dual band.
                     </div>
                 </div>
 
