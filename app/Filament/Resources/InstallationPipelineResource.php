@@ -941,6 +941,8 @@ class InstallationPipelineResource extends Resource
                 // ── 0. UBAH TIPE STATUS (Dipicu via badge TEMPORARY DELETE) ──
                 Tables\Actions\Action::make('change_status_type')
                     ->label('Ubah Status Tipe')
+                    ->button()
+                    ->color('info')
                     ->modalHeading('Ubah')
                     ->modalWidth('xl')
                     ->modalSubmitActionLabel('Ubah')

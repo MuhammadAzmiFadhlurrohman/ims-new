@@ -370,6 +370,10 @@ html.dark .ims-temp-badge:hover {
     padding: 0.35rem 0.75rem !important;
     transition: all 0.15s ease !important;
     white-space: nowrap !important;
+    background: #0284c7 !important;
+    background-color: #0284c7 !important;
+    color: #ffffff !important;
+    border: none !important;
 }
 
 /* ── DESKTOP ISOLATION (≥ 1024px) ── */

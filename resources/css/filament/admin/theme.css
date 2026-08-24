@@ -388,6 +388,15 @@ table.fi-ta-table tbody tr:last-child td {
     box-sizing: border-box !important;
 }
 
+.fi-ta-actions .fi-btn,
+.fi-ta-actions button,
+.fi-ta-actions a.fi-btn {
+    background: #0284c7 !important;
+    background-color: #0284c7 !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
 .fi-ta-actions .fi-btn:hover,
 .fi-ta-actions button:hover,
 .fi-ta-actions a:hover {
@@ -417,6 +426,7 @@ table.fi-ta-table tbody tr:last-child td {
 .fi-ta-actions a[class*="color-info"],
 .fi-ta-actions button[class*="color-info"] {
     background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    background-color: #0284c7 !important;
     border: none !important;
 }
 
@@ -425,6 +435,7 @@ table.fi-ta-table tbody tr:last-child td {
 .fi-ta-actions a[class*="color-warning"],
 .fi-ta-actions button[class*="color-warning"] {
     background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+    background-color: #d97706 !important;
     border: none !important;
 }
 
@@ -433,6 +444,7 @@ table.fi-ta-table tbody tr:last-child td {
 .fi-ta-actions button[class*="color-danger"],
 .fi-ta-actions a[class*="color-danger"] {
     background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    background-color: #dc2626 !important;
     border: none !important;
 }
 
@@ -441,6 +453,7 @@ table.fi-ta-table tbody tr:last-child td {
 .fi-ta-actions a[class*="color-primary"],
 .fi-ta-actions button[class*="color-primary"] {
     background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    background-color: #1d4ed8 !important;
     border: none !important;
 }
 
@@ -449,6 +462,7 @@ table.fi-ta-table tbody tr:last-child td {
 .fi-ta-actions button[class*="color-success"],
 .fi-ta-actions a[class*="color-success"] {
     background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+    background-color: #059669 !important;
     border: none !important;
 }
 
