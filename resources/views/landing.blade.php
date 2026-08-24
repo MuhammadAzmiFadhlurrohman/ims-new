@@ -113,113 +113,121 @@
             border-radius: 1.25rem;
         }
     </style>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('landingApp', () => ({
+                activeTab: 'home',
+                selectedPackage: null,
+                showRegisterModal: false,
+                leadName: '',
+                leadPhone: '',
+                leadAddress: '',
+                leadPackage: 'Home 50 Mbps',
+                coverageSearch: '',
+                mapInstance: null,
+                markersLayer: null,
+                selectedRegion: 'all',
+                odps: @json($mapPins ?? []),
+
+                init() {
+                    this.$nextTick(() => {
+                        this.initMap();
+                    });
+                },
+
+                initMap() {
+                    const mapEl = document.getElementById('landing-gis-map');
+                    if (!mapEl || this.mapInstance) return;
+
+                    try {
+                        this.mapInstance = L.map('landing-gis-map', {
+                            center: [-6.9175, 107.6096],
+                            zoom: 13,
+                            zoomControl: true,
+                            attributionControl: false
+                        });
+
+                        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                            maxZoom: 19,
+                            subdomains: 'abcd',
+                        }).addTo(this.mapInstance);
+
+                        this.markersLayer = L.layerGroup().addTo(this.mapInstance);
+                        this.renderPins();
+                    } catch (e) {
+                        console.error('Landing map init error:', e);
+                    }
+                },
+
+                renderPins() {
+                    if (!this.mapInstance || !this.markersLayer) return;
+                    this.markersLayer.clearLayers();
+
+                    const markers = [];
+                    this.odps.forEach(pin => {
+                        if (this.selectedRegion !== 'all' && pin.region !== this.selectedRegion) return;
+
+                        let color = '#10b981';
+                        if (pin.status === 'INCIDENT') color = '#ef4444';
+                        if (pin.status === 'PENDING_SURVEY') color = '#f59e0b';
+
+                        const customIcon = L.divIcon({
+                            className: 'custom-pin',
+                            html: `<div style='width: 22px; height: 22px; border-radius: 50%; background: ${color}; border: 2px solid #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;'>
+                                <svg style='width: 10px; height: 10px; color: #fff;' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M13 10V3L4 14h7v7l9-11h-7z'/></svg>
+                            </div>`,
+                            iconSize: [22, 22],
+                            iconAnchor: [11, 11]
+                        });
+
+                        const marker = L.marker([pin.lat, pin.lng], { icon: customIcon });
+                        const waUrl = 'https://wa.me/6281234567890?text=' + encodeURIComponent('Halo IMS ONE, saya ingin pasang wifi di area ' + pin.name);
+
+                        marker.bindPopup(`
+                            <div style='font-family: Plus Jakarta Sans, sans-serif; padding: 4px; color: #0f172a;'>
+                                <div style='font-size: 11px; font-weight: 800; color: #0284c7;'>${pin.code}</div>
+                                <div style='font-size: 13px; font-weight: 900; margin: 2px 0 4px;'>${pin.name}</div>
+                                <div style='font-size: 11px; color: #475569;'>Status: <strong style='color: ${color};'>TERSEDIA (FIBER ACTIVE)</strong></div>
+                                <div style='font-size: 10px; color: #64748b; margin-top: 3px;'>📍 ${pin.notes}</div>
+                                <a href='${waUrl}' target='_blank' style='display: block; text-align: center; text-decoration: none; margin-top: 8px; width: 100%; background: #0284c7; color: #fff; border: none; padding: 6px 8px; border-radius: 6px; font-size: 11px; font-weight: 800;'>Pasang di Titik Ini</a>
+                            </div>
+                        `);
+                        this.markersLayer.addLayer(marker);
+                        markers.push(marker);
+                    });
+
+                    if (markers.length > 0) {
+                        this.mapInstance.fitBounds(L.featureGroup(markers).getBounds().pad(0.15));
+                    }
+                },
+
+                filterRegion(reg) {
+                    this.selectedRegion = reg;
+                    this.renderPins();
+                },
+
+                openRegister(pkgName) {
+                    this.leadPackage = pkgName;
+                    this.showRegisterModal = true;
+                },
+
+                submitLead() {
+                    if (!this.leadName || !this.leadPhone) {
+                        alert('Mohon lengkapi Nama dan Nomor WhatsApp Anda.');
+                        return;
+                    }
+
+                    const msg = `Halo IMS ONE, saya ingin mendaftar pasang baru:\n\n👤 *Nama:* ${this.leadName}\n📱 *No WA:* ${this.leadPhone}\n📦 *Paket Pilihan:* ${this.leadPackage}\n📍 *Alamat:* ${this.leadAddress || '-'}\n\nMohon info ketersediaan slot dan jadwal survei teknisi. Terima kasih!`;
+                    const url = `https://wa.me/6281234567890?text=${encodeURIComponent(msg)}`;
+                    window.open(url, '_blank');
+                    this.showRegisterModal = false;
+                }
+            }));
+        });
+    </script>
 </head>
-<body x-data="{
-    activeTab: 'home',
-    selectedPackage: null,
-    showRegisterModal: false,
-    leadName: '',
-    leadPhone: '',
-    leadAddress: '',
-    leadPackage: 'Home 50 Mbps',
-    coverageSearch: '',
-    mapInstance: null,
-    markersLayer: null,
-    selectedRegion: 'all',
-    odps: {{ json_encode($mapPins ?? []) }},
-
-    init() {
-        this.$nextTick(() => {
-            this.initMap();
-        });
-    },
-
-    initMap() {
-        const mapEl = document.getElementById('landing-gis-map');
-        if (!mapEl || this.mapInstance) return;
-
-        try {
-            this.mapInstance = L.map('landing-gis-map', {
-                center: [-6.9175, 107.6096],
-                zoom: 13,
-                zoomControl: true,
-                attributionControl: false
-            });
-
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                maxZoom: 19,
-                subdomains: 'abcd',
-            }).addTo(this.mapInstance);
-
-            this.markersLayer = L.layerGroup().addTo(this.mapInstance);
-            this.renderPins();
-        } catch (e) {
-            console.error('Landing map init error:', e);
-        }
-    },
-
-    renderPins() {
-        if (!this.mapInstance || !this.markersLayer) return;
-        this.markersLayer.clearLayers();
-
-        const markers = [];
-        this.odps.forEach(pin => {
-            if (this.selectedRegion !== 'all' && pin.region !== this.selectedRegion) return;
-
-            let color = '#10b981';
-            if (pin.status === 'INCIDENT') color = '#ef4444';
-            if (pin.status === 'PENDING_SURVEY') color = '#f59e0b';
-
-            const customIcon = L.divIcon({
-                className: 'custom-pin',
-                html: `<div style='width: 22px; height: 22px; border-radius: 50%; background: ${color}; border: 2px solid #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;'>
-                    <svg style='width: 10px; height: 10px; color: #fff;' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M13 10V3L4 14h7v7l9-11h-7z'/></svg>
-                </div>`,
-                iconSize: [22, 22],
-                iconAnchor: [11, 11]
-            });
-
-            const marker = L.marker([pin.lat, pin.lng], { icon: customIcon });
-            marker.bindPopup(`
-                <div style='font-family: Plus Jakarta Sans, sans-serif; padding: 4px; color: #0f172a;'>
-                    <div style='font-size: 11px; font-weight: 800; color: #0284c7;'>${pin.code}</div>
-                    <div style='font-size: 13px; font-weight: 900; margin: 2px 0 4px;'>${pin.name}</div>
-                    <div style='font-size: 11px; color: #475569;'>Status: <strong style='color: ${color};'>TERSEDIA (FIBER ACTIVE)</strong></div>
-                    <div style='font-size: 10px; color: #64748b; margin-top: 3px;'>📍 ${pin.notes}</div>
-                    <button onclick=\"window.location.href='https://wa.me/6281234567890?text=Halo%20IMS%20ONE%2C%20saya%20ingin%20pasang%20wifi%20di%20area%20${encodeURIComponent(pin.name)}'\" style='margin-top: 8px; width: 100%; background: #0284c7; color: #fff; border: none; padding: 5px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer;'>Pasang di Titik Ini</button>
-                </div>
-            `);
-            this.markersLayer.addLayer(marker);
-            markers.push(marker);
-        });
-
-        if (markers.length > 0) {
-            this.mapInstance.fitBounds(L.featureGroup(markers).getBounds().pad(0.15));
-        }
-    },
-
-    filterRegion(reg) {
-        this.selectedRegion = reg;
-        this.renderPins();
-    },
-
-    openRegister(pkgName) {
-        this.leadPackage = pkgName;
-        this.showRegisterModal = true;
-    },
-
-    submitLead() {
-        if (!this.leadName || !this.leadPhone) {
-            alert('Mohon lengkapi Nama dan Nomor WhatsApp Anda.');
-            return;
-        }
-
-        const msg = `Halo IMS ONE, saya ingin mendaftar pasang baru:\n\n👤 *Nama:* ${this.leadName}\n📱 *No WA:* ${this.leadPhone}\n📦 *Paket Pilihan:* ${this.leadPackage}\n📍 *Alamat:* ${this.leadAddress || '-'}\n\nMohon info ketersediaan slot dan jadwal survei teknisi. Terima kasih!`;
-        const url = `https://wa.me/6281234567890?text=${encodeURIComponent(msg)}`;
-        window.open(url, '_blank');
-        this.showRegisterModal = false;
-    }
-}">
+<body x-data="landingApp">
 
     {{-- ══════════════════════════════════════════════════════════════
          ── 1. NAVBAR HEADER ──
