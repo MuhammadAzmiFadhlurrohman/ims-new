@@ -32,35 +32,41 @@
                 extend: {
                     colors: {
                         navy: {
-                            950: '#040D1C',
-                            900: '#071B3A', // Primary: Deep Navy
-                            800: '#0D2A57',
-                            700: '#143B77',
-                            600: '#1C4E99',
+                            950: '#030E1F',
+                            900: '#061B3A', // Primary: Deep Navy
+                            800: '#0B2956',
+                            700: '#113A78',
+                            600: '#1A4F9E',
                         },
                         corporate: {
-                            blue: '#0879D9', // Secondary: Blue
-                            hover: '#0766B8',
-                            light: '#EBF5FF',
+                            blue: '#0878E5', // Royal Blue
+                            hover: '#0663C2',
+                            light: '#E8F6FF', // Sky Blue
+                            soft: '#F2F9FF',  // Blue Soft
                         },
                         accent: {
-                            cyan: '#12C7E8', // Accent: Cyan (fungsional & aksen)
-                            glow: 'rgba(18, 199, 232, 0.25)',
+                            cyan: '#10C8E8', // Electric Cyan
+                            glow: 'rgba(16, 200, 232, 0.25)',
+                        },
+                        emerald: {
+                            active: '#18B981', // Green status aktif
                         },
                         surface: {
                             offwhite: '#F7FAFC', // Background: Off-white
+                            sky: '#E8F6FF',
+                            bluesoft: '#F2F9FF',
                             card: '#FFFFFF',
                             subtle: '#F1F5F9',
                         },
                         ink: {
-                            main: '#0F172A', // Text: Primary
+                            main: '#0B1930', // Dark Text Heading
                             muted: '#475569',
                             subtle: '#94A3B8',
                         }
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif'],
                     }
                 }
             }
@@ -80,7 +86,7 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #F7FAFC;
-            color: #0F172A;
+            color: #0B1930;
             overflow-x: hidden;
         }
 
@@ -341,30 +347,38 @@
                     this.markersLayer.clearLayers();
 
                     const markers = [];
-                    this.odps.forEach(pin => {
-                        let color = '#0879D9';
-                        if (pin.status === 'INCIDENT') color = '#ef4444';
-                        if (pin.status === 'PENDING_SURVEY') color = '#f59e0b';
+                    this.odps.forEach((pin, idx) => {
+                        // Marker Color Rules:
+                        // Biru Tua (#061B3A) -> Area Utama / Core Node
+                        // Electric Cyan (#10C8E8) -> ODP / Area Aktif
+                        let bg = '#10C8E8'; // Cyan active area
+                        let iconColor = '#061B3A';
+                        if (idx === 0 || pin.code.includes('CORE') || pin.code.includes('01')) {
+                            bg = '#061B3A'; // Biru tua area utama
+                            iconColor = '#10C8E8';
+                        }
+                        if (pin.status === 'INCIDENT') { bg = '#ef4444'; iconColor = '#ffffff'; }
+                        if (pin.status === 'PENDING_SURVEY') { bg = '#f59e0b'; iconColor = '#ffffff'; }
 
                         const customIcon = L.divIcon({
                             className: 'custom-pin',
-                            html: `<div style='width: 22px; height: 22px; border-radius: 50%; background: ${color}; border: 2px solid #ffffff; box-shadow: 0 2px 8px rgba(7,27,58,0.25); display: flex; align-items: center; justify-content: center;'>
-                                <svg style='width: 10px; height: 10px; color: #fff;' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M13 10V3L4 14h7v7l9-11h-7z'/></svg>
+                            html: `<div style='width: 24px; height: 24px; border-radius: 50%; background: ${bg}; border: 2.5px solid #ffffff; box-shadow: 0 2px 10px rgba(6,27,58,0.3); display: flex; align-items: center; justify-content: center;'>
+                                <svg style='width: 11px; height: 11px; color: ${iconColor};' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M13 10V3L4 14h7v7l9-11h-7z'/></svg>
                             </div>`,
-                            iconSize: [22, 22],
-                            iconAnchor: [11, 11]
+                            iconSize: [24, 24],
+                            iconAnchor: [12, 12]
                         });
 
                         const marker = L.marker([pin.lat, pin.lng], { icon: customIcon });
                         const waUrl = 'https://wa.me/6281234567890?text=' + encodeURIComponent('Halo IMS ONE, saya ingin pasang wifi di area ' + pin.name);
 
                         marker.bindPopup(`
-                            <div style='font-family: Plus Jakarta Sans, sans-serif; padding: 6px; color: #0F172A; min-width: 180px;'>
-                                <div style='font-size: 11px; font-weight: 800; color: #0879D9;'>${pin.code}</div>
-                                <div style='font-size: 13px; font-weight: 900; margin: 2px 0 4px; color: #071B3A;'>${pin.name}</div>
-                                <div style='font-size: 11px; color: #475569;'>Status: <strong style='color: ${color};'>TERSEDIA (FIBER ACTIVE)</strong></div>
+                            <div style='font-family: Plus Jakarta Sans, sans-serif; padding: 6px; color: #0B1930; min-width: 180px;'>
+                                <div style='font-size: 11px; font-weight: 800; color: #0878E5;'>${pin.code}</div>
+                                <div style='font-size: 13px; font-weight: 900; margin: 2px 0 4px; color: #061B3A;'>${pin.name}</div>
+                                <div style='font-size: 11px; color: #475569;'>Status: <strong style='color: #18B981;'>🟢 TERSEDIA (FIBER ACTIVE)</strong></div>
                                 <div style='font-size: 10px; color: #64748b; margin-top: 3px;'>📍 ${pin.notes}</div>
-                                <a href='${waUrl}' target='_blank' style='display: block; text-align: center; text-decoration: none; margin-top: 8px; width: 100%; background: #071B3A; color: #fff; border: none; padding: 6px 8px; border-radius: 6px; font-size: 11px; font-weight: 800;'>Pasang di Titik Ini &rarr;</a>
+                                <a href='${waUrl}' target='_blank' style='display: block; text-align: center; text-decoration: none; margin-top: 8px; width: 100%; background: #061B3A; color: #fff; border: none; padding: 6px 8px; border-radius: 6px; font-size: 11px; font-weight: 800;'>Pasang di Titik Ini &rarr;</a>
                             </div>
                         `);
                         this.markersLayer.addLayer(marker);
@@ -399,8 +413,6 @@
                             else if (q.includes('soreang')) this.mapInstance.flyTo([-7.0289, 107.5189], 15);
                             else this.mapInstance.flyTo([-6.9175, 107.6096], 13);
                         }
-                    } else if (q.includes('ujungberung') || q.includes('cibiru') || q.includes('banjaran') || q.includes('lembang') || q.includes('padalarang') || q.includes('depok') || q.includes('bogor')) {
-                        this.coverageStatus = 'COMING_SOON';
                     } else {
                         this.coverageStatus = 'NOT_AVAILABLE';
                     }
@@ -428,14 +440,15 @@
                             if (this.mapInstance) {
                                 this.mapInstance.flyTo([lat, lng], 15);
                                 if (this.markersLayer) {
+                                    // Green marker for customer location
                                     L.marker([lat, lng], {
                                         icon: L.divIcon({
                                             className: 'user-pin',
-                                            html: `<div style='width: 24px; height: 24px; border-radius: 50%; background: #071B3A; border: 3px solid #12C7E8; box-shadow: 0 0 12px rgba(18,199,232,0.6); display: flex; align-items: center; justify-content: center;'><span style='width: 8px; height: 8px; border-radius: 50%; background: #12C7E8;'></span></div>`,
-                                            iconSize: [24, 24],
-                                            iconAnchor: [12, 12]
+                                            html: `<div style='width: 26px; height: 26px; border-radius: 50%; background: #18B981; border: 3px solid #ffffff; box-shadow: 0 0 16px rgba(24,185,129,0.7); display: flex; align-items: center; justify-content: center;'><span style='width: 8px; height: 8px; border-radius: 50%; background: #ffffff;'></span></div>`,
+                                            iconSize: [26, 26],
+                                            iconAnchor: [13, 13]
                                         })
-                                    }).addTo(this.markersLayer).bindPopup('<b>📍 Lokasi Anda</b><br><span style="font-size:11px;color:#0879D9;">Titik ODP Terdekat Aktif</span>').openPopup();
+                                    }).addTo(this.markersLayer).bindPopup('<b>📍 Lokasi Pelanggan</b><br><span style="font-size:11px;color:#0878E5;">Terhubung ke ODP Terdekat</span>').openPopup();
                                 }
                             }
                         },
@@ -445,6 +458,14 @@
                         },
                         { timeout: 8000 }
                     );
+                },
+
+                submitNotify() {
+                    if (!this.phoneForNotification) {
+                        alert('Mohon masukkan nomor WhatsApp Anda.');
+                        return;
+                    }
+                    this.notifySubmitted = true;
                 },
 
                 openRegisterWithCoverage() {
@@ -569,14 +590,14 @@
     @endif
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 2. HERO / JUMBOTRON (DEEP NAVY + BLUE + CYAN ACCENT) ──
+         ── 2. HERO / JUMBOTRON (SOFT BLUE GRADIENT + LIVING FIBER) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="beranda" class="pt-28 pb-14 lg:pt-36 lg:pb-20 border-b border-slate-200/90 relative overflow-hidden bg-surface-offwhite">
+    <section id="beranda" class="pt-28 pb-14 lg:pt-36 lg:pb-20 border-b border-slate-200/90 relative overflow-hidden bg-gradient-to-b from-[#F3FAFF] via-[#E5F5FF] to-[#FFFFFF]">
         
-        {{-- Refined Corporate Ambient Background --}}
+        {{-- Refined Corporate Ambient Background with Subtle Cyan Glow --}}
         <div class="absolute inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
-            <div class="absolute -top-32 right-0 w-[550px] h-[550px] bg-corporate-blue/5 rounded-full blur-3xl transform rotate-12"></div>
-            <div class="absolute top-1/2 -left-32 w-[400px] h-[400px] bg-accent-cyan/5 rounded-full blur-3xl"></div>
+            <div class="absolute -top-32 right-0 w-[550px] h-[550px] bg-corporate-blue/10 rounded-full blur-3xl transform rotate-12"></div>
+            <div class="absolute top-1/3 -left-32 w-[450px] h-[450px] bg-accent-cyan/10 rounded-full blur-3xl"></div>
             {{-- Clean Hairline Geometry --}}
             <div class="hidden lg:block absolute -top-10 right-1/4 w-40 h-[600px] bg-gradient-to-b from-corporate-blue/5 via-transparent to-transparent rounded-full transform -rotate-45"></div>
         </div>
@@ -588,16 +609,16 @@
                 <div class="lg:col-span-6 space-y-6 text-left">
                     
                     <!-- Superfast Badge -->
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-navy-900 text-xs font-bold shadow-sm">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-beacon-green"></span>
-                        <span class="text-ink-muted">ISP Fiber Terverifikasi</span>
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 text-navy-900 text-xs font-bold shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-emerald-active pulse-beacon-green"></span>
+                        <span class="text-ink-muted font-medium">ISP Fiber Terverifikasi</span>
                         <span class="text-slate-300">•</span>
                         <span class="text-corporate-blue font-extrabold">Superfast FTTH</span>
                     </div>
 
                     <!-- Main Headline -->
                     <div class="space-y-3">
-                        <h1 class="font-heading text-3xl sm:text-4xl lg:text-[44px] xl:text-[48px] font-black text-ink-main tracking-tight leading-[1.15]">
+                        <h1 class="font-heading text-3xl sm:text-4xl lg:text-[44px] xl:text-[48px] font-black text-navy-900 tracking-tight leading-[1.15]">
                             Internet Fiber Cepat untuk Rumah &amp; Bisnis.
                         </h1>
                         <p class="text-sm sm:text-base text-ink-muted max-w-xl font-normal leading-relaxed">
@@ -617,27 +638,30 @@
                         </a>
                     </div>
 
-                    <!-- 3 Stats Below Headline -->
-                    <div class="pt-6 border-t border-slate-200 grid grid-cols-3 gap-4 sm:gap-6">
+                    <!-- 3 Stats Below Headline with Brand Blue & Cyan Accents -->
+                    <div class="pt-6 border-t border-slate-200/80 grid grid-cols-3 gap-4 sm:gap-6">
                         <div>
-                            <div class="font-heading text-2xl sm:text-3xl font-black text-navy-900">1 Gbps</div>
+                            <div class="font-heading text-2xl sm:text-3xl font-black text-[#0878E5]">1 Gbps</div>
                             <div class="text-xs text-ink-muted font-medium mt-0.5">Kecepatan hingga</div>
                         </div>
                         <div>
-                            <div class="font-heading text-2xl sm:text-3xl font-black text-navy-900">100% Fiber</div>
+                            <div class="font-heading text-2xl sm:text-3xl font-black text-[#10C8E8]">100% Fiber</div>
                             <div class="text-xs text-ink-muted font-medium mt-0.5">Koneksi FTTH</div>
                         </div>
                         <div>
-                            <div class="font-heading text-2xl sm:text-3xl font-black text-navy-900">24/7</div>
+                            <div class="font-heading text-2xl sm:text-3xl font-black text-[#061B3A]">24/7</div>
                             <div class="text-xs text-ink-muted font-medium mt-0.5">Customer Support</div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Right Visual Column: Living Fiber Network Infrastructure -->
+                <!-- Right Visual Column: Living Fiber Network Infrastructure with Subtle Cyan Glow -->
                 <div class="lg:col-span-6 relative">
                     
+                    <!-- Subtle Blue/Cyan Glow Background behind Network Visual -->
+                    <div class="absolute -inset-4 bg-gradient-to-tr from-[#0878E5]/15 via-[#10C8E8]/20 to-transparent rounded-3xl blur-2xl pointer-events-none"></div>
+
                     <div class="relative w-full max-w-lg mx-auto bg-white rounded-2xl border border-slate-200 shadow-xl p-5 sm:p-7 overflow-hidden">
                         
                         <!-- Floating Reference-Style Price Banner (Deep Navy + Cyan Accent) -->
@@ -653,10 +677,10 @@
                         <!-- Top Title & Network Flow Legend -->
                         <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-100">
                             <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-beacon-green"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-active pulse-beacon-green"></span>
                                 <span class="font-heading text-xs sm:text-sm font-bold text-navy-900">Transmisi Serat Optik FTTH Direct</span>
                             </div>
-                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-subtle text-corporate-blue font-bold border border-slate-200">
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-corporate-light text-corporate-blue font-bold border border-sky-200">
                                 3ms Latency
                             </span>
                         </div>
@@ -668,9 +692,9 @@
                                 
                                 <defs>
                                     <linearGradient id="fiberLineGradCorporate" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stop-color="#071B3A"/>
-                                        <stop offset="40%" stop-color="#0879D9"/>
-                                        <stop offset="100%" stop-color="#12C7E8"/>
+                                        <stop offset="0%" stop-color="#061B3A"/>
+                                        <stop offset="40%" stop-color="#0878E5"/>
+                                        <stop offset="100%" stop-color="#10C8E8"/>
                                     </linearGradient>
                                 </defs>
 
@@ -689,11 +713,11 @@
 
                                 <!-- 4. Secondary Fiber Branch (Coverage Expansion) -->
                                 <path d="M 240 135 Q 310 90 380 75" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="4 4" fill="none"/>
-                                <path d="M 240 135 Q 310 90 380 75" stroke="#0879D9" stroke-width="2" fill="none" class="animate-fiber-flow" opacity="0.6"/>
+                                <path d="M 240 135 Q 310 90 380 75" stroke="#0878E5" stroke-width="2" fill="none" class="animate-fiber-flow" opacity="0.6"/>
 
                                 <!-- WiFi Expanding Waves from Smart House (Cyan Accent) -->
-                                <circle cx="380" cy="155" r="28" fill="none" stroke="#0879D9" stroke-width="1.5" class="animate-wifi-wave" opacity="0.5"/>
-                                <circle cx="380" cy="155" r="45" fill="none" stroke="#12C7E8" stroke-width="1.2" class="animate-wifi-wave" opacity="0.3" style="animation-delay: 0.8s;"/>
+                                <circle cx="380" cy="155" r="28" fill="none" stroke="#0878E5" stroke-width="1.5" class="animate-wifi-wave" opacity="0.5"/>
+                                <circle cx="380" cy="155" r="45" fill="none" stroke="#10C8E8" stroke-width="1.2" class="animate-wifi-wave" opacity="0.3" style="animation-delay: 0.8s;"/>
 
                             </svg>
 
@@ -703,7 +727,7 @@
                                     <svg class="w-6 h-6 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
                                     </svg>
-                                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white pulse-beacon-green"></span>
+                                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-active rounded-full border-2 border-white pulse-beacon-green"></span>
                                 </div>
                                 <span class="font-heading text-[11px] font-black text-navy-900 mt-1 block">IMS ONE Core</span>
                                 <span class="text-[9px] font-mono text-ink-subtle">Tier-1 NOC</span>
@@ -736,8 +760,8 @@
                                     </div>
                                 </div>
                                 <span class="font-heading text-xs font-black text-navy-900 mt-1">Rumah Pelanggan</span>
-                                <span class="text-[9px] font-bold text-emerald-700 flex items-center gap-1">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                <span class="text-[9px] font-bold text-emerald-active flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-active"></span>
                                     WiFi 6 Gigabit Aktif
                                 </span>
                             </div>
@@ -753,7 +777,7 @@
                         <!-- Bottom Telemetry Banner (Transmission Info) -->
                         <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-ink-muted">
                             <span class="flex items-center gap-1 font-medium">
-                                <span class="text-navy-900 font-bold">IMS ONE</span> &rarr; <span class="text-corporate-blue font-bold">Fiber Optic</span> &rarr; <span class="text-emerald-700 font-bold">Pelanggan</span>
+                                <span class="text-navy-900 font-bold">IMS ONE</span> &rarr; <span class="text-corporate-blue font-bold">Fiber Optic</span> &rarr; <span class="text-emerald-active font-bold">Pelanggan</span>
                             </span>
                             <span class="font-bold text-navy-900">True Unlimited 1:1</span>
                         </div>
@@ -763,56 +787,60 @@
 
             </div>
 
-            <!-- Service Category Icons Bar (Deep Navy & Corporate Blue Aesthetics) -->
+            <!-- Service Category Feature Strip Bar (Distinct Colorful Accents) -->
             <div class="mt-12 pt-8 border-t border-slate-200">
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                     
-                    <a href="#paket" class="p-3.5 rounded-xl border border-corporate-blue/30 bg-corporate-light hover:bg-sky-100/70 transition-all flex items-center gap-3 group">
-                        <div class="w-10 h-10 rounded-lg bg-corporate-blue text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                    <!-- Item 1: 🔵 Internet Fiber (Royal Blue) -->
+                    <a href="#paket" class="p-3.5 rounded-xl border border-sky-200/80 bg-[#E8F6FF] hover:bg-sky-100 transition-all flex items-center gap-3 group card-interactive">
+                        <div class="w-10 h-10 rounded-lg bg-[#0878E5] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                             </svg>
                         </div>
                         <div>
-                            <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">Internet Fiber</strong>
-                            <span class="text-[11px] text-ink-muted block">Simetris 1:1 FTTH</span>
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">🔵 Internet Fiber</strong>
+                            <span class="text-[11px] text-ink-muted block">100% jaringan fiber</span>
                         </div>
                     </a>
 
-                    <a href="#paket" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center gap-3 group">
-                        <div class="w-10 h-10 rounded-lg bg-navy-900 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                            <svg class="w-5 h-5 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    <!-- Item 2: 🟣 Stabil & Kencang (Purple) -->
+                    <a href="#keunggulan" class="p-3.5 rounded-xl border border-purple-200/80 bg-[#F5F3FF] hover:bg-purple-100 transition-all flex items-center gap-3 group card-interactive">
+                        <div class="w-10 h-10 rounded-lg bg-[#7C3AED] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                             </svg>
                         </div>
                         <div>
-                            <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">Bisnis &amp; Kantor</strong>
-                            <span class="text-[11px] text-ink-muted block">Dedicated IP Static</span>
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">🟣 Stabil &amp; Kencang</strong>
+                            <span class="text-[11px] text-ink-muted block">Koneksi konsisten</span>
                         </div>
                     </a>
 
-                    <a href="#keunggulan" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center gap-3 group">
-                        <div class="w-10 h-10 rounded-lg bg-surface-subtle text-corporate-blue flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                    <!-- Item 3: 🔷 Ready WiFi (Cyan / Sky) -->
+                    <a href="#paket" class="p-3.5 rounded-xl border border-cyan-200/80 bg-[#E0F7FA]/70 hover:bg-cyan-100/80 transition-all flex items-center gap-3 group card-interactive">
+                        <div class="w-10 h-10 rounded-lg bg-[#0097A7] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
                             </svg>
                         </div>
                         <div>
-                            <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">Router WiFi 6</strong>
-                            <span class="text-[11px] text-ink-muted block">Gratis Sewa Unit</span>
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">🔷 Ready WiFi</strong>
+                            <span class="text-[11px] text-ink-muted block">Untuk seluruh rumah</span>
                         </div>
                     </a>
 
-                    <a href="#coverage" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center gap-3 group">
-                        <div class="w-10 h-10 rounded-lg bg-surface-subtle text-emerald-600 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                    <!-- Item 4: 🟢 Cek Coverage (Emerald / Green) -->
+                    <a href="#coverage" class="p-3.5 rounded-xl border border-emerald-200/80 bg-[#ECFDF5] hover:bg-emerald-100 transition-all flex items-center gap-3 group card-interactive">
+                        <div class="w-10 h-10 rounded-lg bg-[#18B981] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
                         </div>
                         <div>
-                            <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">Cek Jangkauan</strong>
-                            <span class="text-[11px] text-ink-muted block">Peta ODP Real-Time</span>
+                            <strong class="font-heading text-xs sm:text-sm font-bold text-navy-900 block">🟢 Cek Coverage</strong>
+                            <span class="text-[11px] text-ink-muted block">Pastikan area tersedia</span>
                         </div>
                     </a>
 
@@ -892,13 +920,13 @@
                         <div x-show="coverageChecked" x-cloak x-collapse class="pt-3 border-t border-slate-200 space-y-3">
                             
                             <!-- AVAILABLE (ACTIVE FIBER DETECTED) -->
-                            <div x-show="coverageStatus === 'AVAILABLE'" class="p-4 rounded-xl bg-white border-2 border-emerald-500 shadow-md space-y-3">
+                            <div x-show="coverageStatus === 'AVAILABLE'" class="p-4 rounded-xl bg-white border-2 border-[#18B981] shadow-md space-y-3">
                                 
                                 <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full bg-emerald-500 pulse-beacon-green"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full bg-[#18B981] pulse-beacon-green"></span>
                                     <div>
-                                        <strong class="font-heading text-emerald-900 font-bold text-sm block">✓ Area Anda Tercover!</strong>
-                                        <span class="text-[11px] text-ink-muted block">Jaringan fiber optik IMS ONE aktif di <span x-text="coverageAreaName" class="font-bold text-navy-900"></span>.</span>
+                                        <strong class="font-heading text-[#065F46] font-bold text-sm block">🟢 Area Tercover</strong>
+                                        <span class="text-[11px] text-ink-muted block">Jaringan IMS ONE tersedia di <span x-text="coverageAreaName" class="font-bold text-navy-900"></span>.</span>
                                     </div>
                                 </div>
 
@@ -929,26 +957,38 @@
                                 </button>
                             </div>
 
-                            <!-- COMING SOON -->
-                            <div x-show="coverageStatus === 'COMING_SOON'" class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-ink-main space-y-1.5">
+                            <!-- NOT AVAILABLE (BELUM TERCOVER) WITH WA NOTIFY FORM -->
+                            <div x-show="coverageStatus === 'NOT_AVAILABLE'" class="p-4 rounded-xl bg-amber-50/80 border-2 border-amber-400 text-ink-main space-y-3">
                                 <div class="flex items-center gap-2">
-                                    <span class="text-amber-600">⏳</span>
-                                    <strong class="font-heading text-amber-900 font-bold text-xs sm:text-sm">Dalam Rencana Perluasan</strong>
+                                    <span class="text-base">🟠</span>
+                                    <div>
+                                        <strong class="font-heading text-amber-950 font-bold text-sm block">🟠 Belum Tercover</strong>
+                                        <span class="text-[11px] text-amber-900 block leading-tight">Tinggalkan kontak Anda dan kami akan menginformasikan ketika jaringan tersedia.</span>
+                                    </div>
                                 </div>
-                                <p class="text-xs text-ink-muted leading-relaxed">
-                                    Wilayah <strong x-text="coverageAreaName" class="text-navy-900"></strong> masuk dalam roadmap penarikan kabel optik berikutnya.
-                                </p>
-                            </div>
 
-                            <!-- NOT AVAILABLE -->
-                            <div x-show="coverageStatus === 'NOT_AVAILABLE'" class="p-3.5 rounded-xl bg-slate-100 border border-slate-200 text-ink-main space-y-1.5">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-slate-500">📍</span>
-                                    <strong class="font-heading text-navy-900 font-bold text-xs sm:text-sm">Belum Terjangkau Jalur Utama</strong>
+                                <div x-show="!notifySubmitted" class="space-y-2 pt-1 border-t border-amber-200/80">
+                                    <div class="flex gap-2">
+                                        <input 
+                                            type="tel" 
+                                            inputmode="numeric" 
+                                            x-model="phoneForNotification" 
+                                            placeholder="Nomor WhatsApp Anda..." 
+                                            class="w-full px-3 py-2 text-xs bg-white rounded-lg border border-amber-300 focus:border-corporate-blue outline-none text-ink-main"
+                                        />
+                                        <button 
+                                            type="button" 
+                                            @click="submitNotify" 
+                                            class="px-3.5 py-2 rounded-lg bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold whitespace-nowrap shadow-sm"
+                                        >
+                                            Beritahu Saya
+                                        </button>
+                                    </div>
                                 </div>
-                                <p class="text-xs text-ink-muted leading-relaxed">
-                                    Hubungi tim sales kami untuk pengajuan survei penarikan kabel dedicated.
-                                </p>
+
+                                <div x-show="notifySubmitted" x-cloak class="p-2.5 rounded-lg bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-semibold text-center">
+                                    ✓ Terima kasih! Kami akan segera menghubungi nomor Anda saat fiber masuk ke area ini.
+                                </div>
                             </div>
 
                         </div>
@@ -957,7 +997,7 @@
 
                     <div class="text-xs text-ink-muted flex items-center gap-2 px-1">
                         <span>💡</span>
-                        <span>Klik pin biru pada peta untuk melihat detail kapasitas slot ODP.</span>
+                        <span>Klik pin pada peta untuk melihat detail kapasitas slot ODP.</span>
                     </div>
 
                 </div>
@@ -982,12 +1022,12 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 4. PILIHAN PAKET & TARIF (INTERACTIVE TOGGLE & HERO PACKAGE) ──
+         ── 4. PILIHAN PAKET & TARIF (SKY BLUE BG + GRADIENT HERO CARD) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="paket" class="py-16 sm:py-20 bg-surface-offwhite border-b border-slate-200">
+    <section id="paket" class="py-16 sm:py-20 bg-[#EFF8FF] border-b border-sky-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-slate-200">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-sky-200/80">
                 <div>
                     <span class="text-xs font-bold tracking-widest text-corporate-blue uppercase block mb-1">PILIHAN PAKET INTERNET</span>
                     <h2 class="font-heading text-2xl sm:text-3xl font-black text-navy-900 tracking-tight">
@@ -1001,7 +1041,7 @@
 
             <!-- Interactive Segmented Toggle: Rumah vs Bisnis -->
             <div class="flex items-center justify-center mb-10">
-                <div class="inline-flex p-1 rounded-xl bg-slate-200/80 border border-slate-300 shadow-inner">
+                <div class="inline-flex p-1 rounded-xl bg-white border border-sky-200 shadow-sm">
                     <button 
                         type="button"
                         @click="pricingTab = 'rumah'" 
@@ -1024,7 +1064,7 @@
             {{-- ── TAB 1: PAKET RUMAH & KELUARGA ── --}}
             <div x-show="pricingTab === 'rumah'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="flex md:grid md:grid-cols-3 overflow-x-auto pb-4 md:pb-0 snap-x snap-mandatory gap-6 lg:gap-8 items-stretch no-scrollbar">
                 
-                <!-- Package 1: Basic (30 Mbps) -->
+                <!-- Package 1: Basic (30 Mbps) - Clean White Card -->
                 <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive h-full">
                     <div class="space-y-5">
                         <div>
@@ -1067,56 +1107,56 @@
                     </div>
                 </div>
 
-                <!-- Package 2: HERO PACKAGE - Family Pro (100 Mbps) -->
-                <div class="bg-white border-2 border-navy-900 rounded-2xl p-7 sm:p-8 flex flex-col justify-between relative shadow-xl shadow-navy-900/10 min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive lg:-mt-3 lg:-mb-3 h-full">
-                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-navy-900 text-accent-cyan text-[10.5px] font-black uppercase tracking-wider shadow-md border border-navy-800 flex items-center gap-1.5 whitespace-nowrap">
-                        <span>🔥</span>
+                <!-- Package 2: HERO PACKAGE - Family Pro (100 Mbps) - Gradient Navy to Blue Card -->
+                <div class="bg-gradient-to-b from-[#061B3A] via-[#0A2D5C] to-[#0878E5] text-white border-2 border-[#10C8E8]/50 rounded-2xl p-7 sm:p-8 flex flex-col justify-between relative shadow-2xl min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive lg:-mt-3 lg:-mb-3 h-full">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#10C8E8] text-[#061B3A] text-[10.5px] font-black uppercase tracking-wider shadow-lg border border-white/40 flex items-center gap-1.5 whitespace-nowrap">
+                        <span>⭐</span>
                         <span>PALING POPULER</span>
                     </div>
 
                     <div class="space-y-5 pt-1">
                         <div>
-                            <span class="text-[11px] font-extrabold text-corporate-blue uppercase tracking-wider block mb-1">FAMILY PRO</span>
-                            <h3 class="font-heading text-3xl font-black text-navy-900">100 Mbps</h3>
-                            <p class="text-xs text-ink-muted mt-1">Streaming 4K lancar, meeting WFH bebas putus, dan gaming multi-user.</p>
+                            <span class="text-[11px] font-extrabold text-[#10C8E8] uppercase tracking-wider block mb-1">FAMILY PRO</span>
+                            <h3 class="font-heading text-3xl font-black text-white">100 Mbps</h3>
+                            <p class="text-xs text-sky-100 mt-1">Streaming 4K lancar, meeting WFH bebas putus, dan gaming multi-user.</p>
                         </div>
 
-                        <div class="pt-4 border-t border-slate-100">
-                            <div class="font-heading text-3xl sm:text-4xl font-black text-navy-900">
-                                Rp 320.000<span class="text-xs font-semibold text-ink-subtle font-sans"> / bulan</span>
+                        <div class="pt-4 border-t border-white/20">
+                            <div class="font-heading text-3xl sm:text-4xl font-black text-white">
+                                Rp 320.000<span class="text-xs font-semibold text-sky-200 font-sans"> / bulan</span>
                             </div>
-                            <span class="text-[11px] text-emerald-700 font-bold block mt-1">✓ Gratis Biaya Pasang + Router WiFi 6</span>
+                            <span class="text-[11px] text-[#10C8E8] font-bold block mt-1">✓ Gratis Biaya Pasang + Router WiFi 6</span>
                         </div>
 
-                        <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-main">
+                        <div class="pt-4 border-t border-white/20 space-y-3 text-xs text-white">
                             <div class="flex items-center gap-2">
-                                <span class="text-corporate-blue font-bold">✓</span>
+                                <span class="text-[#10C8E8] font-bold">✓</span>
                                 <span><strong>Simetris 100 Mbps</strong> (Upload = Download)</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="text-corporate-blue font-bold">✓</span>
+                                <span class="text-[#10C8E8] font-bold">✓</span>
                                 <span><strong>True Unlimited</strong> (Bebas kuota tanpa batas FUP)</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="text-corporate-blue font-bold">✓</span>
+                                <span class="text-[#10C8E8] font-bold">✓</span>
                                 <span><strong>Gigabit Router WiFi 6</strong> Dual-Band</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="text-corporate-blue font-bold">✓</span>
+                                <span class="text-[#10C8E8] font-bold">✓</span>
                                 <span>Prioritas Penanganan Teknisi Lapangan</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="pt-6 mt-6 border-t border-slate-100">
-                        <button @click="openRegister('Paket Pro (100 Mbps)')" class="w-full py-3 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2">
+                    <div class="pt-6 mt-6 border-t border-white/20">
+                        <button @click="openRegister('Paket Pro (100 Mbps)')" class="w-full py-3 rounded-xl bg-white hover:bg-slate-100 text-[#061B3A] font-black text-xs sm:text-sm transition-all shadow-lg flex items-center justify-center gap-2">
                             <span>Pasang Paket Pro Sekarang</span>
-                            <span class="text-accent-cyan">&rarr;</span>
+                            <span class="text-corporate-blue">&rarr;</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Package 3: Ultimate (300 Mbps) -->
+                <!-- Package 3: Ultimate (300 Mbps) - Clean White Card -->
                 <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive h-full">
                     <div class="space-y-5">
                         <div>
@@ -1207,51 +1247,51 @@
                     </div>
                 </div>
 
-                <!-- Business 2: HERO PACKAGE - Enterprise Pro (300 Mbps Dedicated) -->
-                <div class="bg-white border-2 border-navy-900 rounded-2xl p-7 sm:p-8 flex flex-col justify-between relative shadow-xl shadow-navy-900/10 min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive lg:-mt-3 lg:-mb-3 h-full">
-                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-navy-900 text-accent-cyan text-[10.5px] font-black uppercase tracking-wider shadow-md border border-navy-800 flex items-center gap-1.5 whitespace-nowrap">
+                <!-- Business 2: HERO PACKAGE - Enterprise Pro (300 Mbps Dedicated) - Gradient Navy to Blue Card -->
+                <div class="bg-gradient-to-b from-[#061B3A] via-[#0A2D5C] to-[#0878E5] text-white border-2 border-[#10C8E8]/50 rounded-2xl p-7 sm:p-8 flex flex-col justify-between relative shadow-2xl min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive lg:-mt-3 lg:-mb-3 h-full">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#10C8E8] text-[#061B3A] text-[10.5px] font-black uppercase tracking-wider shadow-lg border border-white/40 flex items-center gap-1.5 whitespace-nowrap">
                         <span>⭐</span>
                         <span>PILIHAN UTAMA KORPORASI</span>
                     </div>
 
                     <div class="space-y-5 pt-1">
                         <div>
-                            <span class="text-[11px] font-extrabold text-corporate-blue uppercase tracking-wider block mb-1">ENTERPRISE DEDICATED</span>
-                            <h3 class="font-heading text-3xl font-black text-navy-900">300 Mbps</h3>
-                            <p class="text-xs text-ink-muted mt-1">Infrastruktur utama kantor pusat, software house, fintech, &amp; perhotelan.</p>
+                            <span class="text-[11px] font-extrabold text-[#10C8E8] uppercase tracking-wider block mb-1">ENTERPRISE DEDICATED</span>
+                            <h3 class="font-heading text-3xl font-black text-white">300 Mbps</h3>
+                            <p class="text-xs text-sky-100 mt-1">Infrastruktur utama kantor pusat, software house, fintech, &amp; perhotelan.</p>
                         </div>
 
-                        <div class="pt-4 border-t border-slate-100">
-                            <div class="font-heading text-3xl sm:text-4xl font-black text-navy-900">
-                                Rp 2.800.000<span class="text-xs font-semibold text-ink-subtle font-sans"> / bulan</span>
+                        <div class="pt-4 border-t border-white/20">
+                            <div class="font-heading text-3xl sm:text-4xl font-black text-white">
+                                Rp 2.800.000<span class="text-xs font-semibold text-sky-200 font-sans"> / bulan</span>
                             </div>
-                            <span class="text-[11px] text-emerald-700 font-bold block mt-1">✓ Multi Static IP + Dual-Link Redundancy</span>
+                            <span class="text-[11px] text-[#10C8E8] font-bold block mt-1">✓ Multi Static IP + Dual-Link Redundancy</span>
                         </div>
 
-                        <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-main">
+                        <div class="pt-4 border-t border-white/20 space-y-3 text-xs text-white">
                             <div class="flex items-center gap-2">
-                                <span class="text-corporate-blue font-bold">✓</span>
+                                <span class="text-[#10C8E8] font-bold">✓</span>
                                 <span><strong>CIR 1:1 Pure Dedicated</strong> (No Sharing)</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="text-corporate-blue font-bold">✓</span>
+                                <span class="text-[#10C8E8] font-bold">✓</span>
                                 <span><strong>SLA Garansi Uptime 99.9%</strong> dengan MRTG Graph</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="text-corporate-blue font-bold">✓</span>
+                                <span class="text-[#10C8E8] font-bold">✓</span>
                                 <span><strong>IP Public Static Block /29</strong></span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="text-corporate-blue font-bold">✓</span>
+                                <span class="text-[#10C8E8] font-bold">✓</span>
                                 <span>Dedicated Technical Account Manager 24/7</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="pt-6 mt-6 border-t border-slate-100">
-                        <button @click="openRegister('Enterprise Dedicated (300 Mbps)')" class="w-full py-3 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2">
+                    <div class="pt-6 mt-6 border-t border-white/20">
+                        <button @click="openRegister('Enterprise Dedicated (300 Mbps)')" class="w-full py-3 rounded-xl bg-white hover:bg-slate-100 text-[#061B3A] font-black text-xs sm:text-sm transition-all shadow-lg flex items-center justify-center gap-2">
                             <span>Pasang Internet Korporasi</span>
-                            <span class="text-accent-cyan">&rarr;</span>
+                            <span class="text-corporate-blue">&rarr;</span>
                         </button>
                     </div>
                 </div>
