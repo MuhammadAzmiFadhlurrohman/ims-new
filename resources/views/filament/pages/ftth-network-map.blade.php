@@ -261,7 +261,11 @@
                         </span>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label style="display: inline-flex; align-items: center; gap: 4px; background: #ffffff; padding: 3px 8px; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer; font-size: 0.72rem; font-weight: 800; color: #1E293B;">
+                            <input type="checkbox" x-model="autoSnapRoad" style="border-radius: 4px; color: #0878E5;">
+                            <span>🛣️ Auto-Snap Ikuti Jalan</span>
+                        </label>
                         <button 
                             type="button" 
                             @click="finishDrawLine()" 
@@ -353,6 +357,7 @@
                     currentMode: 'select', // 'select', 'add_marker', 'draw_line'
                     openMarkerMenu: false,
                     openLineMenu: false,
+                    autoSnapRoad: true, // Auto-snap cable polylines along real roads & alleys
                     activeElementType: 'pole', // 'pole', 'joint_box', 'odc', 'olt', 'customer', 'feeder', 'distribution', 'dropcore'
                     currentLinePoints: [],
                     currentLineDistance: 0,
@@ -537,10 +542,32 @@
                         }
                     },
 
-                    handleMapClick(lat, lng) {
+                    async handleMapClick(lat, lng) {
                         if (this.currentMode === 'add_marker') {
                             this.promptSaveMarker(lat, lng);
                         } else if (this.currentMode === 'draw_line') {
+                            if (this.autoSnapRoad && this.currentLinePoints.length > 0) {
+                                const lastPt = this.currentLinePoints[this.currentLinePoints.length - 1];
+                                if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                    IMS.toast('🛣️ Menghitung rute menyusuri jalan...', 'info', 1000);
+                                }
+                                try {
+                                    const url = `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${lastPt[1]},${lastPt[0]};${lng},${lat}?overview=full&geometries=geojson`;
+                                    const res = await fetch(url);
+                                    if (res.ok) {
+                                        const data = await res.json();
+                                        if (data.routes && data.routes[0] && data.routes[0].geometry && data.routes[0].geometry.coordinates) {
+                                            const roadCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                                            for (let k = 1; k < roadCoords.length; k++) {
+                                                this.currentLinePoints.push(roadCoords[k]);
+                                            }
+                                            this.updateTempPolyline();
+                                            return;
+                                        }
+                                    }
+                                } catch (err) {}
+                            }
+
                             this.currentLinePoints.push([lat, lng]);
                             this.updateTempPolyline();
                         }
