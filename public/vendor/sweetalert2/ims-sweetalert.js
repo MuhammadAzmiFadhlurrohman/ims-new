@@ -20,6 +20,7 @@
             toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
         customClass: {
+            container: 'ims-swal-toast-container',
             popup: 'ims-swal-toast'
         }
     }) : null;
