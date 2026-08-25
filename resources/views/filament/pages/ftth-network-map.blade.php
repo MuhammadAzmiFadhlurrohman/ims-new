@@ -127,11 +127,11 @@
                     </button>
                     
                     {{-- Dropdown Add Marker --}}
-                    <div style="position: relative;" x-data="{ openMarkerMenu: false }">
+                    <div style="position: relative;">
                         <button 
                             type="button" 
-                            @click="openMarkerMenu = !openMarkerMenu" 
-                            :class="currentMode === 'add_marker' ? 'active' : ''"
+                            @click="openMarkerMenu = !openMarkerMenu; openLineMenu = false;" 
+                            :class="(currentMode === 'add_marker' || openMarkerMenu) ? 'active' : ''"
                             class="ims-tool-btn"
                         >
                             📍 Tambah Titik / Perangkat ▾
@@ -139,33 +139,32 @@
                         <div 
                             x-show="openMarkerMenu" 
                             @click.outside="openMarkerMenu = false"
-                            x-cloak
-                            style="position: absolute; top: calc(100% + 4px); left: 0; z-index: 1000; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); min-width: 210px; padding: 6px 0; display: flex; flex-direction: column;"
+                            style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 1000; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.18); min-width: 220px; padding: 6px 0; display: flex; flex-direction: column;"
                         >
-                            <button type="button" @click="startAddMarker('pole'); openMarkerMenu = false;" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;">
+                            <button type="button" @click="startAddMarker('pole')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                 📍 <span>Tiang Fiber (*Pole*)</span>
                             </button>
-                            <button type="button" @click="startAddMarker('joint_box'); openMarkerMenu = false;" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;">
+                            <button type="button" @click="startAddMarker('joint_box')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                 🔗 <span>Kotak Sambung (*Joint Closure*)</span>
                             </button>
-                            <button type="button" @click="startAddMarker('odc'); openMarkerMenu = false;" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;">
+                            <button type="button" @click="startAddMarker('odc')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                 🔲 <span>ODC / FDT</span>
                             </button>
-                            <button type="button" @click="startAddMarker('olt'); openMarkerMenu = false;" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;">
+                            <button type="button" @click="startAddMarker('olt')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                 🏢 <span>Server Core / OLT</span>
                             </button>
-                            <button type="button" @click="startAddMarker('customer'); openMarkerMenu = false;" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;">
+                            <button type="button" @click="startAddMarker('customer')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                 🏠 <span>Rumah Pelanggan ONT</span>
                             </button>
                         </div>
                     </div>
 
                     {{-- Dropdown Add Line --}}
-                    <div style="position: relative;" x-data="{ openLineMenu: false }">
+                    <div style="position: relative;">
                         <button 
                             type="button" 
-                            @click="openLineMenu = !openLineMenu" 
-                            :class="currentMode === 'draw_line' ? 'active' : ''"
+                            @click="openLineMenu = !openLineMenu; openMarkerMenu = false;" 
+                            :class="(currentMode === 'draw_line' || openLineMenu) ? 'active' : ''"
                             class="ims-tool-btn"
                         >
                             〰️ Tarik Jalur Kabel ▾
@@ -173,16 +172,15 @@
                         <div 
                             x-show="openLineMenu" 
                             @click.outside="openLineMenu = false"
-                            x-cloak
-                            style="position: absolute; top: calc(100% + 4px); left: 0; z-index: 1000; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); min-width: 220px; padding: 6px 0; display: flex; flex-direction: column;"
+                            style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 1000; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.18); min-width: 230px; padding: 6px 0; display: flex; flex-direction: column;"
                         >
-                            <button type="button" @click="startDrawLine('feeder'); openLineMenu = false;" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #EF4444; display: flex; align-items: center; gap: 8px;">
+                            <button type="button" @click="startDrawLine('feeder')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #EF4444; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
                                 🔴 <span>Kabel Feeder (24/48 Core)</span>
                             </button>
-                            <button type="button" @click="startDrawLine('distribution'); openLineMenu = false;" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #0878E5; display: flex; align-items: center; gap: 8px;">
+                            <button type="button" @click="startDrawLine('distribution')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #0878E5; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'">
                                 🔵 <span>Kabel Distribusi (12/24 Core)</span>
                             </button>
-                            <button type="button" @click="startDrawLine('dropcore'); openLineMenu = false;" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #F59E0B; display: flex; align-items: center; gap: 8px;">
+                            <button type="button" @click="startDrawLine('dropcore')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #D97706; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
                                 🟡 <span>Kabel Dropcore (1/2 Core)</span>
                             </button>
                         </div>
@@ -320,6 +318,8 @@
                     mapMode: 'roadmap',
                     tileLayers: {},
                     currentMode: 'select', // 'select', 'add_marker', 'draw_line'
+                    openMarkerMenu: false,
+                    openLineMenu: false,
                     activeElementType: 'pole', // 'pole', 'joint_box', 'odc', 'olt', 'customer', 'feeder', 'distribution', 'dropcore'
                     currentLinePoints: [],
                     currentLineDistance: 0,
@@ -446,11 +446,15 @@
                     },
 
                     setMode(mode) {
+                        this.openMarkerMenu = false;
+                        this.openLineMenu = false;
                         this.currentMode = mode;
                         this.cancelDrawing();
                     },
 
                     startAddMarker(type) {
+                        this.openMarkerMenu = false;
+                        this.openLineMenu = false;
                         this.currentMode = 'add_marker';
                         this.activeElementType = type;
                         if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
@@ -459,6 +463,8 @@
                     },
 
                     startDrawLine(type) {
+                        this.openMarkerMenu = false;
+                        this.openLineMenu = false;
                         this.currentMode = 'draw_line';
                         this.activeElementType = type;
                         this.currentLinePoints = [];
@@ -473,6 +479,8 @@
                     },
 
                     cancelDrawing() {
+                        this.openMarkerMenu = false;
+                        this.openLineMenu = false;
                         if (this.tempPolyline && this.mapInstance) {
                             this.mapInstance.removeLayer(this.tempPolyline);
                             this.tempPolyline = null;
