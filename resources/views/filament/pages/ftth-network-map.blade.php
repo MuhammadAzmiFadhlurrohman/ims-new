@@ -108,140 +108,161 @@
             </div>
         </div>
 
-        {{-- ── 2. GIS TOOLBAR CONTROLS ── --}}
-        <div class="ims-map-card" style="padding: 0.85rem 1.15rem; background: #ffffff; overflow: visible !important; position: relative; z-index: 100;">
-            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; position: relative;">
-                
-                {{-- Left Tool Group: Mode Selection --}}
-                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
-                    <span style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin-right: 4px;">
-                        Mode:
-                    </span>
-                    <button 
-                        type="button" 
-                        @click="setMode('select')" 
-                        :class="currentMode === 'select' ? 'active' : ''"
-                        class="ims-tool-btn"
-                    >
-                        👆 Jelajah Peta
-                    </button>
+        {{-- ── 2. UNIFIED GIS TOOLBAR & MAP CONTAINER ── --}}
+        <div class="ims-map-card" style="overflow: visible !important; position: relative; z-index: 50;">
+            
+            {{-- Toolbar Top Header --}}
+            <div style="padding: 0.85rem 1.15rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 1000;">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; position: relative;">
                     
-                    {{-- Dropdown Add Marker --}}
-                    <div style="position: relative;">
+                    {{-- Left Tool Group: Mode Selection --}}
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+                        <span style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin-right: 4px;">
+                            Mode:
+                        </span>
                         <button 
                             type="button" 
-                            @click="openMarkerMenu = !openMarkerMenu; openLineMenu = false;" 
-                            :class="(currentMode === 'add_marker' || openMarkerMenu) ? 'active' : ''"
+                            @click="setMode('select')" 
+                            :class="currentMode === 'select' ? 'active' : ''"
                             class="ims-tool-btn"
                         >
-                            📍 Tambah Titik / Perangkat ▾
+                            👆 Jelajah Peta
                         </button>
-                        <div 
-                            x-show="openMarkerMenu" 
-                            @click.outside="openMarkerMenu = false"
-                            style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 9999; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.22); min-width: 230px; padding: 6px 0; display: flex; flex-direction: column;"
-                        >
-                            <button type="button" @click="startAddMarker('pole')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
-                                📍 <span>Tiang Fiber (*Pole*)</span>
+                        
+                        {{-- Dropdown Add Marker --}}
+                        <div style="position: relative;">
+                            <button 
+                                type="button" 
+                                @click="openMarkerMenu = !openMarkerMenu; openLineMenu = false;" 
+                                :class="(currentMode === 'add_marker' || openMarkerMenu) ? 'active' : ''"
+                                class="ims-tool-btn"
+                            >
+                                📍 Tambah Titik / Perangkat ▾
                             </button>
-                            <button type="button" @click="startAddMarker('joint_box')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
-                                🔗 <span>Kotak Sambung (*Joint Closure*)</span>
+                            <div 
+                                x-show="openMarkerMenu" 
+                                @click.outside="openMarkerMenu = false"
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 99999; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 12px; box-shadow: 0 14px 35px rgba(0,0,0,0.28); min-width: 230px; padding: 6px 0; display: flex; flex-direction: column;"
+                            >
+                                <button type="button" @click="startAddMarker('pole')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                                    📍 <span>Tiang Fiber (*Pole*)</span>
+                                </button>
+                                <button type="button" @click="startAddMarker('joint_box')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                                    🔗 <span>Kotak Sambung (*Joint Closure*)</span>
+                                </button>
+                                <button type="button" @click="startAddMarker('odc')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                                    🔲 <span>ODC / FDT</span>
+                                </button>
+                                <button type="button" @click="startAddMarker('olt')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                                    🏢 <span>Server Core / OLT</span>
+                                </button>
+                                <button type="button" @click="startAddMarker('customer')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                                    🏠 <span>Rumah Pelanggan ONT</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Dropdown Add Line --}}
+                        <div style="position: relative;">
+                            <button 
+                                type="button" 
+                                @click="openLineMenu = !openLineMenu; openMarkerMenu = false;" 
+                                :class="(currentMode === 'draw_line' || openLineMenu) ? 'active' : ''"
+                                class="ims-tool-btn"
+                            >
+                                〰️ Tarik Jalur Kabel ▾
                             </button>
-                            <button type="button" @click="startAddMarker('odc')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
-                                🔲 <span>ODC / FDT</span>
-                            </button>
-                            <button type="button" @click="startAddMarker('olt')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
-                                🏢 <span>Server Core / OLT</span>
-                            </button>
-                            <button type="button" @click="startAddMarker('customer')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
-                                🏠 <span>Rumah Pelanggan ONT</span>
-                            </button>
+                            <div 
+                                x-show="openLineMenu" 
+                                @click.outside="openLineMenu = false"
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 99999; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 12px; box-shadow: 0 14px 35px rgba(0,0,0,0.28); min-width: 240px; padding: 6px 0; display: flex; flex-direction: column;"
+                            >
+                                <button type="button" @click="startDrawLine('feeder')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #EF4444; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
+                                    🔴 <span>Kabel Feeder (24/48 Core)</span>
+                                </button>
+                                <button type="button" @click="startDrawLine('distribution')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #0878E5; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'">
+                                    🔵 <span>Kabel Distribusi (12/24 Core)</span>
+                                </button>
+                                <button type="button" @click="startDrawLine('dropcore')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #D97706; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
+                                    🟡 <span>Kabel Dropcore (1/2 Core)</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    {{-- Dropdown Add Line --}}
-                    <div style="position: relative;">
+                    {{-- Right Tool Group: Layer filters & Map Controls --}}
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+                        {{-- Google Maps View Type Switcher --}}
                         <button 
                             type="button" 
-                            @click="openLineMenu = !openLineMenu; openMarkerMenu = false;" 
-                            :class="(currentMode === 'draw_line' || openLineMenu) ? 'active' : ''"
+                            @click="setMapMode('roadmap')" 
+                            :class="mapMode === 'roadmap' ? 'active' : ''"
                             class="ims-tool-btn"
                         >
-                            〰️ Tarik Jalur Kabel ▾
+                            🗺️ Roadmap
                         </button>
-                        <div 
-                            x-show="openLineMenu" 
-                            @click.outside="openLineMenu = false"
-                            style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 9999; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.22); min-width: 240px; padding: 6px 0; display: flex; flex-direction: column;"
+                        <button 
+                            type="button" 
+                            @click="setMapMode('hybrid')" 
+                            :class="mapMode === 'hybrid' ? 'active' : ''"
+                            class="ims-tool-btn"
                         >
-                            <button type="button" @click="startDrawLine('feeder')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #EF4444; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
-                                🔴 <span>Kabel Feeder (24/48 Core)</span>
-                            </button>
-                            <button type="button" @click="startDrawLine('distribution')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #0878E5; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'">
-                                🔵 <span>Kabel Distribusi (12/24 Core)</span>
-                            </button>
-                            <button type="button" @click="startDrawLine('dropcore')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #D97706; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
-                                🟡 <span>Kabel Dropcore (1/2 Core)</span>
-                            </button>
-                        </div>
+                            🛰️ Satelit
+                        </button>
+
+                        <button 
+                            type="button" 
+                            @click="exportGeoJson()" 
+                            class="ims-tool-btn"
+                            title="Export Peta ke format GeoJSON"
+                        >
+                            📥 Export GeoJSON
+                        </button>
                     </div>
                 </div>
 
-                {{-- Right Tool Group: Layer filters & Map Controls --}}
-                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
-                    {{-- Google Maps View Type Switcher --}}
-                    <button 
-                        type="button" 
-                        @click="setMapMode('roadmap')" 
-                        :class="mapMode === 'roadmap' ? 'active' : ''"
-                        class="ims-tool-btn"
-                    >
-                        🗺️ Roadmap
-                    </button>
-                    <button 
-                        type="button" 
-                        @click="setMapMode('hybrid')" 
-                        :class="mapMode === 'hybrid' ? 'active' : ''"
-                        class="ims-tool-btn"
-                    >
-                        🛰️ Satelit
-                    </button>
+                {{-- Dynamic Sub-Bar: Active Drawing Status Notification --}}
+                <div 
+                    x-show="currentMode === 'draw_line'" 
+                    x-cloak
+                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #FEF3C7; border: 1.5px dashed #F59E0B; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #92400E;"
+                >
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-weight: 800;">⚡ Sedang Menarik Jalur:</span>
+                        <span style="font-weight: 900; text-transform: uppercase;" x-text="activeElementType"></span>
+                        <span>• Klik titik demi titik pada peta untuk membuat rute kabel.</span>
+                        <span style="background: #ffffff; padding: 2px 8px; border-radius: 6px; font-weight: 900; color: #0878E5; font-family: monospace;">
+                            Titik: <span x-text="currentLinePoints.length"></span> | Panjang: ~<span x-text="currentLineDistance"></span> meter
+                        </span>
+                    </div>
 
-                    <button 
-                        type="button" 
-                        @click="exportGeoJson()" 
-                        class="ims-tool-btn"
-                        title="Export Peta ke format GeoJSON"
-                    >
-                        📥 Export GeoJSON
-                    </button>
-                </div>
-            </div>
-
-            {{-- Dynamic Sub-Bar: Active Drawing Status Notification --}}
-            <div 
-                x-show="currentMode === 'draw_line'" 
-                x-cloak
-                style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #FEF3C7; border: 1.5px dashed #F59E0B; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #92400E;"
-            >
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <span style="font-weight: 800;">⚡ Sedang Menarik Jalur:</span>
-                    <span style="font-weight: 900; text-transform: uppercase;" x-text="activeElementType"></span>
-                    <span>• Klik titik demi titik pada peta untuk membuat rute kabel.</span>
-                    <span style="background: #ffffff; padding: 2px 8px; border-radius: 6px; font-weight: 900; color: #0878E5; font-family: monospace;">
-                        Titik: <span x-text="currentLinePoints.length"></span> | Panjang: ~<span x-text="currentLineDistance"></span> meter
-                    </span>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <button 
+                            type="button" 
+                            @click="finishDrawLine()" 
+                            :disabled="currentLinePoints.length < 2"
+                            style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer;"
+                        >
+                            ✓ Selesai & Simpan Jalur
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="cancelDrawing()" 
+                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #DC2626; cursor: pointer;"
+                        >
+                            ✕ Batal
+                        </button>
+                    </div>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <button 
-                        type="button" 
-                        @click="finishDrawLine()" 
-                        :disabled="currentLinePoints.length < 2"
-                        style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer;"
-                    >
-                        ✓ Selesai & Simpan Jalur
-                    </button>
+                <div 
+                    x-show="currentMode === 'add_marker'" 
+                    x-cloak
+                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #EAF5FF; border: 1.5px dashed #0878E5; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #0757B8;"
+                >
+                    <div>
+                        <b>📍 Mode Penempatan Marker:</b> Klik di mana saja pada peta untuk menempatkan <b><span x-text="activeElementType"></span></b>.
+                    </div>
                     <button 
                         type="button" 
                         @click="cancelDrawing()" 
@@ -252,27 +273,8 @@
                 </div>
             </div>
 
-            <div 
-                x-show="currentMode === 'add_marker'" 
-                x-cloak
-                style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #EAF5FF; border: 1.5px dashed #0878E5; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #0757B8;"
-            >
-                <div>
-                    <b>📍 Mode Penempatan Marker:</b> Klik di mana saja pada peta untuk menempatkan <b><span x-text="activeElementType"></span></b>.
-                </div>
-                <button 
-                    type="button" 
-                    @click="cancelDrawing()" 
-                    style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #DC2626; cursor: pointer;"
-                >
-                    ✕ Batal
-                </button>
-            </div>
-        </div>
-
-        {{-- ── 3. MAP CANVAS ── --}}
-        <div class="ims-map-card">
-            <div id="ims-ftth-builder-canvas" class="ims-map-canvas"></div>
+            {{-- Map Canvas --}}
+            <div id="ims-ftth-builder-canvas" class="ims-map-canvas" style="position: relative; z-index: 1;"></div>
 
             {{-- Legend Footer --}}
             <div style="padding: 0.65rem 1.15rem; background: #F4FAFF; border-top: 1px solid #dbeafe; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.72rem; color: #475569;">
