@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-[#0E2238]">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -15,200 +15,545 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            DEFAULT: '#0878E5',
-                            dark: '#0757B8',
-                            light: '#55C7FF',
-                            soft: '#EAF5FF',
-                            pale: '#F4FAFF',
-                            deep: '#0E2238',
-                            card: '#16365C',
-                            navy: '#0B1F33',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'brand-soft': '0 8px 30px rgba(8, 120, 229, 0.15)',
-                    }
-                }
-            }
-        }
-    </script>
-
     <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         html, body {
-            background-color: #0E2238 !important;
-            color: #F8FAFC;
+            height: 100%;
+            margin: 0;
+            padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0A1628;
+            color: #F1F5F9;
+            overflow-x: hidden;
+        }
+
+        /* ─── SPLIT LAYOUT ─── */
+        .login-shell {
+            display: flex;
             min-height: 100vh;
             min-height: 100dvh;
         }
-        h1, h2, h3, h4, .font-heading {
+
+        /* Left Brand Panel */
+        .login-brand-panel {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 3rem 3.5rem;
+            background: linear-gradient(145deg, #071220 0%, #0B2040 40%, #0E3060 100%);
+            width: 42%;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        @media (min-width: 960px) {
+            .login-brand-panel { display: flex; }
+            .login-form-panel { width: 58%; }
+        }
+
+        .brand-glow-1 {
+            position: absolute; top: -120px; right: -80px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(8,120,229,0.25) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .brand-glow-2 {
+            position: absolute; bottom: -100px; left: -60px;
+            width: 350px; height: 350px;
+            background: radial-gradient(circle, rgba(85,199,255,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .brand-grid {
+            position: absolute; inset: 0; opacity: 0.04;
+            background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+        }
+
+        .brand-logo-icon {
+            width: 48px; height: 48px;
+            background: linear-gradient(135deg, #0878E5, #0550A8);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 24px rgba(8,120,229,0.4);
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 12px; border-radius: 9999px;
+            background: rgba(85,199,255,0.12);
+            border: 1px solid rgba(85,199,255,0.25);
+            color: #55C7FF;
+            font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
+            text-transform: uppercase; font-family: monospace;
+            margin-bottom: 1.25rem;
+        }
+
+        .brand-heading {
             font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1.2;
+            letter-spacing: -0.025em;
+            margin-bottom: 1rem;
         }
-        .btn-brand-primary {
-            background-color: #0878E5 !important;
-            color: #ffffff !important;
+
+        .brand-desc {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.7;
+            max-width: 320px;
+            margin-bottom: 2.5rem;
         }
-        .btn-brand-primary:hover {
-            background-color: #0757B8 !important;
+
+        .brand-features {
+            display: flex; flex-direction: column; gap: 12px;
         }
-        @keyframes pulseBlue {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(85, 199, 255, 0.6); }
-            50% { box-shadow: 0 0 0 10px rgba(85, 199, 255, 0); }
+        .brand-feature-item {
+            display: flex; align-items: center; gap: 10px;
         }
-        .pulse-beacon-blue {
-            animation: pulseBlue 2s infinite;
+        .brand-feature-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #0878E5;
+            box-shadow: 0 0 8px rgba(8,120,229,0.7);
+            flex-shrink: 0;
         }
+        .brand-feature-text {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.65);
+            font-weight: 600;
+        }
+
+        /* Right Form Panel */
+        .login-form-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #0A1628;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-panel-glow {
+            position: absolute; top: -80px; right: -80px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(8,120,229,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Top Header */
+        .login-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            position: relative; z-index: 1;
+        }
+        .header-logo {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none;
+        }
+        .header-logo-icon {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: linear-gradient(135deg, #0878E5, #0550A8);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(8,120,229,0.35);
+        }
+        .header-logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem; font-weight: 900;
+            color: #ffffff; letter-spacing: -0.01em;
+        }
+        .header-logo-sub {
+            font-size: 7.5px; font-weight: 800;
+            color: #55C7FF; letter-spacing: 0.15em;
+            text-transform: uppercase; display: block;
+        }
+        .header-back-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 14px; border-radius: 9999px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.75);
+            font-size: 11px; font-weight: 700;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+        .header-back-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+        }
+
+        /* Form Area */
+        .login-form-area {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 1.5rem;
+            position: relative; z-index: 1;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Security bar */
+        .security-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 7px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            margin-bottom: 1.75rem;
+        }
+        .security-indicator {
+            display: flex; align-items: center; gap: 7px;
+            font-size: 10px; font-weight: 800; color: #55C7FF;
+            text-transform: uppercase; letter-spacing: 0.1em; font-family: monospace;
+        }
+        .security-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #4ADE80;
+            box-shadow: 0 0 6px rgba(74,222,128,0.7);
+        }
+        .security-ssl {
+            font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4);
+            font-family: monospace; letter-spacing: 0.05em;
+        }
+
+        /* Title block */
+        .login-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.65rem; font-weight: 900;
+            color: #ffffff; margin: 0 0 6px 0; letter-spacing: -0.025em;
+        }
+        .login-subtitle {
+            font-size: 0.8rem; color: rgba(255,255,255,0.45);
+            margin: 0 0 1.75rem 0; line-height: 1.6;
+        }
+
+        /* Form elements */
+        .form-label {
+            display: block; font-size: 11.5px; font-weight: 800;
+            color: rgba(255,255,255,0.75); margin-bottom: 7px;
+            letter-spacing: 0.04em; text-transform: uppercase;
+        }
+
+        .input-wrapper {
+            display: flex; align-items: center;
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+        }
+        .input-wrapper:focus-within {
+            border-color: #0878E5;
+            box-shadow: 0 0 0 3px rgba(8,120,229,0.2);
+        }
+
+        .input-prefix {
+            display: flex; align-items: center; gap: 6px;
+            padding: 0 12px 0 14px;
+            border-right: 1.5px solid rgba(255,255,255,0.1);
+            height: 46px;
+            flex-shrink: 0;
+        }
+        .prefix-flag { font-size: 14px; }
+        .prefix-code {
+            font-size: 12px; font-weight: 900;
+            color: #55C7FF; font-family: monospace; letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            flex: 1;
+            height: 46px;
+            padding: 0 14px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .form-input::placeholder { color: rgba(255,255,255,0.2); font-weight: 500; }
+
+        .input-hint {
+            font-size: 11px; color: rgba(255,255,255,0.35);
+            margin-top: 7px; display: flex; align-items: center; gap: 5px;
+        }
+
+        /* Alert boxes */
+        .alert-error {
+            display: flex; align-items: flex-start; gap: 8px;
+            padding: 10px 14px; border-radius: 10px;
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.3);
+            margin-bottom: 1rem;
+            font-size: 12px; color: #FCA5A5;
+        }
+        .alert-info {
+            display: flex; align-items: flex-start; gap: 8px;
+            padding: 10px 14px; border-radius: 10px;
+            background: rgba(8,120,229,0.15);
+            border: 1px solid rgba(85,199,255,0.3);
+            margin-bottom: 1rem;
+            font-size: 12px; color: #93C5FD;
+        }
+
+        /* Submit button */
+        .btn-login {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; height: 48px;
+            background: linear-gradient(135deg, #0878E5 0%, #0550A8 100%);
+            color: #ffffff; font-size: 13.5px; font-weight: 900;
+            border: none; border-radius: 12px;
+            cursor: pointer; text-decoration: none;
+            box-shadow: 0 6px 20px rgba(8,120,229,0.4);
+            transition: all 0.18s ease;
+            margin-top: 1.25rem;
+            letter-spacing: 0.01em;
+        }
+        .btn-login:hover {
+            background: linear-gradient(135deg, #0969D0 0%, #04408A 100%);
+            box-shadow: 0 8px 26px rgba(8,120,229,0.55);
+            transform: translateY(-1px);
+        }
+        .btn-login:active { transform: translateY(0); }
+
+        /* Divider */
+        .login-divider {
+            display: flex; align-items: center; gap: 10px;
+            margin: 1.25rem 0;
+        }
+        .divider-line {
+            flex: 1; height: 1px; background: rgba(255,255,255,0.08);
+        }
+        .divider-text {
+            font-size: 10.5px; color: rgba(255,255,255,0.2); font-weight: 600;
+        }
+
+        /* Support CTA */
+        .support-cta {
+            text-align: center;
+        }
+        .support-cta p {
+            font-size: 12px; color: rgba(255,255,255,0.35); margin: 0 0 8px 0;
+        }
+        .support-cta a {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 18px; border-radius: 9999px;
+            background: rgba(37,211,102,0.1);
+            border: 1px solid rgba(37,211,102,0.25);
+            color: #4ADE80;
+            font-size: 12px; font-weight: 800;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+        .support-cta a:hover {
+            background: rgba(37,211,102,0.18);
+            border-color: rgba(37,211,102,0.45);
+            color: #86EFAC;
+        }
+
+        /* Footer */
+        .login-footer {
+            padding: 0.9rem 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            text-align: center;
+            font-size: 10.5px; color: rgba(255,255,255,0.2);
+            position: relative; z-index: 1;
+        }
+
+        @keyframes pulseGreen {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+            50% { box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+        }
+        .security-dot { animation: pulseGreen 2s infinite; }
     </style>
 </head>
-<body class="flex flex-col justify-between min-h-screen text-slate-100 bg-[#0E2238] relative overflow-x-hidden">
+<body>
 
-    <!-- Ambient Subtle Glow Background -->
-    <div class="fixed inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
-        <div class="absolute -top-32 right-1/4 w-[500px] h-[500px] bg-[#0878E5]/20 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-32 left-1/4 w-[500px] h-[500px] bg-[#55C7FF]/15 rounded-full blur-3xl"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#184271]/30 rounded-full blur-3xl"></div>
-    </div>
+<div class="login-shell">
 
-    <!-- Top Navigation Header -->
-    <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex items-center justify-between relative z-10 shrink-0">
-        
-        <!-- Logo: IMS ONE (Brand Theme) -->
-        <a href="{{ url('/') }}" class="flex items-center gap-2.5 group">
-            <div class="w-7 h-7 rounded-lg bg-brand text-white flex items-center justify-center font-bold text-xs shadow-md shadow-brand/30 group-hover:scale-105 transition-transform">
-                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+    <!-- ── LEFT BRAND PANEL ── -->
+    <div class="login-brand-panel">
+        <div class="brand-glow-1"></div>
+        <div class="brand-glow-2"></div>
+        <div class="brand-grid"></div>
+
+        <div style="position: relative; z-index: 1;">
+            <div class="brand-logo-icon">
+                <svg style="width:26px;height:26px;color:#fff;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                 </svg>
             </div>
-            <div>
-                <span class="font-heading text-base font-black text-white tracking-tight leading-none block">
-                    IMS<span class="text-brand-light">ONE</span>
-                </span>
-                <span class="text-[8px] font-extrabold tracking-widest text-brand-light uppercase block">
-                    Customer Portal
-                </span>
-            </div>
-        </a>
 
-        <!-- Back to Home Button -->
-        <a href="{{ url('/') }}" class="h-8 px-3.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold transition-all backdrop-blur-sm flex items-center gap-1.5 shadow-sm">
-            <span class="text-brand-light font-black">&larr;</span>
-            <span class="hidden sm:inline">Kembali ke Beranda</span>
-            <span class="sm:hidden">Beranda</span>
-        </a>
-    </header>
-
-    <!-- Main Card Container -->
-    <main class="w-full flex-1 flex items-center justify-center px-4 py-5 relative z-10">
-        
-        <div class="bg-[#153256]/90 border border-white/20 backdrop-blur-2xl rounded-2xl p-5 sm:p-6 max-w-[390px] w-full shadow-2xl relative overflow-hidden">
-            
-            <!-- Glow Accent Inside Card -->
-            <div class="absolute -top-16 -right-16 w-36 h-36 bg-[#0878E5]/30 rounded-full blur-2xl pointer-events-none"></div>
-
-            <!-- Top Security Beacon -->
-            <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-white/15">
-                <span class="inline-flex items-center gap-1.5 text-[10px] font-black text-brand-light tracking-wider uppercase font-mono">
-                    <span class="w-2 h-2 rounded-full bg-brand-light pulse-beacon-blue"></span>
-                    <span>SECURE ACCESS PORTAL</span>
-                </span>
-                <span class="text-[10px] text-slate-300 font-mono font-bold">256-BIT SSL</span>
+            <div class="brand-badge">
+                <span style="width:6px;height:6px;border-radius:50%;background:#55C7FF;display:inline-block;"></span>
+                Portal Pelanggan
             </div>
 
-            <div class="text-center mb-4">
-                <h1 class="font-heading text-xl sm:text-2xl font-black text-white mb-1 tracking-tight">
-                    Layanan Pelanggan
-                </h1>
-                <p class="text-[11px] text-slate-300 leading-relaxed font-medium">
-                    Masukkan nomor WhatsApp atau CID terdaftar untuk memantau status jaringan, tagihan, dan tiket.
-                </p>
-            </div>
+            <h2 class="brand-heading">
+                Kelola Layanan<br>
+                Internet Anda<br>
+                <span style="color:#0878E5;">di Satu Tempat.</span>
+            </h2>
 
-            <!-- Flash Error / Info Alerts -->
-            @if(session('error'))
-                <div class="p-3 rounded-xl bg-rose-500/20 border border-rose-400/40 text-rose-200 text-xs font-medium mb-3 leading-snug flex items-start gap-2">
-                    <span class="text-rose-300 text-sm shrink-0">⚠️</span>
-                    <span>{{ session('error') }}</span>
+            <p class="brand-desc">
+                Pantau status jaringan, cek tagihan, buat tiket gangguan, dan kelola paket internet kapan saja melalui portal mandiri pelanggan IMS ONE.
+            </p>
+
+            <div class="brand-features">
+                <div class="brand-feature-item">
+                    <span class="brand-feature-dot"></span>
+                    <span class="brand-feature-text">Monitor status jaringan & uptime real-time</span>
                 </div>
-            @endif
-
-            @if(session('info'))
-                <div class="p-3 rounded-xl bg-[#0878E5]/25 border border-[#55C7FF]/40 text-[#55C7FF] text-xs font-medium mb-3 leading-snug flex items-start gap-2">
-                    <span class="text-brand-light text-sm shrink-0">ℹ️</span>
-                    <span>{{ session('info') }}</span>
+                <div class="brand-feature-item">
+                    <span class="brand-feature-dot" style="background:#55C7FF;box-shadow:0 0 8px rgba(85,199,255,0.7);"></span>
+                    <span class="brand-feature-text">Cek tagihan & riwayat pembayaran</span>
                 </div>
-            @endif
+                <div class="brand-feature-item">
+                    <span class="brand-feature-dot" style="background:#4ADE80;box-shadow:0 0 8px rgba(74,222,128,0.7);"></span>
+                    <span class="brand-feature-text">Buat tiket gangguan & lacak teknisi</span>
+                </div>
+                <div class="brand-feature-item">
+                    <span class="brand-feature-dot" style="background:#FBBF24;box-shadow:0 0 8px rgba(251,191,36,0.7);"></span>
+                    <span class="brand-feature-text">Manajemen paket & mutasi layanan</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <!-- Login Form -->
-            <form action="{{ route('customer.login') }}" method="POST" class="space-y-3.5">
-                @csrf
-                
+    <!-- ── RIGHT FORM PANEL ── -->
+    <div class="login-form-panel">
+        <div class="form-panel-glow"></div>
+
+        <!-- Header -->
+        <header class="login-header">
+            <a href="{{ url('/') }}" class="header-logo">
+                <div class="header-logo-icon">
+                    <svg style="width:17px;height:17px;color:#fff;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                    </svg>
+                </div>
                 <div>
-                    <label class="block font-bold text-xs text-slate-100 mb-1.5">
-                        Nomor WhatsApp / CID Pelanggan *
-                    </label>
-                    <div class="flex items-center h-10 px-3 rounded-xl bg-[#0E2238]/90 border border-white/20 focus-within:border-brand-light focus-within:ring-2 focus-within:ring-brand/40 transition-all shadow-inner">
-                        
-                        <!-- Country Prefix Badge -->
-                        <div class="flex items-center gap-1.5 pr-2.5 mr-2.5 border-r border-white/20 select-none shrink-0">
-                            <span class="text-xs">🇮🇩</span>
-                            <span class="text-brand-light text-xs font-black tracking-wide">+62</span>
-                        </div>
+                    <span class="header-logo-text">IMS<span style="color:#55C7FF;">ONE</span></span>
+                    <span class="header-logo-sub">Customer Portal</span>
+                </div>
+            </a>
+            <a href="{{ url('/') }}" class="header-back-btn">
+                <svg style="width:12px;height:12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                <span>Kembali ke Beranda</span>
+            </a>
+        </header>
 
-                        <!-- Numeric Dialpad Input -->
-                        <input 
-                            type="tel" 
-                            inputmode="numeric" 
-                            name="phone_or_cid" 
-                            placeholder="081298765432 atau CID" 
-                            required 
-                            autofocus
-                            class="w-full bg-transparent text-white placeholder-slate-400 text-xs sm:text-sm font-bold outline-none tracking-wide"
-                        />
+        <!-- Form Area -->
+        <div class="login-form-area">
+            <div class="login-card">
+
+                <!-- Security Bar -->
+                <div class="security-bar">
+                    <div class="security-indicator">
+                        <span class="security-dot"></span>
+                        SECURE ACCESS PORTAL
                     </div>
-                    
-                    <span class="text-[10px] text-slate-300 mt-1.5 flex items-center gap-1">
-                        <span class="text-brand-light">💡</span>
-                        <span>Bisa juga memasukkan ID Pelanggan (CID).</span>
+                    <span class="security-ssl">
+                        <svg style="width:10px;height:10px;display:inline;margin-right:3px;vertical-align:middle;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        256-BIT SSL
                     </span>
                 </div>
 
-                <button type="submit" class="w-full h-10 rounded-xl btn-brand-primary text-white font-black text-xs shadow-lg shadow-brand/30 transition-all flex items-center justify-center gap-1.5 hover:shadow-xl">
-                    <span>Masuk ke Portal Layanan</span>
-                    <span class="text-white font-black">&rarr;</span>
-                </button>
-            </form>
+                <!-- Title -->
+                <h1 class="login-title">Masuk ke Portal</h1>
+                <p class="login-subtitle">
+                    Gunakan nomor WhatsApp terdaftar atau Customer ID (CID) untuk mengakses layanan.
+                </p>
 
-            <div class="mt-4 pt-3 border-t border-white/15 text-center">
-                <p class="text-xs text-slate-300 mb-1">Belum terdaftar atau nomor HP berubah?</p>
-                <a href="https://wa.me/6281234567890?text=Halo%20CS%20IMS%20ONE%2C%20saya%20membutuhkan%20bantuan%20login%20portal%20pelanggan" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-light hover:text-white hover:underline transition-colors">
-                    <span>💬 Hubungi Customer Service 24/7</span>
-                </a>
+                <!-- Alerts -->
+                @if(session('error'))
+                    <div class="alert-error">
+                        <span style="font-size:14px;flex-shrink:0;">⚠️</span>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                @endif
+                @if(session('info'))
+                    <div class="alert-info">
+                        <span style="font-size:14px;flex-shrink:0;">ℹ️</span>
+                        <span>{{ session('info') }}</span>
+                    </div>
+                @endif
+
+                <!-- Form -->
+                <form action="{{ route('customer.login') }}" method="POST">
+                    @csrf
+
+                    <label class="form-label" for="phone_or_cid">
+                        Nomor WhatsApp atau CID Pelanggan
+                    </label>
+
+                    <div class="input-wrapper">
+                        <div class="input-prefix">
+                            <span class="prefix-flag">🇮🇩</span>
+                            <span class="prefix-code">+62</span>
+                        </div>
+                        <input
+                            id="phone_or_cid"
+                            type="tel"
+                            inputmode="numeric"
+                            name="phone_or_cid"
+                            placeholder="081298765432 atau CID"
+                            required
+                            autofocus
+                            class="form-input"
+                        />
+                    </div>
+
+                    <p class="input-hint">
+                        <svg style="width:12px;height:12px;color:#0878E5;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Dapat juga menggunakan ID Pelanggan (CID) dari tagihan Anda.
+                    </p>
+
+                    <button type="submit" class="btn-login">
+                        <span>Masuk ke Portal Layanan</span>
+                        <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="login-divider">
+                    <span class="divider-line"></span>
+                    <span class="divider-text">BUTUH BANTUAN?</span>
+                    <span class="divider-line"></span>
+                </div>
+
+                <div class="support-cta">
+                    <p>Belum terdaftar atau nomor HP berubah?</p>
+                    <a href="https://wa.me/6281234567890?text=Halo%20CS%20IMS%20ONE%2C%20saya%20membutuhkan%20bantuan%20login%20portal%20pelanggan" target="_blank">
+                        <svg style="width:14px;height:14px;" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.645 0C5.215 0 0 5.213 0 11.641c0 2.056.539 4.088 1.563 5.878L.057 23.404a.5.5 0 00.614.614l5.884-1.504A11.583 11.583 0 0011.645 23.28c6.43 0 11.645-5.213 11.645-11.64C23.29 5.213 18.075 0 11.645 0zm0 21.266a9.567 9.567 0 01-4.878-1.335l-.35-.208-3.63.927.944-3.546-.228-.364a9.562 9.562 0 01-1.476-5.099c0-5.29 4.327-9.596 9.618-9.596 5.29 0 9.617 4.306 9.617 9.596 0 5.29-4.327 9.625-9.617 9.625z"/></svg>
+                        Hubungi Customer Service 24/7
+                    </a>
+                </div>
+
             </div>
-
         </div>
 
-    </main>
+        <!-- Footer -->
+        <footer class="login-footer">
+            &copy; {{ date('Y') }} IMS ONE Fiber Network. Portal Layanan Mandiri Pelanggan.
+        </footer>
+    </div>
 
-    <!-- Footer -->
-    <footer class="w-full max-w-7xl mx-auto px-4 py-3 sm:py-3.5 text-center text-xs text-slate-400 relative z-10 shrink-0 border-t border-white/10">
-        &copy; {{ date('Y') }} IMS ONE Fiber Network. Portal Layanan Mandiri Pelanggan.
-    </footer>
+</div>
 
 </body>
 </html>
