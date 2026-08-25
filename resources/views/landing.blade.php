@@ -1916,15 +1916,18 @@
                             </div>
                         </div>
 
-                        <!-- Monochromatic Blue Waveform Stream -->
+                        <!-- Green Traffic Waveform Stream -->
                         <div class="p-3.5 rounded-2xl bg-blue-950/60 border border-blue-800 space-y-2 relative z-10">
                             <div class="flex items-center justify-between text-[11px] font-mono text-slate-300">
-                                <span class="text-brand-light font-bold">● Active Signal Stream</span>
-                                <span class="text-brand-light font-bold">100% Simetris Direct</span>
+                                <span class="text-emerald-400 font-bold flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    Active Signal Stream
+                                </span>
+                                <span class="text-emerald-400 font-bold">100% Simetris Direct</span>
                             </div>
                             <div class="h-8 w-full">
                                 <svg class="w-full h-full" viewBox="0 0 400 32" fill="none">
-                                    <path d="M0 16 L60 16 L80 4 L100 28 L120 16 L180 16 L200 2 L220 30 L240 16 L320 16 L340 6 L360 26 L380 16 L400 16" stroke="#6FC4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M0 16 L60 16 L80 4 L100 28 L120 16 L180 16 L200 2 L220 30 L240 16 L320 16 L340 6 L360 26 L380 16 L400 16" stroke="#10B981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </div>
                         </div>
