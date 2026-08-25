@@ -1,6 +1,8 @@
 <x-filament-panels::page>
-    <div class="w-full">
-        <!-- Leaflet Assets -->
+    <div 
+        x-data="oltCoverageApp(@js($this->allOdps), '{{ $this->coordinates }}')" 
+        class="olt-coverage-container w-full flex flex-col gap-5"
+    >
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -52,304 +54,286 @@
             }
         </style>
 
-        <div 
-            x-data="oltCoverageApp(@js($this->allOdps), '{{ $this->coordinates }}')" 
-            class="olt-coverage-container flex flex-col gap-5"
-        >
-            {{-- ── 1. BANNER HEADER ── --}}
-            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#071527] via-[#0d2847] to-[#174271] p-5 sm:p-6 text-white border border-white/10 shadow-xl">
-                <!-- Background Glow Orbs -->
-                <div class="absolute -top-16 -right-16 w-60 h-60 bg-sky-500/15 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="absolute -bottom-16 left-1/3 w-60 h-60 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        {{-- ── 1. BANNER HEADER ── --}}
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#071527] via-[#0d2847] to-[#174271] p-5 sm:p-6 text-white border border-white/10 shadow-xl">
+            <div class="absolute -top-16 -right-16 w-60 h-60 bg-sky-500/15 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-16 left-1/3 w-60 h-60 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div class="flex items-start sm:items-center gap-3.5">
-                        <div class="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-sky-400 shrink-0 shadow-inner">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h1 class="text-lg sm:text-xl font-black text-white tracking-tight">
-                                    Cek Coverage Lokasi ke ODP Terdekat
-                                </h1>
-                                <span class="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30 text-[10px] font-extrabold uppercase font-mono">
-                                    Interactive GIS
-                                </span>
-                            </div>
-                            <p class="text-xs text-slate-300 mt-0.5 font-medium">
-                                Periksa jarak radius garis lurus dan jalur jalan dropcore fiber optik ODP terdekat secara instan.
-                            </p>
-                        </div>
+            <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-start sm:items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-sky-400 shrink-0 shadow-inner">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
                     </div>
-
-                    <!-- Network Quick Stats Badge -->
-                    <div class="flex items-center gap-2 self-start sm:self-auto shrink-0 text-xs">
-                        <div class="px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 text-slate-200">
-                            <span class="text-[10px] text-slate-400 block font-bold uppercase">Total ODP Aktif</span>
-                            <strong class="text-sky-300 font-mono text-sm font-black">{{ count($this->allOdps) }} Node</strong>
-                        </div>
-                        <div class="px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 text-slate-200">
-                            <span class="text-[10px] text-slate-400 block font-bold uppercase">Max Radius Coverage</span>
-                            <strong class="text-emerald-400 font-mono text-sm font-black">&le; 150 Meter</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- ── 2. MAIN 2-COLUMN LAYOUT: FORM & RESULTS (LEFT) + INTERACTIVE MAP (RIGHT) ── --}}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-                
-                {{-- ── LEFT PANEL: SEARCH FORM & TELEMETRY RESULTS ── --}}
-                <div class="lg:col-span-5 flex flex-col gap-4">
-                    
-                    <!-- Input Card -->
-                    <div class="bg-[#0b1b30] border border-slate-700/60 rounded-2xl p-4 sm:p-5 shadow-xl space-y-3.5">
-                        <div class="flex items-center justify-between pb-2.5 border-b border-slate-800">
-                            <span class="text-xs font-black text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-sky-400"></span>
-                                Koordinat Target Pemasangan
-                            </span>
-                            <span class="text-[10px] text-slate-400 font-mono font-bold">GPS / Coords</span>
-                        </div>
-
-                        <form @submit.prevent="executeCoverageCheck" class="space-y-3">
-                            <div class="relative">
-                                <input 
-                                    type="text" 
-                                    x-model="inputCoordinates"
-                                    placeholder="-6.936988, 107.5904512" 
-                                    class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-[#071322] border border-slate-700 text-white placeholder-slate-500 focus:border-sky-400 focus:ring-2 focus:ring-sky-500/20 font-mono text-xs outline-none transition-all shadow-inner"
-                                    required
-                                />
-                                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-2">
-                                <!-- GPS Geolocation Button -->
-                                <button 
-                                    type="button" 
-                                    @click="getCurrentLocation" 
-                                    :disabled="isDetectingGps"
-                                    class="py-2.5 px-3 rounded-xl bg-[#132c4a] hover:bg-[#1a3a61] border border-sky-500/30 text-sky-300 font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm disabled:opacity-50 cursor-pointer"
-                                >
-                                    <span x-show="!isDetectingGps">📍 Gunakan GPS</span>
-                                    <span x-show="isDetectingGps" class="animate-pulse">⏳ Mencari GPS...</span>
-                                </button>
-
-                                <!-- Check Button -->
-                                <button 
-                                    type="submit" 
-                                    class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-black text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-sky-600/30 cursor-pointer"
-                                >
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                    </svg>
-                                    <span>Cek Coverage</span>
-                                </button>
-                            </div>
-                        </form>
-
-                        <div class="text-[11px] text-slate-400 flex items-center gap-1.5 pt-1">
-                            <span class="text-sky-400">💡</span>
-                            <span>Anda juga dapat <b>mengklik langsung titik mana saja pada peta</b>.</span>
-                        </div>
-                    </div>
-
-                    {{-- ── COVERAGE RESULT CARD ── --}}
-                    <template x-if="hasChecked && nearestResult">
-                        <div class="bg-[#0b1b30] border border-slate-700/60 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
-                            
-                            <!-- Status Header Pill -->
-                            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                                <span class="text-xs font-black text-slate-300 uppercase tracking-wider">
-                                    HASIL ANALISIS JARINGAN
-                                </span>
-
-                                <template x-if="nearestResult.isCovered">
-                                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-black flex items-center gap-1.5 shadow-sm">
-                                        <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-beacon-green"></span>
-                                        TERCOVER FIBER
-                                    </span>
-                                </template>
-                                <template x-if="!nearestResult.isCovered">
-                                    <span class="px-3 py-1 rounded-full bg-rose-500/20 border border-rose-400/40 text-rose-300 text-xs font-black flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full bg-rose-400"></span>
-                                        DI LUAR COVERAGE (&gt;150m)
-                                    </span>
-                                </template>
-                            </div>
-
-                            <!-- Distance & Road Dropcore Meter Readout -->
-                            <div class="p-3.5 rounded-xl bg-[#071322] border border-slate-800 flex items-center justify-between text-xs font-mono">
-                                <div>
-                                    <span class="text-[10px] text-slate-400 block font-sans">Jarak Garis Lurus:</span>
-                                    <strong class="text-white text-sm" x-text="nearestResult.distance + ' Meter'"></strong>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-[10px] text-sky-400 block font-sans">Est. Tarikan Dropcore:</span>
-                                    <strong class="text-sky-300 text-sm font-black font-mono" x-text="'~' + nearestResult.roadDistance + ' Meter'"></strong>
-                                </div>
-                            </div>
-
-                            {{-- ── CARD ODP TERDEKAT (UTAMA) ── --}}
-                            <div class="border border-sky-500/40 rounded-xl p-3.5 bg-[#0f243e] space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] font-black text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full bg-sky-400"></span>
-                                        ODP Utama Terdekat
-                                    </span>
-                                    <template x-if="nearestResult.odp.has_slot">
-                                        <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[10px] font-bold">
-                                            ✓ Slot Tersedia
-                                        </span>
-                                    </template>
-                                    <template x-if="!nearestResult.odp.has_slot">
-                                        <span class="px-2 py-0.5 rounded-full bg-rose-500/20 border border-rose-400/30 text-rose-300 text-[10px] font-bold">
-                                            ✕ Port Penuh
-                                        </span>
-                                    </template>
-                                </div>
-
-                                <div>
-                                    <h3 class="text-base font-black text-white" x-text="nearestResult.odp.name"></h3>
-                                    <span class="text-[11px] text-slate-300 font-mono block mt-0.5">
-                                        Kode ODP: <strong class="text-sky-300" x-text="nearestResult.odp.code"></strong>
-                                    </span>
-                                </div>
-
-                                <!-- Port Usage Meter -->
-                                <div class="space-y-1">
-                                    <div class="flex justify-between text-[10.5px] text-slate-300">
-                                        <span>Port Terpakai:</span>
-                                        <strong class="text-white" x-text="nearestResult.odp.used_ports + ' / ' + nearestResult.odp.total_ports + ' Port'"></strong>
-                                    </div>
-                                    <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                                        <div 
-                                            class="h-full rounded-full transition-all"
-                                            :class="nearestResult.odp.has_slot ? 'bg-sky-400' : 'bg-rose-500'"
-                                            :style="'width: ' + Math.min(100, Math.round((nearestResult.odp.used_ports / nearestResult.odp.total_ports) * 100)) + '%'"
-                                        ></div>
-                                    </div>
-                                </div>
-
-                                <!-- Hardware Specs -->
-                                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700/60 text-[11px]">
-                                    <div>
-                                        <span class="text-slate-400 block text-[10px]">OLT Source:</span>
-                                        <strong class="text-slate-200 truncate block" x-text="nearestResult.odp.olt_name"></strong>
-                                    </div>
-                                    <div>
-                                        <span class="text-slate-400 block text-[10px]">Port PON:</span>
-                                        <strong class="text-slate-200 truncate block" x-text="nearestResult.odp.pon_name"></strong>
-                                    </div>
-                                </div>
-
-                                <!-- Action Buttons -->
-                                <div class="pt-2 flex items-center gap-2">
-                                    <a 
-                                        :href="'https://www.google.com/maps/dir/?api=1&destination=' + nearestResult.odp.lat + ',' + nearestResult.odp.lng"
-                                        target="_blank" 
-                                        class="flex-1 py-1.5 px-2.5 rounded-lg bg-sky-600/30 hover:bg-sky-600/50 border border-sky-400/40 text-sky-200 text-xs font-bold text-center transition-all flex items-center justify-center gap-1"
-                                    >
-                                        <span>🧭 Rute Google Maps</span>
-                                    </a>
-                                    <button 
-                                        type="button" 
-                                        @click="copyCoordinates(nearestResult.odp.lat + ', ' + nearestResult.odp.lng)" 
-                                        class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all"
-                                        title="Salin Koordinat ODP"
-                                    >
-                                        📋 Salin
-                                    </button>
-                                </div>
-                            </div>
-
-                            {{-- ── CARD ODP KEDUA (OPSI CADANGAN) ── --}}
-                            <template x-if="secondResult">
-                                <div class="border border-slate-700/60 rounded-xl p-3.5 bg-[#081525] space-y-2">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                                            <span>ODP Alternatif Kedua</span>
-                                        </span>
-                                        <span class="text-[10.5px] font-mono text-sky-400 font-bold" x-text="secondResult.distance + 'm'"></span>
-                                    </div>
-
-                                    <div class="flex items-center justify-between">
-                                        <strong class="text-xs text-white" x-text="secondResult.odp.name"></strong>
-                                        <span class="text-[11px] text-slate-300 font-mono" x-text="secondResult.odp.used_ports + '/' + secondResult.odp.total_ports + ' port'"></span>
-                                    </div>
-                                </div>
-                            </template>
-
-                        </div>
-                    </template>
-
-                </div>
-
-                {{-- ── RIGHT PANEL: INTERACTIVE LEAFLET GIS MAP ── --}}
-                <div class="lg:col-span-7">
-                    <div class="bg-[#0b1b30] border border-slate-700/60 rounded-2xl overflow-hidden shadow-xl flex flex-col">
-                        
-                        <!-- Map Header Controls -->
-                        <div class="flex items-center justify-between px-4 py-3 bg-[#071322] border-b border-slate-800 text-xs">
-                            <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-sky-400 pulse-beacon-blue"></span>
-                                <strong class="text-white font-bold">Peta Sebaran ODP &amp; Jalur Fiber Optik</strong>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button 
-                                    type="button" 
-                                    @click="resetMapView" 
-                                    class="px-2.5 py-1 rounded-lg bg-[#132c4a] hover:bg-[#1a3a61] text-sky-300 text-[11px] font-bold transition-all border border-sky-500/20"
-                                >
-                                    🔄 Reset View
-                                </button>
-                                <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 text-[10px] font-mono">
-                                    Live Map
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Leaflet Map Canvas -->
-                        <div 
-                            id="filament-olt-coverage-map" 
-                            class="w-full h-[460px] sm:h-[520px] lg:h-[580px] bg-[#020b17]"
-                        ></div>
-
-                        <!-- Map Legend Footer -->
-                        <div class="px-4 py-2.5 bg-[#071322] border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-400">
-                            <div class="flex items-center gap-4">
-                                <span class="flex items-center gap-1.5">
-                                    <span class="w-3 h-3 rounded-full bg-emerald-500 border border-white"></span>
-                                    <span>ODP Tersedia</span>
-                                </span>
-                                <span class="flex items-center gap-1.5">
-                                    <span class="w-3 h-3 rounded-full bg-rose-500 border border-white"></span>
-                                    <span>ODP Penuh</span>
-                                </span>
-                                <span class="flex items-center gap-1.5">
-                                    <span class="w-3 h-3 rounded-full bg-sky-400 border border-white"></span>
-                                    <span>Lokasi Pemasangan</span>
-                                </span>
-                            </div>
-                            <span class="text-slate-500 text-[10px]">
-                                Garis biru putus-putus = Jalur tarikan dropcore fiber
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-lg sm:text-xl font-black text-white tracking-tight">
+                                Cek Coverage Lokasi ke ODP Terdekat
+                            </h1>
+                            <span class="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30 text-[10px] font-extrabold uppercase font-mono">
+                                Interactive GIS
                             </span>
                         </div>
-
+                        <p class="text-xs text-slate-300 mt-0.5 font-medium">
+                            Periksa jarak radius garis lurus dan jalur jalan dropcore fiber optik ODP terdekat secara instan.
+                        </p>
                     </div>
                 </div>
 
+                <div class="flex items-center gap-2 self-start sm:self-auto shrink-0 text-xs">
+                    <div class="px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 text-slate-200">
+                        <span class="text-[10px] text-slate-400 block font-bold uppercase">Total ODP Aktif</span>
+                        <strong class="text-sky-300 font-mono text-sm font-black">{{ count($this->allOdps) }} Node</strong>
+                    </div>
+                    <div class="px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 text-slate-200">
+                        <span class="text-[10px] text-slate-400 block font-bold uppercase">Max Radius Coverage</span>
+                        <strong class="text-emerald-400 font-mono text-sm font-black">&le; 150 Meter</strong>
+                    </div>
+                </div>
             </div>
         </div>
 
-        {{-- ── 3. ALPINE.JS CONTROLLER SCRIPT ── --}}
+        {{-- ── 2. MAIN 2-COLUMN LAYOUT: FORM & RESULTS (LEFT) + INTERACTIVE MAP (RIGHT) ── --}}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+            
+            {{-- ── LEFT PANEL: SEARCH FORM & TELEMETRY RESULTS ── --}}
+            <div class="lg:col-span-5 flex flex-col gap-4">
+                
+                {{-- Input Card --}}
+                <div class="bg-[#0b1b30] border border-slate-700/60 rounded-2xl p-4 sm:p-5 shadow-xl space-y-3.5">
+                    <div class="flex items-center justify-between pb-2.5 border-b border-slate-800">
+                        <span class="text-xs font-black text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                            Koordinat Target Pemasangan
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-mono font-bold">GPS / Coords</span>
+                    </div>
+
+                    <form @submit.prevent="executeCoverageCheck" class="space-y-3">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                x-model="inputCoordinates"
+                                placeholder="-6.936988, 107.5904512" 
+                                class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-[#071322] border border-slate-700 text-white placeholder-slate-500 focus:border-sky-400 focus:ring-2 focus:ring-sky-500/20 font-mono text-xs outline-none transition-all shadow-inner"
+                                required
+                            />
+                            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <button 
+                                type="button" 
+                                @click="getCurrentLocation" 
+                                :disabled="isDetectingGps"
+                                class="py-2.5 px-3 rounded-xl bg-[#132c4a] hover:bg-[#1a3a61] border border-sky-500/30 text-sky-300 font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm disabled:opacity-50 cursor-pointer"
+                            >
+                                <span x-show="!isDetectingGps">📍 Gunakan GPS</span>
+                                <span x-show="isDetectingGps" class="animate-pulse">⏳ Mencari GPS...</span>
+                            </button>
+
+                            <button 
+                                type="submit" 
+                                class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-black text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-sky-600/30 cursor-pointer"
+                            >
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                                <span>Cek Coverage</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-[11px] text-slate-400 flex items-center gap-1.5 pt-1">
+                        <span class="text-sky-400">💡</span>
+                        <span>Anda juga dapat <b>mengklik langsung titik mana saja pada peta</b>.</span>
+                    </div>
+                </div>
+
+                {{-- Coverage Result Card --}}
+                <template x-if="hasChecked && nearestResult">
+                    <div class="bg-[#0b1b30] border border-slate-700/60 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
+                        
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                            <span class="text-xs font-black text-slate-300 uppercase tracking-wider">
+                                HASIL ANALISIS JARINGAN
+                            </span>
+
+                            <template x-if="nearestResult.isCovered">
+                                <span class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-black flex items-center gap-1.5 shadow-sm">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-beacon-green"></span>
+                                    TERCOVER FIBER
+                                </span>
+                            </template>
+                            <template x-if="!nearestResult.isCovered">
+                                <span class="px-3 py-1 rounded-full bg-rose-500/20 border border-rose-400/40 text-rose-300 text-xs font-black flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                                    DI LUAR COVERAGE (&gt;150m)
+                                </span>
+                            </template>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-[#071322] border border-slate-800 flex items-center justify-between text-xs font-mono">
+                            <div>
+                                <span class="text-[10px] text-slate-400 block font-sans">Jarak Garis Lurus:</span>
+                                <strong class="text-white text-sm" x-text="nearestResult.distance + ' Meter'"></strong>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-sky-400 block font-sans">Est. Tarikan Dropcore:</span>
+                                <strong class="text-sky-300 text-sm font-black font-mono" x-text="'~' + nearestResult.roadDistance + ' Meter'"></strong>
+                            </div>
+                        </div>
+
+                        {{-- Card ODP Utama --}}
+                        <div class="border border-sky-500/40 rounded-xl p-3.5 bg-[#0f243e] space-y-2.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-black text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                                    ODP Utama Terdekat
+                                </span>
+                                <template x-if="nearestResult.odp.has_slot">
+                                    <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[10px] font-bold">
+                                        ✓ Slot Tersedia
+                                    </span>
+                                </template>
+                                <template x-if="!nearestResult.odp.has_slot">
+                                    <span class="px-2 py-0.5 rounded-full bg-rose-500/20 border border-rose-400/30 text-rose-300 text-[10px] font-bold">
+                                        ✕ Port Penuh
+                                    </span>
+                                </template>
+                            </div>
+
+                            <div>
+                                <h3 class="text-base font-black text-white" x-text="nearestResult.odp.name"></h3>
+                                <span class="text-[11px] text-slate-300 font-mono block mt-0.5">
+                                    Kode ODP: <strong class="text-sky-300" x-text="nearestResult.odp.code"></strong>
+                                </span>
+                            </div>
+
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-[10.5px] text-slate-300">
+                                    <span>Port Terpakai:</span>
+                                    <strong class="text-white" x-text="nearestResult.odp.used_ports + ' / ' + nearestResult.odp.total_ports + ' Port'"></strong>
+                                </div>
+                                <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                                    <div 
+                                        class="h-full rounded-full transition-all"
+                                        :class="nearestResult.odp.has_slot ? 'bg-sky-400' : 'bg-rose-500'"
+                                        :style="'width: ' + Math.min(100, Math.round((nearestResult.odp.used_ports / nearestResult.odp.total_ports) * 100)) + '%'"
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700/60 text-[11px]">
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">OLT Source:</span>
+                                    <strong class="text-slate-200 truncate block" x-text="nearestResult.odp.olt_name"></strong>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Port PON:</span>
+                                    <strong class="text-slate-200 truncate block" x-text="nearestResult.odp.pon_name"></strong>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 flex items-center gap-2">
+                                <a 
+                                    :href="'https://www.google.com/maps/dir/?api=1&destination=' + nearestResult.odp.lat + ',' + nearestResult.odp.lng"
+                                    target="_blank" 
+                                    class="flex-1 py-1.5 px-2.5 rounded-lg bg-sky-600/30 hover:bg-sky-600/50 border border-sky-400/40 text-sky-200 text-xs font-bold text-center transition-all flex items-center justify-center gap-1"
+                                >
+                                    <span>🧭 Rute Google Maps</span>
+                                </a>
+                                <button 
+                                    type="button" 
+                                    @click="copyCoordinates(nearestResult.odp.lat + ', ' + nearestResult.odp.lng)" 
+                                    class="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all"
+                                    title="Salin Koordinat ODP"
+                                >
+                                    📋 Salin
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Card ODP Kedua --}}
+                        <template x-if="secondResult">
+                            <div class="border border-slate-700/60 rounded-xl p-3.5 bg-[#081525] space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                                        <span>ODP Alternatif Kedua</span>
+                                    </span>
+                                    <span class="text-[10.5px] font-mono text-sky-400 font-bold" x-text="secondResult.distance + 'm'"></span>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <strong class="text-xs text-white" x-text="secondResult.odp.name"></strong>
+                                    <span class="text-[11px] text-slate-300 font-mono" x-text="secondResult.odp.used_ports + '/' + secondResult.odp.total_ports + ' port'"></span>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+                </template>
+
+            </div>
+
+            {{-- ── RIGHT PANEL: INTERACTIVE LEAFLET GIS MAP ── --}}
+            <div class="lg:col-span-7">
+                <div class="bg-[#0b1b30] border border-slate-700/60 rounded-2xl overflow-hidden shadow-xl flex flex-col">
+                    
+                    <div class="flex items-center justify-between px-4 py-3 bg-[#071322] border-b border-slate-800 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-sky-400 pulse-beacon-blue"></span>
+                            <strong class="text-white font-bold">Peta Sebaran ODP &amp; Jalur Fiber Optik</strong>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button 
+                                type="button" 
+                                @click="resetMapView" 
+                                class="px-2.5 py-1 rounded-lg bg-[#132c4a] hover:bg-[#1a3a61] text-sky-300 text-[11px] font-bold transition-all border border-sky-500/20"
+                            >
+                                🔄 Reset View
+                            </button>
+                            <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 text-[10px] font-mono">
+                                Live Map
+                            </span>
+                        </div>
+                    </div>
+
+                    <div 
+                        id="filament-olt-coverage-map" 
+                        class="w-full h-[460px] sm:h-[520px] lg:h-[580px] bg-[#020b17]"
+                    ></div>
+
+                    <div class="px-4 py-2.5 bg-[#071322] border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-400">
+                        <div class="flex items-center gap-4">
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500 border border-white"></span>
+                                <span>ODP Tersedia</span>
+                            </span>
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded-full bg-rose-500 border border-white"></span>
+                                <span>ODP Penuh</span>
+                            </span>
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded-full bg-sky-400 border border-white"></span>
+                                <span>Lokasi Pemasangan</span>
+                            </span>
+                        </div>
+                        <span class="text-slate-500 text-[10px]">
+                            Garis biru putus-putus = Jalur tarikan dropcore fiber
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
         <script>
             (function() {
                 function registerOltCoverageApp() {
@@ -385,7 +369,6 @@
                                 this.mapInstance = null;
                             }
 
-                            // Initial Center
                             let defaultLat = -6.936988;
                             let defaultLng = 107.5904512;
 
