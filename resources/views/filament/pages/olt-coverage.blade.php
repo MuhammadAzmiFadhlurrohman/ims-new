@@ -177,7 +177,7 @@
             async executeCoverageCheck() {
                 const coords = this.parseCoordinates(this.inputCoordinates);
                 if (!coords) {
-                    alert('Format koordinat tidak valid. Contoh: -6.936988, 107.5904512');
+                    IMS.error('Format koordinat tidak valid.<br><span style="font-size:11.5px; color:#64748b;">Contoh: <code>-6.936988, 107.5904512</code></span>', 'Format Koordinat Salah');
                     return;
                 }
 
@@ -304,7 +304,7 @@
 
             getCurrentLocation() {
                 if (!navigator.geolocation) {
-                    alert('Geolokasi GPS tidak didukung di browser ini.');
+                    IMS.warning('Geolokasi GPS tidak didukung di browser ini.', 'GPS Tidak Didukung');
                     return;
                 }
                 this.isDetectingGps = true;
@@ -318,7 +318,7 @@
                     },
                     (err) => {
                         this.isDetectingGps = false;
-                        alert('Gagal mendeteksi lokasi GPS. Silakan masukkan koordinat secara manual.');
+                        IMS.error('Gagal mendeteksi lokasi GPS. Silakan masukkan koordinat secara manual.', 'GPS Gagal');
                     },
                     { timeout: 8000, enableHighAccuracy: true }
                 );
@@ -333,7 +333,7 @@
 
             copyCoordinates(text) {
                 navigator.clipboard.writeText(text).then(() => {
-                    alert('Koordinat berhasil disalin: ' + text);
+                    IMS.toast('Koordinat berhasil disalin ke clipboard!', 'success', 2500);
                 });
             }
         }"

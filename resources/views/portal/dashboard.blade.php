@@ -47,6 +47,9 @@
         }
     </script>
 
+    <!-- SweetAlert2 Assets & Helpers -->
+    <x-sweetalert />
+
     <style>
         [x-cloak] {
             display: none !important;

@@ -784,7 +784,7 @@
                                 <div class="arsip-doc-subtitle" style="color: #0284c7; font-weight: 700;">Download / Lihat KTP</div>
                             </a>
                         @else
-                            <div class="arsip-card-item" style="cursor: pointer;" @click="alert('Foto KTP belum diunggah untuk pelanggan ini.');">
+                            <div class="arsip-card-item" style="cursor: pointer;" @click="IMS.info('Foto KTP belum diunggah untuk pelanggan ini.', 'Dokumen KTP');">
                                 <span class="arsip-download-icon">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                 </span>
@@ -805,7 +805,7 @@
                                 <div class="arsip-doc-subtitle" style="color: #0284c7; font-weight: 700;">Download / Lihat Rumah</div>
                             </a>
                         @else
-                            <div class="arsip-card-item" style="cursor: pointer;" @click="alert('Foto rumah / lokasi instalasi belum diunggah untuk pelanggan ini.');">
+                            <div class="arsip-card-item" style="cursor: pointer;" @click="IMS.info('Foto rumah / lokasi instalasi belum diunggah untuk pelanggan ini.', 'Foto Lokasi / Rumah');">
                                 <span class="arsip-download-icon">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                 </span>
@@ -1117,7 +1117,7 @@
                             </button>
                             <button
                                 type="button"
-                                @click="if(devName.trim()) { $wire.addDevice(devName, devType, devQty, devStatus); showAddModal = false; devName = ''; devType = ''; } else { alert('Nama Perangkat harus diisi'); }"
+                                @click="if(devName.trim()) { $wire.addDevice(devName, devType, devQty, devStatus); showAddModal = false; devName = ''; devType = ''; } else { IMS.warning('Nama Perangkat harus diisi terlebih dahulu.', 'Form Belum Lengkap'); }"
                                 style="background: #2563eb; color: #ffffff; font-weight: 700; font-size: 13px; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);"
                             >
                                 Simpan Perangkat

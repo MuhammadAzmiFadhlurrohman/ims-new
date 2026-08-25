@@ -703,7 +703,7 @@ Mohon maaf atas ketidaknyamanan ini.</textarea>
                 </div>
                 <div class="ims-modal-footer">
                     <button @click="showOutageModal = false" class="ims-btn-cancel">Batal</button>
-                    <button @click="showOutageModal = false; alert('Notifikasi WhatsApp Berhasil Dikirim ke 48 Pelanggan!');" class="ims-btn-confirm">
+                    <button @click="showOutageModal = false; IMS.success('Notifikasi WhatsApp gangguan jaringan berhasil disiarkan ke 48 pelanggan.', 'Broadcast Terkirim!');" class="ims-btn-confirm">
                         🚀 Kirim Broadcast Sekarang
                     </button>
                 </div>

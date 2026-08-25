@@ -23,6 +23,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
 
+    <!-- SweetAlert2 Assets & IMS Helpers -->
+    <x-sweetalert />
+
     <!-- Tailwind CDN with IMS ONE Monochromatic Blue Design System -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -645,13 +648,13 @@
 
                 checkCoverage() {
                     if (!this.coverageInput.trim()) {
-                        alert('Silakan masukkan titik koordinat (contoh: -6.9175, 107.6096) atau klik tombol "Gunakan GPS".');
+                        IMS.warning('Silakan masukkan titik koordinat (contoh: <code>-6.9175, 107.6096</code>) atau klik tombol <b>Gunakan GPS</b>.', 'Masukkan Titik Lokasi');
                         return;
                     }
 
                     const coords = this.parseCoordinates(this.coverageInput);
                     if (!coords) {
-                        alert('Format koordinat tidak valid.\n\nContoh format yang benar:\n-6.9175, 107.6096\n(Atau gunakan tombol "Gunakan GPS" untuk mendeteksi posisi Anda).');
+                        IMS.error('Format koordinat tidak valid.<br><br><span class="text-xs text-slate-500">Contoh format yang benar:<br><code>-6.9175, 107.6096</code><br>(Atau gunakan tombol "Gunakan GPS" untuk mendeteksi posisi Anda).</span>', 'Format Tidak Sesuai');
                         return;
                     }
 
@@ -665,7 +668,7 @@
 
                 useCurrentLocation() {
                     if (!navigator.geolocation) {
-                        alert('Fitur geolokasi GPS tidak didukung oleh browser Anda.');
+                        IMS.warning('Fitur geolokasi GPS tidak didukung oleh browser Anda.', 'GPS Tidak Didukung');
                         return;
                     }
                     this.coverageInput = 'Mendeteksi koordinat GPS...';
@@ -682,7 +685,7 @@
                         },
                         (err) => {
                             this.coverageInput = '';
-                            alert('Gagal mendeteksi sinyal GPS. Silakan masukkan titik koordinat secara manual (contoh: -6.9175, 107.6096).');
+                            IMS.error('Gagal mendeteksi sinyal GPS. Silakan masukkan titik koordinat secara manual (contoh: <code>-6.9175, 107.6096</code>).', 'Gagal Mendeteksi GPS');
                         },
                         { timeout: 8000, enableHighAccuracy: true }
                     );
@@ -690,10 +693,11 @@
 
                 submitNotify() {
                     if (!this.phoneForNotification) {
-                        alert('Mohon masukkan nomor WhatsApp Anda.');
+                        IMS.warning('Mohon masukkan nomor WhatsApp Anda yang aktif.', 'Nomor WhatsApp Kosong');
                         return;
                     }
                     this.notifySubmitted = true;
+                    IMS.success('Terima kasih! Kami akan memberi tahu Anda segera setelah jaringan fiber siap.', 'Notifikasi Aktif');
                 },
 
                 openRegisterWithCoverage() {
@@ -709,7 +713,7 @@
 
                 submitLead() {
                     if (!this.leadName || !this.leadPhone) {
-                        alert('Mohon lengkapi Nama dan Nomor WhatsApp Anda.');
+                        IMS.warning('Mohon lengkapi Nama dan Nomor WhatsApp Anda.', 'Form Belum Lengkap');
                         return;
                     }
 

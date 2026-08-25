@@ -42,6 +42,9 @@
         }
     </script>
 
+    <!-- SweetAlert2 Assets & Helpers -->
+    <x-sweetalert />
+
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body {

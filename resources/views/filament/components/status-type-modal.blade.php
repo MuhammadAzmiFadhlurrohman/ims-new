@@ -347,7 +347,7 @@
             window.closeImsStatusModal();
             window.location.reload();
         }).catch(err => {
-            alert('Gagal mengubah status tipe: ' + err.message);
+            IMS.error('Gagal mengubah status tipe: ' + (err.message || 'Terjadi kesalahan sistem'), 'Gagal Update');
             if (saveText) saveText.textContent = 'Simpan';
         });
     };
@@ -500,7 +500,7 @@
             window.closeImsPaymentMethodModal();
             window.location.reload();
         }).catch(err => {
-            alert('Gagal: ' + err.message);
+            IMS.error('Gagal mengubah metode pembayaran: ' + (err.message || 'Terjadi kesalahan sistem'), 'Gagal Update');
             if (btn) btn.textContent = 'Simpan';
         });
     };
@@ -543,7 +543,7 @@
             window.closeImsPublishModal();
             window.location.reload();
         }).catch(err => {
-            alert('Gagal: ' + err.message);
+            IMS.error('Gagal mem-publish invoice: ' + (err.message || 'Terjadi kesalahan sistem'), 'Gagal Publish');
             if (btn) btn.textContent = 'Ya, Publish';
         });
     };
@@ -598,7 +598,7 @@
             window.closeImsAcceptModal();
             window.location.reload();
         }).catch(err => {
-            alert('Gagal: ' + err.message);
+            IMS.error('Gagal mencatat pelunasan: ' + (err.message || 'Terjadi kesalahan sistem'), 'Gagal Konfirmasi');
             if (btn) btn.textContent = 'Konfirmasi Pelunasan';
         });
     };
@@ -641,7 +641,7 @@
             window.closeImsDeleteModal();
             window.location.reload();
         }).catch(err => {
-            alert('Gagal: ' + err.message);
+            IMS.error('Gagal menghapus data invoice: ' + (err.message || 'Terjadi kesalahan sistem'), 'Gagal Hapus');
             if (btn) btn.textContent = 'Ya, Hapus Data';
         });
     };

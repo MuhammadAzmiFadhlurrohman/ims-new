@@ -9,11 +9,11 @@
         quantity: '1',
         addItem() {
             if (!this.selectedItem) {
-                alert('Silakan pilih perangkat terlebih dahulu.');
+                IMS.warning('Silakan pilih perangkat terlebih dahulu.', 'Pilih Perangkat');
                 return;
             }
             if (!this.quantity || this.quantity <= 0) {
-                alert('Silakan masukkan jumlah perangkat yang valid.');
+                IMS.warning('Silakan masukkan jumlah perangkat yang valid (minimal 1).', 'Jumlah Tidak Valid');
                 return;
             }
             if (!Array.isArray(this.items)) {

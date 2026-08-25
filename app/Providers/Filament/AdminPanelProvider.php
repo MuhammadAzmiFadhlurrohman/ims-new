@@ -261,7 +261,113 @@ class AdminPanelProvider extends PanelProvider
                                 return originalConfirm.apply(this, arguments);
                             };
                         });
+
+                        // Preserve & Restore Sidebar Scroll Position across page navigation
+                        (function() {
+                            var SCROLL_KEY = "ims_sidebar_scroll_pos";
+                            var isRestoring = false;
+
+                            function getSidebarNav() {
+                                return document.querySelector(".fi-sidebar nav, .fi-sidebar-nav, aside.fi-sidebar nav");
+                            }
+
+                            function saveSidebarScroll() {
+                                var nav = getSidebarNav();
+                                if (nav && !isRestoring) {
+                                    sessionStorage.setItem(SCROLL_KEY, String(nav.scrollTop));
+                                }
+                            }
+
+                            function getActiveSidebarItem() {
+                                return document.querySelector(
+                                    ".fi-sidebar-item.fi-active, " +
+                                    ".fi-sidebar-item.fi-sidebar-item-active, " +
+                                    ".fi-sidebar-item-button.fi-active, " +
+                                    ".fi-sidebar-item-button[aria-current=\"page\"], " +
+                                    ".fi-sidebar a[aria-current=\"page\"], " +
+                                    ".fi-sidebar .fi-active"
+                                );
+                            }
+
+                            function isElementInNavView(el, nav) {
+                                if (!el || !nav) return false;
+                                var elRect = el.getBoundingClientRect();
+                                var navRect = nav.getBoundingClientRect();
+                                return (
+                                    elRect.top >= navRect.top - 15 &&
+                                    elRect.bottom <= navRect.bottom + 15
+                                );
+                            }
+
+                            function restoreSidebarScroll() {
+                                var nav = getSidebarNav();
+                                if (!nav) return;
+
+                                var saved = sessionStorage.getItem(SCROLL_KEY);
+                                var activeItem = getActiveSidebarItem();
+
+                                isRestoring = true;
+
+                                if (saved !== null && saved !== undefined && saved !== "") {
+                                    var scrollVal = parseInt(saved, 10);
+                                    if (!isNaN(scrollVal)) {
+                                        nav.scrollTop = scrollVal;
+                                    }
+                                }
+
+                                if (activeItem && !isElementInNavView(activeItem, nav)) {
+                                    activeItem.scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" });
+                                    sessionStorage.setItem(SCROLL_KEY, String(nav.scrollTop));
+                                }
+
+                                setTimeout(function() {
+                                    isRestoring = false;
+                                }, 100);
+                            }
+
+                            function initSidebarScrollPersistence() {
+                                restoreSidebarScroll();
+                                requestAnimationFrame(restoreSidebarScroll);
+                                setTimeout(restoreSidebarScroll, 60);
+                                setTimeout(restoreSidebarScroll, 180);
+                                setTimeout(restoreSidebarScroll, 400);
+
+                                var nav = getSidebarNav();
+                                if (nav) {
+                                    nav.removeEventListener("scroll", onNavScroll);
+                                    nav.addEventListener("scroll", onNavScroll, { passive: true });
+                                }
+                            }
+
+                            var scrollDebounceTimer = null;
+                            function onNavScroll() {
+                                if (isRestoring) return;
+                                clearTimeout(scrollDebounceTimer);
+                                scrollDebounceTimer = setTimeout(saveSidebarScroll, 50);
+                            }
+
+                            document.addEventListener("click", function(e) {
+                                var sidebarLink = e.target.closest(".fi-sidebar a, .fi-sidebar-item-button, .fi-sidebar-item");
+                                if (sidebarLink) {
+                                    saveSidebarScroll();
+                                }
+                            }, true);
+
+                            window.addEventListener("beforeunload", saveSidebarScroll);
+                            document.addEventListener("DOMContentLoaded", initSidebarScrollPersistence);
+                            document.addEventListener("livewire:navigated", initSidebarScrollPersistence);
+                            document.addEventListener("livewire:init", initSidebarScrollPersistence);
+                        })();
                     </script>
+                ')
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => Blade::render('
+                    <link rel="stylesheet" href="' . asset('vendor/sweetalert2/sweetalert2.min.css') . '">
+                    <link rel="stylesheet" href="' . asset('vendor/sweetalert2/ims-sweetalert.css') . '">
+                    <script src="' . asset('vendor/sweetalert2/sweetalert2.all.min.js') . '"></script>
+                    <script src="' . asset('vendor/sweetalert2/ims-sweetalert.js') . '"></script>
                 ')
             )
             ->renderHook(
