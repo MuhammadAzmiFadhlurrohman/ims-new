@@ -58,6 +58,10 @@
                 align-items: center;
                 gap: 5px;
             }
+            .odp-pin, .custom-ftth-node {
+                background: transparent !important;
+                border: none !important;
+            }
             .leaflet-popup-content-wrapper {
                 border-radius: 14px !important;
                 padding: 4px !important;
