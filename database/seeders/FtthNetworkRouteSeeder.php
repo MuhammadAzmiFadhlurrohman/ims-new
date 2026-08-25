@@ -158,7 +158,7 @@ class FtthNetworkRouteSeeder extends Seeder
         ]);
 
         // 6. Distribution Cables (Blue Lines)
-        $pon4Odps = Odp::where('pon_port_id', 4)->orderBy('id')->get();
+        $pon4Odps = Odp::where('pon_port_id', 4)->orderBy('code')->get();
         if ($pon4Odps->count() >= 2) {
             $pon4Coords = [[-6.92900, 107.59280]];
             foreach ($pon4Odps as $odp) {
@@ -180,7 +180,7 @@ class FtthNetworkRouteSeeder extends Seeder
             ]);
         }
 
-        $pon5Odps = Odp::where('pon_port_id', 5)->orderBy('id')->get();
+        $pon5Odps = Odp::where('pon_port_id', 5)->orderBy('code')->get();
         if ($pon5Odps->count() >= 2) {
             $pon5Coords = [[-6.93480, 107.60050]];
             foreach ($pon5Odps as $odp) {
@@ -202,7 +202,7 @@ class FtthNetworkRouteSeeder extends Seeder
             ]);
         }
 
-        $pon3Odps = Odp::where('pon_port_id', 3)->orderBy('id')->get();
+        $pon3Odps = Odp::where('pon_port_id', 3)->orderBy('code')->get();
         if ($pon3Odps->count() >= 2) {
             $pon3Coords = [[-6.93780, 107.58900]];
             foreach ($pon3Odps as $odp) {
