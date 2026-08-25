@@ -372,9 +372,9 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::HEAD_END,
                 fn () => Blade::render('
                     <link rel="stylesheet" href="' . asset('vendor/sweetalert2/sweetalert2.min.css') . '">
-                    <link rel="stylesheet" href="' . asset('vendor/sweetalert2/ims-sweetalert.css') . '">
+                    <link rel="stylesheet" href="' . asset('vendor/sweetalert2/ims-sweetalert.css') . '?v=' . time() . '">
                     <script src="' . asset('vendor/sweetalert2/sweetalert2.all.min.js') . '"></script>
-                    <script src="' . asset('vendor/sweetalert2/ims-sweetalert.js') . '"></script>
+                    <script src="' . asset('vendor/sweetalert2/ims-sweetalert.js') . '?v=' . time() . '"></script>
                 ')
             )
             ->renderHook(
