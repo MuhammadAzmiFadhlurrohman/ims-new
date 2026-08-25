@@ -1,9 +1,6 @@
 <x-filament-panels::page>
     <div 
-        x-data="imsOltCoverageComponent({
-            allOdps: {{ \Illuminate\Support\Js::from($this->allOdps) }},
-            inputCoordinates: '{{ addslashes($this->coordinates) }}'
-        })"
+        x-data="imsOltCoverageComponent()"
         class="ims-coverage-root"
         style="display: flex; flex-direction: column; gap: 1.25rem; width: 100%; font-family: 'Plus Jakarta Sans', sans-serif;"
     >
@@ -347,11 +344,12 @@
 
         </div>
 
-        <script>
-            window.imsOltCoverageComponent = function(config) {
+        @script
+<script>
+            window.imsOltCoverageComponent = function() {
                 return {
-                    allOdps: config.allOdps || [],
-                    inputCoordinates: config.inputCoordinates || '',
+                    allOdps: {!! json_encode($this->allOdps) !!},
+                    inputCoordinates: {!! json_encode($this->coordinates) !!},
                     mapInstance: null,
                     odpMarkersLayer: null,
                     userMarkerLayer: null,
@@ -701,5 +699,6 @@
                 };
             };
         </script>
+@endscript
     </div>
 </x-filament-panels::page>
