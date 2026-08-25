@@ -727,9 +727,9 @@
     {{-- ══════════════════════════════════════════════════════════════
          ── NAVBAR (TRANSPARENT ON JUMBOTRON, WHITE GLASS ON SCROLL) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <nav :class="isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm text-brand-navy' : 'bg-transparent border-b border-white/10 text-white'" 
-         class="fixed top-0 left-0 right-0 z-[100] transition-all duration-300" 
-         style="z-index: 100 !important;">
+    <nav :class="isScrolled ? 'bg-white/95 backdrop-blur-md text-brand-navy' : 'bg-transparent text-white'" 
+         :style="isScrolled ? 'border-bottom: 2.5px solid #0878E5 !important; box-shadow: 0 4px 20px rgba(8, 120, 229, 0.12) !important; z-index: 100 !important;' : 'border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important; z-index: 100 !important;'"
+         class="fixed top-0 left-0 right-0 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14 sm:h-16">
                 
