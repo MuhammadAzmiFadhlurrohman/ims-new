@@ -896,10 +896,10 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
                 <!-- Left Content Column: Massive Typography -->
-                <div class="lg:col-span-7 space-y-6 text-left">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
                     
                     <!-- Clean Minimal Badge -->
-                    <div class="inline-flex items-center gap-2 text-xs font-bold text-[#55C7FF] uppercase tracking-widest">
+                    <div class="inline-flex items-center gap-2 text-xs font-bold text-[#55C7FF] uppercase tracking-widest mx-auto lg:mx-0">
                         <span class="w-2 h-2 rounded-full bg-[#55C7FF] pulse-beacon-blue"></span>
                         <span>100% Fiber Optic Network</span>
                     </div>
@@ -911,13 +911,13 @@
                             <span class="text-[#0878E5]">SUPER CEPAT</span><br>
                             <span class="text-white">untuk Rumah &amp; Bisnis.</span>
                         </h1>
-                        <p class="text-sm sm:text-base text-slate-300 max-w-lg font-normal leading-relaxed">
+                        <p class="text-sm sm:text-base text-slate-300 max-w-lg font-normal leading-relaxed mx-auto lg:mx-0">
                             Koneksi stabil dengan fiber optik murni hingga ke lokasi Anda, siap mendukung aktivitas streaming, gaming, dan produktivitas digital tanpa kompromi.
                         </p>
                     </div>
 
                     <!-- CTA Buttons: Electric Blue Primary + Transparent Glass Secondary -->
-                    <div class="flex flex-wrap items-center gap-3.5 pt-2">
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-2">
                         <a href="#coverage" class="px-6 py-3.5 rounded-xl bg-[#0878E5] hover:bg-[#0A85FC] text-white font-black text-xs sm:text-sm shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5">
                             <span>Cek Ketersediaan</span>
                             <span class="text-white font-bold">&rarr;</span>
