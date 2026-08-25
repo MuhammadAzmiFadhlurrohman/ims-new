@@ -130,20 +130,20 @@
          ══════════════════════════════════════════════════════════════ --}}
     <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 sm:h-20">
+            <div class="flex items-center justify-between h-12 sm:h-14">
                 
                 <!-- Logo: IMS ONE (Landing Theme) -->
                 <a href="{{ url('/') }}" class="flex items-center gap-2.5 group">
-                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-brand text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                         </svg>
                     </div>
                     <div>
-                        <span class="font-heading text-lg sm:text-xl font-black text-brand-navy tracking-tight leading-none block">
+                        <span class="font-heading text-base sm:text-lg font-black text-brand-navy tracking-tight leading-none block">
                             IMS<span class="text-brand">ONE</span>
                         </span>
-                        <span class="text-[9px] font-extrabold tracking-widest text-brand uppercase block mt-0.5">
+                        <span class="text-[8px] font-extrabold tracking-widest text-brand uppercase block">
                             Customer Portal
                         </span>
                     </div>
@@ -185,18 +185,18 @@
     {{-- ══════════════════════════════════════════════════════════════
          ── 3-TAB MAIN NAVIGATION BAR (LIGHT THEME) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <div class="bg-white/90 border-b border-blue-100 backdrop-blur-md sticky top-16 sm:top-20 z-40 py-2.5 sm:py-3.5 shadow-xs">
+    <div class="bg-white/90 border-b border-blue-100 backdrop-blur-md sticky top-12 sm:top-14 z-40 py-1.5 sm:py-2 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- Segmented Switcher -->
-            <div class="grid grid-cols-3 gap-2 sm:flex sm:items-center sm:justify-start sm:gap-3 p-1 sm:p-0 bg-slate-100 sm:bg-transparent rounded-2xl border border-slate-200/60 sm:border-0">
+            <div class="grid grid-cols-3 gap-1.5 sm:flex sm:items-center sm:justify-start sm:gap-2 p-1 sm:p-0 bg-slate-100 sm:bg-transparent rounded-xl border border-slate-200/60 sm:border-0">
                 
                 <!-- Tab 1: Dashboard / Info Pelanggan -->
                 <button 
                     @click="currentNav = 'dashboard'" 
-                    :class="currentNav === 'dashboard' ? 'btn-brand-primary text-white shadow-md shadow-brand/20 font-black' : 'bg-white text-slate-700 hover:bg-brand-soft hover:text-brand border border-slate-200 font-bold'" 
-                    class="py-2.5 px-3 sm:px-5 rounded-2xl text-xs sm:text-sm transition-all flex items-center justify-center gap-2 text-center">
-                    <span class="text-sm">📊</span>
+                    :class="currentNav === 'dashboard' ? 'btn-brand-primary text-white shadow-sm font-black' : 'bg-white text-slate-600 hover:bg-brand-soft hover:text-brand border border-slate-200 font-bold'" 
+                    class="py-1.5 px-2.5 sm:px-4 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5 text-center">
+                    <span class="text-xs">📊</span>
                     <span class="sm:hidden">Info</span>
                     <span class="hidden sm:inline">Dashboard Informasi</span>
                 </button>
@@ -204,9 +204,9 @@
                 <!-- Tab 2: Menu Tiket & Layanan -->
                 <button 
                     @click="currentNav = 'tiket'" 
-                    :class="currentNav === 'tiket' ? 'btn-brand-primary text-white shadow-md shadow-brand/20 font-black' : 'bg-white text-slate-700 hover:bg-brand-soft hover:text-brand border border-slate-200 font-bold'" 
-                    class="py-2.5 px-3 sm:px-5 rounded-2xl text-xs sm:text-sm transition-all flex items-center justify-center gap-2 text-center relative">
-                    <span class="text-sm">🎫</span>
+                    :class="currentNav === 'tiket' ? 'btn-brand-primary text-white shadow-sm font-black' : 'bg-white text-slate-600 hover:bg-brand-soft hover:text-brand border border-slate-200 font-bold'" 
+                    class="py-1.5 px-2.5 sm:px-4 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5 text-center relative">
+                    <span class="text-xs">🎫</span>
                     <span class="sm:hidden">Tiket</span>
                     <span class="hidden sm:inline">Menu Tiket &amp; Layanan</span>
                     @if($activeTickets->count() > 0)
@@ -219,9 +219,9 @@
                 <!-- Tab 3: Menu Tagihan & Pembayaran -->
                 <button 
                     @click="currentNav = 'tagihan'" 
-                    :class="currentNav === 'tagihan' ? 'btn-brand-primary text-white shadow-md shadow-brand/20 font-black' : 'bg-white text-slate-700 hover:bg-brand-soft hover:text-brand border border-slate-200 font-bold'" 
-                    class="py-2.5 px-3 sm:px-5 rounded-2xl text-xs sm:text-sm transition-all flex items-center justify-center gap-2 text-center relative">
-                    <span class="text-sm">💳</span>
+                    :class="currentNav === 'tagihan' ? 'btn-brand-primary text-white shadow-sm font-black' : 'bg-white text-slate-600 hover:bg-brand-soft hover:text-brand border border-slate-200 font-bold'" 
+                    class="py-1.5 px-2.5 sm:px-4 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5 text-center relative">
+                    <span class="text-xs">💳</span>
                     <span class="sm:hidden">Tagihan</span>
                     <span class="hidden sm:inline">Menu Tagihan &amp; Riwayat</span>
                     @if($hasArrears)
@@ -238,7 +238,7 @@
     {{-- ══════════════════════════════════════════════════════════════
          ── MAIN DASHBOARD CONTAINER ──
          ══════════════════════════════════════════════════════════════ --}}
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-1 w-full space-y-6 relative z-10">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 flex-1 w-full space-y-4 relative z-10">
         
         <!-- Alerts -->
         @if(session('success'))
@@ -268,13 +268,13 @@
         {{-- ══════════════════════════════════════════════════════════════
              ── MENU 1: DASHBOARD (INFORMASI PELANGGAN) ──
              ══════════════════════════════════════════════════════════════ --}}
-        <div x-show="currentNav === 'dashboard'" x-transition class="space-y-6">
+        <div x-show="currentNav === 'dashboard'" x-transition class="space-y-4">
             
             <!-- Row 1: Header Profil Akun & Status Billing -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
                 <!-- Profil Akun Pelanggan -->
-                <div class="lg:col-span-8 bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between shadow-brand-soft">
+                <div class="lg:col-span-8 bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 relative overflow-hidden flex flex-col justify-between shadow-brand-soft">
                     <div>
                         <div class="flex flex-wrap items-center justify-between gap-2.5 mb-4">
                             <div class="flex items-center gap-2">
@@ -295,38 +295,38 @@
                             <span class="text-xs text-slate-500">Siklus Tagihan: <strong class="text-brand-navy">Tgl {{ $subscription->billing_cycle_day ?? '05' }}</strong></span>
                         </div>
 
-                        <h1 class="font-heading text-2xl sm:text-4xl font-black text-brand-navy mb-2 tracking-tight">
+                        <h1 class="font-heading text-lg sm:text-2xl font-black text-brand-navy mb-1 tracking-tight">
                             {{ $subscription->customer_name }}
                         </h1>
-                        <p class="text-xs sm:text-sm text-slate-500 flex items-start gap-1.5 mb-6 max-w-xl font-medium">
+                        <p class="text-xs text-slate-500 flex items-start gap-1.5 mb-4 max-w-xl font-medium">
                             <span class="text-brand shrink-0">📍</span>
                             <span>{{ $subscription->installation_address ?? 'Bandung Raya, Jawa Barat' }}</span>
                         </p>
                     </div>
 
                     <!-- Kontak & Node ODP -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-5 border-t border-slate-100 text-xs">
-                        <div class="p-3 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5 font-medium">No. WhatsApp</span>
-                            <strong class="text-brand-navy text-xs sm:text-sm block truncate">{{ $subscription->phone_number ?? '-' }}</strong>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-100 text-xs">
+                        <div class="p-2 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block font-medium">No. WhatsApp</span>
+                            <strong class="text-brand-navy text-xs block truncate">{{ $subscription->phone_number ?? '-' }}</strong>
                         </div>
-                        <div class="p-3 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5 font-medium">Email Pelanggan</span>
-                            <strong class="text-brand font-bold text-xs sm:text-sm block truncate">{{ $subscription->email ?? '-' }}</strong>
+                        <div class="p-2 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block font-medium">Email Pelanggan</span>
+                            <strong class="text-brand font-bold text-xs block truncate">{{ $subscription->email ?? '-' }}</strong>
                         </div>
-                        <div class="p-3 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5 font-medium">Titik ODP Node</span>
-                            <strong class="text-brand-navy text-xs sm:text-sm block truncate">{{ $subscription->odp_code ?? 'ODP-BDG-BRAGA-01' }} (Port {{ $subscription->odp_port ?? '03' }})</strong>
+                        <div class="p-2 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block font-medium">Titik ODP Node</span>
+                            <strong class="text-brand-navy text-xs block truncate">{{ $subscription->odp_code ?? 'ODP-BDG-BRAGA-01' }} (Port {{ $subscription->odp_port ?? '03' }})</strong>
                         </div>
-                        <div class="p-3 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5 font-medium">Tgl Terdaftar</span>
-                            <strong class="text-brand-navy text-xs sm:text-sm block truncate">{{ $subscription->created_at ? $subscription->created_at->format('d M Y') : '-' }}</strong>
+                        <div class="p-2 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block font-medium">Tgl Terdaftar</span>
+                            <strong class="text-brand-navy text-xs block truncate">{{ $subscription->created_at ? $subscription->created_at->format('d M Y') : '-' }}</strong>
                         </div>
                     </div>
                 </div>
 
                 <!-- Quick Summary Card -->
-                <div class="lg:col-span-4 bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-brand-soft">
+                <div class="lg:col-span-4 bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-brand-soft">
                     <div>
                         <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
                             <span class="text-xs font-black text-slate-500 uppercase tracking-wider">TAGIHAN BULAN INI</span>
@@ -341,17 +341,17 @@
                             @endif
                         </div>
 
-                        <div class="my-3">
-                            <span class="text-xs text-slate-500">Total Biaya Bulanan:</span>
-                            <div class="font-heading text-3xl sm:text-4xl font-black text-brand-navy mt-1">
+                        <div class="my-2">
+                            <span class="text-[11px] text-slate-500">Total Biaya Bulanan:</span>
+                            <div class="font-heading text-2xl font-black text-brand-navy mt-0.5">
                                 Rp {{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}
                             </div>
-                            <span class="text-[11px] text-brand block mt-1 font-bold">✓ Termasuk PPN &amp; Sewa Router WiFi 6</span>
+                            <span class="text-[10px] text-brand block mt-0.5 font-bold">✓ Termasuk PPN &amp; Sewa Router WiFi 6</span>
                         </div>
                     </div>
 
-                    <div class="space-y-2.5 pt-4 border-t border-slate-100">
-                        <a href="https://wa.me/6281234567890?text=Halo%20CS%20IMS%20ONE%2C%20saya%20pelanggan%20{{ urlencode($subscription->customer_name) }}%20(CID%3A%20{{ $subscription->internet_number }})%20ingin%20berkonsultasi" target="_blank" class="w-full py-3.5 rounded-2xl btn-brand-primary text-white font-black text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-md shadow-brand/20">
+                    <div class="pt-3 border-t border-slate-100">
+                        <a href="https://wa.me/6281234567890?text=Halo%20CS%20IMS%20ONE%2C%20saya%20pelanggan%20{{ urlencode($subscription->customer_name) }}%20(CID%3A%20{{ $subscription->internet_number }})%20ingin%20berkonsultasi" target="_blank" class="w-full py-2.5 rounded-xl btn-brand-primary text-white font-black text-xs transition-all flex items-center justify-center gap-2 shadow-sm">
                             <span>💬 Chat CS WhatsApp 24/7</span>
                         </a>
                     </div>
@@ -360,103 +360,103 @@
             </div>
 
             <!-- Row 2: DATA REGISTRASI LENGKAP -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 
                 <!-- KARTU 1: IDENTITAS PELANGGAN & KTP -->
-                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-brand-soft space-y-5">
-                    <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
-                        <div class="w-9 h-9 rounded-2xl bg-brand text-white flex items-center justify-center font-black text-sm shadow-sm">
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-brand-soft space-y-3">
+                    <div class="flex items-center gap-2.5 pb-3 border-b border-slate-100">
+                        <div class="w-6 h-6 rounded-lg bg-brand text-white flex items-center justify-center font-black text-xs shadow-sm">
                             1
                         </div>
                         <div>
-                            <h3 class="font-heading text-lg sm:text-xl font-black text-brand-navy">Identitas Pelanggan &amp; KTP</h3>
-                            <p class="text-xs text-slate-500">Data kependudukan pemohon sesuai identitas resmi di database</p>
+                            <h3 class="font-heading text-sm sm:text-base font-black text-brand-navy">Identitas Pelanggan &amp; KTP</h3>
+                            <p class="text-[11px] text-slate-500">Data kependudukan pemohon sesuai identitas resmi di database</p>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">Nama Lengkap Pelanggan</span>
-                            <strong class="text-brand-navy font-bold text-xs sm:text-sm">{{ $subscription->customer_name }}</strong>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">Nama Lengkap Pelanggan</span>
+                            <strong class="text-brand-navy font-bold text-xs">{{ $subscription->customer_name }}</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">Jenis Kelamin</span>
-                            <strong class="text-brand-navy">{{ $subscription->gender === 'female' || $subscription->gender === 'Perempuan' ? 'Perempuan' : 'Laki-Laki' }}</strong>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">Jenis Kelamin</span>
+                            <strong class="text-brand-navy text-xs">{{ $subscription->gender === 'female' || $subscription->gender === 'Perempuan' ? 'Perempuan' : 'Laki-Laki' }}</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">Tanggal Lahir</span>
-                            <strong class="text-brand-navy">{{ $subscription->birth_date ? \Carbon\Carbon::parse($subscription->birth_date)->translatedFormat('d F Y') : '-' }}</strong>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">Tanggal Lahir</span>
+                            <strong class="text-brand-navy text-xs">{{ $subscription->birth_date ? \Carbon\Carbon::parse($subscription->birth_date)->translatedFormat('d F Y') : '-' }}</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">Tipe Pelanggan</span>
-                            <strong class="text-brand-navy">{{ $subscription->is_corporate ? 'Instansi / Corporate (' . ($subscription->pic_name ?? 'PIC') . ')' : 'Perorangan / Rumah' }}</strong>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">Tipe Pelanggan</span>
+                            <strong class="text-brand-navy text-xs">{{ $subscription->is_corporate ? 'Instansi / Corporate (' . ($subscription->pic_name ?? 'PIC') . ')' : 'Perorangan / Rumah' }}</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">Alamat Email</span>
-                            <strong class="text-brand font-bold">{{ $subscription->email ?? '-' }}</strong>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">Alamat Email</span>
+                            <strong class="text-brand font-bold text-xs">{{ $subscription->email ?? '-' }}</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">No. Handphone (WhatsApp)</span>
-                            <strong class="text-brand-navy font-mono">{{ $subscription->phone_number ?? '-' }}</strong>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">No. Handphone (WhatsApp)</span>
+                            <strong class="text-brand-navy font-mono text-xs">{{ $subscription->phone_number ?? '-' }}</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">No. HP Keluarga / Darurat</span>
-                            <strong class="text-brand-navy font-mono">{{ $subscription->alt_phone_number ?? '-' }}</strong>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">No. HP Keluarga / Darurat</span>
+                            <strong class="text-brand-navy font-mono text-xs">{{ $subscription->alt_phone_number ?? '-' }}</strong>
                         </div>
                     </div>
 
                     <!-- Alamat KTP -->
-                    <div class="p-4 rounded-2xl bg-brand-pale border border-slate-200/80 text-xs">
-                        <span class="text-[11px] text-brand block mb-1 font-bold">📍 ALAMAT DOMISILI KTP:</span>
-                        <p class="text-slate-700 leading-relaxed font-medium">
+                    <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80 text-xs">
+                        <span class="text-[10px] text-brand block mb-0.5 font-bold">📍 ALAMAT DOMISILI KTP:</span>
+                        <p class="text-slate-700 leading-snug font-medium text-[11px]">
                             {{ $subscription->address_ktp ? ($subscription->address_ktp . ($subscription->rt_ktp ? ' RT ' . $subscription->rt_ktp . '/RW ' . $subscription->rw_ktp : '') . ($subscription->village_ktp ? ', Kel. ' . $subscription->village_ktp : '') . ($subscription->district_ktp ? ', Kec. ' . $subscription->district_ktp : '') . ($subscription->city_ktp ? ', ' . $subscription->city_ktp : '')) : ($subscription->installation_address ?? '-') }}
                         </p>
                     </div>
                 </div>
 
                 <!-- KARTU 2: LAYANAN INTERNET & DETAIL PEMASANGAN -->
-                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-brand-soft space-y-5">
-                    <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
-                        <div class="w-9 h-9 rounded-2xl bg-brand text-white flex items-center justify-center font-black text-sm shadow-sm">
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-brand-soft space-y-3">
+                    <div class="flex items-center gap-2.5 pb-3 border-b border-slate-100">
+                        <div class="w-6 h-6 rounded-lg bg-brand text-white flex items-center justify-center font-black text-xs shadow-sm">
                             2
                         </div>
                         <div>
-                            <h3 class="font-heading text-lg sm:text-xl font-black text-brand-navy">Layanan Internet &amp; Pemasangan</h3>
-                            <p class="text-xs text-slate-500">Spesifikasi paket berlangganan dan detail lokasi instalasi</p>
+                            <h3 class="font-heading text-sm sm:text-base font-black text-brand-navy">Layanan Internet &amp; Pemasangan</h3>
+                            <p class="text-[11px] text-slate-500">Spesifikasi paket berlangganan dan detail lokasi instalasi</p>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">Jenis Bangunan</span>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">Jenis Bangunan</span>
                             <strong class="text-brand-navy uppercase font-bold">{{ str_replace('_', ' ', $subscription->building_type ?? 'Rumah Tinggal') }}</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">No. Bangunan / Blok</span>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">No. Bangunan / Blok</span>
                             <strong class="text-brand-navy font-bold">{{ $subscription->building_number ?? '-' }}</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">Status Kepemilikan</span>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">Status Kepemilikan</span>
                             <strong class="text-brand-navy uppercase">{{ str_replace('_', ' ', $subscription->house_ownership_status ?? 'Milik Sendiri') }}</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">Nama Paket Aktif</span>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">Nama Paket Aktif</span>
                             <strong class="text-brand font-black text-sm">{{ $currentPackage->name ?? 'Paket Internet Fiber' }}</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">Kecepatan Simetris</span>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">Kecepatan Simetris</span>
                             <strong class="text-brand-navy font-black">{{ $currentPackage->speed_mbps ?? 100 }} Mbps (1:1)</strong>
                         </div>
-                        <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                            <span class="text-[10.5px] text-slate-500 block mb-0.5">Biaya Paket Bulanan</span>
+                        <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                            <span class="text-[10px] text-slate-500 block">Biaya Paket Bulanan</span>
                             <strong class="text-brand-navy font-bold">Rp {{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}/bln</strong>
                         </div>
                     </div>
 
                     <!-- Alamat Pemasangan -->
-                    <div class="p-4 rounded-2xl bg-brand-pale border border-slate-200/80 text-xs">
-                        <span class="text-[11px] text-brand block mb-1 font-bold">📍 ALAMAT LOKASI INSTALASI FIBER:</span>
-                        <p class="text-slate-700 leading-relaxed font-medium">
+                    <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80 text-xs">
+                        <span class="text-[10px] text-brand block mb-0.5 font-bold">📍 ALAMAT LOKASI INSTALASI FIBER:</span>
+                        <p class="text-slate-700 leading-snug font-medium text-[11px]">
                             {{ $subscription->installation_address ?? '-' }}
                         </p>
                     </div>
@@ -465,16 +465,16 @@
             </div>
 
             <!-- Row 3: DAFTAR PERANGKAT & MATERIAL YANG DIPINJAMKAN -->
-            <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-brand-soft">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 mb-6 gap-2">
-                    <div class="flex items-center gap-2.5">
-                        <span class="w-3 h-3 rounded-full bg-brand pulse-beacon-blue"></span>
+            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-brand-soft">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 mb-4 gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-brand pulse-beacon-blue"></span>
                         <div>
-                            <h3 class="font-heading text-lg sm:text-xl font-black text-brand-navy">Daftar Perangkat &amp; Material yang Dipinjamkan</h3>
-                            <p class="text-xs text-slate-500">Peralatan dan material yang diinput teknisi saat proses instalasi terpasang di lokasi Anda.</p>
+                            <h3 class="font-heading text-sm sm:text-base font-black text-brand-navy">Daftar Perangkat &amp; Material yang Dipinjamkan</h3>
+                            <p class="text-[11px] text-slate-500">Peralatan dan material yang diinput teknisi saat proses instalasi terpasang di lokasi Anda.</p>
                         </div>
                     </div>
-                    <span class="self-start sm:self-auto px-3.5 py-1.5 rounded-full bg-brand-soft border border-blue-200 text-brand text-xs font-bold shrink-0">
+                    <span class="self-start sm:self-auto px-2.5 py-1 rounded-full bg-brand-soft border border-blue-200 text-brand text-[10px] font-bold shrink-0">
                         🛡️ Hak Pakai (Rental Termasuk)
                     </span>
                 </div>
@@ -543,11 +543,11 @@
                 </div>
 
                 <!-- Warranty Notice -->
-                <div class="mt-5 p-4 rounded-2xl bg-brand-soft border border-blue-200 text-xs text-slate-600 flex items-start gap-3">
-                    <span class="text-brand text-lg shrink-0">🛡️</span>
+                <div class="mt-3 p-3 rounded-xl bg-brand-soft border border-blue-200 text-xs text-slate-600 flex items-start gap-2.5">
+                    <span class="text-brand text-base shrink-0">🛡️</span>
                     <div>
-                        <strong class="text-brand-navy block font-bold mb-0.5">Garansi Penuh &amp; Penggantian Unit Gratis</strong>
-                        <span class="text-[11px] text-slate-500">Seluruh perangkat yang dipinjamkan bergaransi penuh. Jika terjadi kerusakan perangkat akibat faktor usia pakai atau sambaran petir, teknisi kami akan mengganti unit modem baru secara cuma-cuma.</span>
+                        <strong class="text-brand-navy block font-bold mb-0.5 text-[11px]">Garansi Penuh &amp; Penggantian Unit Gratis</strong>
+                        <span class="text-[10px] text-slate-500">Seluruh perangkat yang dipinjamkan bergaransi penuh. Jika terjadi kerusakan perangkat akibat faktor usia pakai atau sambaran petir, teknisi kami akan mengganti unit modem baru secara cuma-cuma.</span>
                     </div>
                 </div>
             </div>
@@ -557,33 +557,33 @@
         {{-- ══════════════════════════════════════════════════════════════
              ── MENU 2: TIKET & LAYANAN (PENGAJUAN & TRACKING) ──
              ══════════════════════════════════════════════════════════════ --}}
-        <div x-show="currentNav === 'tiket'" x-cloak x-transition class="space-y-6 sm:space-y-8">
+        <div x-show="currentNav === 'tiket'" x-cloak x-transition class="space-y-4">
             
             <!-- Box Form Pengajuan Tiket -->
-            <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-brand-soft">
-                <div class="mb-6">
-                    <div class="flex items-center gap-2.5 mb-1.5">
-                        <span class="w-3 h-3 rounded-full bg-brand pulse-beacon-blue"></span>
-                        <h2 class="font-heading text-xl sm:text-2xl font-black text-brand-navy">
+            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-brand-soft">
+                <div class="mb-4">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2.5 h-2.5 rounded-full bg-brand pulse-beacon-blue"></span>
+                        <h2 class="font-heading text-base sm:text-lg font-black text-brand-navy">
                             Pusat Pengajuan Layanan &amp; Tiket Mandiri
                         </h2>
                     </div>
-                    <p class="text-xs text-slate-500">
+                    <p class="text-[11px] text-slate-500">
                         Pilih jenis permohonan yang Anda butuhkan. Laporan akan langsung ditangani tim NOC teknisi kami.
                     </p>
 
                     <!-- Service Sub-Tabs -->
-                    <div class="flex items-center gap-2 mt-5 border-b border-slate-100 pb-4 overflow-x-auto no-scrollbar">
-                        <button @click="activeTicketTab = 'gangguan'" :class="{'btn-brand-primary text-white shadow-md': activeTicketTab === 'gangguan', 'bg-brand-pale text-slate-700 hover:bg-brand-soft': activeTicketTab !== 'gangguan'}" class="px-4 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-2 shrink-0 border border-slate-200/80">
+                    <div class="flex items-center gap-1.5 mt-3 border-b border-slate-100 pb-3 overflow-x-auto no-scrollbar">
+                        <button @click="activeTicketTab = 'gangguan'" :class="{'btn-brand-primary text-white': activeTicketTab === 'gangguan', 'bg-brand-pale text-slate-700 hover:bg-brand-soft': activeTicketTab !== 'gangguan'}" class="px-3 py-1.5 rounded-lg text-[11px] font-black transition-all flex items-center gap-1.5 shrink-0 border border-slate-200/80">
                             <span>🚨 Laporkan Gangguan</span>
                         </button>
-                        <button @click="activeTicketTab = 'upgrade'" :class="{'btn-brand-primary text-white shadow-md': activeTicketTab === 'upgrade', 'bg-brand-pale text-slate-700 hover:bg-brand-soft': activeTicketTab !== 'upgrade'}" class="px-4 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-2 shrink-0 border border-slate-200/80">
+                        <button @click="activeTicketTab = 'upgrade'" :class="{'btn-brand-primary text-white': activeTicketTab === 'upgrade', 'bg-brand-pale text-slate-700 hover:bg-brand-soft': activeTicketTab !== 'upgrade'}" class="px-3 py-1.5 rounded-lg text-[11px] font-black transition-all flex items-center gap-1.5 shrink-0 border border-slate-200/80">
                             <span>🚀 Ubah Paket</span>
                         </button>
-                        <button @click="activeTicketTab = 'relokasi'" :class="{'btn-brand-primary text-white shadow-md': activeTicketTab === 'relokasi', 'bg-brand-pale text-slate-700 hover:bg-brand-soft': activeTicketTab !== 'relokasi'}" class="px-4 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-2 shrink-0 border border-slate-200/80">
+                        <button @click="activeTicketTab = 'relokasi'" :class="{'btn-brand-primary text-white': activeTicketTab === 'relokasi', 'bg-brand-pale text-slate-700 hover:bg-brand-soft': activeTicketTab !== 'relokasi'}" class="px-3 py-1.5 rounded-lg text-[11px] font-black transition-all flex items-center gap-1.5 shrink-0 border border-slate-200/80">
                             <span>🏠 Relokasi</span>
                         </button>
-                        <button @click="activeTicketTab = 'password'" :class="{'btn-brand-primary text-white shadow-md': activeTicketTab === 'password', 'bg-brand-pale text-slate-700 hover:bg-brand-soft': activeTicketTab !== 'password'}" class="px-4 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-2 shrink-0 border border-slate-200/80">
+                        <button @click="activeTicketTab = 'password'" :class="{'btn-brand-primary text-white': activeTicketTab === 'password', 'bg-brand-pale text-slate-700 hover:bg-brand-soft': activeTicketTab !== 'password'}" class="px-3 py-1.5 rounded-lg text-[11px] font-black transition-all flex items-center gap-1.5 shrink-0 border border-slate-200/80">
                             <span>🔑 Ganti Password</span>
                         </button>
                     </div>
@@ -600,7 +600,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                             <div>
                                 <label class="block font-bold text-brand-navy mb-2">Kategori Gangguan *</label>
-                                <select name="issue_detail" class="w-full px-4 py-3 rounded-2xl bg-brand-pale border border-slate-200 text-brand-navy focus:border-brand focus:bg-white outline-none text-xs">
+                                <select name="issue_detail" class="w-full px-3 py-2 rounded-xl bg-brand-pale border border-slate-200 text-brand-navy focus:border-brand focus:bg-white outline-none text-xs">
                                     <option value="Lampu LOS Merah / Mati Total">Lampu LOS Merah / Koneksi Mati Total</option>
                                     <option value="Internet Lemot / Speed Turun">Internet Lemot / Speed Turun Drastis</option>
                                     <option value="Kabel Fiber Putus / Tertimpa">Kabel Fiber Putus / Kendala Tiang</option>
@@ -610,16 +610,16 @@
                             </div>
                             <div>
                                 <label class="block font-bold text-brand-navy mb-2">Status Lampu Indikator Modem</label>
-                                <input type="text" name="modem_status" placeholder="Contoh: Lampu PON mati, LOS merah" class="w-full px-4 py-3 rounded-2xl bg-brand-pale border border-slate-200 text-brand-navy focus:border-brand focus:bg-white outline-none text-xs">
+                                <input type="text" name="modem_status" placeholder="Contoh: Lampu PON mati, LOS merah" class="w-full px-3 py-2 rounded-xl bg-brand-pale border border-slate-200 text-brand-navy focus:border-brand focus:bg-white outline-none text-xs">
                             </div>
                         </div>
 
                         <div>
                             <label class="block font-bold text-brand-navy mb-2">Deskripsi Gejala Gangguan *</label>
-                            <textarea name="description" rows="3" placeholder="Ceritakan kendala yang dialami, sejak jam berapa, dan apakah sudah dicoba restart modem..." required class="w-full px-4 py-3 rounded-2xl bg-brand-pale border border-slate-200 text-brand-navy focus:border-brand focus:bg-white outline-none text-xs"></textarea>
+                            <textarea name="description" rows="3" placeholder="Ceritakan kendala yang dialami, sejak jam berapa, dan apakah sudah dicoba restart modem..." required class="w-full px-3 py-2 rounded-xl bg-brand-pale border border-slate-200 text-brand-navy focus:border-brand focus:bg-white outline-none text-xs"></textarea>
                         </div>
 
-                        <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs shadow-md transition-all flex items-center justify-center gap-2">
+                        <button type="submit" class="w-full sm:w-auto px-6 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs shadow-sm transition-all flex items-center justify-center gap-2">
                             <span>🚨 Kirim Laporan Gangguan ke NOC</span>
                         </button>
                     </div>
@@ -653,7 +653,7 @@
                             <textarea name="description" rows="3" placeholder="Contoh: Kebutuhan bandwidth bertambah untuk kantor / streaming studio..." required class="w-full px-4 py-3 rounded-2xl bg-brand-pale border border-slate-200 text-brand-navy focus:border-brand focus:bg-white outline-none text-xs"></textarea>
                         </div>
 
-                        <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl btn-brand-primary text-white font-black text-xs shadow-md transition-all flex items-center justify-center">
+                        <button type="submit" class="w-full sm:w-auto px-6 py-2 rounded-xl btn-brand-primary text-white font-black text-xs shadow-sm transition-all flex items-center justify-center">
                             <span>🚀 Ajukan Perubahan Paket</span>
                         </button>
                     </div>
@@ -678,7 +678,7 @@
                             <textarea name="description" rows="3" placeholder="Contoh: Sebelah Masjid Al-Ikhlas, rumah pagar hitam. PIC di lokasi: Bpk. Bambang..." required class="w-full px-4 py-3 rounded-2xl bg-brand-pale border border-slate-200 text-brand-navy focus:border-brand focus:bg-white outline-none text-xs"></textarea>
                         </div>
 
-                        <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl btn-brand-primary text-white font-black text-xs shadow-md transition-all flex items-center justify-center">
+                        <button type="submit" class="w-full sm:w-auto px-6 py-2 rounded-xl btn-brand-primary text-white font-black text-xs shadow-sm transition-all flex items-center justify-center">
                             <span>🏠 Ajukan Jadwal Relokasi Teknisi</span>
                         </button>
                     </div>
@@ -712,13 +712,13 @@
             </div>
 
             <!-- Box Riwayat & Live Tracking Tiket -->
-            <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-brand-soft">
-                <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-brand-soft">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                     <div>
-                        <h3 class="font-heading text-lg sm:text-xl font-black text-brand-navy">Riwayat &amp; Status Tiket Anda</h3>
-                        <p class="text-xs text-slate-500">Pantau perkembangan tindak lanjut pengaduan oleh tim teknisi lapangan secara live.</p>
+                        <h3 class="font-heading text-sm sm:text-base font-black text-brand-navy">Riwayat &amp; Status Tiket Anda</h3>
+                        <p class="text-[11px] text-slate-500">Pantau perkembangan tindak lanjut pengaduan oleh tim teknisi lapangan secara live.</p>
                     </div>
-                    <span class="px-3 py-1 rounded-full bg-brand-pale text-xs font-bold text-brand-navy shrink-0 border border-slate-200/80">
+                    <span class="px-2.5 py-0.5 rounded-full bg-brand-pale text-xs font-bold text-brand-navy shrink-0 border border-slate-200/80">
                         {{ $tickets->count() }} Tiket
                     </span>
                 </div>
@@ -730,9 +730,9 @@
                         <span>Koneksi internet fiber Anda berjalan lancar dan optimal.</span>
                     </div>
                 @else
-                    <div class="space-y-3.5">
+                    <div class="space-y-2.5">
                         @foreach($tickets as $tkt)
-                            <div class="p-5 rounded-2xl bg-brand-pale border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                            <div class="p-3.5 rounded-xl bg-brand-pale border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3">
                                 <div class="space-y-1.5 flex-1">
                                     <div class="flex items-center gap-2 flex-wrap">
                                         <strong class="font-mono text-xs sm:text-sm font-black text-brand">{{ $tkt->ticket_number }}</strong>
@@ -768,17 +768,17 @@
         {{-- ══════════════════════════════════════════════════════════════
              ── MENU 3: TAGIHAN & PEMBAYARAN (BILLING & PAYMENT HISTORY) ──
              ══════════════════════════════════════════════════════════════ --}}
-        <div x-show="currentNav === 'tagihan'" x-cloak x-transition class="space-y-6 sm:space-y-8">
+        <div x-show="currentNav === 'tagihan'" x-cloak x-transition class="space-y-4">
             
             <!-- Ringkasan Tagihan Bulan Berjalan -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 
-                <div class="lg:col-span-8 bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-brand-soft flex flex-col justify-between">
+                <div class="lg:col-span-8 bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-brand-soft flex flex-col justify-between">
                     <div>
-                        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
                             <div>
-                                <span class="text-xs font-black text-slate-500 uppercase tracking-wider">TAGIHAN PERIODE {{ date('F Y') }}</span>
-                                <h3 class="font-heading text-xl sm:text-2xl font-bold text-brand-navy mt-0.5">{{ $currentPackage->name ?? 'Paket Internet Fiber' }}</h3>
+                                <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider">TAGIHAN PERIODE {{ date('F Y') }}</span>
+                                <h3 class="font-heading text-base sm:text-lg font-bold text-brand-navy mt-0.5">{{ $currentPackage->name ?? 'Paket Internet Fiber' }}</h3>
                             </div>
                             @if(!$hasArrears)
                                 <span class="px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-black">
@@ -792,7 +792,7 @@
                         </div>
 
                         <!-- Rincian Biaya -->
-                        <div class="space-y-3 text-xs mb-6">
+                        <div class="space-y-2 text-xs mb-4">
                             <div class="flex items-center justify-between text-slate-600">
                                 <span>Biaya Paket ({{ $currentPackage->speed_mbps ?? 50 }} Mbps Simetris)</span>
                                 <span class="font-bold text-brand-navy">Rp {{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}</span>
@@ -805,31 +805,31 @@
                                 <span>PPN (11%)</span>
                                 <span class="font-bold text-emerald-700">Sudah Termasuk</span>
                             </div>
-                            <div class="pt-3.5 border-t border-slate-100 flex items-center justify-between text-sm font-black">
+                            <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-sm font-black">
                                 <span class="text-brand-navy">Total Tagihan</span>
-                                <span class="text-brand font-heading text-2xl sm:text-3xl font-black">Rp {{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}</span>
+                                <span class="text-brand font-heading text-xl sm:text-2xl font-black">Rp {{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="p-4 rounded-2xl bg-brand-pale border border-slate-200/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
+                    <div class="p-3 rounded-xl bg-brand-pale border border-slate-200/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 text-xs">
                         <span class="text-slate-600 text-center sm:text-left text-xs">Jatuh tempo setiap <strong>Tanggal {{ $subscription->billing_cycle_day ?? '05' }}</strong>.</span>
-                        <a href="https://wa.me/6281234567890?text=Halo%20Billing%20IMS%20ONE%2C%20saya%20ingin%20konfirmasi%20pembayaran%20tagihan%20CID%20{{ $subscription->internet_number }}" target="_blank" class="px-5 py-2.5 rounded-xl btn-brand-primary text-white font-black text-xs shadow-sm text-center">
+                        <a href="https://wa.me/6281234567890?text=Halo%20Billing%20IMS%20ONE%2C%20saya%20ingin%20konfirmasi%20pembayaran%20tagihan%20CID%20{{ $subscription->internet_number }}" target="_blank" class="px-4 py-2 rounded-lg btn-brand-primary text-white font-black text-xs shadow-sm text-center">
                             Konfirmasi Pembayaran
                         </a>
                     </div>
                 </div>
 
                 <!-- Petunjuk & Metode Pembayaran -->
-                <div class="lg:col-span-4 bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-brand-soft">
+                <div class="lg:col-span-4 bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-brand-soft">
                     <div>
-                        <h4 class="font-heading text-lg font-black text-brand-navy mb-4">Metode Pembayaran</h4>
-                        <div class="space-y-3 text-xs text-slate-700">
-                            <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
-                                <strong class="text-brand-navy block font-bold mb-0.5">🏦 Virtual Account (Otomatis)</strong>
-                                <span class="text-[11px] text-slate-500">BCA, Mandiri, BRI, BNI via m-Banking/ATM.</span>
+                        <h4 class="font-heading text-sm font-black text-brand-navy mb-3">Metode Pembayaran</h4>
+                        <div class="space-y-2 text-xs text-slate-700">
+                            <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
+                                <strong class="text-brand-navy block font-bold">🏦 Virtual Account (Otomatis)</strong>
+                                <span class="text-[10px] text-slate-500">BCA, Mandiri, BRI, BNI via m-Banking/ATM.</span>
                             </div>
-                            <div class="p-3.5 rounded-2xl bg-brand-pale border border-slate-200/80">
+                            <div class="p-2.5 rounded-xl bg-brand-pale border border-slate-200/80">
                                 <strong class="text-brand-navy block font-bold mb-0.5">📱 QRIS &amp; E-Wallet</strong>
                                 <span class="text-[11px] text-slate-500">GoPay, OVO, Dana, ShopeePay.</span>
                             </div>
