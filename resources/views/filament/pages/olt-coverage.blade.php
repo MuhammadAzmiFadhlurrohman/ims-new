@@ -261,7 +261,12 @@
                     console.log('OSRM routing fallback:', e);
                 }
 
-                if (!routeCoords || routeCoords.length < 2) {
+                if (routeCoords && routeCoords.length >= 2) {
+                    // Ensure the route connects completely from user's pin
+                    routeCoords.unshift([userLat, userLng]);
+                    // Ensure the route connects completely to ODP's pin
+                    routeCoords.push([odp.lat, odp.lng]);
+                } else {
                     const midLat = userLat + (odp.lat - userLat) * 0.55;
                     const midLng = userLng + (odp.lng - userLng) * 0.45;
                     routeCoords = [

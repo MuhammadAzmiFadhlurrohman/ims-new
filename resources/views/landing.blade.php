@@ -515,8 +515,12 @@
                         console.log('OSRM routing fallback to street turns:', e);
                     }
 
-                    // Fallback: If network offline, construct realistic multi-point street turns
-                    if (!routeCoords || routeCoords.length < 2) {
+                    if (routeCoords && routeCoords.length >= 2) {
+                        // Ensure the route connects completely from user's pin
+                        routeCoords.unshift([userLat, userLng]);
+                        // Ensure the route connects completely to ODP's pin
+                        routeCoords.push([nearestOdp.lat, nearestOdp.lng]);
+                    } else {
                         const midLat = userLat + (nearestOdp.lat - userLat) * 0.55;
                         const midLng = userLng + (nearestOdp.lng - userLng) * 0.45;
                         routeCoords = [
