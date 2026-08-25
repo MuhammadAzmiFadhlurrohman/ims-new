@@ -44,9 +44,13 @@ Route::get('/portal', [\App\Http\Controllers\CustomerPortalController::class, 'i
 Route::get('/layanan-pelanggan', function () {
     return redirect()->route('customer.portal');
 });
-Route::post('/portal/login', [\App\Http\Controllers\CustomerPortalController::class, 'login'])->name('customer.login');
+Route::post('/portal/login', [\App\Http\Controllers\CustomerPortalController::class, 'login'])
+    ->middleware('throttle:5,1')
+    ->name('customer.login');
 Route::post('/portal/logout', [\App\Http\Controllers\CustomerPortalController::class, 'logout'])->name('customer.logout');
-Route::post('/portal/ticket', [\App\Http\Controllers\CustomerPortalController::class, 'submitTicket'])->name('customer.ticket.submit');
+Route::post('/portal/ticket', [\App\Http\Controllers\CustomerPortalController::class, 'submitTicket'])
+    ->middleware('throttle:6,1')
+    ->name('customer.ticket.submit');
 
 Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/admin/update-status-type', function (Request $request) {
@@ -177,12 +181,23 @@ Route::middleware(['web', 'auth'])->group(function () {
 Route::get('/invoices/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'monthlyInvoicePdf']);
 Route::get('/invoices/registration/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'registrationInvoicePdf']);
 
-// Safe migration & cache clearer helper for Hostinger
-Route::get('/admin/run-migrations', function () {
+// Safe migration & cache clearer helper (Strictly Super Admin Only)
+Route::get('/admin/run-migrations', function (Request $request) {
+    /** @var \App\Models\User|null $user */
+    $user = auth()->user();
+
+    if (!$user || !$user->hasRole('super_admin')) {
+        \Illuminate\Support\Facades\Log::warning("Unauthorized attempt to access /admin/run-migrations by: " . ($user ? $user->email . ' (ID: ' . $user->id . ')' : 'Guest') . " from IP: " . $request->ip());
+        abort(403, 'Akses Ditolak: Fitur migrasi database hanya diizinkan untuk Super Admin.');
+    }
+
+    \Illuminate\Support\Facades\Log::info("Database migration initiated by Super Admin: {$user->email} ({$user->name}) from IP: " . $request->ip());
+
     \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
     $output = \Illuminate\Support\Facades\Artisan::output();
-    return response("<pre style='background: #0f172a; color: #38bdf8; padding: 20px; border-radius: 12px; font-family: monospace;'>Migrasi Berhasil Dijalankan:\n\n" . htmlspecialchars($output) . "\n\n<a href='/admin' style='color: #4ade80;'>➔ Kembali ke Panel Admin</a></pre>");
-})->middleware(['web', 'auth']);
+
+    return response("<pre style='background: #0f172a; color: #38bdf8; padding: 24px; border-radius: 12px; font-family: monospace; line-height: 1.6; border: 1px solid #1e293b;'><div style='color: #4ade80; font-weight: bold; margin-bottom: 12px;'>🛡️ [Super Admin Authorization Verified]</div>Migrasi & Optimasi Cache Berhasil Dijalankan:\n\n" . htmlspecialchars($output) . "\n\n<a href='/admin' style='display: inline-block; margin-top: 16px; background: #0284c7; color: #ffffff; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold;'>➔ Kembali ke Panel Admin</a></pre>");
+})->middleware(['web', 'auth', 'throttle:3,1']);
 
 
