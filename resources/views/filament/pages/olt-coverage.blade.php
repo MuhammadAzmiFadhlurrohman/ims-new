@@ -76,23 +76,10 @@
                     attributionControl: false
                 });
 
-                // Google Maps Tile Layers (Roadmap, Hybrid Satellite, Terrain)
-                this.tileLayers = {
-                    roadmap: L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-                        maxZoom: 20,
-                        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-                    }),
-                    hybrid: L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
-                        maxZoom: 20,
-                        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-                    }),
-                    terrain: L.tileLayer('https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
-                        maxZoom: 20,
-                        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-                    })
-                };
-
-                this.tileLayers[this.mapMode].addTo(this.mapInstance);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 19,
+                    subdomains: 'abcd',
+                }).addTo(this.mapInstance);
 
                 this.odpMarkersLayer = L.layerGroup().addTo(this.mapInstance);
                 this.renderAllOdpMarkers();
