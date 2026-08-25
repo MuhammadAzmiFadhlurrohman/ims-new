@@ -41,6 +41,31 @@ class OltCoveragePage extends Page
         $this->searched_coordinates = trim($this->coordinates);
     }
 
+    public function getAllOdpsProperty()
+    {
+        return Odp::query()
+            ->with(['olt', 'ponPort'])
+            ->withCount('subscriptions')
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->get()
+            ->map(function ($odp) {
+                $used = $odp->subscriptions_count ?: ($odp->used_ports ?? 0);
+                $max = $odp->total_ports ?: 16;
+                return [
+                    'code' => $odp->code,
+                    'name' => $odp->name ?? $odp->code,
+                    'lat' => (float) $odp->latitude,
+                    'lng' => (float) $odp->longitude,
+                    'used_ports' => (int) $used,
+                    'total_ports' => (int) $max,
+                    'has_slot' => $used < $max,
+                    'olt_name' => $odp->olt ? $odp->olt->name : ($odp->olt_code ?? '-'),
+                    'pon_name' => $odp->ponPort ? $odp->ponPort->name : '-',
+                ];
+            });
+    }
+
     public function getNearestOdpsProperty()
     {
         if (empty($this->coordinates)) {
