@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-[#020B1D]">
+<html lang="id" class="h-full bg-[#0E2238]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -28,7 +28,8 @@
                             light: '#55C7FF',
                             soft: '#EAF5FF',
                             pale: '#F4FAFF',
-                            deep: '#062B5C',
+                            deep: '#0E2238',
+                            card: '#16365C',
                             navy: '#0B1F33',
                         }
                     },
@@ -37,7 +38,7 @@
                         heading: ['Outfit', 'sans-serif'],
                     },
                     boxShadow: {
-                        'brand-soft': '0 8px 30px rgba(8, 120, 229, 0.08)',
+                        'brand-soft': '0 8px 30px rgba(8, 120, 229, 0.15)',
                     }
                 }
             }
@@ -50,7 +51,7 @@
             -webkit-tap-highlight-color: transparent;
         }
         html, body {
-            background-color: #020B1D !important;
+            background-color: #0E2238 !important;
             color: #F8FAFC;
             font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
@@ -67,20 +68,21 @@
             background-color: #0757B8 !important;
         }
         @keyframes pulseBlue {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(8, 120, 229, 0.5); }
-            50% { box-shadow: 0 0 0 10px rgba(8, 120, 229, 0); }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(85, 199, 255, 0.6); }
+            50% { box-shadow: 0 0 0 10px rgba(85, 199, 255, 0); }
         }
         .pulse-beacon-blue {
             animation: pulseBlue 2s infinite;
         }
     </style>
 </head>
-<body class="flex flex-col justify-between min-h-screen text-slate-100 relative overflow-x-hidden">
+<body class="flex flex-col justify-between min-h-screen text-slate-100 bg-[#0E2238] relative overflow-x-hidden">
 
-    <!-- Ambient Glow Orbs -->
+    <!-- Ambient Subtle Glow Background -->
     <div class="fixed inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
-        <div class="absolute -top-32 right-1/4 w-[500px] h-[500px] bg-[#0878E5]/15 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-32 left-1/4 w-[500px] h-[500px] bg-[#55C7FF]/10 rounded-full blur-3xl"></div>
+        <div class="absolute -top-32 right-1/4 w-[500px] h-[500px] bg-[#0878E5]/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-32 left-1/4 w-[500px] h-[500px] bg-[#55C7FF]/15 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#184271]/30 rounded-full blur-3xl"></div>
     </div>
 
     <!-- Top Navigation Header -->
@@ -114,18 +116,18 @@
     <!-- Main Card Container -->
     <main class="w-full flex-1 flex items-center justify-center px-4 py-5 relative z-10">
         
-        <div class="bg-[#062B5C]/85 border border-white/15 backdrop-blur-2xl rounded-2xl p-5 sm:p-6 max-w-[390px] w-full shadow-2xl relative overflow-hidden">
+        <div class="bg-[#153256]/90 border border-white/20 backdrop-blur-2xl rounded-2xl p-5 sm:p-6 max-w-[390px] w-full shadow-2xl relative overflow-hidden">
             
             <!-- Glow Accent Inside Card -->
-            <div class="absolute -top-16 -right-16 w-36 h-36 bg-brand/20 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -top-16 -right-16 w-36 h-36 bg-[#0878E5]/30 rounded-full blur-2xl pointer-events-none"></div>
 
             <!-- Top Security Beacon -->
-            <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-white/10">
+            <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-white/15">
                 <span class="inline-flex items-center gap-1.5 text-[10px] font-black text-brand-light tracking-wider uppercase font-mono">
                     <span class="w-2 h-2 rounded-full bg-brand-light pulse-beacon-blue"></span>
                     <span>SECURE ACCESS PORTAL</span>
                 </span>
-                <span class="text-[10px] text-slate-400 font-mono font-bold">256-BIT SSL</span>
+                <span class="text-[10px] text-slate-300 font-mono font-bold">256-BIT SSL</span>
             </div>
 
             <div class="text-center mb-4">
@@ -139,14 +141,14 @@
 
             <!-- Flash Error / Info Alerts -->
             @if(session('error'))
-                <div class="p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-medium mb-3 leading-snug flex items-start gap-2">
-                    <span class="text-rose-400 text-sm shrink-0">⚠️</span>
+                <div class="p-3 rounded-xl bg-rose-500/20 border border-rose-400/40 text-rose-200 text-xs font-medium mb-3 leading-snug flex items-start gap-2">
+                    <span class="text-rose-300 text-sm shrink-0">⚠️</span>
                     <span>{{ session('error') }}</span>
                 </div>
             @endif
 
             @if(session('info'))
-                <div class="p-3 rounded-xl bg-[#0878E5]/20 border border-[#55C7FF]/30 text-[#55C7FF] text-xs font-medium mb-3 leading-snug flex items-start gap-2">
+                <div class="p-3 rounded-xl bg-[#0878E5]/25 border border-[#55C7FF]/40 text-[#55C7FF] text-xs font-medium mb-3 leading-snug flex items-start gap-2">
                     <span class="text-brand-light text-sm shrink-0">ℹ️</span>
                     <span>{{ session('info') }}</span>
                 </div>
@@ -157,13 +159,13 @@
                 @csrf
                 
                 <div>
-                    <label class="block font-bold text-xs text-white mb-1.5">
+                    <label class="block font-bold text-xs text-slate-100 mb-1.5">
                         Nomor WhatsApp / CID Pelanggan *
                     </label>
-                    <div class="flex items-center h-10 px-3 rounded-xl bg-[#020B1D]/80 border border-white/20 focus-within:border-brand-light focus-within:ring-2 focus-within:ring-brand/30 transition-all shadow-inner">
+                    <div class="flex items-center h-10 px-3 rounded-xl bg-[#0E2238]/90 border border-white/20 focus-within:border-brand-light focus-within:ring-2 focus-within:ring-brand/40 transition-all shadow-inner">
                         
                         <!-- Country Prefix Badge -->
-                        <div class="flex items-center gap-1.5 pr-2.5 mr-2.5 border-r border-white/15 select-none shrink-0">
+                        <div class="flex items-center gap-1.5 pr-2.5 mr-2.5 border-r border-white/20 select-none shrink-0">
                             <span class="text-xs">🇮🇩</span>
                             <span class="text-brand-light text-xs font-black tracking-wide">+62</span>
                         </div>
@@ -180,20 +182,20 @@
                         />
                     </div>
                     
-                    <span class="text-[10px] text-slate-400 mt-1.5 flex items-center gap-1">
+                    <span class="text-[10px] text-slate-300 mt-1.5 flex items-center gap-1">
                         <span class="text-brand-light">💡</span>
                         <span>Bisa juga memasukkan ID Pelanggan (CID).</span>
                     </span>
                 </div>
 
-                <button type="submit" class="w-full h-10 rounded-xl btn-brand-primary text-white font-black text-xs shadow-lg shadow-brand/25 transition-all flex items-center justify-center gap-1.5 hover:shadow-xl">
+                <button type="submit" class="w-full h-10 rounded-xl btn-brand-primary text-white font-black text-xs shadow-lg shadow-brand/30 transition-all flex items-center justify-center gap-1.5 hover:shadow-xl">
                     <span>Masuk ke Portal Layanan</span>
                     <span class="text-white font-black">&rarr;</span>
                 </button>
             </form>
 
-            <div class="mt-4 pt-3 border-t border-white/10 text-center">
-                <p class="text-xs text-slate-400 mb-1">Belum terdaftar atau nomor HP berubah?</p>
+            <div class="mt-4 pt-3 border-t border-white/15 text-center">
+                <p class="text-xs text-slate-300 mb-1">Belum terdaftar atau nomor HP berubah?</p>
                 <a href="https://wa.me/6281234567890?text=Halo%20CS%20IMS%20ONE%2C%20saya%20membutuhkan%20bantuan%20login%20portal%20pelanggan" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-light hover:text-white hover:underline transition-colors">
                     <span>💬 Hubungi Customer Service 24/7</span>
                 </a>
@@ -204,7 +206,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="w-full max-w-7xl mx-auto px-4 py-3 sm:py-3.5 text-center text-xs text-slate-500 relative z-10 shrink-0 border-t border-white/5">
+    <footer class="w-full max-w-7xl mx-auto px-4 py-3 sm:py-3.5 text-center text-xs text-slate-400 relative z-10 shrink-0 border-t border-white/10">
         &copy; {{ date('Y') }} IMS ONE Fiber Network. Portal Layanan Mandiri Pelanggan.
     </footer>
 
