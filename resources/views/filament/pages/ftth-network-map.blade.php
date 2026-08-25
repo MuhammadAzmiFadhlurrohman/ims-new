@@ -274,7 +274,7 @@
             </div>
 
             {{-- Map Canvas --}}
-            <div id="ims-ftth-builder-canvas" class="ims-map-canvas" style="position: relative; z-index: 1;"></div>
+            <div id="ims-ftth-builder-canvas" class="ims-map-canvas" wire:ignore style="position: relative; z-index: 1;"></div>
 
             {{-- Legend Footer --}}
             <div style="padding: 0.65rem 1.15rem; background: #F4FAFF; border-top: 1px solid #dbeafe; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.72rem; color: #475569;">
@@ -340,13 +340,22 @@
                             }
                             // Refresh list
                             if (data.element) {
-                                const idx = this.customElements.findIndex(e => e.id === data.element.id);
+                                const el = data.element;
+                                if (el.latitude !== undefined && el.latitude !== null) el.latitude = parseFloat(el.latitude);
+                                if (el.longitude !== undefined && el.longitude !== null) el.longitude = parseFloat(el.longitude);
+                                if (typeof el.path_coordinates === 'string') {
+                                    try { el.path_coordinates = JSON.parse(el.path_coordinates); } catch(e) {}
+                                }
+                                const idx = this.customElements.findIndex(e => e.id === el.id);
                                 if (idx >= 0) {
-                                    this.customElements[idx] = data.element;
+                                    this.customElements[idx] = el;
                                 } else {
-                                    this.customElements.unshift(data.element);
+                                    this.customElements.unshift(el);
                                 }
                                 this.renderCustomElements();
+                                if (this.mapInstance) {
+                                    this.mapInstance.invalidateSize();
+                                }
                             }
                         });
 
@@ -358,6 +367,9 @@
                             if (data.id) {
                                 this.customElements = this.customElements.filter(e => e.id !== data.id);
                                 this.renderCustomElements();
+                                if (this.mapInstance) {
+                                    this.mapInstance.invalidateSize();
+                                }
                             }
                         });
                     },
