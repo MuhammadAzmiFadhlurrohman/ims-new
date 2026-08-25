@@ -1,342 +1,9 @@
 <x-filament-panels::page>
     <div 
-        x-data="{
-            allOdps: {{ json_encode($this->allOdps) }},
-            inputCoordinates: '{{ $this->coordinates }}',
-            mapInstance: null,
-            odpMarkersLayer: null,
-            userMarkerLayer: null,
-            connectionLineLayer: null,
-            hasChecked: false,
-            isDetectingGps: false,
-            nearestResult: null,
-            secondResult: null,
-            mapMode: 'roadmap', // 'roadmap' | 'hybrid' | 'terrain'
-            tileLayers: {},
-
-            init() {
-                this.loadLeafletAndInit();
-            },
-
-            loadLeafletAndInit() {
-                if (typeof L === 'undefined') {
-                    if (!document.getElementById('leaflet-css-olt')) {
-                        const link = document.createElement('link');
-                        link.id = 'leaflet-css-olt';
-                        link.rel = 'stylesheet';
-                        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-                        document.head.appendChild(link);
-                    }
-
-                    if (!document.getElementById('leaflet-js-olt')) {
-                        const script = document.createElement('script');
-                        script.id = 'leaflet-js-olt';
-                        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-                        script.onload = () => {
-                            setTimeout(() => {
-                                this.initMap();
-                                if (this.inputCoordinates) {
-                                    this.executeCoverageCheck();
-                                }
-                            }, 150);
-                        };
-                        document.head.appendChild(script);
-                    }
-                } else {
-                    setTimeout(() => {
-                        this.initMap();
-                        if (this.inputCoordinates) {
-                            this.executeCoverageCheck();
-                        }
-                    }, 150);
-                }
-            },
-
-            initMap() {
-                const mapEl = document.getElementById('ims-google-map-canvas');
-                if (!mapEl || typeof L === 'undefined') return;
-
-                if (this.mapInstance) {
-                    this.mapInstance.remove();
-                    this.mapInstance = null;
-                }
-
-                let defaultLat = -6.936988;
-                let defaultLng = 107.5904512;
-
-                if (this.allOdps && this.allOdps.length > 0) {
-                    defaultLat = this.allOdps[0].lat;
-                    defaultLng = this.allOdps[0].lng;
-                }
-
-                this.mapInstance = L.map('ims-google-map-canvas', {
-                    center: [defaultLat, defaultLng],
-                    zoom: 15,
-                    zoomControl: true,
-                    attributionControl: false
-                });
-
-                // Google Maps Roadmap tile layer
-                L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-                    maxZoom: 20,
-                    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                    tileSize: 256
-                }).addTo(this.mapInstance);
-
-                this.odpMarkersLayer = L.layerGroup().addTo(this.mapInstance);
-                this.renderAllOdpMarkers();
-
-                setTimeout(() => {
-                    if (this.mapInstance) {
-                        this.mapInstance.invalidateSize();
-                    }
-                }, 350);
-
-                this.mapInstance.on('click', (e) => {
-                    const lat = e.latlng.lat;
-                    const lng = e.latlng.lng;
-                    this.inputCoordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                    this.executeCoverageCheck();
-                });
-            },
-
-            setMapMode(mode) {
-                if (!this.mapInstance || !this.tileLayers[mode]) return;
-                this.mapInstance.removeLayer(this.tileLayers[this.mapMode]);
-                this.mapMode = mode;
-                this.tileLayers[mode].addTo(this.mapInstance);
-            },
-
-            renderAllOdpMarkers() {
-                if (!this.odpMarkersLayer || typeof L === 'undefined') return;
-                this.odpMarkersLayer.clearLayers();
-
-                const markers = [];
-                this.allOdps.forEach((odp) => {
-                    const isAvailable = odp.has_slot;
-                    const pinColor = isAvailable ? '#0878E5' : '#EF4444';
-
-                    const customIcon = L.divIcon({
-                        className: 'custom-google-pin',
-                        html: `
-                            <div style='width: 28px; height: 28px; border-radius: 50%; background: ${pinColor}; border: 2.5px solid #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; cursor: pointer;'>
-                                <svg style='width: 13px; height: 13px; color: #ffffff;' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M13 10V3L4 14h7v7l9-11h-7z'/></svg>
-                            </div>
-                        `,
-                        iconSize: [28, 28],
-                        iconAnchor: [14, 14]
-                    });
-
-                    const marker = L.marker([odp.lat, odp.lng], { icon: customIcon });
-
-                    marker.bindPopup(`
-                        <div style='font-family: inherit; padding: 6px; color: #0B1F33; min-width: 190px;'>
-                            <div style='font-size: 11px; font-weight: 800; color: #0878E5;'>${odp.code}</div>
-                            <div style='font-size: 13px; font-weight: 900; margin: 2px 0 4px; color: #0B1F33;'>${odp.name}</div>
-                            <div style='font-size: 11px; color: #475569;'>Status: <strong style='color: ${isAvailable ? '#0878E5' : '#EF4444'};'>● ${isAvailable ? 'TERSEDIA (FIBER ACTIVE)' : 'PORT PENUH'}</strong></div>
-                            <div style='font-size: 10.5px; color: #64748B; margin-top: 3px;'>Port: <b>${odp.used_ports}/${odp.total_ports}</b> • OLT: <b>${odp.olt_name}</b></div>
-                            <div style='margin-top: 8px; padding-top: 6px; border-top: 1px solid #E2E8F0; display: flex; gap: 4px;'>
-                                <a href='https://www.google.com/maps/dir/?api=1&destination=${odp.lat},${odp.lng}' target='_blank' style='flex: 1; text-align: center; text-decoration: none; background: #0878E5; color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800;'>Rute Google Maps &rarr;</a>
-                            </div>
-                        </div>
-                    `);
-
-                    this.odpMarkersLayer.addLayer(marker);
-                    markers.push(marker);
-                });
-
-                if (markers.length > 0 && this.mapInstance) {
-                    this.mapInstance.fitBounds(L.featureGroup(markers).getBounds().pad(0.15));
-                }
-            },
-
-            parseCoordinates(input) {
-                if (!input) return null;
-                const matches = input.match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/g);
-                if (matches && matches.length >= 2) {
-                    const lat = parseFloat(matches[0]);
-                    const lng = parseFloat(matches[1]);
-                    if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
-                        return { lat, lng };
-                    }
-                }
-                return null;
-            },
-
-            calculateDistanceMeters(lat1, lon1, lat2, lon2) {
-                const R = 6371000;
-                const dLat = (lat2 - lat1) * Math.PI / 180;
-                const dLon = (lon2 - lon1) * Math.PI / 180;
-                const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                          Math.sin(dLon/2) * Math.sin(dLon/2);
-                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                return Math.round(R * c);
-            },
-
-            async executeCoverageCheck() {
-                const coords = this.parseCoordinates(this.inputCoordinates);
-                if (!coords) {
-                    IMS.error('Format koordinat tidak valid.<br><span style="font-size:11.5px; color:#64748b;">Contoh: <code>-6.936988, 107.5904512</code></span>', 'Format Koordinat Salah');
-                    return;
-                }
-
-                const userLat = coords.lat;
-                const userLng = coords.lng;
-
-                const odpList = this.allOdps.map(odp => {
-                    const dist = this.calculateDistanceMeters(userLat, userLng, odp.lat, odp.lng);
-                    return {
-                        odp: odp,
-                        distance: dist,
-                        isCovered: dist <= 150,
-                        roadDistance: Math.round(dist * 1.25)
-                    };
-                }).sort((a, b) => a.distance - b.distance);
-
-                if (odpList.length > 0) {
-                    this.nearestResult = odpList[0];
-                    this.secondResult = odpList.length > 1 ? odpList[1] : null;
-                    this.hasChecked = true;
-
-                    await this.drawConnectionToOdp(userLat, userLng, this.nearestResult);
-                }
-            },
-
-            async drawConnectionToOdp(userLat, userLng, result) {
-                if (!this.mapInstance || typeof L === 'undefined') return;
-
-                if (this.userMarkerLayer) {
-                    this.mapInstance.removeLayer(this.userMarkerLayer);
-                }
-                if (this.connectionLineLayer) {
-                    this.mapInstance.removeLayer(this.connectionLineLayer);
-                }
-
-                // Google Maps Style Red Pin with House
-                const userIcon = L.divIcon({
-                    className: 'user-google-pin',
-                    html: `
-                        <div style='position: relative; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;'>
-                            <div style='width: 30px; height: 30px; border-radius: 50%; background: #EA4335; border: 2.5px solid #ffffff; box-shadow: 0 4px 14px rgba(234,67,53,0.5); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px;'>
-                                📍
-                            </div>
-                        </div>
-                    `,
-                    iconSize: [36, 36],
-                    iconAnchor: [18, 18]
-                });
-
-                this.userMarkerLayer = L.marker([userLat, userLng], { icon: userIcon }).addTo(this.mapInstance);
-                this.userMarkerLayer.bindPopup(`
-                    <div style='font-family: inherit; padding: 4px; color: #0B1F33; min-width: 170px;'>
-                        <div style='font-size: 10px; font-weight: 800; color: #EA4335; text-transform: uppercase;'>📍 LOKASI TARGET</div>
-                        <div style='font-size: 12px; font-weight: 800; margin: 2px 0;'>${userLat.toFixed(6)}, ${userLng.toFixed(6)}</div>
-                        <div style='font-size: 11px; color: ${result.isCovered ? '#0878E5' : '#EF4444'}; font-weight: 700; margin-top: 4px;'>
-                            ${result.isCovered ? '⚡ Tercover Fiber Optic' : '✕ Di Luar Radius (> 150m)'}
-                        </div>
-                        <div style='font-size: 10.5px; color: #64748B; margin-top: 2px;'>Terhubung ke <b>${result.odp.name}</b> (~${result.distance}m)</div>
-                    </div>
-                `).openPopup();
-
-                const odp = result.odp;
-
-                let routeCoords = [];
-                try {
-                    const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${odp.lng},${odp.lat}?overview=full&geometries=geojson`;
-                    const ctrl = new AbortController();
-                    const timeoutId = setTimeout(() => ctrl.abort(), 2500);
-                    const res = await fetch(osrmUrl, { signal: ctrl.signal });
-                    clearTimeout(timeoutId);
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (data.routes && data.routes[0] && data.routes[0].geometry) {
-                            routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                            if (data.routes[0].distance) {
-                                result.roadDistance = Math.round(data.routes[0].distance);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    console.log('OSRM routing fallback:', e);
-                }
-
-                if (routeCoords && routeCoords.length >= 2) {
-                    // Ensure the route connects completely from user's pin
-                    routeCoords.unshift([userLat, userLng]);
-                    // Ensure the route connects completely to ODP's pin
-                    routeCoords.push([odp.lat, odp.lng]);
-                } else {
-                    const midLat = userLat + (odp.lat - userLat) * 0.55;
-                    const midLng = userLng + (odp.lng - userLng) * 0.45;
-                    routeCoords = [
-                        [userLat, userLng],
-                        [midLat, userLng],
-                        [midLat, odp.lng],
-                        [odp.lat, odp.lng]
-                    ];
-                }
-
-                this.connectionLineLayer = L.layerGroup().addTo(this.mapInstance);
-
-                const glowLine = L.polyline([[userLat, userLng]], {
-                    color: '#55C7FF',
-                    weight: 6,
-                    opacity: 0.6,
-                    lineCap: 'round',
-                    lineJoin: 'round'
-                }).addTo(this.connectionLineLayer);
-
-                const fiberLine = L.polyline([[userLat, userLng]], {
-                    color: '#0878E5',
-                    weight: 3.5,
-                    dashArray: '10, 8',
-                    lineCap: 'round',
-                    lineJoin: 'round'
-                }).addTo(this.connectionLineLayer);
-
-                const bounds = L.latLngBounds(routeCoords);
-                this.mapInstance.fitBounds(bounds.pad(0.3), { animate: true, duration: 0.8 });
-
-                glowLine.setLatLngs(routeCoords);
-                fiberLine.setLatLngs(routeCoords);
-            },
-
-            getCurrentLocation() {
-                if (!navigator.geolocation) {
-                    IMS.warning('Geolokasi GPS tidak didukung di browser ini.', 'GPS Tidak Didukung');
-                    return;
-                }
-                this.isDetectingGps = true;
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        this.isDetectingGps = false;
-                        const lat = pos.coords.latitude;
-                        const lng = pos.coords.longitude;
-                        this.inputCoordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                        this.executeCoverageCheck();
-                    },
-                    (err) => {
-                        this.isDetectingGps = false;
-                        IMS.error('Gagal mendeteksi lokasi GPS. Silakan masukkan koordinat secara manual.', 'GPS Gagal');
-                    },
-                    { timeout: 8000, enableHighAccuracy: true }
-                );
-            },
-
-            resetMapView() {
-                if (this.allOdps && this.allOdps.length > 0 && this.mapInstance && typeof L !== 'undefined') {
-                    const bounds = L.latLngBounds(this.allOdps.map(o => [o.lat, o.lng]));
-                    this.mapInstance.fitBounds(bounds.pad(0.15), { animate: true });
-                }
-            },
-
-            copyCoordinates(text) {
-                navigator.clipboard.writeText(text).then(() => {
-                    IMS.toast('Koordinat berhasil disalin ke clipboard!', 'success', 2500);
-                });
-            }
-        }"
+        x-data="imsOltCoverageComponent({
+            allOdps: {{ \Illuminate\Support\Js::from($this->allOdps) }},
+            inputCoordinates: '{{ addslashes($this->coordinates) }}'
+        })"
         class="ims-coverage-root"
         style="display: flex; flex-direction: column; gap: 1.25rem; width: 100%; font-family: 'Plus Jakarta Sans', sans-serif;"
     >
@@ -680,4 +347,358 @@
 
         </div>
     </div>
+    <script>
+        window.imsOltCoverageComponent = function(config) {
+            return {
+                allOdps: config.allOdps || [],
+                inputCoordinates: config.inputCoordinates || '',
+                mapInstance: null,
+                odpMarkersLayer: null,
+                userMarkerLayer: null,
+                connectionLineLayer: null,
+                hasChecked: false,
+                isDetectingGps: false,
+                nearestResult: null,
+                secondResult: null,
+                mapMode: 'roadmap',
+                tileLayers: {},
+
+                init() {
+                    this.loadLeafletAndInit();
+                },
+
+                loadLeafletAndInit() {
+                    if (typeof L === 'undefined') {
+                        if (!document.getElementById('leaflet-css-olt')) {
+                            const link = document.createElement('link');
+                            link.id = 'leaflet-css-olt';
+                            link.rel = 'stylesheet';
+                            link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+                            document.head.appendChild(link);
+                        }
+
+                        if (!document.getElementById('leaflet-js-olt')) {
+                            const script = document.createElement('script');
+                            script.id = 'leaflet-js-olt';
+                            script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+                            script.onload = () => {
+                                setTimeout(() => {
+                                    this.initMap();
+                                    if (this.inputCoordinates) {
+                                        this.executeCoverageCheck();
+                                    }
+                                }, 150);
+                            };
+                            document.head.appendChild(script);
+                        }
+                    } else {
+                        setTimeout(() => {
+                            this.initMap();
+                            if (this.inputCoordinates) {
+                                this.executeCoverageCheck();
+                            }
+                        }, 150);
+                    }
+                },
+
+                initMap() {
+                    const mapEl = document.getElementById('ims-google-map-canvas');
+                    if (!mapEl || typeof L === 'undefined') return;
+
+                    if (this.mapInstance) {
+                        this.mapInstance.remove();
+                        this.mapInstance = null;
+                    }
+
+                    let defaultLat = -6.936988;
+                    let defaultLng = 107.5904512;
+
+                    if (this.allOdps && this.allOdps.length > 0) {
+                        defaultLat = this.allOdps[0].lat;
+                        defaultLng = this.allOdps[0].lng;
+                    }
+
+                    this.mapInstance = L.map('ims-google-map-canvas', {
+                        center: [defaultLat, defaultLng],
+                        zoom: 15,
+                        zoomControl: true,
+                        attributionControl: false
+                    });
+
+                    // Google Maps Roadmap tile layer
+                    L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                        maxZoom: 20,
+                        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                        tileSize: 256
+                    }).addTo(this.mapInstance);
+
+                    this.odpMarkersLayer = L.layerGroup().addTo(this.mapInstance);
+                    this.renderAllOdpMarkers();
+
+                    setTimeout(() => {
+                        if (this.mapInstance) {
+                            this.mapInstance.invalidateSize();
+                        }
+                    }, 350);
+
+                    this.mapInstance.on('click', (e) => {
+                        const lat = e.latlng.lat;
+                        const lng = e.latlng.lng;
+                        this.inputCoordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                        this.executeCoverageCheck();
+                    });
+                },
+
+                setMapMode(mode) {
+                    if (!this.mapInstance || !this.tileLayers[mode]) return;
+                    this.mapInstance.removeLayer(this.tileLayers[this.mapMode]);
+                    this.mapMode = mode;
+                    this.tileLayers[mode].addTo(this.mapInstance);
+                },
+
+                renderAllOdpMarkers() {
+                    if (!this.odpMarkersLayer || typeof L === 'undefined') return;
+                    this.odpMarkersLayer.clearLayers();
+
+                    const markers = [];
+                    this.allOdps.forEach((odp) => {
+                        const isAvailable = odp.has_slot;
+                        const pinColor = isAvailable ? '#0878E5' : '#EF4444';
+
+                        const customIcon = L.divIcon({
+                            className: 'custom-google-pin',
+                            html: `
+                                <div style='width: 28px; height: 28px; border-radius: 50%; background: ${pinColor}; border: 2.5px solid #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; cursor: pointer;'>
+                                    <svg style='width: 13px; height: 13px; color: #ffffff;' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M13 10V3L4 14h7v7l9-11h-7z'/></svg>
+                                </div>
+                            `,
+                            iconSize: [28, 28],
+                            iconAnchor: [14, 14]
+                        });
+
+                        const marker = L.marker([odp.lat, odp.lng], { icon: customIcon });
+
+                        marker.bindPopup(`
+                            <div style='font-family: inherit; padding: 6px; color: #0B1F33; min-width: 190px;'>
+                                <div style='font-size: 11px; font-weight: 800; color: #0878E5;'>${odp.code}</div>
+                                <div style='font-size: 13px; font-weight: 900; margin: 2px 0 4px; color: #0B1F33;'>${odp.name}</div>
+                                <div style='font-size: 11px; color: #475569;'>Status: <strong style='color: ${isAvailable ? '#0878E5' : '#EF4444'};'>● ${isAvailable ? 'TERSEDIA (FIBER ACTIVE)' : 'PORT PENUH'}</strong></div>
+                                <div style='font-size: 10.5px; color: #64748B; margin-top: 3px;'>Port: <b>${odp.used_ports}/${odp.total_ports}</b> • OLT: <b>${odp.olt_name}</b></div>
+                                <div style='margin-top: 8px; padding-top: 6px; border-top: 1px solid #E2E8F0; display: flex; gap: 4px;'>
+                                    <a href='https://www.google.com/maps/dir/?api=1&destination=${odp.lat},${odp.lng}' target='_blank' style='flex: 1; text-align: center; text-decoration: none; background: #0878E5; color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800;'>Rute Google Maps &rarr;</a>
+                                </div>
+                            </div>
+                        `);
+
+                        this.odpMarkersLayer.addLayer(marker);
+                        markers.push(marker);
+                    });
+
+                    if (markers.length > 0 && this.mapInstance) {
+                        this.mapInstance.fitBounds(L.featureGroup(markers).getBounds().pad(0.15));
+                    }
+                },
+
+                parseCoordinates(input) {
+                    if (!input) return null;
+                    const matches = input.match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/g);
+                    if (matches && matches.length >= 2) {
+                        const lat = parseFloat(matches[0]);
+                        const lng = parseFloat(matches[1]);
+                        if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                            return { lat, lng };
+                        }
+                    }
+                    return null;
+                },
+
+                calculateDistanceMeters(lat1, lon1, lat2, lon2) {
+                    const R = 6371000;
+                    const dLat = (lat2 - lat1) * Math.PI / 180;
+                    const dLon = (lon2 - lon1) * Math.PI / 180;
+                    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                              Math.sin(dLon/2) * Math.sin(dLon/2);
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                    return Math.round(R * c);
+                },
+
+                async executeCoverageCheck() {
+                    const coords = this.parseCoordinates(this.inputCoordinates);
+                    if (!coords) {
+                        if (typeof IMS !== 'undefined' && typeof IMS.error === 'function') {
+                            IMS.error('Format koordinat tidak valid.<br><span style="font-size:11.5px; color:#64748b;">Contoh: <code>-6.936988, 107.5904512</code></span>', 'Format Koordinat Salah');
+                        } else {
+                            alert('Format koordinat tidak valid. Contoh: -6.936988, 107.5904512');
+                        }
+                        return;
+                    }
+
+                    const userLat = coords.lat;
+                    const userLng = coords.lng;
+
+                    const odpList = this.allOdps.map(odp => {
+                        const dist = this.calculateDistanceMeters(userLat, userLng, odp.lat, odp.lng);
+                        return {
+                            odp: odp,
+                            distance: dist,
+                            isCovered: dist <= 150,
+                            roadDistance: Math.round(dist * 1.25)
+                        };
+                    }).sort((a, b) => a.distance - b.distance);
+
+                    if (odpList.length > 0) {
+                        this.nearestResult = odpList[0];
+                        this.secondResult = odpList.length > 1 ? odpList[1] : null;
+                        this.hasChecked = true;
+
+                        await this.drawConnectionToOdp(userLat, userLng, this.nearestResult);
+                    }
+                },
+
+                async drawConnectionToOdp(userLat, userLng, result) {
+                    if (!this.mapInstance || typeof L === 'undefined') return;
+
+                    if (this.userMarkerLayer) {
+                        this.mapInstance.removeLayer(this.userMarkerLayer);
+                    }
+                    if (this.connectionLineLayer) {
+                        this.mapInstance.removeLayer(this.connectionLineLayer);
+                    }
+
+                    const userIcon = L.divIcon({
+                        className: 'user-google-pin',
+                        html: `
+                            <div style='position: relative; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;'>
+                                <div style='width: 30px; height: 30px; border-radius: 50%; background: #EA4335; border: 2.5px solid #ffffff; box-shadow: 0 4px 14px rgba(234,67,53,0.5); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px;'>
+                                    📍
+                                </div>
+                            </div>
+                        `,
+                        iconSize: [36, 36],
+                        iconAnchor: [18, 18]
+                    });
+
+                    this.userMarkerLayer = L.marker([userLat, userLng], { icon: userIcon }).addTo(this.mapInstance);
+                    this.userMarkerLayer.bindPopup(`
+                        <div style='font-family: inherit; padding: 4px; color: #0B1F33; min-width: 170px;'>
+                            <div style='font-size: 10px; font-weight: 800; color: #EA4335; text-transform: uppercase;'>📍 LOKASI TARGET</div>
+                            <div style='font-size: 12px; font-weight: 800; margin: 2px 0;'>${userLat.toFixed(6)}, ${userLng.toFixed(6)}</div>
+                            <div style='font-size: 11px; color: ${result.isCovered ? '#0878E5' : '#EF4444'}; font-weight: 700; margin-top: 4px;'>
+                                ${result.isCovered ? '⚡ Tercover Fiber Optic' : '✕ Di Luar Radius (> 150m)'}
+                            </div>
+                            <div style='font-size: 10.5px; color: #64748B; margin-top: 2px;'>Terhubung ke <b>${result.odp.name}</b> (~${result.distance}m)</div>
+                        </div>
+                    `).openPopup();
+
+                    const odp = result.odp;
+
+                    let routeCoords = [];
+                    try {
+                        const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${odp.lng},${odp.lat}?overview=full&geometries=geojson`;
+                        const ctrl = new AbortController();
+                        const timeoutId = setTimeout(() => ctrl.abort(), 2500);
+                        const res = await fetch(osrmUrl, { signal: ctrl.signal });
+                        clearTimeout(timeoutId);
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (data.routes && data.routes[0] && data.routes[0].geometry) {
+                                routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                                if (data.routes[0].distance) {
+                                    result.roadDistance = Math.round(data.routes[0].distance);
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.log('OSRM routing fallback:', e);
+                    }
+
+                    if (routeCoords && routeCoords.length >= 2) {
+                        routeCoords.unshift([userLat, userLng]);
+                        routeCoords.push([odp.lat, odp.lng]);
+                    } else {
+                        const midLat = userLat + (odp.lat - userLat) * 0.55;
+                        const midLng = userLng + (odp.lng - userLng) * 0.45;
+                        routeCoords = [
+                            [userLat, userLng],
+                            [midLat, userLng],
+                            [midLat, odp.lng],
+                            [odp.lat, odp.lng]
+                        ];
+                    }
+
+                    this.connectionLineLayer = L.layerGroup().addTo(this.mapInstance);
+
+                    const glowLine = L.polyline([[userLat, userLng]], {
+                        color: '#55C7FF',
+                        weight: 6,
+                        opacity: 0.6,
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }).addTo(this.connectionLineLayer);
+
+                    const fiberLine = L.polyline([[userLat, userLng]], {
+                        color: '#0878E5',
+                        weight: 3.5,
+                        dashArray: '10, 8',
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }).addTo(this.connectionLineLayer);
+
+                    const bounds = L.latLngBounds(routeCoords);
+                    this.mapInstance.fitBounds(bounds.pad(0.3), { animate: true, duration: 0.8 });
+
+                    glowLine.setLatLngs(routeCoords);
+                    fiberLine.setLatLngs(routeCoords);
+                },
+
+                getCurrentLocation() {
+                    if (!navigator.geolocation) {
+                        if (typeof IMS !== 'undefined' && typeof IMS.warning === 'function') {
+                            IMS.warning('Geolokasi GPS tidak didukung di browser ini.', 'GPS Tidak Didukung');
+                        } else {
+                            alert('Geolokasi GPS tidak didukung di browser ini.');
+                        }
+                        return;
+                    }
+                    this.isDetectingGps = true;
+                    navigator.geolocation.getCurrentPosition(
+                        (pos) => {
+                            this.isDetectingGps = false;
+                            const lat = pos.coords.latitude;
+                            const lng = pos.coords.longitude;
+                            this.inputCoordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                            this.executeCoverageCheck();
+                        },
+                        (err) => {
+                            this.isDetectingGps = false;
+                            if (typeof IMS !== 'undefined' && typeof IMS.error === 'function') {
+                                IMS.error('Gagal mendeteksi lokasi GPS. Silakan masukkan koordinat secara manual.', 'GPS Gagal');
+                            } else {
+                                alert('Gagal mendeteksi lokasi GPS. Silakan masukkan koordinat secara manual.');
+                            }
+                        },
+                        { timeout: 8000, enableHighAccuracy: true }
+                    );
+                },
+
+                resetMapView() {
+                    if (this.allOdps && this.allOdps.length > 0 && this.mapInstance && typeof L !== 'undefined') {
+                        const bounds = L.latLngBounds(this.allOdps.map(o => [o.lat, o.lng]));
+                        this.mapInstance.fitBounds(bounds.pad(0.15), { animate: true });
+                    }
+                },
+
+                copyCoordinates(text) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('Koordinat berhasil disalin ke clipboard!', 'success', 2500);
+                        } else {
+                            alert('Koordinat disalin: ' + text);
+                        }
+                    });
+                }
+            };
+        };
+    </script>
 </x-filament-panels::page>
