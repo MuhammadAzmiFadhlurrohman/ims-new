@@ -1310,11 +1310,11 @@
             </div>
 
             {{-- ── TAB 1: PAKET RUMAH & KELUARGA ── --}}
-            <div x-show="pricingTab === 'rumah'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="flex md:grid md:grid-cols-3 overflow-x-auto pb-4 md:pb-0 snap-x snap-mandatory gap-6 lg:gap-8 items-stretch no-scrollbar">
+            <div x-show="pricingTab === 'rumah'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
                 
                 <!-- Package 1: 30 Mbps (Starter Home) -->
-                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-7 sm:p-8 flex flex-col justify-between shadow-brand-soft min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive h-full relative">
-                    <div class="space-y-5">
+                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-brand-soft card-interactive h-full transition-all duration-300">
+                    <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-[11px] font-black text-brand uppercase tracking-wider px-3 py-1 rounded-full bg-brand-soft">
                                 STARTER HOME
@@ -1324,7 +1324,7 @@
 
                         <div>
                             <h3 class="font-heading text-3xl font-black text-brand-navy">30 Mbps</h3>
-                            <p class="text-xs text-ink-muted mt-1">Ideal untuk browsing harian, media sosial, dan 3–5 perangkat.</p>
+                            <p class="text-xs text-ink-muted mt-1.5 min-h-[36px]">Ideal untuk browsing harian, media sosial, dan 3–5 perangkat keluarga.</p>
                         </div>
 
                         <div class="pt-4 border-t border-slate-100">
@@ -1334,53 +1334,48 @@
                             <span class="text-[11px] text-brand font-bold block mt-1">✓ Sudah Termasuk PPN &amp; Sewa Modem</span>
                         </div>
 
-                        <div class="pt-4 border-t border-slate-100 space-y-2.5 text-xs text-ink-body">
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                        <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-body">
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Simetris 30 Mbps (Upload = Download)</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
-                                <span><strong>True Unlimited</strong> (Tanpa batas FUP)</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                <span><strong>True Unlimited</strong> (Tanpa batas kuota FUP)</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Router WiFi High-Gain Dual Band</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Dukungan Helpdesk CS 24/7</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="pt-6 mt-6 border-t border-slate-100">
-                        <button @click="openRegister('Paket Starter (30 Mbps)')" class="w-full py-3 rounded-xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs transition-all shadow-sm">
-                            Pilih Paket 30 Mbps &rarr;
+                        <button @click="openRegister('Paket Starter (30 Mbps)')" class="w-full py-3.5 rounded-2xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-1.5">
+                            <span>Pilih Paket 30 Mbps</span>
+                            <span>&rarr;</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Package 2: 100 Mbps (FEATURED HERO CARD - MONOCHROMATIC BLUE #0878E5) -->
-                <div class="bg-brand text-white border-2 border-blue-300/40 rounded-3xl p-7 sm:p-9 flex flex-col justify-between relative shadow-brand-card min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive lg:-mt-4 lg:-mb-4 h-full">
-                    
-                    <!-- Blue/White Badge: PALING POPULER -->
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-white text-brand text-[11px] font-black uppercase tracking-wider shadow-lg border border-blue-100 flex items-center gap-1.5 whitespace-nowrap">
-                        <span>⭐</span>
-                        <span>PALING POPULER</span>
-                    </div>
-
-                    <div class="space-y-5 pt-2">
+                <div class="bg-brand text-white border-2 border-blue-400/50 rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative shadow-brand-card card-interactive h-full transition-all duration-300">
+                    <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-black text-white uppercase tracking-wider px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm">
-                                100 MBPS PRO
+                            <span class="inline-flex items-center gap-1 text-[11px] font-black text-white uppercase tracking-wider px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm">
+                                <span>⭐</span>
+                                <span>100 MBPS PRO</span>
                             </span>
-                            <span class="text-xs text-blue-100 font-bold">Best Value</span>
+                            <span class="text-xs text-white font-bold bg-white/20 px-2.5 py-0.5 rounded-full">Best Value</span>
                         </div>
 
                         <div>
-                            <h3 class="font-heading text-3xl sm:text-4xl font-black text-white">100 Mbps</h3>
-                            <p class="text-xs text-blue-100 mt-1">Streaming 4K lancar, meeting WFH bebas putus, dan gaming multi-user.</p>
+                            <h3 class="font-heading text-3xl font-black text-white">100 Mbps</h3>
+                            <p class="text-xs text-blue-100 mt-1.5 min-h-[36px]">Streaming 4K lancar, meeting WFH bebas putus, dan gaming multi-user.</p>
                         </div>
 
                         <div class="pt-4 border-t border-white/20">
@@ -1391,27 +1386,27 @@
                         </div>
 
                         <div class="pt-4 border-t border-white/20 space-y-3 text-xs text-white">
-                            <div class="flex items-center gap-2">
-                                <span class="text-white font-black">✓</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span><strong>Simetris 100 Mbps</strong> (Upload = Download)</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-white font-black">✓</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span><strong>True Unlimited</strong> (Bebas kuota tanpa FUP)</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-white font-black">✓</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span><strong>Gigabit Router WiFi 6</strong> Dual-Band</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-white font-black">✓</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Prioritas Penanganan Teknisi Lapangan</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="pt-6 mt-6 border-t border-white/20">
-                        <button @click="openRegister('Paket Pro (100 Mbps)')" class="w-full py-3.5 rounded-xl bg-white hover:bg-slate-100 text-brand font-black text-xs sm:text-sm transition-all shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02]">
+                        <button @click="openRegister('Paket Pro (100 Mbps)')" class="w-full py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-brand font-black text-xs sm:text-sm transition-all shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02]">
                             <span>PASANG SEKARANG</span>
                             <span class="text-brand font-black">&rarr;</span>
                         </button>
@@ -1419,18 +1414,18 @@
                 </div>
 
                 <!-- Package 3: 300 Mbps (Ultimate Creator) -->
-                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-7 sm:p-8 flex flex-col justify-between shadow-brand-soft min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive h-full relative">
-                    <div class="space-y-5">
+                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-brand-soft card-interactive h-full transition-all duration-300">
+                    <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-[11px] font-black text-brand uppercase tracking-wider px-3 py-1 rounded-full bg-brand-soft">
-                                CREATOR &amp; HEAVY USER
+                                CREATOR &amp; HEAVY
                             </span>
                             <span class="text-xs text-ink-muted font-bold">Ultra Speed</span>
                         </div>
 
                         <div>
                             <h3 class="font-heading text-3xl font-black text-brand-navy">300 Mbps</h3>
-                            <p class="text-xs text-ink-muted mt-1">Untuk studio konten, e-sport, streaming multi-kamera, &amp; backup besar.</p>
+                            <p class="text-xs text-ink-muted mt-1.5 min-h-[36px]">Untuk studio konten, e-sport, streaming multi-kamera, &amp; backup data besar.</p>
                         </div>
 
                         <div class="pt-4 border-t border-slate-100">
@@ -1440,29 +1435,30 @@
                             <span class="text-[11px] text-brand font-bold block mt-1">✓ IP Public Dedicated (Opsional)</span>
                         </div>
 
-                        <div class="pt-4 border-t border-slate-100 space-y-2.5 text-xs text-ink-body">
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                        <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-body">
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Simetris 300 Mbps Dedicated</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Routing Jalur Khusus Ultra Low Latency</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
-                                <span>Garansi SLA 99.8% Uptime</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                <span>Garansi SLA 99.8% Uptime Jaringan</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Dedicated Account Manager Helpdesk</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="pt-6 mt-6 border-t border-slate-100">
-                        <button @click="openRegister('Paket Ultimate (300 Mbps)')" class="w-full py-3 rounded-xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs transition-all shadow-sm">
-                            Pilih Paket 300 Mbps &rarr;
+                        <button @click="openRegister('Paket Ultimate (300 Mbps)')" class="w-full py-3.5 rounded-2xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-1.5">
+                            <span>Pilih Paket 300 Mbps</span>
+                            <span>&rarr;</span>
                         </button>
                     </div>
                 </div>
@@ -1470,11 +1466,11 @@
             </div>
 
             {{-- ── TAB 2: PAKET BISNIS & KORPORAT ── --}}
-            <div x-show="pricingTab === 'bisnis'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="flex md:grid md:grid-cols-3 overflow-x-auto pb-4 md:pb-0 snap-x snap-mandatory gap-6 lg:gap-8 items-stretch no-scrollbar">
+            <div x-show="pricingTab === 'bisnis'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
                 
                 <!-- Business 1: 100 Mbps SME -->
-                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-7 sm:p-8 flex flex-col justify-between shadow-brand-soft min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive h-full">
-                    <div class="space-y-5">
+                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-brand-soft card-interactive h-full transition-all duration-300">
+                    <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-[11px] font-black text-brand uppercase tracking-wider px-3 py-1 rounded-full bg-brand-soft">
                                 BUSINESS STARTER
@@ -1484,7 +1480,7 @@
 
                         <div>
                             <h3 class="font-heading text-3xl font-black text-brand-navy">100 Mbps</h3>
-                            <p class="text-xs text-ink-muted mt-1">Solusi internet stabil untuk cafe, ruko, kantor cabang, dan klinik.</p>
+                            <p class="text-xs text-ink-muted mt-1.5 min-h-[36px]">Solusi internet stabil untuk cafe, ruko, kantor cabang, dan klinik.</p>
                         </div>
 
                         <div class="pt-4 border-t border-slate-100">
@@ -1494,51 +1490,48 @@
                             <span class="text-[11px] text-brand font-bold block mt-1">✓ 1 Static IP Public /29 Included</span>
                         </div>
 
-                        <div class="pt-4 border-t border-slate-100 space-y-2.5 text-xs text-ink-body">
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                        <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-body">
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>1:1 Dedicated Bandwidth (CIR 1:1)</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>SLA Garansi Uptime 99.8%</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Enterprise Router &amp; Access Point</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Respon Teknisi On-Site &lt; 2 Jam</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="pt-6 mt-6 border-t border-slate-100">
-                        <button @click="openRegister('Bisnis SME Pro (100 Mbps Dedicated)')" class="w-full py-3 rounded-xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs transition-all shadow-sm">
-                            Pilih Paket Business &rarr;
+                        <button @click="openRegister('Bisnis SME Pro (100 Mbps Dedicated)')" class="w-full py-3.5 rounded-2xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-1.5">
+                            <span>Pilih Paket Business</span>
+                            <span>&rarr;</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Business 2: 300 Mbps (ENTERPRISE DEDICATED - Monochromatic Blue) -->
-                <div class="bg-brand text-white border-2 border-blue-300/40 rounded-3xl p-7 sm:p-9 flex flex-col justify-between relative shadow-brand-card min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive lg:-mt-4 lg:-mb-4 h-full">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-white text-brand text-[11px] font-black uppercase tracking-wider shadow-lg border border-blue-100 flex items-center gap-1.5 whitespace-nowrap">
-                        <span>⭐</span>
-                        <span>PILIHAN UTAMA KORPORASI</span>
-                    </div>
-
-                    <div class="space-y-5 pt-2">
+                <!-- Business 2: 300 Mbps (ENTERPRISE DEDICATED) -->
+                <div class="bg-brand text-white border-2 border-blue-400/50 rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative shadow-brand-card card-interactive h-full transition-all duration-300">
+                    <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-black text-white uppercase tracking-wider px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm">
-                                ENTERPRISE DEDICATED
+                            <span class="inline-flex items-center gap-1 text-[11px] font-black text-white uppercase tracking-wider px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm">
+                                <span>⭐</span>
+                                <span>ENTERPRISE PRO</span>
                             </span>
-                            <span class="text-xs text-blue-100 font-bold">Multi Static IP</span>
+                            <span class="text-xs text-white font-bold bg-white/20 px-2.5 py-0.5 rounded-full">Multi Static IP</span>
                         </div>
 
                         <div>
-                            <h3 class="font-heading text-3xl sm:text-4xl font-black text-white">300 Mbps</h3>
-                            <p class="text-xs text-blue-100 mt-1">Infrastruktur utama kantor pusat, software house, fintech, &amp; perhotelan.</p>
+                            <h3 class="font-heading text-3xl font-black text-white">300 Mbps</h3>
+                            <p class="text-xs text-blue-100 mt-1.5 min-h-[36px]">Infrastruktur utama kantor pusat, software house, fintech, &amp; perhotelan.</p>
                         </div>
 
                         <div class="pt-4 border-t border-white/20">
@@ -1549,27 +1542,27 @@
                         </div>
 
                         <div class="pt-4 border-t border-white/20 space-y-3 text-xs text-white">
-                            <div class="flex items-center gap-2">
-                                <span class="text-white font-black">✓</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span><strong>CIR 1:1 Pure Dedicated</strong> (No Sharing)</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-white font-black">✓</span>
-                                <span><strong>SLA Garansi Uptime 99.9%</strong> dengan MRTG Graph</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                <span><strong>SLA Garansi Uptime 99.9%</strong> dengan MRTG</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-white font-black">✓</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span><strong>IP Public Static Block /29</strong></span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-white font-black">✓</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Dedicated Technical Account Manager 24/7</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="pt-6 mt-6 border-t border-white/20">
-                        <button @click="openRegister('Enterprise Dedicated (300 Mbps)')" class="w-full py-3.5 rounded-xl bg-white hover:bg-slate-100 text-brand font-black text-xs sm:text-sm transition-all shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02]">
+                        <button @click="openRegister('Enterprise Dedicated (300 Mbps)')" class="w-full py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-brand font-black text-xs sm:text-sm transition-all shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02]">
                             <span>PASANG SEKARANG</span>
                             <span class="text-brand font-black">&rarr;</span>
                         </button>
@@ -1577,8 +1570,8 @@
                 </div>
 
                 <!-- Business 3: 1 Gbps (GIGABIT BACKBONE) -->
-                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-7 sm:p-8 flex flex-col justify-between shadow-brand-soft min-w-[85vw] sm:min-w-0 snap-center md:snap-align-none card-interactive h-full">
-                    <div class="space-y-5">
+                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-brand-soft card-interactive h-full transition-all duration-300">
+                    <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-[11px] font-black text-brand uppercase tracking-wider px-3 py-1 rounded-full bg-brand-soft">
                                 GIGABIT BACKBONE
@@ -1588,7 +1581,7 @@
 
                         <div>
                             <h3 class="font-heading text-3xl font-black text-brand-navy">1 Gbps</h3>
-                            <p class="text-xs text-ink-muted mt-1">Kapasitas gigabit penuh untuk data center, universitas, &amp; gedung perkantoran.</p>
+                            <p class="text-xs text-ink-muted mt-1.5 min-h-[36px]">Kapasitas gigabit penuh untuk data center, universitas, &amp; gedung perkantoran.</p>
                         </div>
 
                         <div class="pt-4 border-t border-slate-100">
@@ -1598,29 +1591,30 @@
                             <span class="text-[11px] text-brand font-bold block mt-1">✓ BGP Peering Direct + IP Block /28</span>
                         </div>
 
-                        <div class="pt-4 border-t border-slate-100 space-y-2.5 text-xs text-ink-body">
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                        <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-body">
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>1 Gbps Dedicated Direct Core Routing</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Dual-Homed Metro-E Redundant Fiber</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Garansi SLA 99.95% High Availability</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand font-black">—</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
                                 <span>Prioritas NOC Escalation Level 3</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="pt-6 mt-6 border-t border-slate-100">
-                        <button @click="openRegister('Corporate Gigabit (1 Gbps Dedicated)')" class="w-full py-3 rounded-xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs transition-all shadow-sm">
-                            Pilih Paket 1 Gbps &rarr;
+                        <button @click="openRegister('Corporate Gigabit (1 Gbps Dedicated)')" class="w-full py-3.5 rounded-2xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-1.5">
+                            <span>Pilih Paket 1 Gbps</span>
+                            <span>&rarr;</span>
                         </button>
                     </div>
                 </div>
