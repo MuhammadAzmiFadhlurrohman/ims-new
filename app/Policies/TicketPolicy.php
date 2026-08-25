@@ -15,7 +15,7 @@ class TicketPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['super_admin', 'noc_support', 'noc']);
+        return $user->can('view_any_ticket');
     }
 
     /**

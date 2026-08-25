@@ -490,6 +490,7 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
                 \App\Filament\Pages\DataPelangganMatrixPage::class,
+                \App\Filament\Pages\FtthNetworkMapPage::class,
                 \App\Filament\Pages\FtthTopologyPage::class,
                 \App\Filament\Pages\OltCoveragePage::class,
                 \App\Filament\Pages\OltManagementPage::class,

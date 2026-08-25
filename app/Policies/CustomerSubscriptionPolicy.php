@@ -10,15 +10,6 @@ class CustomerSubscriptionPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user, string $ability): ?bool
-    {
-        if ($user->hasRole('super_admin') || $user->hasAnyRole(['finance', 'noc', 'noc_support'])) {
-            return true;
-        }
-
-        return null;
-    }
-
     /**
      * Determine whether the user can view any models.
      */
