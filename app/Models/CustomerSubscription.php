@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * Class CustomerSubscription
+ *
+ * @package App\Models
+ */
 class CustomerSubscription extends Model
 {
     use HasFactory, LogsActivity;
