@@ -831,9 +831,9 @@ html.dark .ims-temp-badge:hover {
     table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-primary .fi-btn,
     table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-primary,
     table.fi-ta-table tbody tr td .fi-ta-actions a[href*="/edit"],
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="change_payment_method"],
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="change_status_type"],
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="jadwal_"] {
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="change_payment_method"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="change_status_type"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="jadwal_"] {
         background: #1d4ed8 !important;
         box-shadow: 0 3px 8px rgba(29, 78, 216, 0.4) !important;
     }
@@ -841,9 +841,9 @@ html.dark .ims-temp-badge:hover {
     /* Color 2: Cyan / Info */
     table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-info .fi-btn,
     table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-info,
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="publish"],
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="testConnection"],
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="report_"] {
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="publish"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="testConnection"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="report_"] {
         background: #0284c7 !important;
         box-shadow: 0 3px 8px rgba(2, 132, 199, 0.4) !important;
     }
@@ -851,10 +851,10 @@ html.dark .ims-temp-badge:hover {
     /* Color 3: Green / Success */
     table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-success .fi-btn,
     table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-success,
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="accept"],
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="pelunasan"],
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="detailMikrotik"],
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="detail_live"] {
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="accept"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="pelunasan"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="detailMikrotik"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="detail_live"] {
         background: #059669 !important;
         box-shadow: 0 3px 8px rgba(5, 150, 105, 0.4) !important;
     }
@@ -862,8 +862,8 @@ html.dark .ims-temp-badge:hover {
     /* Color 4: Red / Danger */
     table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-danger .fi-btn,
     table.fi-ta-table tbody tr td .fi-ta-actions .fi-color-danger,
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="delete"],
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="batal"] {
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="delete"],
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="batal"] {
         background: #dc2626 !important;
         box-shadow: 0 3px 8px rgba(220, 38, 38, 0.4) !important;
     }
@@ -872,7 +872,7 @@ html.dark .ims-temp-badge:hover {
     table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5) .fi-btn,
     table.fi-ta-table tbody tr td .fi-ta-actions > :last-child button,
     table.fi-ta-table tbody tr td .fi-ta-actions > :nth-child(5) button,
-    table.fi-ta-table tbody tr td .fi-ta-actions [wire\\:click*="detail_lengkap"] {
+    table.fi-ta-table tbody tr td .fi-ta-actions [wire\:click*="detail_lengkap"] {
         width: 100% !important;
         padding: 9px 12px !important;
         border-radius: 12px !important;
