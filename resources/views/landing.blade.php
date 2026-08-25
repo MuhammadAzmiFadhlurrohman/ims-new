@@ -2116,92 +2116,98 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 10. FAQ (VERY LIGHT BLUE #F4FAFF) ──
+         ── 10. FAQ (DARK JUMBOTRON THEME) ──
          ══════════════════════════════════════════════════════════════ --}}
-    <section id="faq" class="py-16 sm:py-20 bg-brand-pale border-b border-blue-100">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="faq" class="py-16 sm:py-20 bg-gradient-to-b from-[#020B1D] via-[#062A5C] to-[#03132D] text-white border-b border-blue-950 relative overflow-hidden">
+        {{-- Subtle Ambient Glow --}}
+        <div class="absolute inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
+            <div class="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-[#0878E5]/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 left-10 w-[350px] h-[350px] bg-[#55C7FF]/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
-            <div class="mb-10 pb-6 border-b border-blue-200/60 text-center sm:text-left">
-                <span class="text-xs font-black tracking-widest text-brand uppercase block mb-1">TANYA JAWAB</span>
-                <h2 class="font-heading text-2xl sm:text-3xl font-black text-brand-navy tracking-tight">
-                    Frequently Asked <span class="text-brand">Questions</span>
+            <div class="mb-10 pb-6 border-b border-white/10 text-center sm:text-left">
+                <span class="text-xs font-black tracking-widest text-[#55C7FF] uppercase block mb-1">TANYA JAWAB</span>
+                <h2 class="font-heading text-2xl sm:text-3xl font-black text-white tracking-tight">
+                    Frequently Asked <span class="text-[#0878E5]">Questions</span>
                 </h2>
             </div>
 
-            <div class="divide-y divide-blue-200/60 border-t border-b border-blue-200/60">
+            <div class="divide-y divide-white/10 border-t border-b border-white/10">
                 
                 <!-- FAQ 1 -->
                 <div class="py-4 sm:py-5">
-                    <button @click="activeFaq = (activeFaq === 1 ? null : 1)" class="w-full text-left flex items-center justify-between gap-4 group">
-                        <span class="font-heading text-sm sm:text-base font-bold text-brand-navy group-hover:text-brand transition-colors">
+                    <button @click="activeFaq = (activeFaq === 1 ? null : 1)" class="w-full text-left flex items-center justify-between gap-4 group cursor-pointer">
+                        <span class="font-heading text-sm sm:text-base font-bold text-white group-hover:text-[#55C7FF] transition-colors">
                             Apakah jaringan IMS ONE tersedia di lokasi saya?
                         </span>
-                        <span class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-brand font-bold text-sm shrink-0 border border-blue-200 transition-transform duration-200" :class="activeFaq === 1 ? 'rotate-45 text-white bg-brand border-brand' : ''">
+                        <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#55C7FF] font-bold text-sm shrink-0 border border-white/15 transition-transform duration-200" :class="activeFaq === 1 ? 'rotate-45 text-white bg-[#0878E5] border-[#0878E5]' : ''">
                             ＋
                         </span>
                     </button>
-                    <div x-show="activeFaq === 1" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-ink-muted leading-relaxed">
-                        Masukkan alamat atau kelurahan Anda pada fitur <a href="#coverage" class="text-brand font-bold underline">Interactive Coverage Checker</a> di atas untuk mengetahui titik ketersediaan jaringan fiber IMS ONE secara instan.
+                    <div x-show="activeFaq === 1" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Masukkan alamat atau kelurahan Anda pada fitur <a href="#coverage" class="text-[#55C7FF] font-bold underline">Interactive Coverage Checker</a> di atas untuk mengetahui titik ketersediaan jaringan fiber IMS ONE secara instan.
                     </div>
                 </div>
 
                 <!-- FAQ 2 -->
                 <div class="py-4 sm:py-5">
-                    <button @click="activeFaq = (activeFaq === 2 ? null : 2)" class="w-full text-left flex items-center justify-between gap-4 group">
-                        <span class="font-heading text-sm sm:text-base font-bold text-brand-navy group-hover:text-brand transition-colors">
+                    <button @click="activeFaq = (activeFaq === 2 ? null : 2)" class="w-full text-left flex items-center justify-between gap-4 group cursor-pointer">
+                        <span class="font-heading text-sm sm:text-base font-bold text-white group-hover:text-[#55C7FF] transition-colors">
                             Berapa lama proses pemasangan internet baru setelah mendaftar?
                         </span>
-                        <span class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-brand font-bold text-sm shrink-0 border border-blue-200 transition-transform duration-200" :class="activeFaq === 2 ? 'rotate-45 text-white bg-brand border-brand' : ''">
+                        <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#55C7FF] font-bold text-sm shrink-0 border border-white/15 transition-transform duration-200" :class="activeFaq === 2 ? 'rotate-45 text-white bg-[#0878E5] border-[#0878E5]' : ''">
                             ＋
                         </span>
                     </button>
-                    <div x-show="activeFaq === 2" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-ink-muted leading-relaxed">
-                        Proses verifikasi alamat dan instalasi kabel serat optik diselesaikan dalam waktu <strong class="text-brand-navy">1 hingga 2 hari kerja</strong> setelah jadwal kunjungan teknisi disetujui.
+                    <div x-show="activeFaq === 2" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Proses verifikasi alamat dan instalasi kabel serat optik diselesaikan dalam waktu <strong class="text-white">1 hingga 2 hari kerja</strong> setelah jadwal kunjungan teknisi disetujui.
                     </div>
                 </div>
 
                 <!-- FAQ 3 -->
                 <div class="py-4 sm:py-5">
-                    <button @click="activeFaq = (activeFaq === 3 ? null : 3)" class="w-full text-left flex items-center justify-between gap-4 group">
-                        <span class="font-heading text-sm sm:text-base font-bold text-brand-navy group-hover:text-brand transition-colors">
+                    <button @click="activeFaq = (activeFaq === 3 ? null : 3)" class="w-full text-left flex items-center justify-between gap-4 group cursor-pointer">
+                        <span class="font-heading text-sm sm:text-base font-bold text-white group-hover:text-[#55C7FF] transition-colors">
                             Apakah ada batas kuota harian atau bulanan (FUP)?
                         </span>
-                        <span class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-brand font-bold text-sm shrink-0 border border-blue-200 transition-transform duration-200" :class="activeFaq === 3 ? 'rotate-45 text-white bg-brand border-brand' : ''">
+                        <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#55C7FF] font-bold text-sm shrink-0 border border-white/15 transition-transform duration-200" :class="activeFaq === 3 ? 'rotate-45 text-white bg-[#0878E5] border-[#0878E5]' : ''">
                             ＋
                         </span>
                     </button>
-                    <div x-show="activeFaq === 3" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-ink-muted leading-relaxed">
-                        Sama sekali tidak ada. Semua paket internet IMS ONE berstatus <strong class="text-brand">True Unlimited tanpa FUP</strong>, kecepatan konstan sepanjang bulan tanpa penurunan sepihak.
+                    <div x-show="activeFaq === 3" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Sama sekali tidak ada. Semua paket internet IMS ONE berstatus <strong class="text-[#55C7FF]">True Unlimited tanpa FUP</strong>, kecepatan konstan sepanjang bulan tanpa penurunan sepihak.
                     </div>
                 </div>
 
                 <!-- FAQ 4 -->
                 <div class="py-4 sm:py-5">
-                    <button @click="activeFaq = (activeFaq === 4 ? null : 4)" class="w-full text-left flex items-center justify-between gap-4 group">
-                        <span class="font-heading text-sm sm:text-base font-bold text-brand-navy group-hover:text-brand transition-colors">
+                    <button @click="activeFaq = (activeFaq === 4 ? null : 4)" class="w-full text-left flex items-center justify-between gap-4 group cursor-pointer">
+                        <span class="font-heading text-sm sm:text-base font-bold text-white group-hover:text-[#55C7FF] transition-colors">
                             Bagaimana cara melapor jika terjadi kendala koneksi atau LOS?
                         </span>
-                        <span class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-brand font-bold text-sm shrink-0 border border-blue-200 transition-transform duration-200" :class="activeFaq === 4 ? 'rotate-45 text-white bg-brand border-brand' : ''">
+                        <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#55C7FF] font-bold text-sm shrink-0 border border-white/15 transition-transform duration-200" :class="activeFaq === 4 ? 'rotate-45 text-white bg-[#0878E5] border-[#0878E5]' : ''">
                             ＋
                         </span>
                     </button>
-                    <div x-show="activeFaq === 4" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-ink-muted leading-relaxed">
-                        Pelanggan cukup masuk ke menu <strong class="text-brand-navy">Portal Pelanggan</strong> menggunakan nomor WhatsApp terdaftar, lalu pilih tab <em>Laporkan Gangguan</em> untuk langsung membuat tiket investigasi teknisi.
+                    <div x-show="activeFaq === 4" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Pelanggan cukup masuk ke menu <strong class="text-white">Portal Pelanggan</strong> menggunakan nomor WhatsApp terdaftar, lalu pilih tab <em>Laporkan Gangguan</em> untuk langsung membuat tiket investigasi teknisi.
                     </div>
                 </div>
 
                 <!-- FAQ 5 -->
                 <div class="py-4 sm:py-5">
-                    <button @click="activeFaq = (activeFaq === 5 ? null : 5)" class="w-full text-left flex items-center justify-between gap-4 group">
-                        <span class="font-heading text-sm sm:text-base font-bold text-brand-navy group-hover:text-brand transition-colors">
+                    <button @click="activeFaq = (activeFaq === 5 ? null : 5)" class="w-full text-left flex items-center justify-between gap-4 group cursor-pointer">
+                        <span class="font-heading text-sm sm:text-base font-bold text-white group-hover:text-[#55C7FF] transition-colors">
                             Apakah tarif paket sudah termasuk PPN dan sewa modem WiFi?
                         </span>
-                        <span class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-brand font-bold text-sm shrink-0 border border-blue-200 transition-transform duration-200" :class="activeFaq === 5 ? 'rotate-45 text-white bg-brand border-brand' : ''">
+                        <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#55C7FF] font-bold text-sm shrink-0 border border-white/15 transition-transform duration-200" :class="activeFaq === 5 ? 'rotate-45 text-white bg-[#0878E5] border-[#0878E5]' : ''">
                             ＋
                         </span>
                     </button>
-                    <div x-show="activeFaq === 5" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-ink-muted leading-relaxed">
-                        Ya, harga yang tertera sudah bersifat <strong class="text-brand-navy">All-in Net</strong>, sudah mencakup biaya internet, PPN, dan fasilitas peminjaman unit router modem WiFi 6 dual band.
+                    <div x-show="activeFaq === 5" x-cloak x-collapse x-transition:enter="transition ease-out duration-200" class="pt-3 pb-1 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Ya, harga yang tertera sudah bersifat <strong class="text-white">All-in Net</strong>, sudah mencakup biaya internet, PPN, dan fasilitas peminjaman unit router modem WiFi 6 dual band.
                     </div>
                 </div>
 
