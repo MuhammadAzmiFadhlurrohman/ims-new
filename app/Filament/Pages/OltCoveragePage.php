@@ -99,7 +99,7 @@ class OltCoveragePage extends Page
 
             $used = $odp->subscriptions_count ?: ($odp->used_ports ?? 0);
             $max = $odp->total_ports ?: 16;
-            $isCovered = $distance <= 150;
+            $isCovered = $distance <= 300;
             $hasSlot = $used < $max;
 
             return (object) [

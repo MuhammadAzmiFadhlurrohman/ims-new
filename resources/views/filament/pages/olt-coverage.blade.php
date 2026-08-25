@@ -254,7 +254,7 @@
                             <div style="padding: 1.25rem; border-radius: 16px; background: #f8fafc; border: 2px solid #cbd5e1; color: #334155; display: flex; align-items: center; gap: 8px;">
                                 <span style="width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; display: inline-block;"></span>
                                 <div>
-                                    <strong style="color: #0B1F33; font-size: 0.9rem; font-weight: 800; display: block;">Di Luar Radius Coverage (&gt; 150m)</strong>
+                                    <strong style="color: #0B1F33; font-size: 0.9rem; font-weight: 800; display: block;">Di Luar Radius Coverage (&gt; 300m)</strong>
                                     <span style="font-size: 0.76rem; color: #64748B; display: block;">Jarak ODP terdekat adalah <b x-text="nearestResult.distance + ' meter'"></b>.</span>
                                 </div>
                             </div>
@@ -540,7 +540,7 @@
                             return {
                                 odp: odp,
                                 distance: dist,
-                                isCovered: dist <= 150,
+                                isCovered: dist <= 300,
                                 roadDistance: Math.round(dist * 1.25)
                             };
                         }).sort((a, b) => a.distance - b.distance);
@@ -583,7 +583,7 @@
                                 <div style='font-size: 10px; font-weight: 800; color: #EA4335; text-transform: uppercase;'>📍 LOKASI TARGET</div>
                                 <div style='font-size: 12px; font-weight: 800; margin: 2px 0;'>${userLat.toFixed(6)}, ${userLng.toFixed(6)}</div>
                                 <div style='font-size: 11px; color: ${result.isCovered ? '#0878E5' : '#EF4444'}; font-weight: 700; margin-top: 4px;'>
-                                    ${result.isCovered ? '⚡ Tercover Fiber Optic' : '✕ Di Luar Radius (> 150m)'}
+                                    ${result.isCovered ? '⚡ Tercover Fiber Optic' : '✕ Di Luar Radius (> 300m)'}
                                 </div>
                                 <div style='font-size: 10.5px; color: #64748B; margin-top: 2px;'>Terhubung ke <b>${result.odp.name}</b> (~${result.distance}m)</div>
                             </div>
