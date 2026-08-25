@@ -1,59 +1,331 @@
 <x-filament-panels::page>
     <div 
-        x-data="oltCoverageApp(@js($this->allOdps), '{{ $this->coordinates }}')" 
-        class="olt-coverage-container w-full flex flex-col gap-5"
+        x-data="{
+            allOdps: {{ json_encode($this->allOdps) }},
+            inputCoordinates: '{{ $this->coordinates }}',
+            mapInstance: null,
+            odpMarkersLayer: null,
+            userMarkerLayer: null,
+            connectionLineLayer: null,
+            hasChecked: false,
+            isDetectingGps: false,
+            nearestResult: null,
+            secondResult: null,
+
+            init() {
+                this.loadLeafletAndInit();
+            },
+
+            loadLeafletAndInit() {
+                if (typeof L === 'undefined') {
+                    if (!document.getElementById('leaflet-css-olt')) {
+                        const link = document.createElement('link');
+                        link.id = 'leaflet-css-olt';
+                        link.rel = 'stylesheet';
+                        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+                        document.head.appendChild(link);
+                    }
+
+                    if (!document.getElementById('leaflet-js-olt')) {
+                        const script = document.createElement('script');
+                        script.id = 'leaflet-js-olt';
+                        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+                        script.onload = () => {
+                            this.$nextTick(() => {
+                                this.initMap();
+                                if (this.inputCoordinates) {
+                                    this.executeCoverageCheck();
+                                }
+                            });
+                        };
+                        document.head.appendChild(script);
+                    } else {
+                        const checkL = setInterval(() => {
+                            if (typeof L !== 'undefined') {
+                                clearInterval(checkL);
+                                this.$nextTick(() => {
+                                    this.initMap();
+                                    if (this.inputCoordinates) {
+                                        this.executeCoverageCheck();
+                                    }
+                                });
+                            }
+                        }, 100);
+                    }
+                } else {
+                    this.$nextTick(() => {
+                        this.initMap();
+                        if (this.inputCoordinates) {
+                            this.executeCoverageCheck();
+                        }
+                    });
+                }
+            },
+
+            initMap() {
+                const mapEl = document.getElementById('filament-olt-coverage-map');
+                if (!mapEl || typeof L === 'undefined') return;
+
+                if (this.mapInstance) {
+                    this.mapInstance.remove();
+                    this.mapInstance = null;
+                }
+
+                let defaultLat = -6.936988;
+                let defaultLng = 107.5904512;
+
+                if (this.allOdps && this.allOdps.length > 0) {
+                    defaultLat = this.allOdps[0].lat;
+                    defaultLng = this.allOdps[0].lng;
+                }
+
+                this.mapInstance = L.map('filament-olt-coverage-map', {
+                    center: [defaultLat, defaultLng],
+                    zoom: 15,
+                    zoomControl: true
+                });
+
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+                    subdomains: 'abcd',
+                    maxZoom: 19
+                }).addTo(this.mapInstance);
+
+                this.odpMarkersLayer = L.layerGroup().addTo(this.mapInstance);
+
+                this.renderAllOdpMarkers();
+
+                this.mapInstance.on('click', (e) => {
+                    const lat = e.latlng.lat;
+                    const lng = e.latlng.lng;
+                    this.inputCoordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                    this.executeCoverageCheck();
+                });
+            },
+
+            renderAllOdpMarkers() {
+                if (!this.odpMarkersLayer || typeof L === 'undefined') return;
+                this.odpMarkersLayer.clearLayers();
+
+                this.allOdps.forEach((odp) => {
+                    const isAvailable = odp.has_slot;
+                    const pinColor = isAvailable ? '#10b981' : '#ef4444';
+
+                    const odpIcon = L.divIcon({
+                        className: 'odp-marker-pin',
+                        html: `
+                            <div style='position: relative; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;'>
+                                <div style='position: absolute; inset: 0; border-radius: 50%; background: ${pinColor}; opacity: 0.35;'></div>
+                                <div style='width: 22px; height: 22px; border-radius: 50%; background: ${pinColor}; border: 2px solid #ffffff; box-shadow: 0 3px 10px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 10px; font-weight: 900;'>
+                                    ⚡
+                                </div>
+                            </div>
+                        `,
+                        iconSize: [28, 28],
+                        iconAnchor: [14, 14]
+                    });
+
+                    const marker = L.marker([odp.lat, odp.lng], { icon: odpIcon }).addTo(this.odpMarkersLayer);
+
+                    marker.bindPopup(`
+                        <div style='font-family: inherit; padding: 6px; min-width: 180px; color: #0f172a;'>
+                            <div style='font-size: 10px; font-weight: 800; color: #0284c7; text-transform: uppercase;'>NODE ODP FIBER</div>
+                            <div style='font-size: 13px; font-weight: 900; margin: 2px 0; color: #0f172a;'>${odp.name}</div>
+                            <div style='font-size: 11px; color: #64748b; font-family: monospace;'>${odp.code}</div>
+                            <div style='margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0; font-size: 11px; display: flex; justify-content: space-between;'>
+                                <span>Port:</span>
+                                <strong style='color: ${isAvailable ? '#059669' : '#dc2626'}'>${odp.used_ports}/${odp.total_ports} (${isAvailable ? 'Tersedia' : 'Penuh'})</strong>
+                            </div>
+                            <div style='font-size: 10px; color: #475569; margin-top: 2px;'>OLT: <b>${odp.olt_name}</b> (PON ${odp.pon_name})</div>
+                        </div>
+                    `);
+                });
+            },
+
+            parseCoordinates(input) {
+                if (!input) return null;
+                const matches = input.match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/g);
+                if (matches && matches.length >= 2) {
+                    const lat = parseFloat(matches[0]);
+                    const lng = parseFloat(matches[1]);
+                    if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                        return { lat, lng };
+                    }
+                }
+                return null;
+            },
+
+            calculateDistanceMeters(lat1, lon1, lat2, lon2) {
+                const R = 6371000;
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLon = (lon2 - lon1) * Math.PI / 180;
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                          Math.sin(dLon/2) * Math.sin(dLon/2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                return Math.round(R * c);
+            },
+
+            async executeCoverageCheck() {
+                const coords = this.parseCoordinates(this.inputCoordinates);
+                if (!coords) {
+                    alert('Format koordinat tidak valid. Contoh: -6.936988, 107.5904512');
+                    return;
+                }
+
+                const userLat = coords.lat;
+                const userLng = coords.lng;
+
+                const odpList = this.allOdps.map(odp => {
+                    const dist = this.calculateDistanceMeters(userLat, userLng, odp.lat, odp.lng);
+                    return {
+                        odp: odp,
+                        distance: dist,
+                        isCovered: dist <= 150,
+                        roadDistance: Math.round(dist * 1.25)
+                    };
+                }).sort((a, b) => a.distance - b.distance);
+
+                if (odpList.length > 0) {
+                    this.nearestResult = odpList[0];
+                    this.secondResult = odpList.length > 1 ? odpList[1] : null;
+                    this.hasChecked = true;
+
+                    await this.drawConnectionToOdp(userLat, userLng, this.nearestResult);
+                }
+            },
+
+            async drawConnectionToOdp(userLat, userLng, result) {
+                if (!this.mapInstance || typeof L === 'undefined') return;
+
+                if (this.userMarkerLayer) {
+                    this.mapInstance.removeLayer(this.userMarkerLayer);
+                }
+                if (this.connectionLineLayer) {
+                    this.mapInstance.removeLayer(this.connectionLineLayer);
+                }
+
+                const userIcon = L.divIcon({
+                    className: 'user-pin-marker',
+                    html: `
+                        <div style='position: relative; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;'>
+                            <div style='position: absolute; inset: 0; border-radius: 50%; background: rgba(14, 165, 233, 0.4);'></div>
+                            <div style='width: 26px; height: 26px; border-radius: 50%; background: #0284c7; border: 2.5px solid #ffffff; box-shadow: 0 4px 14px rgba(14,165,233,0.6); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 12px;'>
+                                🏠
+                            </div>
+                        </div>
+                    `,
+                    iconSize: [34, 34],
+                    iconAnchor: [17, 17]
+                });
+
+                this.userMarkerLayer = L.marker([userLat, userLng], { icon: userIcon }).addTo(this.mapInstance);
+                this.userMarkerLayer.bindPopup(`
+                    <div style='font-family: inherit; padding: 4px; color: #0f172a; min-width: 170px;'>
+                        <div style='font-size: 10px; font-weight: 800; color: #0284c7; text-transform: uppercase;'>📍 LOKASI TARGET</div>
+                        <div style='font-size: 12px; font-weight: 800; margin: 2px 0;'>${userLat.toFixed(6)}, ${userLng.toFixed(6)}</div>
+                        <div style='font-size: 11px; color: ${result.isCovered ? '#059669' : '#dc2626'}; font-weight: 700; margin-top: 4px;'>
+                            ${result.isCovered ? '✓ Tercover (&le; 150m)' : '✕ Di Luar Radius (&gt; 150m)'}
+                        </div>
+                        <div style='font-size: 10.5px; color: #64748b; margin-top: 2px;'>Terhubung ke <b>${result.odp.name}</b> (~${result.distance}m)</div>
+                    </div>
+                `).openPopup();
+
+                const odp = result.odp;
+
+                let routeCoords = [];
+                try {
+                    const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${odp.lng},${odp.lat}?overview=full&geometries=geojson`;
+                    const ctrl = new AbortController();
+                    const timeoutId = setTimeout(() => ctrl.abort(), 2500);
+                    const res = await fetch(osrmUrl, { signal: ctrl.signal });
+                    clearTimeout(timeoutId);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.routes && data.routes[0] && data.routes[0].geometry) {
+                            routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                            if (data.routes[0].distance) {
+                                result.roadDistance = Math.round(data.routes[0].distance);
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.log('OSRM routing fallback:', e);
+                }
+
+                if (!routeCoords || routeCoords.length < 2) {
+                    const midLat = userLat + (odp.lat - userLat) * 0.55;
+                    const midLng = userLng + (odp.lng - userLng) * 0.45;
+                    routeCoords = [
+                        [userLat, userLng],
+                        [midLat, userLng],
+                        [midLat, odp.lng],
+                        [odp.lat, odp.lng]
+                    ];
+                }
+
+                this.connectionLineLayer = L.layerGroup().addTo(this.mapInstance);
+
+                const glowLine = L.polyline([[userLat, userLng]], {
+                    color: '#38bdf8',
+                    weight: 6,
+                    opacity: 0.5,
+                    lineCap: 'round',
+                    lineJoin: 'round'
+                }).addTo(this.connectionLineLayer);
+
+                const fiberLine = L.polyline([[userLat, userLng]], {
+                    color: '#0284c7',
+                    weight: 3.5,
+                    dashArray: '10, 8',
+                    lineCap: 'round',
+                    lineJoin: 'round'
+                }).addTo(this.connectionLineLayer);
+
+                const bounds = L.latLngBounds(routeCoords);
+                this.mapInstance.fitBounds(bounds.pad(0.3), { animate: true, duration: 0.8 });
+
+                glowLine.setLatLngs(routeCoords);
+                fiberLine.setLatLngs(routeCoords);
+            },
+
+            getCurrentLocation() {
+                if (!navigator.geolocation) {
+                    alert('Geolokasi GPS tidak didukung di browser ini.');
+                    return;
+                }
+                this.isDetectingGps = true;
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        this.isDetectingGps = false;
+                        const lat = pos.coords.latitude;
+                        const lng = pos.coords.longitude;
+                        this.inputCoordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                        this.executeCoverageCheck();
+                    },
+                    (err) => {
+                        this.isDetectingGps = false;
+                        alert('Gagal mendeteksi lokasi GPS. Silakan masukkan koordinat secara manual.');
+                    },
+                    { timeout: 8000, enableHighAccuracy: true }
+                );
+            },
+
+            resetMapView() {
+                if (this.allOdps && this.allOdps.length > 0 && this.mapInstance && typeof L !== 'undefined') {
+                    const bounds = L.latLngBounds(this.allOdps.map(o => [o.lat, o.lng]));
+                    this.mapInstance.fitBounds(bounds.pad(0.2), { animate: true });
+                }
+            },
+
+            copyCoordinates(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Koordinat berhasil disalin ke clipboard: ' + text);
+                });
+            }
+        }"
+        class="w-full flex flex-col gap-5"
     >
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-        <style>
-            .olt-coverage-container {
-                font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            }
-
-            @keyframes pulseBeaconBlue {
-                0%, 100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.6); }
-                50% { box-shadow: 0 0 0 10px rgba(14, 165, 233, 0); }
-            }
-
-            @keyframes pulseBeaconGreen {
-                0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6); }
-                50% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
-            }
-
-            .pulse-beacon-blue {
-                animation: pulseBeaconBlue 2s infinite;
-            }
-
-            .pulse-beacon-green {
-                animation: pulseBeaconGreen 2s infinite;
-            }
-
-            @keyframes fiberFlow {
-                from { stroke-dashoffset: 40; }
-                to { stroke-dashoffset: 0; }
-            }
-
-            .animated-fiber-cable {
-                animation: fiberFlow 1.2s linear infinite;
-            }
-
-            .leaflet-popup-content-wrapper {
-                background: #0f172a !important;
-                color: #ffffff !important;
-                border-radius: 12px !important;
-                border: 1px solid rgba(255, 255, 255, 0.15) !important;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
-                padding: 2px !important;
-            }
-            .leaflet-popup-tip {
-                background: #0f172a !important;
-            }
-            .leaflet-container {
-                font-family: inherit;
-            }
-        </style>
-
         {{-- ── 1. BANNER HEADER ── --}}
         <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#071527] via-[#0d2847] to-[#174271] p-5 sm:p-6 text-white border border-white/10 shadow-xl">
             <div class="absolute -top-16 -right-16 w-60 h-60 bg-sky-500/15 rounded-full blur-3xl pointer-events-none"></div>
@@ -95,7 +367,7 @@
             </div>
         </div>
 
-        {{-- ── 2. MAIN 2-COLUMN LAYOUT: FORM & RESULTS (LEFT) + INTERACTIVE MAP (RIGHT) ── --}}
+        {{-- ── 2. MAIN 2-COLUMN LAYOUT ── --}}
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
             
             {{-- ── LEFT PANEL: SEARCH FORM & TELEMETRY RESULTS ── --}}
@@ -166,7 +438,7 @@
 
                             <template x-if="nearestResult.isCovered">
                                 <span class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-black flex items-center gap-1.5 shadow-sm">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-beacon-green"></span>
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
                                     TERCOVER FIBER
                                 </span>
                             </template>
@@ -287,7 +559,7 @@
                     
                     <div class="flex items-center justify-between px-4 py-3 bg-[#071322] border-b border-slate-800 text-xs">
                         <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-sky-400 pulse-beacon-blue"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
                             <strong class="text-white font-bold">Peta Sebaran ODP &amp; Jalur Fiber Optik</strong>
                         </div>
                         <div class="flex items-center gap-2">
@@ -333,350 +605,5 @@
             </div>
 
         </div>
-
-        <script>
-            (function() {
-                function registerOltCoverageApp() {
-                    if (typeof Alpine === 'undefined') return;
-                    
-                    Alpine.data('oltCoverageApp', (allOdpsData, initialCoordinates) => ({
-                        allOdps: allOdpsData || [],
-                        inputCoordinates: initialCoordinates || '-6.936988, 107.5904512',
-                        mapInstance: null,
-                        odpMarkersLayer: null,
-                        userMarkerLayer: null,
-                        connectionLineLayer: null,
-                        hasChecked: false,
-                        isDetectingGps: false,
-                        nearestResult: null,
-                        secondResult: null,
-
-                        init() {
-                            this.$nextTick(() => {
-                                this.initMap();
-                                if (this.inputCoordinates) {
-                                    this.executeCoverageCheck();
-                                }
-                            });
-                        },
-
-                        initMap() {
-                            const mapEl = document.getElementById('filament-olt-coverage-map');
-                            if (!mapEl) return;
-
-                            if (this.mapInstance) {
-                                this.mapInstance.remove();
-                                this.mapInstance = null;
-                            }
-
-                            let defaultLat = -6.936988;
-                            let defaultLng = 107.5904512;
-
-                            if (this.allOdps.length > 0) {
-                                defaultLat = this.allOdps[0].lat;
-                                defaultLng = this.allOdps[0].lng;
-                            }
-
-                            this.mapInstance = L.map('filament-olt-coverage-map', {
-                                center: [defaultLat, defaultLng],
-                                zoom: 15,
-                                zoomControl: true
-                            });
-
-                            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-                                subdomains: 'abcd',
-                                maxZoom: 19
-                            }).addTo(this.mapInstance);
-
-                            this.odpMarkersLayer = L.layerGroup().addTo(this.mapInstance);
-
-                            this.renderAllOdpMarkers();
-
-                            this.mapInstance.on('click', (e) => {
-                                const lat = e.latlng.lat;
-                                const lng = e.latlng.lng;
-                                this.inputCoordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                                this.executeCoverageCheck();
-                            });
-                        },
-
-                        renderAllOdpMarkers() {
-                            if (!this.odpMarkersLayer) return;
-                            this.odpMarkersLayer.clearLayers();
-
-                            this.allOdps.forEach((odp) => {
-                                const isAvailable = odp.has_slot;
-                                const pinColor = isAvailable ? '#10b981' : '#ef4444';
-
-                                const odpIcon = L.divIcon({
-                                    className: 'odp-marker-pin',
-                                    html: `
-                                        <div style="position: relative; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
-                                            <div style="position: absolute; inset: 0; border-radius: 50%; background: ${pinColor}; opacity: 0.3; animation: pulseBeaconGreen 2s infinite;"></div>
-                                            <div style="width: 22px; height: 22px; border-radius: 50%; background: ${pinColor}; border: 2px solid #ffffff; box-shadow: 0 3px 10px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 10px; font-weight: 900;">
-                                                ⚡
-                                            </div>
-                                        </div>
-                                    `,
-                                    iconSize: [28, 28],
-                                    iconAnchor: [14, 14]
-                                });
-
-                                const marker = L.marker([odp.lat, odp.lng], { icon: odpIcon }).addTo(this.odpMarkersLayer);
-
-                                marker.bindPopup(`
-                                    <div style="font-family: inherit; padding: 6px; min-width: 180px; color: #f8fafc;">
-                                        <div style="font-size: 10px; font-weight: 800; color: #38bdf8; text-transform: uppercase;">NODE ODP FIBER</div>
-                                        <div style="font-size: 13px; font-weight: 900; margin: 2px 0; color: #ffffff;">${odp.name}</div>
-                                        <div style="font-size: 11px; color: #94a3b8; font-family: monospace;">${odp.code}</div>
-                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 11px; display: flex; justify-content: space-between;">
-                                            <span>Port:</span>
-                                            <strong style="color: ${isAvailable ? '#34d399' : '#f87171'}">${odp.used_ports}/${odp.total_ports} (${isAvailable ? 'Tersedia' : 'Penuh'})</strong>
-                                        </div>
-                                        <div style="font-size: 10px; color: #cbd5e1; margin-top: 2px;">OLT: <b>${odp.olt_name}</b> (PON ${odp.pon_name})</div>
-                                    </div>
-                                `);
-                            });
-                        },
-
-                        parseCoordinates(input) {
-                            if (!input) return null;
-                            const matches = input.match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/g);
-                            if (matches && matches.length >= 2) {
-                                const lat = parseFloat(matches[0]);
-                                const lng = parseFloat(matches[1]);
-                                if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
-                                    return { lat, lng };
-                                }
-                            }
-                            return null;
-                        },
-
-                        calculateDistanceMeters(lat1, lon1, lat2, lon2) {
-                            const R = 6371000;
-                            const dLat = (lat2 - lat1) * Math.PI / 180;
-                            const dLon = (lon2 - lon1) * Math.PI / 180;
-                            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                                      Math.sin(dLon/2) * Math.sin(dLon/2);
-                            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                            return Math.round(R * c);
-                        },
-
-                        async executeCoverageCheck() {
-                            const coords = this.parseCoordinates(this.inputCoordinates);
-                            if (!coords) {
-                                alert('Format koordinat tidak valid. Contoh: -6.936988, 107.5904512');
-                                return;
-                            }
-
-                            const userLat = coords.lat;
-                            const userLng = coords.lng;
-
-                            const odpList = this.allOdps.map(odp => {
-                                const dist = this.calculateDistanceMeters(userLat, userLng, odp.lat, odp.lng);
-                                return {
-                                    odp: odp,
-                                    distance: dist,
-                                    isCovered: dist <= 150,
-                                    roadDistance: Math.round(dist * 1.25)
-                                };
-                            }).sort((a, b) => a.distance - b.distance);
-
-                            if (odpList.length > 0) {
-                                this.nearestResult = odpList[0];
-                                this.secondResult = odpList.length > 1 ? odpList[1] : null;
-                                this.hasChecked = true;
-
-                                await this.drawConnectionToOdp(userLat, userLng, this.nearestResult);
-                            }
-                        },
-
-                        async drawConnectionToOdp(userLat, userLng, result) {
-                            if (!this.mapInstance) return;
-
-                            if (this.userMarkerLayer) {
-                                this.mapInstance.removeLayer(this.userMarkerLayer);
-                            }
-                            if (this.connectionLineLayer) {
-                                this.mapInstance.removeLayer(this.connectionLineLayer);
-                            }
-
-                            const userIcon = L.divIcon({
-                                className: 'user-pin-marker',
-                                html: `
-                                    <div style="position: relative; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;">
-                                        <div style="position: absolute; inset: 0; border-radius: 50%; background: rgba(14, 165, 233, 0.4); animation: pulseBeaconBlue 1.8s infinite;"></div>
-                                        <div style="width: 26px; height: 26px; border-radius: 50%; background: #0284c7; border: 2.5px solid #ffffff; box-shadow: 0 4px 14px rgba(14,165,233,0.6); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 12px;">
-                                            🏠
-                                        </div>
-                                    </div>
-                                `,
-                                iconSize: [34, 34],
-                                iconAnchor: [17, 17]
-                            });
-
-                            this.userMarkerLayer = L.marker([userLat, userLng], { icon: userIcon }).addTo(this.mapInstance);
-                            this.userMarkerLayer.bindPopup(`
-                                <div style="font-family: inherit; padding: 4px; color: #ffffff; min-width: 170px;">
-                                    <div style="font-size: 10px; font-weight: 800; color: #38bdf8; text-transform: uppercase;">📍 LOKASI TARGET</div>
-                                    <div style="font-size: 12px; font-weight: 800; margin: 2px 0;">${userLat.toFixed(6)}, ${userLng.toFixed(6)}</div>
-                                    <div style="font-size: 11px; color: ${result.isCovered ? '#34d399' : '#f87171'}; font-weight: 700; margin-top: 4px;">
-                                        ${result.isCovered ? '✓ Tercover (&le; 150m)' : '✕ Di Luar Radius (&gt; 150m)'}
-                                    </div>
-                                    <div style="font-size: 10.5px; color: #94a3b8; margin-top: 2px;">Terhubung ke <b>${result.odp.name}</b> (~${result.distance}m)</div>
-                                </div>
-                            `).openPopup();
-
-                            const odp = result.odp;
-
-                            let routeCoords = [];
-                            try {
-                                const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${odp.lng},${odp.lat}?overview=full&geometries=geojson`;
-                                const ctrl = new AbortController();
-                                const timeoutId = setTimeout(() => ctrl.abort(), 2500);
-                                const res = await fetch(osrmUrl, { signal: ctrl.signal });
-                                clearTimeout(timeoutId);
-                                if (res.ok) {
-                                    const data = await res.json();
-                                    if (data.routes && data.routes[0] && data.routes[0].geometry) {
-                                        routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                                        if (data.routes[0].distance) {
-                                            result.roadDistance = Math.round(data.routes[0].distance);
-                                        }
-                                    }
-                                }
-                            } catch (e) {
-                                console.log('OSRM routing fallback:', e);
-                            }
-
-                            if (!routeCoords || routeCoords.length < 2) {
-                                const midLat = userLat + (odp.lat - userLat) * 0.55;
-                                const midLng = userLng + (odp.lng - userLng) * 0.45;
-                                routeCoords = [
-                                    [userLat, userLng],
-                                    [midLat, userLng],
-                                    [midLat, odp.lng],
-                                    [odp.lat, odp.lng]
-                                ];
-                            }
-
-                            this.connectionLineLayer = L.layerGroup().addTo(this.mapInstance);
-
-                            const glowLine = L.polyline([[userLat, userLng]], {
-                                color: '#38bdf8',
-                                weight: 6,
-                                opacity: 0.5,
-                                lineCap: 'round',
-                                lineJoin: 'round'
-                            }).addTo(this.connectionLineLayer);
-
-                            const fiberLine = L.polyline([[userLat, userLng]], {
-                                color: '#0284c7',
-                                weight: 3.5,
-                                dashArray: '10, 8',
-                                className: 'animated-fiber-cable',
-                                lineCap: 'round',
-                                lineJoin: 'round'
-                            }).addTo(this.connectionLineLayer);
-
-                            const bounds = L.latLngBounds(routeCoords);
-                            this.mapInstance.fitBounds(bounds.pad(0.3), { animate: true, duration: 0.8 });
-
-                            let totalLength = 0;
-                            const segmentLengths = [];
-                            for (let i = 0; i < routeCoords.length - 1; i++) {
-                                const dLat = routeCoords[i+1][0] - routeCoords[i][0];
-                                const dLng = routeCoords[i+1][1] - routeCoords[i][1];
-                                const segDist = Math.sqrt(dLat * dLat + dLng * dLng);
-                                segmentLengths.push(segDist);
-                                totalLength += segDist;
-                            }
-
-                            const startTime = performance.now();
-                            const duration = 1200;
-
-                            const animate = (currentTime) => {
-                                const elapsed = currentTime - startTime;
-                                const progress = Math.min(elapsed / duration, 1);
-                                const ease = 1 - Math.pow(1 - progress, 3);
-                                const targetDist = ease * totalLength;
-
-                                let distAccum = 0;
-                                const currentPoints = [routeCoords[0]];
-
-                                for (let i = 0; i < segmentLengths.length; i++) {
-                                    const segDist = segmentLengths[i];
-                                    if (distAccum + segDist <= targetDist) {
-                                        currentPoints.push(routeCoords[i + 1]);
-                                        distAccum += segDist;
-                                    } else {
-                                        const segT = (targetDist - distAccum) / (segDist || 1);
-                                        const pLat = routeCoords[i][0] + segT * (routeCoords[i + 1][0] - routeCoords[i][0]);
-                                        const pLng = routeCoords[i][1] + segT * (routeCoords[i + 1][1] - routeCoords[i][1]);
-                                        currentPoints.push([pLat, pLng]);
-                                        break;
-                                    }
-                                }
-
-                                glowLine.setLatLngs(currentPoints);
-                                fiberLine.setLatLngs(currentPoints);
-
-                                if (progress < 1) {
-                                    requestAnimationFrame(animate);
-                                } else {
-                                    glowLine.setLatLngs(routeCoords);
-                                    fiberLine.setLatLngs(routeCoords);
-                                }
-                            };
-
-                            requestAnimationFrame(animate);
-                        },
-
-                        getCurrentLocation() {
-                            if (!navigator.geolocation) {
-                                alert('Geolokasi GPS tidak didukung di browser ini.');
-                                return;
-                            }
-                            this.isDetectingGps = true;
-                            navigator.geolocation.getCurrentPosition(
-                                (pos) => {
-                                    this.isDetectingGps = false;
-                                    const lat = pos.coords.latitude;
-                                    const lng = pos.coords.longitude;
-                                    this.inputCoordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                                    this.executeCoverageCheck();
-                                },
-                                (err) => {
-                                    this.isDetectingGps = false;
-                                    alert('Gagal mendeteksi lokasi GPS. Silakan masukkan koordinat secara manual.');
-                                },
-                                { timeout: 8000, enableHighAccuracy: true }
-                            );
-                        },
-
-                        resetMapView() {
-                            if (this.allOdps.length > 0 && this.mapInstance) {
-                                const bounds = L.latLngBounds(this.allOdps.map(o => [o.lat, o.lng]));
-                                this.mapInstance.fitBounds(bounds.pad(0.2), { animate: true });
-                            }
-                        },
-
-                        copyCoordinates(text) {
-                            navigator.clipboard.writeText(text).then(() => {
-                                alert('Koordinat berhasil disalin ke clipboard: ' + text);
-                            });
-                        }
-                    }));
-                }
-
-                if (window.Alpine) {
-                    registerOltCoverageApp();
-                } else {
-                    document.addEventListener('alpine:init', registerOltCoverageApp);
-                }
-            })();
-        </script>
     </div>
 </x-filament-panels::page>
