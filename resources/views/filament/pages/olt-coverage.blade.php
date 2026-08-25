@@ -7,10 +7,15 @@
             odpMarkersLayer: null,
             userMarkerLayer: null,
             connectionLineLayer: null,
+            radiusCircleLayer: null,
             hasChecked: false,
             isDetectingGps: false,
             nearestResult: null,
             secondResult: null,
+            currentTileMode: 'voyager', // 'voyager' | 'dark' | 'satellite'
+            tileLayers: {},
+            cursorCoords: '-6.936988, 107.590451',
+            isMapFullscreen: false,
 
             init() {
                 this.loadLeafletAndInit();
@@ -51,7 +56,7 @@
             },
 
             initMap() {
-                const mapEl = document.getElementById('ims-landing-map-canvas');
+                const mapEl = document.getElementById('ims-modern-gis-map');
                 if (!mapEl || typeof L === 'undefined') return;
 
                 if (this.mapInstance) {
@@ -67,33 +72,75 @@
                     defaultLng = this.allOdps[0].lng;
                 }
 
-                this.mapInstance = L.map('ims-landing-map-canvas', {
+                this.mapInstance = L.map('ims-modern-gis-map', {
                     center: [defaultLat, defaultLng],
-                    zoom: 14,
-                    zoomControl: true,
+                    zoom: 15,
+                    zoomControl: false, // Custom styled zoom controls
                     attributionControl: false
                 });
 
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                    maxZoom: 19,
-                    subdomains: 'abcd',
-                }).addTo(this.mapInstance);
+                // Tile Layer Providers
+                this.tileLayers = {
+                    voyager: L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd' }),
+                    dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd' }),
+                    satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19 })
+                };
+
+                this.tileLayers[this.currentTileMode].addTo(this.mapInstance);
 
                 this.odpMarkersLayer = L.layerGroup().addTo(this.mapInstance);
                 this.renderAllOdpMarkers();
 
-                setTimeout(() => {
-                    if (this.mapInstance) {
-                        this.mapInstance.invalidateSize();
-                    }
-                }, 350);
+                // Track cursor coordinates
+                this.mapInstance.on('mousemove', (e) => {
+                    this.cursorCoords = `${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`;
+                });
 
+                // Click to select location
                 this.mapInstance.on('click', (e) => {
                     const lat = e.latlng.lat;
                     const lng = e.latlng.lng;
                     this.inputCoordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
                     this.executeCoverageCheck();
                 });
+
+                setTimeout(() => {
+                    if (this.mapInstance) {
+                        this.mapInstance.invalidateSize();
+                    }
+                }, 350);
+            },
+
+            setTileMode(mode) {
+                if (!this.mapInstance || !this.tileLayers[mode]) return;
+                this.mapInstance.removeLayer(this.tileLayers[this.currentTileMode]);
+                this.currentTileMode = mode;
+                this.tileLayers[mode].addTo(this.mapInstance);
+            },
+
+            zoomIn() {
+                if (this.mapInstance) this.mapInstance.zoomIn();
+            },
+
+            zoomOut() {
+                if (this.mapInstance) this.mapInstance.zoomOut();
+            },
+
+            toggleFullscreen() {
+                const mapContainer = document.getElementById('ims-map-card-wrapper');
+                if (!mapContainer) return;
+                
+                if (!document.fullscreenElement) {
+                    mapContainer.requestFullscreen().catch(err => alert(err.message));
+                    this.isMapFullscreen = true;
+                } else {
+                    document.exitFullscreen();
+                    this.isMapFullscreen = false;
+                }
+
+                setTimeout(() => {
+                    if (this.mapInstance) this.mapInstance.invalidateSize();
+                }, 200);
             },
 
             renderAllOdpMarkers() {
@@ -103,30 +150,52 @@
                 const markers = [];
                 this.allOdps.forEach((odp) => {
                     const isAvailable = odp.has_slot;
-                    const bg = isAvailable ? '#0878E5' : '#EF4444';
+                    const primaryColor = isAvailable ? '#0878E5' : '#EF4444';
+                    const glowShadow = isAvailable ? 'rgba(8, 120, 229, 0.45)' : 'rgba(239, 68, 68, 0.45)';
 
                     const customIcon = L.divIcon({
-                        className: 'custom-odp-pin',
+                        className: 'ims-modern-odp-pin',
                         html: `
-                            <div style='width: 26px; height: 26px; border-radius: 50%; background: ${bg}; border: 2.5px solid #ffffff; box-shadow: 0 4px 14px rgba(8,120,229,0.4); display: flex; align-items: center; justify-content: center;'>
-                                <svg style='width: 12px; height: 12px; color: #ffffff;' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M13 10V3L4 14h7v7l9-11h-7z'/></svg>
+                            <div style='position: relative; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer;'>
+                                <div style='position: absolute; inset: 0; border-radius: 50%; background: ${primaryColor}; opacity: 0.25; animation: pulseBeacon 2s infinite;'></div>
+                                <div style='width: 28px; height: 28px; border-radius: 50%; background: ${primaryColor}; border: 2.5px solid #ffffff; box-shadow: 0 4px 14px ${glowShadow}; display: flex; align-items: center; justify-content: center; color: #ffffff;'>
+                                    <svg style='width: 13px; height: 13px;' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M13 10V3L4 14h7v7l9-11h-7z'/></svg>
+                                </div>
+                                <span style='position: absolute; -top: 4px; right: -6px; background: #0B1F33; color: #55C7FF; border: 1.5px solid #ffffff; font-size: 8.5px; font-weight: 900; font-family: monospace; padding: 0 4px; border-radius: 9999px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);'>
+                                    ${odp.used_ports}/${odp.total_ports}
+                                </span>
                             </div>
                         `,
-                        iconSize: [26, 26],
-                        iconAnchor: [13, 13]
+                        iconSize: [34, 34],
+                        iconAnchor: [17, 17]
                     });
 
                     const marker = L.marker([odp.lat, odp.lng], { icon: customIcon });
 
                     marker.bindPopup(`
-                        <div style='font-family: inherit; padding: 6px; color: #0B1F33; min-width: 190px;'>
-                            <div style='font-size: 11px; font-weight: 800; color: #0878E5;'>${odp.code}</div>
-                            <div style='font-size: 13px; font-weight: 900; margin: 2px 0 4px; color: #0B1F33;'>${odp.name}</div>
-                            <div style='font-size: 11px; color: #475569;'>Status: <strong style='color: ${isAvailable ? '#0878E5' : '#EF4444'};'>● ${isAvailable ? 'TERSEDIA (FIBER ACTIVE)' : 'PORT PENUH'}</strong></div>
-                            <div style='font-size: 10.5px; color: #64748B; margin-top: 3px;'>Port: <b>${odp.used_ports}/${odp.total_ports}</b> • OLT: <b>${odp.olt_name}</b></div>
-                            <div style='margin-top: 8px; padding-top: 6px; border-top: 1px solid #E2E8F0; display: flex; gap: 4px;'>
-                                <a href='https://www.google.com/maps/dir/?api=1&destination=${odp.lat},${odp.lng}' target='_blank' style='flex: 1; text-align: center; text-decoration: none; background: #0878E5; color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800;'>Rute Maps &rarr;</a>
+                        <div style='font-family: Plus Jakarta Sans, sans-serif; padding: 8px; color: #0B1F33; min-width: 210px;'>
+                            <div style='display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;'>
+                                <span style='font-size: 10px; font-weight: 900; color: #0878E5; font-family: monospace;'>${odp.code}</span>
+                                <span style='font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 9999px; background: ${isAvailable ? '#EAF5FF' : '#FEE2E2'}; color: ${isAvailable ? '#0878E5' : '#EF4444'};'>
+                                    ${isAvailable ? '● TERSEDIA' : '● PENUH'}
+                                </span>
                             </div>
+                            <div style='font-size: 14px; font-weight: 900; color: #0B1F33; margin-bottom: 6px;'>${odp.name}</div>
+                            
+                            <div style='background: #F4FAFF; border: 1px solid #DBEAFE; border-radius: 8px; padding: 6px 8px; margin-bottom: 8px; font-size: 11px; display: flex; flex-direction: column; gap: 3px;'>
+                                <div style='display: flex; justify-content: space-between;'>
+                                    <span style='color: #64748B;'>Kapasitas Port:</span>
+                                    <strong style='color: #0B1F33;'>${odp.used_ports} dari ${odp.total_ports} Port</strong>
+                                </div>
+                                <div style='display: flex; justify-content: space-between;'>
+                                    <span style='color: #64748B;'>OLT / PON:</span>
+                                    <strong style='color: #0878E5;'>${odp.olt_name} (${odp.pon_name})</strong>
+                                </div>
+                            </div>
+
+                            <a href='https://www.google.com/maps/dir/?api=1&destination=${odp.lat},${odp.lng}' target='_blank' style='display: block; text-align: center; text-decoration: none; background: #0878E5; color: #ffffff; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; box-shadow: 0 2px 8px rgba(8,120,229,0.3);'>
+                                🧭 Navigasi Google Maps &rarr;
+                            </a>
                         </div>
                     `);
 
@@ -135,7 +204,7 @@
                 });
 
                 if (markers.length > 0 && this.mapInstance) {
-                    this.mapInstance.fitBounds(L.featureGroup(markers).getBounds().pad(0.15));
+                    this.mapInstance.fitBounds(L.featureGroup(markers).getBounds().pad(0.12));
                 }
             },
 
@@ -201,28 +270,42 @@
                 if (this.connectionLineLayer) {
                     this.mapInstance.removeLayer(this.connectionLineLayer);
                 }
+                if (this.radiusCircleLayer) {
+                    this.mapInstance.removeLayer(this.radiusCircleLayer);
+                }
 
+                // 150m Coverage Radius Circle Indicator
+                this.radiusCircleLayer = L.circle([userLat, userLng], {
+                    radius: 150,
+                    color: result.isCovered ? '#0878E5' : '#EF4444',
+                    fillColor: result.isCovered ? '#55C7FF' : '#EF4444',
+                    fillOpacity: 0.1,
+                    weight: 1.5,
+                    dashArray: '6, 6'
+                }).addTo(this.mapInstance);
+
+                // Modern 3D User Pin with Pulse Wave
                 const userIcon = L.divIcon({
-                    className: 'user-location-pin',
+                    className: 'user-modern-marker',
                     html: `
-                        <div style='position: relative; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;'>
-                            <div style='position: absolute; inset: 0; border-radius: 50%; background: rgba(8, 120, 229, 0.35);'></div>
-                            <div style='width: 28px; height: 28px; border-radius: 50%; background: #0B1F33; border: 2.5px solid #0878E5; box-shadow: 0 4px 14px rgba(8,120,229,0.5); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px;'>
+                        <div style='position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;'>
+                            <div style='position: absolute; inset: 0; border-radius: 50%; background: rgba(8, 120, 229, 0.4); animation: rippleEffect 2s infinite;'></div>
+                            <div style='width: 30px; height: 30px; border-radius: 50%; background: #0B1F33; border: 2.5px solid #0878E5; box-shadow: 0 6px 18px rgba(8,120,229,0.6); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 13px;'>
                                 🏠
                             </div>
                         </div>
                     `,
-                    iconSize: [34, 34],
-                    iconAnchor: [17, 17]
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 20]
                 });
 
                 this.userMarkerLayer = L.marker([userLat, userLng], { icon: userIcon }).addTo(this.mapInstance);
                 this.userMarkerLayer.bindPopup(`
-                    <div style='font-family: inherit; padding: 4px; color: #0B1F33; min-width: 170px;'>
-                        <div style='font-size: 10px; font-weight: 800; color: #0878E5; text-transform: uppercase;'>📍 LOKASI TARGET</div>
+                    <div style='font-family: Plus Jakarta Sans, sans-serif; padding: 6px; color: #0B1F33; min-width: 180px;'>
+                        <div style='font-size: 10px; font-weight: 800; color: #0878E5; text-transform: uppercase;'>📍 LOKASI TARGET PEMASANGAN</div>
                         <div style='font-size: 12px; font-weight: 800; margin: 2px 0;'>${userLat.toFixed(6)}, ${userLng.toFixed(6)}</div>
-                        <div style='font-size: 11px; color: ${result.isCovered ? '#0878E5' : '#EF4444'}; font-weight: 700; margin-top: 4px;'>
-                            ${result.isCovered ? '⚡ Tercover Fiber Optic' : '✕ Di Luar Radius (> 150m)'}
+                        <div style='font-size: 11px; color: ${result.isCovered ? '#059669' : '#EF4444'}; font-weight: 800; margin-top: 4px;'>
+                            ${result.isCovered ? '⚡ Tercover Jaringan Fiber Optic' : '✕ Di Luar Radius (> 150m)'}
                         </div>
                         <div style='font-size: 10.5px; color: #64748B; margin-top: 2px;'>Terhubung ke <b>${result.odp.name}</b> (~${result.distance}m)</div>
                     </div>
@@ -247,7 +330,7 @@
                         }
                     }
                 } catch (e) {
-                    console.log('OSRM fallback:', e);
+                    console.log('OSRM routing fallback:', e);
                 }
 
                 if (!routeCoords || routeCoords.length < 2) {
@@ -263,27 +346,27 @@
 
                 this.connectionLineLayer = L.layerGroup().addTo(this.mapInstance);
 
-                const glowLine = L.polyline([[userLat, userLng]], {
+                // Glow line under
+                const glowLine = L.polyline(routeCoords, {
                     color: '#55C7FF',
-                    weight: 6,
-                    opacity: 0.5,
+                    weight: 7,
+                    opacity: 0.55,
                     lineCap: 'round',
                     lineJoin: 'round'
                 }).addTo(this.connectionLineLayer);
 
-                const fiberLine = L.polyline([[userLat, userLng]], {
+                // Animated fiber line
+                const fiberLine = L.polyline(routeCoords, {
                     color: '#0878E5',
                     weight: 3.5,
                     dashArray: '10, 8',
+                    className: 'ims-flowing-fiber',
                     lineCap: 'round',
                     lineJoin: 'round'
                 }).addTo(this.connectionLineLayer);
 
                 const bounds = L.latLngBounds(routeCoords);
-                this.mapInstance.fitBounds(bounds.pad(0.3), { animate: true, duration: 0.8 });
-
-                glowLine.setLatLngs(routeCoords);
-                fiberLine.setLatLngs(routeCoords);
+                this.mapInstance.fitBounds(bounds.pad(0.28), { animate: true, duration: 0.8 });
             },
 
             getCurrentLocation() {
@@ -311,7 +394,7 @@
             resetMapView() {
                 if (this.allOdps && this.allOdps.length > 0 && this.mapInstance && typeof L !== 'undefined') {
                     const bounds = L.latLngBounds(this.allOdps.map(o => [o.lat, o.lng]));
-                    this.mapInstance.fitBounds(bounds.pad(0.15), { animate: true });
+                    this.mapInstance.fitBounds(bounds.pad(0.12), { animate: true });
                 }
             },
 
@@ -328,11 +411,11 @@
             .ims-coverage-root * {
                 box-sizing: border-box;
             }
-            .ims-card {
+            .ims-card-glass {
                 background: #ffffff;
                 border: 1px solid #dbeafe;
-                border-radius: 16px;
-                box-shadow: 0 4px 20px rgba(8, 120, 229, 0.06);
+                border-radius: 18px;
+                box-shadow: 0 10px 30px rgba(8, 120, 229, 0.07);
             }
             .ims-coverage-grid {
                 display: flex;
@@ -343,108 +426,129 @@
             @media (min-width: 1024px) {
                 .ims-coverage-grid {
                     display: grid !important;
-                    grid-template-columns: 440px 1fr !important;
+                    grid-template-columns: 420px 1fr !important;
                     align-items: start !important;
                 }
             }
-            .ims-map-canvas {
-                width: 100% !important;
-                height: 540px !important;
-                min-height: 480px !important;
-                background: #f8fafc !important;
-                display: block !important;
-            }
-            .ims-btn-primary {
-                background: #0878E5 !important;
-                color: #ffffff !important;
-                border: none !important;
-                border-radius: 12px !important;
-                font-weight: 800 !important;
-                cursor: pointer !important;
-                transition: all 0.15s ease !important;
-            }
-            .ims-btn-primary:hover {
-                background: #0757B8 !important;
-            }
-            .ims-btn-secondary {
-                background: #ffffff !important;
-                color: #0B1F33 !important;
-                border: 1px solid #bfdbfe !important;
-                border-radius: 12px !important;
-                font-weight: 700 !important;
-                cursor: pointer !important;
-                transition: all 0.15s ease !important;
-            }
-            .ims-btn-secondary:hover {
-                background: #EAF5FF !important;
-                border-color: #0878E5 !important;
-            }
-            .ims-input {
+            .ims-modern-map-container {
+                position: relative;
                 width: 100%;
-                height: 44px;
-                padding: 0 12px 0 38px;
-                border-radius: 12px;
-                background: #F4FAFF;
-                border: 1px solid #cbd5e1;
-                color: #0B1F33;
-                font-size: 13px;
-                font-family: monospace;
-                outline: none;
+                height: 580px;
+                min-height: 520px;
+                background: #e2e8f0;
+                border-radius: 18px;
+                overflow: hidden;
+                box-shadow: 0 12px 35px rgba(8, 120, 229, 0.1);
+                border: 1px solid #bfdbfe;
             }
-            .ims-input:focus {
-                border-color: #0878E5;
+            #ims-modern-gis-map {
+                width: 100% !important;
+                height: 100% !important;
+            }
+            @keyframes pulseBeacon {
+                0%, 100% { transform: scale(1); opacity: 0.3; }
+                50% { transform: scale(1.6); opacity: 0; }
+            }
+            @keyframes rippleEffect {
+                0% { transform: scale(0.9); opacity: 0.8; }
+                100% { transform: scale(2.2); opacity: 0; }
+            }
+            @keyframes fiberFlowAnimation {
+                from { stroke-dashoffset: 40; }
+                to { stroke-dashoffset: 0; }
+            }
+            .ims-flowing-fiber {
+                animation: fiberFlowAnimation 1.2s linear infinite;
+            }
+            .ims-map-hud-glass {
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(219, 234, 254, 0.9);
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+            .ims-btn-map-control {
                 background: #ffffff;
+                color: #0B1F33;
+                border: 1px solid #bfdbfe;
+                border-radius: 10px;
+                padding: 6px 10px;
+                font-size: 11px;
+                font-weight: 800;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                transition: all 0.15s ease;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            }
+            .ims-btn-map-control:hover {
+                background: #EAF5FF;
+                border-color: #0878E5;
+                color: #0878E5;
+                transform: translateY(-1px);
+            }
+            .ims-btn-map-control.active {
+                background: #0878E5;
+                color: #ffffff;
+                border-color: #0878E5;
             }
         </style>
 
-        {{-- ── 1. BANNER HEADER (Identik Landing Page Clean Theme) ── --}}
-        <div class="ims-card" style="padding: 1.25rem 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+        {{-- ── 1. BANNER HEADER (Modern Sapphire Glass) ── --}}
+        <div class="ims-card-glass" style="padding: 1.25rem 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; background: linear-gradient(135deg, #ffffff 0%, #F4FAFF 100%);">
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <div style="width: 44px; height: 44px; border-radius: 12px; background: #EAF5FF; border: 1px solid #bfdbfe; display: flex; align-items: center; justify-content: center; color: #0878E5; shrink-0;">
-                    <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #0878E5 0%, #0657B8 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; box-shadow: 0 6px 18px rgba(8, 120, 229, 0.35); shrink-0;">
+                    <svg style="width: 26px; height: 26px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
                 </div>
                 <div>
-                    <span style="font-size: 10px; font-weight: 900; letter-spacing: 0.1em; color: #0878E5; text-transform: uppercase; display: block;">
-                        INTERACTIVE COVERAGE CHECKER
-                    </span>
-                    <h1 style="font-size: 1.25rem; font-weight: 900; color: #0B1F33; margin: 2px 0 0 0; letter-spacing: -0.02em;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 10px; font-weight: 900; letter-spacing: 0.1em; color: #0878E5; text-transform: uppercase;">
+                            LIVE GIS COVERAGE SYSTEM
+                        </span>
+                        <span style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 9999px; background: #ECFDF5; border: 1px solid #A7F3D0; color: #047857; font-size: 9.5px; font-weight: 900;">
+                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
+                            NETWORK ONLINE
+                        </span>
+                    </div>
+                    <h1 style="font-size: 1.35rem; font-weight: 900; color: #0B1F33; margin: 3px 0 0 0; letter-spacing: -0.02em;">
                         Cek Coverage Lokasi ke ODP Terdekat
                     </h1>
-                    <p style="font-size: 0.78rem; color: #64748B; margin: 3px 0 0 0; font-weight: 500;">
-                        Gunakan GPS presisi atau masukkan koordinat untuk memeriksa ketersediaan port fiber optik ODP terdekat secara instan.
+                    <p style="font-size: 0.8rem; color: #64748B; margin: 3px 0 0 0; font-weight: 500;">
+                        Sistem pemetaan presisi fiber optik ODP terdekat dengan kalkulasi rute tarikan kabel jalan raya secara real-time.
                     </p>
                 </div>
             </div>
 
             <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div style="padding: 0.45rem 0.85rem; border-radius: 12px; background: #F4FAFF; border: 1px solid #bfdbfe; text-align: left;">
+                <div style="padding: 0.5rem 0.95rem; border-radius: 12px; background: #ffffff; border: 1px solid #bfdbfe; text-align: left; box-shadow: 0 2px 8px rgba(8,120,229,0.06);">
                     <span style="font-size: 9.5px; color: #64748B; font-weight: 800; text-transform: uppercase; display: block;">Total ODP Terdata</span>
-                    <strong style="color: #0878E5; font-size: 0.9rem; font-family: monospace; font-weight: 900;">{{ count($this->allOdps) }} Node</strong>
+                    <strong style="color: #0878E5; font-size: 0.95rem; font-family: monospace; font-weight: 900;">{{ count($this->allOdps) }} Node Aktif</strong>
                 </div>
-                <div style="padding: 0.45rem 0.85rem; border-radius: 12px; background: #F4FAFF; border: 1px solid #bfdbfe; text-align: left;">
-                    <span style="font-size: 9.5px; color: #64748B; font-weight: 800; text-transform: uppercase; display: block;">Max Radius Tercover</span>
-                    <strong style="color: #059669; font-size: 0.9rem; font-family: monospace; font-weight: 900;">&le; 150 Meter</strong>
+                <div style="padding: 0.5rem 0.95rem; border-radius: 12px; background: #ffffff; border: 1px solid #bfdbfe; text-align: left; box-shadow: 0 2px 8px rgba(8,120,229,0.06);">
+                    <span style="font-size: 9.5px; color: #64748B; font-weight: 800; text-transform: uppercase; display: block;">Radius Coverage</span>
+                    <strong style="color: #059669; font-size: 0.95rem; font-family: monospace; font-weight: 900;">&le; 150 Meter</strong>
                 </div>
             </div>
         </div>
 
-        {{-- ── 2. MAIN 2-COLUMN LAYOUT (Identik Landing Page Grid) ── --}}
+        {{-- ── 2. MAIN 2-COLUMN LAYOUT ── --}}
         <div class="ims-coverage-grid">
             
             {{-- ── LEFT PANEL: SEARCH FORM & TELEMETRY RESULTS ── --}}
             <div style="display: flex; flex-direction: column; gap: 1rem;">
                 
                 {{-- Input Card --}}
-                <div class="ims-card" style="padding: 1.25rem; display: flex; flex-direction: column; gap: 0.85rem;">
+                <div class="ims-card-glass" style="padding: 1.25rem; display: flex; flex-direction: column; gap: 0.85rem;">
                     <div>
                         <label style="font-size: 0.82rem; font-weight: 900; color: #0B1F33; text-transform: uppercase; letter-spacing: 0.05em; display: block;">
-                            Cek Titik Koordinat / GPS Lokasi
+                            Titik Koordinat / GPS Lokasi
                         </label>
                         <p style="font-size: 0.76rem; color: #64748B; margin: 3px 0 0 0;">
-                            Gunakan tombol GPS otomatis atau masukkan titik koordinat lokasi:
+                            Masukkan koordinat target atau gunakan deteksi GPS otomatis:
                         </p>
                     </div>
 
@@ -454,12 +558,12 @@
                                 type="text" 
                                 x-model="inputCoordinates"
                                 placeholder="-6.936988, 107.5904512" 
-                                class="ims-input"
+                                style="width: 100%; height: 44px; padding: 0 12px 0 38px; border-radius: 12px; background: #F4FAFF; border: 1.5px solid #cbd5e1; color: #0B1F33; font-size: 13px; font-family: monospace; font-weight: 700; outline: none; transition: border-color 0.2s;"
                                 required
                             />
-                            <svg style="position: absolute; left: 12px; top: 13px; width: 18px; height: 18px; color: #94a3b8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <svg style="position: absolute; left: 12px; top: 13px; width: 18px; height: 18px; color: #0878E5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
                         </div>
 
@@ -468,8 +572,7 @@
                                 type="button" 
                                 @click="getCurrentLocation" 
                                 :disabled="isDetectingGps"
-                                class="ims-btn-secondary"
-                                style="height: 42px; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; gap: 6px;"
+                                style="height: 42px; background: #ffffff; color: #0B1F33; border: 1.5px solid #bfdbfe; border-radius: 12px; font-weight: 800; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.15s ease;"
                             >
                                 <span x-show="!isDetectingGps">📍 Gunakan GPS</span>
                                 <span x-show="isDetectingGps">⏳ Mencari GPS...</span>
@@ -477,20 +580,19 @@
 
                             <button 
                                 type="submit" 
-                                class="ims-btn-primary"
-                                style="height: 42px; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; gap: 6px;"
+                                style="height: 42px; background: linear-gradient(135deg, #0878E5 0%, #0657B8 100%); color: #ffffff; border: none; border-radius: 12px; font-weight: 900; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 14px rgba(8,120,229,0.3); transition: all 0.15s ease;"
                             >
                                 <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
-                                <span>Periksa Koordinat</span>
+                                <span>Cek Coverage</span>
                             </button>
                         </div>
                     </form>
 
-                    <div style="font-size: 0.72rem; color: #64748B; display: flex; align-items: center; gap: 4px;">
-                        <span>💡</span>
-                        <span>Format: <b>Latitude, Longitude</b> atau klik langsung titik pada peta.</span>
+                    <div style="font-size: 0.72rem; color: #64748B; display: flex; align-items: center; gap: 5px; padding-top: 2px;">
+                        <span style="color: #0878E5;">💡</span>
+                        <span>Klik <b>di mana saja pada peta</b> untuk langsung memindai lokasi baru.</span>
                     </div>
                 </div>
 
@@ -499,36 +601,42 @@
                     <div style="display: flex; flex-direction: column; gap: 0.75rem;">
                         
                         <template x-if="nearestResult.isCovered">
-                            <div style="padding: 1.25rem; border-radius: 16px; background: #EAF5FF; border: 2px solid #0878E5; box-shadow: 0 4px 14px rgba(8,120,229,0.12); display: flex; flex-direction: column; gap: 0.85rem;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #0878E5; display: inline-block;"></span>
-                                    <div>
-                                        <strong style="color: #0878E5; font-size: 0.95rem; font-weight: 900; display: block;">● Area Tercover Fiber</strong>
-                                        <span style="font-size: 0.76rem; color: #0B1F33; display: block;">Jaringan IMS ONE terdeteksi aktif pada lokasi ini.</span>
+                            <div class="ims-card-glass" style="padding: 1.25rem; background: #ffffff; border: 2px solid #0878E5; display: flex; flex-direction: column; gap: 0.85rem;">
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #0878E5; display: inline-block;"></span>
+                                        <strong style="color: #0878E5; font-size: 0.95rem; font-weight: 900;">Area Tercover Fiber Optic</strong>
                                     </div>
+                                    <span style="font-size: 10px; font-weight: 900; padding: 3px 8px; border-radius: 9999px; background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0;">
+                                        ✓ TERVERIFIKASI
+                                    </span>
                                 </div>
 
-                                <div style="padding: 0.65rem 0.85rem; border-radius: 10px; background: #ffffff; border: 1px solid #bfdbfe; font-size: 0.76rem; color: #0878E5; display: flex; align-items: center; justify-content: space-between; font-family: monospace; font-weight: 700;">
-                                    <span style="display: flex; align-items: center; gap: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                        <span>⚡ Jalur Fiber:</span>
-                                        <strong style="color: #0B1F33;" x-text="nearestResult.odp.name"></strong>
-                                    </span>
-                                    <span style="color: #0878E5; font-weight: 900; shrink-0;">~<span x-text="nearestResult.roadDistance"></span>m dropcore</span>
+                                {{-- Telemetry Chips --}}
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                    <div style="background: #F4FAFF; border: 1px solid #DBEAFE; border-radius: 10px; padding: 0.55rem 0.75rem;">
+                                        <span style="font-size: 9.5px; color: #64748B; font-weight: 700; text-transform: uppercase; display: block;">Jarak Radius (Lurus)</span>
+                                        <strong style="font-size: 0.95rem; color: #0B1F33; font-family: monospace; font-weight: 900;" x-text="nearestResult.distance + ' Meter'"></strong>
+                                    </div>
+                                    <div style="background: #F4FAFF; border: 1px solid #DBEAFE; border-radius: 10px; padding: 0.55rem 0.75rem;">
+                                        <span style="font-size: 9.5px; color: #0878E5; font-weight: 700; text-transform: uppercase; display: block;">Est. Tarikan Kabel Jalan</span>
+                                        <strong style="font-size: 0.95rem; color: #0878E5; font-family: monospace; font-weight: 900;" x-text="'~' + nearestResult.roadDistance + ' Meter'"></strong>
+                                    </div>
                                 </div>
 
                                 {{-- ODP Detail Specs --}}
-                                <div style="background: rgba(255,255,255,0.85); border-radius: 10px; padding: 0.75rem 0.85rem; border: 1px solid #dbeafe; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.76rem;">
-                                    <div style="display: flex; justify-content: space-between;">
-                                        <span style="color: #64748B;">Kapasitas Port:</span>
-                                        <strong style="color: #0B1F33;" x-text="nearestResult.odp.used_ports + ' / ' + nearestResult.odp.total_ports + ' Port'"></strong>
+                                <div style="background: #F8FAFC; border-radius: 12px; padding: 0.85rem; border: 1px solid #E2E8F0; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.76rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #64748B; font-weight: 600;">Nama ODP Target:</span>
+                                        <strong style="color: #0B1F33; font-size: 0.85rem;" x-text="nearestResult.odp.name"></strong>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between;">
-                                        <span style="color: #64748B;">OLT Source:</span>
-                                        <strong style="color: #334155;" x-text="nearestResult.odp.olt_name"></strong>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #64748B; font-weight: 600;">Status Utilisasi Port:</span>
+                                        <strong style="color: #0878E5; font-family: monospace;" x-text="nearestResult.odp.used_ports + ' / ' + nearestResult.odp.total_ports + ' Port Terpakai'"></strong>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between;">
-                                        <span style="color: #64748B;">Port PON:</span>
-                                        <strong style="color: #334155;" x-text="nearestResult.odp.pon_name"></strong>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #64748B; font-weight: 600;">Sumber OLT / PON:</span>
+                                        <strong style="color: #334155;" x-text="nearestResult.odp.olt_name + ' (' + nearestResult.odp.pon_name + ')'"></strong>
                                     </div>
                                 </div>
 
@@ -536,16 +644,14 @@
                                     <a 
                                         :href="'https://www.google.com/maps/dir/?api=1&destination=' + nearestResult.odp.lat + ',' + nearestResult.odp.lng"
                                         target="_blank" 
-                                        class="ims-btn-primary"
-                                        style="flex: 1; height: 38px; font-size: 0.76rem; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px;"
+                                        style="flex: 1; height: 40px; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.76rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(8,120,229,0.3);"
                                     >
-                                        🧭 Buka Navigasi Rute Maps
+                                        🧭 Navigasi Google Maps
                                     </a>
                                     <button 
                                         type="button" 
                                         @click="copyCoordinates(nearestResult.odp.lat + ', ' + nearestResult.odp.lng)" 
-                                        class="ims-btn-secondary"
-                                        style="height: 38px; padding: 0 14px; font-size: 0.76rem;"
+                                        style="height: 40px; padding: 0 16px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.76rem; font-weight: 800; color: #334155; cursor: pointer;"
                                     >
                                         📋 Salin
                                     </button>
@@ -554,11 +660,13 @@
                         </template>
 
                         <template x-if="!nearestResult.isCovered">
-                            <div style="padding: 1.25rem; border-radius: 16px; background: #f8fafc; border: 2px solid #cbd5e1; color: #334155; display: flex; align-items: center; gap: 8px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; display: inline-block;"></span>
+                            <div class="ims-card-glass" style="padding: 1.25rem; background: #FFF5F5; border: 2px solid #FCA5A5; display: flex; align-items: center; gap: 10px;">
+                                <span style="width: 12px; height: 12px; border-radius: 50%; background: #EF4444; shrink-0;"></span>
                                 <div>
-                                    <strong style="color: #0B1F33; font-size: 0.9rem; font-weight: 800; display: block;">Di Luar Radius Coverage (&gt; 150m)</strong>
-                                    <span style="font-size: 0.76rem; color: #64748B; display: block;">Jarak ODP terdekat adalah <b x-text="nearestResult.distance + ' meter'"></b>.</span>
+                                    <strong style="color: #991B1B; font-size: 0.92rem; font-weight: 900; display: block;">Di Luar Radius Coverage (&gt; 150m)</strong>
+                                    <span style="font-size: 0.76rem; color: #B91C1C; display: block; margin-top: 2px;">
+                                        Jarak ke ODP terdekat (<span x-text="nearestResult.odp.name"></span>) adalah <b x-text="nearestResult.distance + ' meter'"></b>.
+                                    </span>
                                 </div>
                             </div>
                         </template>
@@ -568,58 +676,108 @@
 
             </div>
 
-            {{-- ── RIGHT PANEL: INTERACTIVE LEAFLET GIS MAP (Identik Landing Page) ── --}}
-            <div>
-                <div class="ims-card" style="overflow: hidden; display: flex; flex-direction: column;">
-                    
-                    {{-- Map Header Bar --}}
-                    <div style="padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; background: #ffffff; display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem;">
-                        <span style="font-weight: 800; color: #0B1F33; display: flex; align-items: center; gap: 6px;">
-                            <span style="width: 8px; height: 8px; border-radius: 50%; background: #0878E5; display: inline-block;"></span>
-                            Live GIS Node Sebaran Fiber Optik
-                        </span>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <button 
-                                type="button" 
-                                @click="resetMapView" 
-                                style="padding: 4px 10px; border-radius: 8px; background: #F4FAFF; border: 1px solid #bfdbfe; color: #0878E5; font-size: 0.72rem; font-weight: 800; cursor: pointer;"
-                            >
-                                🔄 Reset View
-                            </button>
-                            <span style="font-size: 0.7rem; color: #0878E5; font-family: monospace; font-weight: 800; background: #EAF5FF; padding: 2px 6px; border-radius: 4px;">
-                                ODP Active • Live
-                            </span>
-                        </div>
-                    </div>
-
-                    {{-- Map Canvas (Explicit Height & Width) --}}
-                    <div 
-                        id="ims-landing-map-canvas" 
-                        class="ims-map-canvas"
-                    ></div>
-
-                    {{-- Map Legend Footer --}}
-                    <div style="padding: 0.65rem 1rem; background: #F4FAFF; border-top: 1px solid #dbeafe; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.72rem; color: #475569;">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="display: flex; align-items: center; gap: 5px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #0878E5; border: 1.5px solid #ffffff; display: inline-block;"></span>
-                                <span>ODP Tersedia</span>
-                            </span>
-                            <span style="display: flex; align-items: center; gap: 5px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #EF4444; border: 1.5px solid #ffffff; display: inline-block;"></span>
-                                <span>ODP Penuh</span>
-                            </span>
-                            <span style="display: flex; align-items: center; gap: 5px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #0B1F33; border: 1.5px solid #ffffff; display: inline-block;"></span>
-                                <span>Lokasi Target</span>
-                            </span>
-                        </div>
-                        <span style="color: #64748B; font-size: 0.68rem;">
-                            Garis biru putus-putus = Jalur tarikan dropcore fiber
-                        </span>
-                    </div>
-
+            {{-- ── RIGHT PANEL: ULTRA-MODERN LEAFLET GIS MAP CONTAINER ── --}}
+            <div id="ims-map-card-wrapper" class="ims-modern-map-container">
+                
+                {{-- Floating Top-Left Telemetry HUD --}}
+                <div class="ims-map-hud-glass" style="position: absolute; top: 14px; left: 14px; z-index: 1000; padding: 6px 12px; display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #0878E5; box-shadow: 0 0 8px #0878E5; display: inline-block;"></span>
+                    <span style="font-size: 11px; font-weight: 900; color: #0B1F33; letter-spacing: 0.02em;">
+                        LIVE GIS NETWORK
+                    </span>
+                    <span style="font-size: 10.5px; color: #64748B; font-family: monospace;">• {{ count($this->allOdps) }} Nodes</span>
                 </div>
+
+                {{-- Floating Top-Right Layer & Action Controls --}}
+                <div style="position: absolute; top: 14px; right: 14px; z-index: 1000; display: flex; align-items: center; gap: 6px;">
+                    <button 
+                        type="button" 
+                        @click="setTileMode('voyager')" 
+                        :class="currentTileMode === 'voyager' ? 'active' : ''"
+                        class="ims-btn-map-control"
+                        title="Tampilan Peta Terang"
+                    >
+                        🗺️ Peta
+                    </button>
+                    <button 
+                        type="button" 
+                        @click="setTileMode('satellite')" 
+                        :class="currentTileMode === 'satellite' ? 'active' : ''"
+                        class="ims-btn-map-control"
+                        title="Tampilan Citra Satelit"
+                    >
+                        🛰️ Satelit
+                    </button>
+                    <button 
+                        type="button" 
+                        @click="setTileMode('dark')" 
+                        :class="currentTileMode === 'dark' ? 'active' : ''"
+                        class="ims-btn-map-control"
+                        title="Tampilan Dark Midnight"
+                    >
+                        🌙 Dark
+                    </button>
+                    <button 
+                        type="button" 
+                        @click="resetMapView" 
+                        class="ims-btn-map-control"
+                        title="Reset Tampilan Peta"
+                    >
+                        🔍 Fit All
+                    </button>
+                    <button 
+                        type="button" 
+                        @click="toggleFullscreen" 
+                        class="ims-btn-map-control"
+                        title="Fullscreen Mode"
+                    >
+                        <span x-show="!isMapFullscreen">⛶ Layar Penuh</span>
+                        <span x-show="isMapFullscreen">✕ Keluar</span>
+                    </button>
+                </div>
+
+                {{-- Floating Zoom In/Out Buttons (Right Center) --}}
+                <div style="position: absolute; bottom: 65px; right: 14px; z-index: 1000; display: flex; flex-direction: column; gap: 5px;">
+                    <button 
+                        type="button" 
+                        @click="zoomIn" 
+                        style="width: 34px; height: 34px; border-radius: 10px; background: #ffffff; border: 1px solid #bfdbfe; color: #0B1F33; font-size: 16px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"
+                    >
+                        +
+                    </button>
+                    <button 
+                        type="button" 
+                        @click="zoomOut" 
+                        style="width: 34px; height: 34px; border-radius: 10px; background: #ffffff; border: 1px solid #bfdbfe; color: #0B1F33; font-size: 16px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"
+                    >
+                        &minus;
+                    </button>
+                </div>
+
+                {{-- Floating Bottom-Left Legend Glass Badge --}}
+                <div class="ims-map-hud-glass" style="position: absolute; bottom: 14px; left: 14px; z-index: 1000; padding: 6px 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 11px;">
+                    <span style="display: flex; align-items: center; gap: 5px; font-weight: 700; color: #0B1F33;">
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #0878E5; border: 1.5px solid #ffffff; box-shadow: 0 0 6px #0878E5;"></span>
+                        ODP Tersedia
+                    </span>
+                    <span style="display: flex; align-items: center; gap: 5px; font-weight: 700; color: #0B1F33;">
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #EF4444; border: 1.5px solid #ffffff;"></span>
+                        ODP Penuh
+                    </span>
+                    <span style="display: flex; align-items: center; gap: 5px; font-weight: 700; color: #0B1F33;">
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #0B1F33; border: 1.5px solid #ffffff;"></span>
+                        Titik Target
+                    </span>
+                </div>
+
+                {{-- Floating Bottom-Right Real-time GPS Coordinate Reader --}}
+                <div class="ims-map-hud-glass" style="position: absolute; bottom: 14px; right: 14px; z-index: 1000; padding: 4px 10px; font-size: 10.5px; font-family: monospace; font-weight: 800; color: #0878E5;">
+                    📍 <span x-text="cursorCoords"></span>
+                </div>
+
+                {{-- Leaflet Map Canvas --}}
+                <div id="ims-modern-gis-map"></div>
+
             </div>
 
         </div>
