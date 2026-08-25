@@ -238,6 +238,29 @@ class AdminPanelProvider extends PanelProvider
                                 }
                             }
                         });
+
+                        // Auto-Redirect to Login on Session Expired / HTTP 419 (Bypass default alert popup)
+                        document.addEventListener("livewire:init", function() {
+                            if (window.Livewire && typeof window.Livewire.hook === "function") {
+                                window.Livewire.hook("request", function({ fail }) {
+                                    fail(function({ status, preventDefault }) {
+                                        if (status === 419 || status === 401) {
+                                            if (typeof preventDefault === "function") preventDefault();
+                                            window.location.href = "/admin/login";
+                                        }
+                                    });
+                                });
+                            }
+
+                            var originalConfirm = window.confirm;
+                            window.confirm = function(message) {
+                                if (typeof message === "string" && (message.toLowerCase().includes("expired") || message.includes("419") || message.toLowerCase().includes("kadaluarsa"))) {
+                                    window.location.href = "/admin/login";
+                                    return false;
+                                }
+                                return originalConfirm.apply(this, arguments);
+                            };
+                        });
                     </script>
                 ')
             )
