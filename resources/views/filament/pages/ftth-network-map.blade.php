@@ -109,8 +109,8 @@
         </div>
 
         {{-- ── 2. GIS TOOLBAR CONTROLS ── --}}
-        <div class="ims-map-card" style="padding: 0.85rem 1.15rem; background: #ffffff;">
-            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+        <div class="ims-map-card" style="padding: 0.85rem 1.15rem; background: #ffffff; overflow: visible !important; position: relative; z-index: 100;">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; position: relative;">
                 
                 {{-- Left Tool Group: Mode Selection --}}
                 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
@@ -139,21 +139,21 @@
                         <div 
                             x-show="openMarkerMenu" 
                             @click.outside="openMarkerMenu = false"
-                            style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 1000; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.18); min-width: 220px; padding: 6px 0; display: flex; flex-direction: column;"
+                            style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 9999; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.22); min-width: 230px; padding: 6px 0; display: flex; flex-direction: column;"
                         >
-                            <button type="button" @click="startAddMarker('pole')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                            <button type="button" @click="startAddMarker('pole')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                 📍 <span>Tiang Fiber (*Pole*)</span>
                             </button>
-                            <button type="button" @click="startAddMarker('joint_box')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                            <button type="button" @click="startAddMarker('joint_box')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                 🔗 <span>Kotak Sambung (*Joint Closure*)</span>
                             </button>
-                            <button type="button" @click="startAddMarker('odc')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                            <button type="button" @click="startAddMarker('odc')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                 🔲 <span>ODC / FDT</span>
                             </button>
-                            <button type="button" @click="startAddMarker('olt')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                            <button type="button" @click="startAddMarker('olt')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                 🏢 <span>Server Core / OLT</span>
                             </button>
-                            <button type="button" @click="startAddMarker('customer')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                            <button type="button" @click="startAddMarker('customer')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                 🏠 <span>Rumah Pelanggan ONT</span>
                             </button>
                         </div>
@@ -172,15 +172,15 @@
                         <div 
                             x-show="openLineMenu" 
                             @click.outside="openLineMenu = false"
-                            style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 1000; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.18); min-width: 230px; padding: 6px 0; display: flex; flex-direction: column;"
+                            style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 9999; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.22); min-width: 240px; padding: 6px 0; display: flex; flex-direction: column;"
                         >
-                            <button type="button" @click="startDrawLine('feeder')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #EF4444; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
+                            <button type="button" @click="startDrawLine('feeder')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #EF4444; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
                                 🔴 <span>Kabel Feeder (24/48 Core)</span>
                             </button>
-                            <button type="button" @click="startDrawLine('distribution')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #0878E5; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'">
+                            <button type="button" @click="startDrawLine('distribution')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #0878E5; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'">
                                 🔵 <span>Kabel Distribusi (12/24 Core)</span>
                             </button>
-                            <button type="button" @click="startDrawLine('dropcore')" style="text-align: left; padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #D97706; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
+                            <button type="button" @click="startDrawLine('dropcore')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #D97706; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
                                 🟡 <span>Kabel Dropcore (1/2 Core)</span>
                             </button>
                         </div>
