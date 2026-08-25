@@ -62,6 +62,27 @@
                 background: transparent !important;
                 border: none !important;
             }
+
+            /* Custom Map Cursors by Active Tool */
+            .ims-cursor-pole, .ims-cursor-pole .leaflet-container, .ims-cursor-pole * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%2364748B' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='18' y='23' font-size='16' text-anchor='middle'%3E📍%3C/text%3E%3C/svg%3E") 18 18, crosshair !important;
+            }
+            .ims-cursor-joint_box, .ims-cursor-joint_box .leaflet-container, .ims-cursor-joint_box * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%2310B981' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='18' y='23' font-size='16' text-anchor='middle'%3E🔗%3C/text%3E%3C/svg%3E") 18 18, crosshair !important;
+            }
+            .ims-cursor-odc, .ims-cursor-odc .leaflet-container, .ims-cursor-odc * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%23F59E0B' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='18' y='23' font-size='16' text-anchor='middle'%3E🔲%3C/text%3E%3C/svg%3E") 18 18, crosshair !important;
+            }
+            .ims-cursor-olt, .ims-cursor-olt .leaflet-container, .ims-cursor-olt * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%238B5CF6' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='18' y='23' font-size='16' text-anchor='middle'%3E🏢%3C/text%3E%3C/svg%3E") 18 18, crosshair !important;
+            }
+            .ims-cursor-customer, .ims-cursor-customer .leaflet-container, .ims-cursor-customer * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%23EC4899' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='18' y='23' font-size='16' text-anchor='middle'%3E🏠%3C/text%3E%3C/svg%3E") 18 18, crosshair !important;
+            }
+            .ims-cursor-draw_line, .ims-cursor-draw_line .leaflet-container, .ims-cursor-draw_line * {
+                cursor: crosshair !important;
+            }
+
             .leaflet-popup-content-wrapper {
                 border-radius: 14px !important;
                 padding: 4px !important;
@@ -278,7 +299,13 @@
             </div>
 
             {{-- Map Canvas --}}
-            <div id="ims-ftth-builder-canvas" class="ims-map-canvas" wire:ignore style="position: relative; z-index: 1;"></div>
+            <div 
+                id="ims-ftth-builder-canvas" 
+                class="ims-map-canvas" 
+                :class="currentMode === 'add_marker' ? ('ims-cursor-' + activeElementType) : (currentMode === 'draw_line' ? 'ims-cursor-draw_line' : '')"
+                wire:ignore 
+                style="position: relative; z-index: 1;"
+            ></div>
 
             {{-- Legend Footer --}}
             <div style="padding: 0.65rem 1.15rem; background: #F4FAFF; border-top: 1px solid #dbeafe; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.72rem; color: #475569;">
