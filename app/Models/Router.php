@@ -29,6 +29,7 @@ class Router extends Model
     ];
 
     protected $casts = [
+        'password' => 'encrypted',
         'port' => 'integer',
         'use_ssl' => 'boolean',
         'is_active' => 'boolean',
