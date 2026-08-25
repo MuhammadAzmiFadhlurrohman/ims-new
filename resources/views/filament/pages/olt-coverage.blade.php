@@ -592,35 +592,40 @@
                         const odp = result.odp;
 
                         let routeCoords = [];
-                        try {
-                            const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${odp.lng},${odp.lat}?overview=full&geometries=geojson`;
-                            const ctrl = new AbortController();
-                            const timeoutId = setTimeout(() => ctrl.abort(), 2500);
-                            const res = await fetch(osrmUrl, { signal: ctrl.signal });
-                            clearTimeout(timeoutId);
-                            if (res.ok) {
-                                const data = await res.json();
-                                if (data.routes && data.routes[0] && data.routes[0].geometry) {
-                                    routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                                    if (data.routes[0].distance) {
-                                        result.roadDistance = Math.round(data.routes[0].distance);
+                        const routingUrls = [
+                            `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${userLng},${userLat};${odp.lng},${odp.lat}?overview=full&geometries=geojson`,
+                            `https://routing.openstreetmap.de/routed-bike/route/v1/driving/${userLng},${userLat};${odp.lng},${odp.lat}?overview=full&geometries=geojson`,
+                            `https://router.project-osrm.org/route/v1/foot/${userLng},${userLat};${odp.lng},${odp.lat}?overview=full&geometries=geojson`,
+                            `https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${odp.lng},${odp.lat}?overview=full&geometries=geojson`
+                        ];
+
+                        for (const url of routingUrls) {
+                            try {
+                                const ctrl = new AbortController();
+                                const timeoutId = setTimeout(() => ctrl.abort(), 4000);
+                                const res = await fetch(url, { signal: ctrl.signal });
+                                clearTimeout(timeoutId);
+                                if (res.ok) {
+                                    const data = await res.json();
+                                    if (data.routes && data.routes[0] && data.routes[0].geometry && data.routes[0].geometry.coordinates && data.routes[0].geometry.coordinates.length >= 2) {
+                                        routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                                        if (data.routes[0].distance) {
+                                            result.roadDistance = Math.round(data.routes[0].distance);
+                                        }
+                                        break;
                                     }
                                 }
+                            } catch (e) {
+                                // Coba endpoint routing berikutnya
                             }
-                        } catch (e) {
-                            console.log('OSRM routing fallback:', e);
                         }
 
                         if (routeCoords && routeCoords.length >= 2) {
                             routeCoords.unshift([userLat, userLng]);
                             routeCoords.push([odp.lat, odp.lng]);
                         } else {
-                            const midLat = userLat + (odp.lat - userLat) * 0.55;
-                            const midLng = userLng + (odp.lng - userLng) * 0.45;
                             routeCoords = [
                                 [userLat, userLng],
-                                [midLat, userLng],
-                                [midLat, odp.lng],
                                 [odp.lat, odp.lng]
                             ];
                         }
