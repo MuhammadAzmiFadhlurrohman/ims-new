@@ -36,4 +36,16 @@ class MonthlyInvoice extends Model
     {
         return $this->belongsTo(BandwidthPackage::class, 'package_code', 'code');
     }
+
+    /**
+     * Generate secure, cryptographically signed URL for public customer access (e.g. WhatsApp/SMS)
+     */
+    public function getPublicPdfUrl(int $daysValid = 60): string
+    {
+        return \Illuminate\Support\Facades\URL::temporarySignedRoute(
+            'invoices.monthly-pdf.public',
+            now()->addDays($daysValid),
+            ['invoiceNumber' => $this->invoice_number]
+        );
+    }
 }

@@ -26,4 +26,16 @@ class RegistrationInvoice extends Model
     {
         return $this->belongsTo(CustomerSubscription::class, 'internet_number', 'internet_number');
     }
+
+    /**
+     * Generate secure, cryptographically signed URL for public customer access (e.g. WhatsApp/SMS)
+     */
+    public function getPublicPdfUrl(int $daysValid = 60): string
+    {
+        return \Illuminate\Support\Facades\URL::temporarySignedRoute(
+            'invoices.registration-pdf.public',
+            now()->addDays($daysValid),
+            ['invoiceNumber' => $this->invoice_number]
+        );
+    }
 }

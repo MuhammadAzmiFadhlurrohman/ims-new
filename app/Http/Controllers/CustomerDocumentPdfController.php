@@ -53,9 +53,23 @@ class CustomerDocumentPdfController extends Controller
         return $pdf->stream("Berita-Acara-Aktivasi-{$subscription->internet_number}.pdf");
     }
 
-    public function monthlyInvoicePdf(string $invoiceNumber): Response
+    public function monthlyInvoicePdf(Request $request, string $invoiceNumber): Response
     {
         $invoice = \App\Models\MonthlyInvoice::with(['subscription.customer', 'subscription.package', 'package'])->findOrFail($invoiceNumber);
+        
+        // Security Verification:
+        // 1. Logged-in Admin User (via Web/Filament Auth)
+        // 2. Cryptographically Signed URL (via Temporary Signed Route)
+        // 3. Authenticated Customer Portal Session matching the invoice owner
+        $isAdmin = auth()->check();
+        $hasValidSignature = $request->hasValidSignature();
+        $isOwnerCustomer = session('customer_internet_number') && session('customer_internet_number') === $invoice->internet_number;
+
+        if (! $isAdmin && ! $hasValidSignature && ! $isOwnerCustomer) {
+            \Illuminate\Support\Facades\Log::warning("Unauthorized attempt to access Monthly Invoice PDF [{$invoiceNumber}] from IP: " . $request->ip());
+            abort(403, 'Akses Ditolak: Tautan invoice tidak valid, telah kedaluwarsa, atau Anda tidak memiliki izin untuk mengakses dokumen ini.');
+        }
+
         $subscription = $invoice->subscription;
         $customer = $subscription?->customer;
 
@@ -81,9 +95,20 @@ class CustomerDocumentPdfController extends Controller
         return $pdf->stream($filename);
     }
 
-    public function registrationInvoicePdf(string $invoiceNumber): Response
+    public function registrationInvoicePdf(Request $request, string $invoiceNumber): Response
     {
         $invoice = \App\Models\RegistrationInvoice::with(['subscription.customer', 'subscription.package'])->findOrFail($invoiceNumber);
+
+        // Security Verification:
+        $isAdmin = auth()->check();
+        $hasValidSignature = $request->hasValidSignature();
+        $isOwnerCustomer = session('customer_internet_number') && session('customer_internet_number') === $invoice->internet_number;
+
+        if (! $isAdmin && ! $hasValidSignature && ! $isOwnerCustomer) {
+            \Illuminate\Support\Facades\Log::warning("Unauthorized attempt to access Registration Invoice PDF [{$invoiceNumber}] from IP: " . $request->ip());
+            abort(403, 'Akses Ditolak: Tautan invoice registrasi tidak valid, telah kedaluwarsa, atau Anda tidak memiliki izin untuk mengakses dokumen ini.');
+        }
+
         $subscription = $invoice->subscription;
         $customer = $subscription?->customer;
 

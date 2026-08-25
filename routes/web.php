@@ -177,9 +177,14 @@ Route::middleware(['web', 'auth'])->group(function () {
         ->name('invoices.registration-pdf');
 });
 
-// Public access routes for invoice link in SMS / WhatsApp / Email
-Route::get('/invoices/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'monthlyInvoicePdf']);
-Route::get('/invoices/registration/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'registrationInvoicePdf']);
+// Public access routes for invoice link in SMS / WhatsApp / Email (Secured via Signed URLs & Rate Limiting)
+Route::get('/invoices/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'monthlyInvoicePdf'])
+    ->middleware('throttle:30,1')
+    ->name('invoices.monthly-pdf.public');
+
+Route::get('/invoices/registration/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'registrationInvoicePdf'])
+    ->middleware('throttle:30,1')
+    ->name('invoices.registration-pdf.public');
 
 // Safe migration & cache clearer helper (Strictly Super Admin Only)
 Route::get('/admin/run-migrations', function (Request $request) {
