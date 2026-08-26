@@ -365,21 +365,17 @@
                 </div>
             </td>
 
-            <!-- Right: Media Solusi Network Brand Logo -->
+            <!-- Right: Media Solusi Network Brand Logo with IMS ONE -->
             <td class="header-right-col">
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
-                        <!-- Logo Icon -->
-                        <td style="width: 48px; vertical-align: middle; text-align: right; padding-right: 6px;">
-                            <svg width="42" height="42" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <!-- Outer Geometric Hexagonal / M-N Shield Structure -->
-                                <path d="M12 42V18L28 6L38 14V38L28 46L12 42Z" stroke="#0097a7" stroke-width="4.5" stroke-linejoin="round" fill="none" />
-                                <path d="M48 18V42L32 54L22 46V22L32 14L48 18Z" stroke="#37474f" stroke-width="4.5" stroke-linejoin="round" fill="none" />
-                                <!-- Inner Connected Nodes / House & Arrow -->
-                                <path d="M24 30L30 25L36 30V37H24V30Z" fill="#00bcd4" />
-                                <path d="M30 18V25" stroke="#00bcd4" stroke-width="3" stroke-linecap="round" />
-                                <circle cx="30" cy="16" r="2.5" fill="#00bcd4" />
-                            </svg>
+                        <!-- IMS ONE Badge -->
+                        <td style="width: 60px; vertical-align: middle; text-align: right; padding-right: 8px;">
+                            <div style="border: 2px solid #00bcd4; border-radius: 6px; text-align: center; padding: 4px 6px; display: inline-block; background-color: #f0fdfa;">
+                                <div style="font-size: 8.5pt; font-weight: 900; color: #008ba3; letter-spacing: 0.5px; white-space: nowrap; line-height: 1.1;">
+                                    IMS ONE
+                                </div>
+                            </div>
                         </td>
                         <!-- Logo Typography -->
                         <td style="vertical-align: middle; text-align: left;">

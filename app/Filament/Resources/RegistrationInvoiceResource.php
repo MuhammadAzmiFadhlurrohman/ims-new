@@ -115,8 +115,6 @@ class RegistrationInvoiceResource extends Resource
                         $isPaid = ($record->payment_status === 'PAID');
 
                         $custNameSafe = preg_replace('/[^A-Za-z0-9]/', '-', strtoupper($custName));
-                        $pdfName = "REG-{$custNameSafe}-{$record->invoice_number}.pdf";
-                        $pdfUrl = url("/admin/registration-invoices/{$record->invoice_number}/pdf");
 
                         $statusBadge = $isPaid
                             ? "<span style='background: #dcfce7; color: #15803d; padding: 2px 7px; border-radius: 5px; font-size: 9.5px; font-weight: 800;'>Paid</span>"
@@ -155,12 +153,6 @@ class RegistrationInvoiceResource extends Resource
                                 'color' => 'green',
                             ],
                             [
-                                'url' => $pdfUrl,
-                                'label' => '📄 Cetak / Download PDF',
-                                'icon' => 'report',
-                                'color' => 'blue',
-                            ],
-                            [
                                 'url' => $custUrl,
                                 'label' => '👤 Lihat Profil Pelanggan',
                                 'icon' => 'clipboard',
@@ -192,7 +184,6 @@ class RegistrationInvoiceResource extends Resource
                             'building' => (string) "Registrasi | Status: " . ($isPaid ? 'Paid' : 'Draft'),
                             'addr' => (string) $fullAddress,
                             'latlong' => (string) "Metode: {$badgeText}",
-                            'maps' => (string) $pdfUrl,
                             'status' => (string) ($isPaid ? 'Lunas / Paid' : 'Draft Billing'),
                             'statustype' => (string) "Total: Rp {$formatted}",
                             'sales' => (string) "Terbit: {$dateStr}",
@@ -239,9 +230,6 @@ class RegistrationInvoiceResource extends Resource
                                     </div>
                                     <div style='display: flex; flex-direction: column; gap: 2px; font-size: 10px; color: #64748b; margin-top: 4px;'>
                                         <div><strong class='font-bold text-slate-700'>Terbit :</strong> {$dateStr}</div>
-                                        <a href='{$pdfUrl}' target='_blank' style='display: inline-flex; align-items: center; gap: 4px; color: #2563eb; font-weight: 700; font-size: 10.5px; text-decoration: underline; margin-top: 2px;' title='Buka / Cetak Invoice Registrasi PDF'>
-                                            📄 {$pdfName}
-                                        </a>
                                     </div>
                                     <div style='display: flex; align-items: center; justify-content: space-between; margin-top: 6px;'>
                                         <button
@@ -275,21 +263,12 @@ class RegistrationInvoiceResource extends Resource
                     ->state(function (RegistrationInvoice $record): string {
                         $date = $record->created_at ? $record->created_at->format('Y-m-d H:i:s') : '-';
                         $period = $record->created_at ? $record->created_at->translatedFormat('F Y') : 'Aug 2026';
-                        $sub = $record->subscription;
-                        $custName = $sub ? $sub->customer_name : 'PELANGGAN';
-                        $custNameSafe = preg_replace('/[^A-Za-z0-9]/', '-', strtoupper($custName));
-                        $randId = substr(abs(crc32($record->invoice_number)), 0, 4);
-                        $pdfName = "REG-{$custNameSafe}-{$randId}.pdf";
-                        $pdfUrl = url("/admin/registration-invoices/{$record->invoice_number}/pdf");
 
                         return "
                             <div class='text-xs space-y-1'>
                                 <span class='inline-block bg-sky-600 text-white font-bold text-[11px] px-2 py-0.5 rounded'>INV/{$record->invoice_number}</span>
                                 <div class='font-medium text-slate-500 dark:text-slate-400'>Periode {$period}</div>
                                 <div class='text-slate-600 dark:text-slate-300 font-mono text-[11px]'>{$date}</div>
-                                <a href='{$pdfUrl}' target='_blank' class='inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline pt-0.5' title='Buka / Cetak Invoice Registrasi PDF'>
-                                    📄 {$pdfName}
-                                </a>
                             </div>
                         ";
                     })
@@ -574,7 +553,7 @@ class RegistrationInvoiceResource extends Resource
                         $latlong = ($sub?->latitude && $sub?->longitude) ? "{$sub->latitude}, {$sub->longitude}" : '-';
                         $status = $record->payment_status ?? 'DRAFT';
                         $amountFormatted = number_format($record->total_amount ?? 100000, 2, ',', '.');
-                        $pdfUrl = url("/admin/registration-invoices/{$record->invoice_number}/pdf");
+                        $pdfUrl = null;
                         $key = $record->getKey();
 
                         return view('filament.components.invoice-modal-detail', compact(
