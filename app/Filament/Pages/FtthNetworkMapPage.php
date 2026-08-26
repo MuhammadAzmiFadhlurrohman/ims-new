@@ -104,6 +104,14 @@ class FtthNetworkMapPage extends Page
         return FtthProject::find($this->selectedProjectId);
     }
 
+    public function isDefaultProject(): bool
+    {
+        if (!$this->selectedProjectId) return false;
+        $project = $this->currentProject;
+        if (!$project) return false;
+        return $project->code === 'PRJ-DEFAULT' || str_contains(strtolower($project->name), 'default') || str_contains(strtolower($project->name), 'utama');
+    }
+
     public function getAllOltsProperty()
     {
         return Olt::query()->get(['id', 'code', 'name', 'ip_address', 'latitude', 'longitude']);
@@ -111,6 +119,12 @@ class FtthNetworkMapPage extends Page
 
     public function getAllOdpsProperty()
     {
+        // ODP Master Database only belongs to Proyek Utama (Default).
+        // New custom projects start completely empty without any clutter!
+        if (!$this->isDefaultProject()) {
+            return collect();
+        }
+
         return Odp::query()
             ->with(['olt', 'ponPort'])
             ->withCount('subscriptions')
@@ -175,6 +189,7 @@ class FtthNetworkMapPage extends Page
             'message' => 'Proyek "' . $project->name . '" berhasil dibuat!',
             'project' => $project,
             'elements' => [],
+            'odps' => [],
             'allProjects' => $this->allProjects->toArray(),
         ]);
     }
@@ -186,11 +201,13 @@ class FtthNetworkMapPage extends Page
 
         $this->selectedProjectId = $project->id;
         $elements = $this->customElements->toArray();
+        $odps = $this->allOdps->toArray();
 
         $this->dispatch('project-switched', [
             'message' => 'Beralih ke proyek: ' . $project->name,
             'project' => $project,
             'elements' => $elements,
+            'odps' => $odps,
             'allProjects' => $this->allProjects->toArray(),
         ]);
     }
@@ -221,6 +238,7 @@ class FtthNetworkMapPage extends Page
             'message' => 'Proyek "' . $projectName . '" berhasil dihapus!',
             'fallbackProject' => $fallback,
             'elements' => $this->customElements->toArray(),
+            'odps' => $this->allOdps->toArray(),
             'allProjects' => $this->allProjects->toArray(),
         ]);
     }
