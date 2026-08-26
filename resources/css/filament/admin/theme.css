@@ -17,6 +17,14 @@ html {
     zoom: 0.8;
 }
 
+html:has(.ims-map-canvas),
+html:has(.ims-leaflet-map),
+html:has(#ims-ftth-builder-canvas),
+html:has(#ims-olt-coverage-map),
+html:has(.leaflet-container) {
+    zoom: 1 !important;
+}
+
 @media (max-width: 1023px) {
     html {
         zoom: 1 !important;
