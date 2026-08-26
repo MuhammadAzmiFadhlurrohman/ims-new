@@ -247,12 +247,12 @@
             style="overflow: visible !important; position: relative; z-index: 50;"
         >
             
-            {{-- Toolbar Top Header: 100% Single Row (No Wrap) --}}
-            <div style="padding: 0.65rem 1rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 1000; overflow-x: auto; scrollbar-width: none;">
-                <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; position: relative; width: 100%; min-width: max-content;">
+            {{-- Toolbar Top Header: 100% Single Row (No Wrap & Visible Over Map) --}}
+            <div style="padding: 0.65rem 1rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow: visible !important;">
+                <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; position: relative; width: 100%; overflow: visible !important;">
                     
                     {{-- Left Tool Group: Project Selector & Mode Selection --}}
-                    <div style="display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; flex-shrink: 0;">
+                    <div style="display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; flex-shrink: 0; overflow: visible !important;">
                         
                         {{-- Project Selector Dropdown --}}
                         <div style="position: relative;">
