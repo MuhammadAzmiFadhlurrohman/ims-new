@@ -267,11 +267,147 @@
                                 <span><span x-text="currentProject ? currentProject.name : 'Pilih Proyek'"></span> ▾</span>
                             </button>
                             
+                            {{-- Standalone Project Dropdown Styles (100% Isolated from Tailwind/Filament) --}}
+                            <style>
+                                .ims-prj-menu-box {
+                                    position: absolute !important;
+                                    top: calc(100% + 8px) !important;
+                                    left: 0 !important;
+                                    z-index: 999999 !important;
+                                    background: #ffffff !important;
+                                    border: 1px solid #CBD5E1 !important;
+                                    border-radius: 18px !important;
+                                    box-shadow: 0 20px 48px rgba(15,23,42,0.18) !important;
+                                    min-width: 360px !important;
+                                    padding: 14px !important;
+                                    display: flex !important;
+                                    flex-direction: column !important;
+                                    gap: 8px !important;
+                                    box-sizing: border-box !important;
+                                }
+                                .ims-prj-card-item {
+                                    display: flex !important;
+                                    flex-direction: row !important;
+                                    flex-wrap: nowrap !important;
+                                    align-items: center !important;
+                                    justify-content: space-between !important;
+                                    gap: 16px !important;
+                                    width: 100% !important;
+                                    height: 64px !important;
+                                    min-height: 64px !important;
+                                    max-height: 64px !important;
+                                    padding: 0 16px !important;
+                                    border-radius: 12px !important;
+                                    background: #FFFFFF !important;
+                                    border: 2px solid #334155 !important;
+                                    box-sizing: border-box !important;
+                                    cursor: pointer !important;
+                                    user-select: none !important;
+                                    transition: all 0.15s ease !important;
+                                }
+                                .ims-prj-card-item.is-active {
+                                    background: #F0FDF4 !important;
+                                    border: 2px solid #16A34A !important;
+                                }
+                                .ims-prj-card-item:hover {
+                                    background: #F8FAFC !important;
+                                }
+                                .ims-prj-card-item.is-active:hover {
+                                    background: #F0FDF4 !important;
+                                }
+                                .ims-prj-left-col {
+                                    display: flex !important;
+                                    flex-direction: column !important;
+                                    justify-content: center !important;
+                                    align-items: flex-start !important;
+                                    flex: 1 1 auto !important;
+                                    min-width: 0 !important;
+                                    overflow: hidden !important;
+                                }
+                                .ims-prj-title-wrap {
+                                    display: flex !important;
+                                    flex-direction: row !important;
+                                    flex-wrap: nowrap !important;
+                                    align-items: center !important;
+                                    gap: 8px !important;
+                                    width: 100% !important;
+                                }
+                                .ims-prj-title-txt {
+                                    font-size: 15px !important;
+                                    font-weight: 800 !important;
+                                    color: #0F172A !important;
+                                    white-space: nowrap !important;
+                                    overflow: hidden !important;
+                                    text-overflow: ellipsis !important;
+                                    line-height: 1.25 !important;
+                                    font-family: inherit !important;
+                                }
+                                .ims-prj-sub-txt {
+                                    font-size: 12px !important;
+                                    font-weight: 500 !important;
+                                    color: #64748B !important;
+                                    margin-top: 3px !important;
+                                    white-space: nowrap !important;
+                                    overflow: hidden !important;
+                                    text-overflow: ellipsis !important;
+                                    line-height: 1.25 !important;
+                                    font-family: inherit !important;
+                                }
+                                .ims-prj-card-item.is-active .ims-prj-sub-txt {
+                                    color: #15803D !important;
+                                }
+                                .ims-prj-right-col {
+                                    display: flex !important;
+                                    align-items: center !important;
+                                    justify-content: flex-end !important;
+                                    flex: 0 0 auto !important;
+                                    margin-left: auto !important;
+                                }
+                                .ims-prj-active-pill {
+                                    border: 2px solid #16A34A !important;
+                                    background: #DCFCE7 !important;
+                                    color: #15803D !important;
+                                    border-radius: 8px !important;
+                                    padding: 4px 14px !important;
+                                    font-size: 13px !important;
+                                    font-weight: 800 !important;
+                                    display: inline-flex !important;
+                                    align-items: center !important;
+                                    justify-content: center !important;
+                                    white-space: nowrap !important;
+                                    box-sizing: border-box !important;
+                                }
+                                .ims-prj-del-btn {
+                                    border: 2px solid #334155 !important;
+                                    background: #FFFFFF !important;
+                                    color: #334155 !important;
+                                    cursor: pointer !important;
+                                    padding: 0 !important;
+                                    border-radius: 8px !important;
+                                    width: 36px !important;
+                                    height: 36px !important;
+                                    min-width: 36px !important;
+                                    max-width: 36px !important;
+                                    min-height: 36px !important;
+                                    max-height: 36px !important;
+                                    display: inline-flex !important;
+                                    align-items: center !important;
+                                    justify-content: center !important;
+                                    transition: all 0.15s ease !important;
+                                    box-sizing: border-box !important;
+                                }
+                                .ims-prj-del-btn:hover {
+                                    background: #FEE2E2 !important;
+                                    border-color: #EF4444 !important;
+                                    color: #EF4444 !important;
+                                }
+                            </style>
+
                             <div 
                                 x-show="openProjectMenu" 
                                 @click.outside="openProjectMenu = false"
                                 x-cloak
-                                style="position: absolute; top: calc(100% + 8px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #CBD5E1; border-radius: 18px; box-shadow: 0 20px 48px rgba(15,23,42,0.18); min-width: 360px; padding: 14px; display: flex; flex-direction: column; gap: 8px;"
+                                class="ims-prj-menu-box"
                             >
                                 <div style="padding: 2px 4px 10px 4px; font-size: 0.72rem; font-weight: 900; color: #64748B; text-transform: uppercase; border-bottom: 1.5px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                                     <div style="display: flex; align-items: center; gap: 6px;">
@@ -291,30 +427,26 @@
                                     <template x-for="p in allProjects" :key="p.id">
                                         <div 
                                             @click="switchProject(p.id)"
-                                            style="display: grid !important; grid-template-columns: 1fr auto !important; align-items: center !important; gap: 16px !important; width: 100% !important; box-sizing: border-box !important; padding: 12px 16px !important; border-radius: 12px !important; cursor: pointer !important; user-select: none !important; transition: all 0.15s ease !important;"
-                                            :style="currentProject && currentProject.id === p.id 
-                                                ? 'background: #F0FDF4 !important; border: 2px solid #16A34A !important; box-shadow: 0 3px 10px rgba(22,163,74,0.1) !important;' 
-                                                : 'background: #FFFFFF !important; border: 2px solid #334155 !important; box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;'"
-                                            onmouseover="if (!this.style.background.includes('240')) { this.style.background='#F8FAFC'; }"
-                                            onmouseout="if (!this.style.background.includes('240')) { this.style.background='#FFFFFF'; }"
+                                            class="ims-prj-card-item"
+                                            :class="currentProject && currentProject.id === p.id ? 'is-active' : ''"
                                         >
                                             {{-- Left: Folder Icon + Title on Row 1, Subtitle on Row 2 --}}
-                                            <div style="min-width: 0 !important; overflow: hidden !important; text-align: left !important;">
-                                                <div style="display: flex !important; align-items: center !important; gap: 10px !important;">
+                                            <div class="ims-prj-left-col">
+                                                <div class="ims-prj-title-wrap">
                                                     <svg width="22" height="22" style="width: 22px !important; height: 22px !important; min-width: 22px !important; max-width: 22px !important; min-height: 22px !important; max-height: 22px !important; flex-shrink: 0 !important;" :style="currentProject && currentProject.id === p.id ? 'color: #16A34A !important;' : 'color: #0F172A !important;'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
                                                     </svg>
-                                                    <span style="font-size: 1rem !important; font-weight: 800 !important; color: #0F172A !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; line-height: 1.25 !important;" x-text="p.name"></span>
+                                                    <span class="ims-prj-title-txt" x-text="p.name"></span>
                                                 </div>
-                                                <div style="font-size: 0.8rem !important; font-weight: 500 !important; margin-top: 4px !important; padding-left: 2px !important;" :style="currentProject && currentProject.id === p.id ? 'color: #15803D !important;' : 'color: #64748B !important;'" x-text="(p.elements_count || 0) + ' Objek Tersimpan'"></div>
+                                                <div class="ims-prj-sub-txt" x-text="(p.elements_count || 0) + ' Objek Tersimpan'"></div>
                                             </div>
 
                                             {{-- Right: Trash Icon in Rounded Box OR Active Badge --}}
-                                            <div style="display: flex !important; align-items: center !important; justify-content: flex-end !important; flex-shrink: 0 !important;">
+                                            <div class="ims-prj-right-col">
                                                 {{-- Active Badge in Rounded Box (Gambar 2) --}}
                                                 <span 
                                                     x-show="currentProject && currentProject.id === p.id"
-                                                    style="border: 2px solid #16A34A !important; background: #DCFCE7 !important; color: #15803D !important; border-radius: 8px !important; padding: 4px 14px !important; font-size: 0.82rem !important; font-weight: 800 !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; white-space: nowrap !important;"
+                                                    class="ims-prj-active-pill"
                                                 >Active</span>
 
                                                 {{-- Trash Button in Rounded Box (Gambar 2) --}}
@@ -322,10 +454,8 @@
                                                     type="button" 
                                                     x-show="(!currentProject || currentProject.id !== p.id) && allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'"
                                                     @click.stop="deleteProject(p.id, p.name)"
-                                                    style="border: 2px solid #334155 !important; background: #FFFFFF !important; color: #334155 !important; cursor: pointer !important; padding: 6px !important; border-radius: 8px !important; width: 36px !important; height: 36px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; transition: all 0.15s ease !important;"
+                                                    class="ims-prj-del-btn"
                                                     title="Hapus proyek ini"
-                                                    onmouseover="this.style.background='#FEE2E2'; this.style.borderColor='#EF4444'; this.style.color='#EF4444';"
-                                                    onmouseout="this.style.background='#FFFFFF'; this.style.borderColor='#334155'; this.style.color='#334155';"
                                                 >
                                                     <svg width="18" height="18" style="width: 18px !important; height: 18px !important; min-width: 18px !important; max-width: 18px !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
