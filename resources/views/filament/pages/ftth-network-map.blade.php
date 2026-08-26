@@ -502,23 +502,47 @@
 
                     {{-- Right Tool Group: Layer filters & Map Controls --}}
                     <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
-                        {{-- Google Maps View Type Switcher --}}
-                        <button 
-                            type="button" 
-                            @click="setMapMode('roadmap')" 
-                            :class="mapMode === 'roadmap' ? 'active' : ''"
-                            class="ims-tool-btn"
-                        >
-                            🗺️ Roadmap
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="setMapMode('hybrid')" 
-                            :class="mapMode === 'hybrid' ? 'active' : ''"
-                            class="ims-tool-btn"
-                        >
-                            🛰️ Satelit
-                        </button>
+                        
+                        {{-- Google Maps View Type Dropdown (Roadmap / Satelit) --}}
+                        <div style="position: relative;">
+                            <button 
+                                type="button" 
+                                @click="openMapTypeMenu = !openMapTypeMenu; openProjectMenu = false; openMarkerMenu = false; openLineMenu = false;" 
+                                class="ims-tool-btn"
+                                title="Ganti Tampilan Peta (Roadmap / Satelit)"
+                            >
+                                <span x-text="mapMode === 'roadmap' ? '🗺️ Roadmap ▾' : '🛰️ Satelit ▾'"></span>
+                            </button>
+                            <div 
+                                x-show="openMapTypeMenu" 
+                                @click.outside="openMapTypeMenu = false"
+                                x-cloak
+                                style="position: absolute; top: calc(100% + 6px); right: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 16px 36px rgba(15,23,42,0.22); min-width: 175px; padding: 5px; display: flex; flex-direction: column; gap: 3px;"
+                            >
+                                <button 
+                                    type="button" 
+                                    @click="setMapMode('roadmap'); openMapTypeMenu = false;"
+                                    style="text-align: left; padding: 7px 10px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.76rem; font-weight: 800; transition: all 0.15s ease;"
+                                    :style="mapMode === 'roadmap' ? 'background: #EFF6FF; color: #0878E5;' : 'background: transparent; color: #334155;'"
+                                    onmouseover="this.style.background='#F1F5F9'" 
+                                    onmouseout="if (this.style.color !== 'rgb(8, 120, 229)') this.style.background='transparent'"
+                                >
+                                    <span style="font-size: 14px;">🗺️</span>
+                                    <span>Google Roadmap</span>
+                                </button>
+                                <button 
+                                    type="button" 
+                                    @click="setMapMode('hybrid'); openMapTypeMenu = false;"
+                                    style="text-align: left; padding: 7px 10px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.76rem; font-weight: 800; transition: all 0.15s ease;"
+                                    :style="mapMode === 'hybrid' ? 'background: #EFF6FF; color: #0878E5;' : 'background: transparent; color: #334155;'"
+                                    onmouseover="this.style.background='#F1F5F9'" 
+                                    onmouseout="if (this.style.color !== 'rgb(8, 120, 229)') this.style.background='transparent'"
+                                >
+                                    <span style="font-size: 14px;">🛰️</span>
+                                    <span>Google Satelit</span>
+                                </button>
+                            </div>
+                        </div>
 
                         {{-- Hidden KMZ/KML File Input --}}
                         <input 
@@ -557,16 +581,17 @@
                             📥 Export GeoJSON
                         </button>
 
+                        {{-- Fullscreen Icon-Only Button --}}
                         <button 
                             type="button" 
                             @click="toggleFullscreen()" 
                             :class="isFullscreen ? 'active' : ''"
                             class="ims-tool-btn"
-                            title="Mode Layar Penuh (Tekan Esc untuk keluar)"
+                            style="padding: 7px 9px;"
+                            :title="isFullscreen ? 'Keluar Layar Penuh (Esc)' : 'Mode Layar Penuh'"
                         >
-                            <svg x-show="!isFullscreen" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
-                            <svg x-show="isFullscreen" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/></svg>
-                            <span x-text="isFullscreen ? '🗗 Keluar Fullscreen' : '⛶ Layar Penuh'"></span>
+                            <svg x-show="!isFullscreen" style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+                            <svg x-show="isFullscreen" style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/></svg>
                         </button>
                     </div>
                 </div>
@@ -759,6 +784,7 @@
                     openNewProjectModal: false,
                     newProjectName: '',
                     newProjectDescription: '',
+                    openMapTypeMenu: false,
                     mapInstance: null,
                     mapMode: 'roadmap',
                     tileLayers: {},
