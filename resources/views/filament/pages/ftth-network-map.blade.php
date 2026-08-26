@@ -149,9 +149,31 @@
                 padding: 0 !important;
                 line-height: 1 !important;
             }
+            /* Leaflet Pane & Marker Anti-Shift Fix across Zoom In / Zoom Out */
+            .ims-map-canvas .leaflet-pane,
+            .ims-map-canvas .leaflet-tile,
+            .ims-map-canvas .leaflet-marker-icon,
+            .ims-map-canvas .leaflet-marker-shadow,
+            .ims-map-canvas .leaflet-tile-container,
+            .ims-map-canvas .leaflet-pane > svg,
+            .ims-map-canvas .leaflet-pane > canvas {
+                box-sizing: content-box !important;
+            }
+            .ims-map-canvas .leaflet-marker-icon {
+                transform-origin: center center !important;
+            }
             .odp-pin, .custom-ftth-node {
                 background: transparent !important;
                 border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                line-height: 0 !important;
+            }
+            .odp-pin *, .custom-ftth-node * {
+                box-sizing: border-box !important;
             }
 
             /* Custom Map Cursors by Active Tool */
@@ -1296,6 +1318,51 @@
                         this.currentLineDistance = 0;
                     },
 
+                    findSnapTarget(lat, lng, snapPixels = 22) {
+                        if (!this.mapInstance) return null;
+                        const clickPoint = this.mapInstance.latLngToContainerPoint([lat, lng]);
+                        let closest = null;
+                        let minDistance = snapPixels;
+
+                        // 1. Check custom elements markers (poles, joint box, odc, olt, customer)
+                        this.customElements.forEach(el => {
+                            if (el.category === 'marker' && el.latitude && el.longitude) {
+                                const pt = this.mapInstance.latLngToContainerPoint([el.latitude, el.longitude]);
+                                const dist = Math.hypot(pt.x - clickPoint.x, pt.y - clickPoint.y);
+                                if (dist < minDistance) {
+                                    minDistance = dist;
+                                    closest = { lat: el.latitude, lng: el.longitude, name: el.name, type: el.element_type };
+                                }
+                            }
+                        });
+
+                        // 2. Check ODPs
+                        this.allOdps.forEach(odp => {
+                            if (odp.lat && odp.lng) {
+                                const pt = this.mapInstance.latLngToContainerPoint([odp.lat, odp.lng]);
+                                const dist = Math.hypot(pt.x - clickPoint.x, pt.y - clickPoint.y);
+                                if (dist < minDistance) {
+                                    minDistance = dist;
+                                    closest = { lat: odp.lat, lng: odp.lng, name: odp.name, type: 'odp' };
+                                }
+                            }
+                        });
+
+                        // 3. Check current line points (to snap closed loops or corners)
+                        if (this.currentLinePoints && this.currentLinePoints.length > 0) {
+                            this.currentLinePoints.forEach((p, idx) => {
+                                const pt = this.mapInstance.latLngToContainerPoint(p);
+                                const dist = Math.hypot(pt.x - clickPoint.x, pt.y - clickPoint.y);
+                                if (dist < minDistance) {
+                                    minDistance = dist;
+                                    closest = { lat: p[0], lng: p[1], name: 'Titik Sudut Kabel #' + (idx + 1), type: 'vertex' };
+                                }
+                            });
+                        }
+
+                        return closest;
+                    },
+
                     handleMapMouseMove(e) {
                         if (this.currentMode !== 'draw_line' || this.currentLinePoints.length === 0 || !this.mapInstance) {
                             if (this.tempRubberbandLine && this.mapInstance) {
@@ -1306,7 +1373,17 @@
                         }
 
                         const lastPt = this.currentLinePoints[this.currentLinePoints.length - 1];
-                        const mouseLatLng = [e.latlng.lat, e.latlng.lng];
+                        let targetLat = e.latlng.lat;
+                        let targetLng = e.latlng.lng;
+
+                        // Check magnetic snap while hovering
+                        const snap = this.findSnapTarget(targetLat, targetLng, 22);
+                        if (snap) {
+                            targetLat = snap.lat;
+                            targetLng = snap.lng;
+                        }
+
+                        const mouseLatLng = [targetLat, targetLng];
                         const lineColor = this.activeElementType === 'feeder' ? '#EF4444' : (this.activeElementType === 'distribution' ? '#0878E5' : '#F59E0B');
 
                         if (!this.tempRubberbandLine) {
@@ -1322,13 +1399,23 @@
                     },
 
                     async handleMapClick(lat, lng) {
+                        // Magnetic auto-snap to nearby Node / Tiang / ODP
+                        const snap = this.findSnapTarget(lat, lng, 24);
+                        if (snap) {
+                            lat = snap.lat;
+                            lng = snap.lng;
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('🧲 Terkunci ke: ' + snap.name, 'info', 1000);
+                            }
+                        }
+
                         if (this.currentMode === 'add_marker') {
                             this.promptSaveMarker(lat, lng);
                         } else if (this.currentMode === 'draw_line') {
                             const lineColor = this.activeElementType === 'feeder' ? '#EF4444' : (this.activeElementType === 'distribution' ? '#0878E5' : '#F59E0B');
                             let newPointsAdded = [];
 
-                            if (this.autoSnapRoad && this.currentLinePoints.length > 0) {
+                            if (this.autoSnapRoad && this.currentLinePoints.length > 0 && !snap) {
                                 const lastPt = this.currentLinePoints[this.currentLinePoints.length - 1];
                                 if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
                                     IMS.toast('🛣️ Menyusuri rute jalan...', 'info', 600);
@@ -1387,9 +1474,9 @@
 
                             // Add visual anchor pin planted firmly at this spot
                             const anchorMarker = L.circleMarker([lat, lng], {
-                                radius: 6,
+                                radius: 5.5,
                                 color: '#ffffff',
-                                weight: 2.5,
+                                weight: 2,
                                 fillColor: lineColor,
                                 fillOpacity: 1
                             }).addTo(this.mapInstance);
@@ -1584,12 +1671,13 @@
                             const customIcon = L.divIcon({
                                 className: 'odp-pin',
                                 html: `
-                                    <div style='width: 26px; height: 26px; border-radius: 50%; background: ${pinColor}; border: 2px solid #ffffff; box-shadow: 0 3px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer;'>
+                                    <div style='width: 26px; height: 26px; min-width: 26px; min-height: 26px; border-radius: 50%; background: ${pinColor}; border: 2px solid #ffffff; box-shadow: 0 3px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer; box-sizing: border-box; margin: 0; padding: 0;'>
                                         <svg style='width: 12px; height: 12px; color: #ffffff;' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M13 10V3L4 14h7v7l9-11h-7z'/></svg>
                                     </div>
                                 `,
                                 iconSize: [26, 26],
-                                iconAnchor: [13, 13]
+                                iconAnchor: [13, 13],
+                                popupAnchor: [0, -13]
                             });
 
                             const marker = L.marker([odp.lat, odp.lng], { icon: customIcon });
@@ -1616,7 +1704,8 @@
                                     className: 'custom-ftth-node',
                                     html: iconConfig.html,
                                     iconSize: [iconConfig.size, iconConfig.size],
-                                    iconAnchor: [iconConfig.size / 2, iconConfig.size / 2]
+                                    iconAnchor: [iconConfig.size / 2, iconConfig.size / 2],
+                                    popupAnchor: [0, -(iconConfig.size / 2)]
                                 });
 
                                 const marker = L.marker([el.latitude, el.longitude], { icon: customIcon });
@@ -1688,13 +1777,14 @@
                             svgContent = `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>`;
                         } else {
                             bg = bg || '#0878E5';
+                            size = 28;
                             svgContent = `<svg style="width: 14px; height: 14px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>`;
                         }
 
                         return {
                             size: size,
                             html: `
-                                <div style='width: ${size}px; height: ${size}px; border-radius: 50%; background: ${bg}; border: 2.5px solid #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.38); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.15s ease;'>
+                                <div style='width: ${size}px; height: ${size}px; min-width: ${size}px; min-height: ${size}px; border-radius: 50%; background: ${bg}; border: 2px solid #ffffff; box-shadow: 0 3px 8px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; cursor: pointer; box-sizing: border-box; margin: 0; padding: 0;'>
                                     ${svgContent}
                                 </div>
                             `
