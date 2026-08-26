@@ -15,6 +15,22 @@
                 box-shadow: 0 4px 20px rgba(8, 120, 229, 0.06);
                 overflow: hidden;
             }
+            .ims-map-container-wrap {
+                position: relative !important;
+                width: 100% !important;
+                height: 650px !important;
+                min-height: 650px !important;
+                overflow: hidden !important;
+            }
+            .ims-map-canvas {
+                width: 100% !important;
+                height: 650px !important;
+                min-height: 650px !important;
+                background: #f8fafc !important;
+                display: block !important;
+                position: relative !important;
+            }
+
             #ims-ftth-map-card-root:fullscreen,
             #ims-ftth-map-card-root:-webkit-full-screen,
             #ims-ftth-map-card-root.is-fullscreen {
@@ -52,14 +68,6 @@
                 height: 100% !important;
                 min-height: 0 !important;
                 width: 100% !important;
-            }
-            .ims-map-canvas {
-                width: 100% !important;
-                height: 100% !important;
-                min-height: 520px !important;
-                background: #f8fafc !important;
-                display: block !important;
-                position: relative;
             }
             .ims-tool-btn {
                 display: inline-flex;
@@ -1026,7 +1034,7 @@
             </div>
 
             {{-- Map Container Relative Wrapper (for hosting sidebar drawer overlay) --}}
-            <div class="ims-map-container-wrap" style="position: relative; width: 100%; height: 620px; overflow: hidden;">
+            <div class="ims-map-container-wrap">
 
                 {{-- ── 2.1 GOOGLE MY MAPS STYLE FLOATING SIDEBAR DRAWER ── --}}
                 <div 
