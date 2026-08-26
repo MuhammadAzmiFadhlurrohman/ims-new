@@ -7,6 +7,9 @@ use App\Models\FtthProject;
 use App\Models\Odp;
 use App\Models\Olt;
 use Filament\Pages\Page;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 use Livewire\WithFileUploads;
 use SimpleXMLElement;
 use ZipArchive;
@@ -33,6 +36,35 @@ class FtthNetworkMapPage extends Page
 
     public function mount(): void
     {
+        // Self-healing: auto migrate if table missing on production
+        if (!Schema::hasTable('ftth_projects')) {
+            try {
+                Artisan::call('migrate', ['--force' => true]);
+            } catch (\Throwable $e) {
+                // Direct DDL fallback if Artisan command cannot run
+                if (!Schema::hasTable('ftth_projects')) {
+                    Schema::create('ftth_projects', function (Blueprint $table) {
+                        $table->id();
+                        $table->string('name');
+                        $table->string('code', 64)->nullable()->unique();
+                        $table->text('description')->nullable();
+                        $table->string('color', 20)->default('#0878E5');
+                        $table->decimal('center_latitude', 10, 7)->nullable();
+                        $table->decimal('center_longitude', 11, 7)->nullable();
+                        $table->unsignedSmallInteger('default_zoom')->default(15);
+                        $table->boolean('is_active')->default(true);
+                        $table->timestamps();
+                    });
+                }
+                if (Schema::hasTable('ftth_network_elements') && !Schema::hasColumn('ftth_network_elements', 'project_id')) {
+                    Schema::table('ftth_network_elements', function (Blueprint $table) {
+                        $table->foreignId('project_id')->nullable()->after('id')->constrained('ftth_projects')->nullOnDelete();
+                        $table->index('project_id');
+                    });
+                }
+            }
+        }
+
         // Ensure at least one project exists
         $firstProject = FtthProject::first();
         if (!$firstProject) {
@@ -58,12 +90,18 @@ class FtthNetworkMapPage extends Page
 
     public function getAllProjectsProperty()
     {
+        if (!Schema::hasTable('ftth_projects')) {
+            return collect();
+        }
         return FtthProject::query()->withCount('elements')->orderBy('name')->get();
     }
 
     public function getCurrentProjectProperty()
     {
-        return $this->selectedProjectId ? FtthProject::find($this->selectedProjectId) : null;
+        if (!Schema::hasTable('ftth_projects') || empty($this->selectedProjectId)) {
+            return null;
+        }
+        return FtthProject::find($this->selectedProjectId);
     }
 
     public function getAllOltsProperty()
