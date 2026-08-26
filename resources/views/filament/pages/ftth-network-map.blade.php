@@ -735,6 +735,18 @@
                             }
                         });
 
+                        this.$wire.on('elements-cleared', (event) => {
+                            const data = Array.isArray(event) ? event[0] : event;
+                            if (typeof IMS !== 'undefined' && typeof IMS.success === 'function') {
+                                IMS.success(data.message || 'Semua elemen custom berhasil dibersihkan!');
+                            }
+                            this.customElements = [];
+                            this.renderCustomElements();
+                            if (this.mapInstance) {
+                                this.mapInstance.invalidateSize();
+                            }
+                        });
+
                         // Browser native fullscreen change listeners
                         document.addEventListener('fullscreenchange', () => {
                             this.isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);

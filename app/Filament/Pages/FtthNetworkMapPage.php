@@ -136,6 +136,16 @@ class FtthNetworkMapPage extends Page
         }
     }
 
+    public function clearAllCustomElements()
+    {
+        $count = FtthNetworkElement::count();
+        FtthNetworkElement::truncate();
+
+        $this->dispatch('elements-cleared', [
+            'message' => 'Berhasil membersihkan ' . $count . ' elemen custom dari peta!',
+        ]);
+    }
+
     public function importKmzUpload()
     {
         if (!$this->kmzFile) {
