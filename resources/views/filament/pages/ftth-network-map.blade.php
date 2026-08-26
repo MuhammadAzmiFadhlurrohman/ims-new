@@ -92,6 +92,17 @@
                 margin: 8px 10px !important;
                 line-height: 1.4 !important;
             }
+
+            @keyframes imsMapPulse {
+                0% { transform: scale(0.6); opacity: 1; }
+                50% { opacity: 0.8; }
+                100% { transform: scale(2.0); opacity: 0; }
+            }
+            .ims-pulse-highlight {
+                background: transparent !important;
+                border: none !important;
+                pointer-events: none !important;
+            }
         </style>
 
         {{-- ── 1. HEADER BANNER & TELEMETRY STATS ── --}}
@@ -268,6 +279,66 @@
                                     </div>
                                 </button>
                             </div>
+                        </div>
+                    </div>
+
+                    {{-- Middle Tool Group: Live Universal GIS Search Bar --}}
+                    <div style="position: relative; flex: 1; max-width: 380px; min-width: 220px;">
+                        <div 
+                            style="display: flex; align-items: center; background: #F8FAFC; border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 4px 10px; gap: 6px; transition: all 0.2s ease;"
+                            :style="searchFocused || searchQuery ? 'border-color: #0878E5; background: #ffffff; box-shadow: 0 0 0 3px rgba(8, 120, 229, 0.12);' : ''"
+                        >
+                            <svg style="width: 14px; height: 14px; color: #64748B; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <input 
+                                type="text" 
+                                x-model="searchQuery" 
+                                @focus="searchFocused = true"
+                                @click.outside="searchFocused = false"
+                                @keydown.escape="searchFocused = false"
+                                placeholder="🔍 Cari Tiang, ODP, Kabel, ODC, ONT..." 
+                                style="border: none; background: transparent; outline: none; font-size: 0.76rem; font-weight: 700; width: 100%; color: #0F172A; padding: 2px 0;"
+                            >
+                            <button 
+                                type="button" 
+                                x-show="searchQuery" 
+                                @click="searchQuery = ''" 
+                                style="border: none; background: transparent; color: #94A3B8; cursor: pointer; font-size: 13px; font-weight: 900; padding: 0 2px;"
+                                title="Hapus pencarian"
+                            >✕</button>
+                        </div>
+
+                        {{-- Instant Autocomplete Results Dropdown --}}
+                        <div 
+                            x-show="searchFocused && searchResults.length > 0"
+                            x-cloak
+                            style="position: absolute; top: calc(100% + 6px); left: 0; right: 0; min-width: 320px; max-height: 380px; overflow-y: auto; background: #ffffff; border: 1px solid #CBD5E1; border-radius: 14px; box-shadow: 0 18px 40px rgba(15,23,42,0.24); z-index: 999999; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
+                        >
+                            <div style="padding: 6px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase; border-bottom: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center;">
+                                <span>Hasil Pencarian (<span x-text="searchResults.length"></span>)</span>
+                                <span style="color: #0878E5; font-size: 0.65rem;">Klik untuk Menuju Lokasi</span>
+                            </div>
+                            <template x-for="item in searchResults" :key="item.uniqueId">
+                                <button 
+                                    type="button" 
+                                    @mousedown.prevent="flyToItem(item)"
+                                    style="text-align: left; padding: 7px 9px; border-radius: 8px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 9px; transition: background 0.15s ease;"
+                                    onmouseover="this.style.background='#F1F5F9'" 
+                                    onmouseout="this.style.background='transparent'"
+                                >
+                                    <div 
+                                        :style="'background:' + item.badgeBg + '; border: 1px solid ' + item.badgeBorder + '; color:' + item.badgeColor"
+                                        style="width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.72rem; font-weight: 900;"
+                                        x-html="item.iconHtml"
+                                    ></div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="item.title"></span>
+                                            <span style="font-size: 0.62rem; font-weight: 800; padding: 1px 6px; border-radius: 4px;" :style="'background:' + item.badgeBg + '; color:' + item.badgeColor" x-text="item.badgeLabel"></span>
+                                        </div>
+                                        <div style="font-size: 0.68rem; color: #64748B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;" x-text="item.subtitle"></div>
+                                    </div>
+                                </button>
+                            </template>
                         </div>
                     </div>
 
@@ -463,6 +534,8 @@
                     currentMode: 'select', // 'select', 'add_marker', 'draw_line'
                     openMarkerMenu: false,
                     openLineMenu: false,
+                    searchQuery: '',
+                    searchFocused: false,
                     autoSnapRoad: false, // Default to exact manual drawing; user can enable Auto-Snap when needed
                     activeElementType: 'pole', // 'pole', 'joint_box', 'odc', 'olt', 'customer', 'feeder', 'distribution', 'dropcore'
                     currentLinePoints: [],
@@ -1103,6 +1176,166 @@
                                 </div>
                             `
                         };
+                    },
+
+                    get searchResults() {
+                        if (!this.searchQuery || this.searchQuery.trim().length < 1) return [];
+                        const q = this.searchQuery.toLowerCase().trim();
+                        const results = [];
+
+                        // 1. Search in ODP Database
+                        this.allOdps.forEach(odp => {
+                            const text = `${odp.name} ${odp.code} ${odp.olt_name} ${odp.pon_name}`.toLowerCase();
+                            if (text.includes(q)) {
+                                results.push({
+                                    uniqueId: 'odp_' + odp.code,
+                                    category: 'odp',
+                                    title: odp.name,
+                                    subtitle: `Port: ${odp.used_ports}/${odp.total_ports} • OLT: ${odp.olt_name} • PON: ${odp.pon_name}`,
+                                    lat: odp.lat,
+                                    lng: odp.lng,
+                                    badgeLabel: 'ODP',
+                                    badgeBg: '#EFF6FF',
+                                    badgeBorder: '#BFDBFE',
+                                    badgeColor: '#0878E5',
+                                    iconHtml: `<svg style="width:13px;height:13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`
+                                });
+                            }
+                        });
+
+                        // 2. Search in Custom Elements (Poles, Handholes, ODC, OLT, Customers, Cables)
+                        this.customElements.forEach(el => {
+                            const text = `${el.name} ${el.element_type} ${el.notes || ''}`.toLowerCase();
+                            if (text.includes(q)) {
+                                let lat = el.latitude;
+                                let lng = el.longitude;
+                                let bounds = null;
+                                let subtitle = el.notes || `Titik Jaringan FTTH`;
+
+                                if (el.category === 'line') {
+                                    subtitle = `Jalur Kabel ~${el.length_meters || 0}m ${el.notes ? '• ' + el.notes : ''}`;
+                                    if (el.path_coordinates && el.path_coordinates.length > 0) {
+                                        lat = el.path_coordinates[0][0];
+                                        lng = el.path_coordinates[0][1];
+                                        bounds = el.path_coordinates;
+                                    }
+                                }
+
+                                const typeConfig = this.getTypeBadgeConfig(el.element_type, el.category);
+
+                                results.push({
+                                    uniqueId: 'custom_' + el.id,
+                                    category: el.category,
+                                    elementType: el.element_type,
+                                    id: el.id,
+                                    title: el.name,
+                                    subtitle: subtitle,
+                                    lat: lat,
+                                    lng: lng,
+                                    bounds: bounds,
+                                    badgeLabel: typeConfig.label,
+                                    badgeBg: typeConfig.bg,
+                                    badgeBorder: typeConfig.border,
+                                    badgeColor: typeConfig.color,
+                                    iconHtml: typeConfig.iconHtml
+                                });
+                            }
+                        });
+
+                        return results.slice(0, 30);
+                    },
+
+                    getTypeBadgeConfig(type, category) {
+                        if (category === 'line') {
+                            if (type === 'feeder') {
+                                return { label: 'FEEDER', bg: '#FEF2F2', border: '#FECACA', color: '#DC2626', iconHtml: '🔴' };
+                            } else if (type === 'distribution') {
+                                return { label: 'DISTRIBUSI', bg: '#EFF6FF', border: '#BFDBFE', color: '#2563EB', iconHtml: '🔵' };
+                            } else {
+                                return { label: 'DROPCORE', bg: '#FFFBEB', border: '#FDE68A', color: '#D97706', iconHtml: '🟡' };
+                            }
+                        }
+
+                        if (type === 'pole') {
+                            return { label: 'TIANG', bg: '#F1F5F9', border: '#CBD5E1', color: '#334155', iconHtml: '📍' };
+                        } else if (type === 'joint_box') {
+                            return { label: 'JOINT BOX', bg: '#ECFDF5', border: '#A7F3D0', color: '#059669', iconHtml: '🔗' };
+                        } else if (type === 'odc') {
+                            return { label: 'ODC', bg: '#FFFBEB', border: '#FDE68A', color: '#D97706', iconHtml: '🔲' };
+                        } else if (type === 'olt') {
+                            return { label: 'OLT CORE', bg: '#F5F3FF', border: '#DDD6FE', color: '#7C3AED', iconHtml: '🏢' };
+                        } else if (type === 'customer') {
+                            return { label: 'PELANGGAN', bg: '#FDF2F8', border: '#FBCFE8', color: '#DB2777', iconHtml: '🏠' };
+                        }
+                        return { label: 'NODE', bg: '#EFF6FF', border: '#BFDBFE', color: '#0878E5', iconHtml: '📍' };
+                    },
+
+                    flyToItem(item) {
+                        this.searchFocused = false;
+                        if (!this.mapInstance) return;
+
+                        if (item.bounds && item.bounds.length >= 2) {
+                            // Fly to polyline bounds
+                            const poly = L.polyline(item.bounds);
+                            this.mapInstance.fitBounds(poly.getBounds().pad(0.2));
+
+                            if (item.lat && item.lng) {
+                                this.highlightMarker(item.lat, item.lng);
+                            }
+
+                            // Open popup for line
+                            if (this.customLayerGroup) {
+                                this.customLayerGroup.eachLayer(layer => {
+                                    if (layer instanceof L.Polyline && !(layer instanceof L.Polygon) && layer.getLatLngs) {
+                                        const lPoints = layer.getLatLngs();
+                                        if (lPoints.length > 0 && Math.abs(lPoints[0].lat - item.lat) < 0.0001) {
+                                            layer.openPopup();
+                                        }
+                                    }
+                                });
+                            }
+                        } else if (item.lat && item.lng) {
+                            // Fly directly to marker
+                            this.mapInstance.flyTo([item.lat, item.lng], 19, {
+                                animate: true,
+                                duration: 1.0
+                            });
+
+                            this.highlightMarker(item.lat, item.lng);
+
+                            // Find and open popup
+                            setTimeout(() => {
+                                if (item.category === 'odp' && this.odpLayerGroup) {
+                                    this.odpLayerGroup.eachLayer(layer => {
+                                        if (layer.getLatLng && Math.abs(layer.getLatLng().lat - item.lat) < 0.00001) {
+                                            layer.openPopup();
+                                        }
+                                    });
+                                } else if (this.customLayerGroup) {
+                                    this.customLayerGroup.eachLayer(layer => {
+                                        if (layer.getLatLng && Math.abs(layer.getLatLng().lat - item.lat) < 0.00001) {
+                                            layer.openPopup();
+                                        }
+                                    });
+                                }
+                            }, 1050);
+                        }
+                    },
+
+                    highlightMarker(lat, lng) {
+                        if (!this.mapInstance || typeof L === 'undefined') return;
+                        const pulseIcon = L.divIcon({
+                            className: 'ims-pulse-highlight',
+                            html: `<div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(8, 120, 229, 0.25); border: 2.5px solid #0878E5; animation: imsMapPulse 1.2s infinite ease-out;"></div>`,
+                            iconSize: [48, 48],
+                            iconAnchor: [24, 24]
+                        });
+                        const pulseMarker = L.marker([lat, lng], { icon: pulseIcon, zIndexOffset: 1000 }).addTo(this.mapInstance);
+                        setTimeout(() => {
+                            if (this.mapInstance) {
+                                this.mapInstance.removeLayer(pulseMarker);
+                            }
+                        }, 4000);
                     },
 
                     calculateDistanceMeters(lat1, lon1, lat2, lon2) {
