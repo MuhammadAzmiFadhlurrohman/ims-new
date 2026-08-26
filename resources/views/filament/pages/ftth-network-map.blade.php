@@ -72,6 +72,23 @@
                 flex-shrink: 0 !important;
                 margin: 0 !important;
             }
+            /* Lock leaflet markers and overlays strictly to coordinates without CSS transition drift */
+            .leaflet-zoom-animated,
+            .leaflet-marker-icon,
+            .leaflet-marker-icon *,
+            .leaflet-tile-container,
+            .leaflet-tile,
+            .leaflet-pane,
+            .leaflet-overlay-pane,
+            .leaflet-overlay-pane svg,
+            .leaflet-overlay-pane path {
+                transition: none !important;
+            }
+            .leaflet-marker-icon.custom-ftth-node,
+            .leaflet-marker-icon.odp-pin {
+                background: transparent !important;
+                border: none !important;
+            }
             .ims-map-container-wrap {
                 position: relative !important;
                 width: 100% !important;
@@ -1822,7 +1839,7 @@
                             zoom: 17,
                             minZoom: 3,
                             maxZoom: 22,
-                            preferCanvas: true,
+                            preferCanvas: false,
                             zoomControl: false,
                             attributionControl: false
                         });
