@@ -216,8 +216,12 @@
 
             {{-- Quick Summary Badges --}}
             <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+                <div class="ims-badge-stat" style="background: rgba(255,255,255,0.18); border: 1.5px solid rgba(255,255,255,0.35); color: #ffffff;">
+                    <span>📁 Proyek:</span>
+                    <strong style="color: #55C7FF;" x-text="currentProject ? currentProject.name : 'Utama'"></strong>
+                </div>
                 <div class="ims-badge-stat" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff;">
-                    <span>⚡ ODP Aktif:</span>
+                    <span>⚡ ODP:</span>
                     <strong style="color: #55C7FF;" x-text="allOdps.length"></strong>
                 </div>
                 <div class="ims-badge-stat" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff;">
@@ -229,7 +233,7 @@
                     <strong style="color: #55C7FF;" x-text="customElements.filter(e => e.category === 'line').length"></strong>
                 </div>
                 <div class="ims-badge-stat" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff;">
-                    <span>📏 Total Kabel:</span>
+                    <span>📏 Total:</span>
                     <strong style="color: #55C7FF;" x-text="calculateTotalCableKm() + ' Km'"></strong>
                 </div>
             </div>
@@ -247,9 +251,68 @@
             <div style="padding: 0.85rem 1.15rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 1000;">
                 <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; position: relative;">
                     
-                    {{-- Left Tool Group: Mode Selection --}}
+                    {{-- Left Tool Group: Project Selector & Mode Selection --}}
                     <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
-                        <span style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin-right: 4px;">
+                        
+                        {{-- Project Selector Dropdown --}}
+                        <div style="position: relative;">
+                            <button 
+                                type="button" 
+                                @click="openProjectMenu = !openProjectMenu; openMarkerMenu = false; openLineMenu = false;" 
+                                class="ims-tool-btn"
+                                style="background: #F0FDF4; border-color: #BBF7D0; color: #166534; font-weight: 900;"
+                                title="Pilih atau kelola proyek GIS FTTH"
+                            >
+                                <svg style="width: 14px; height: 14px; color: #16A34A;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                                <span>📁 <span x-text="currentProject ? currentProject.name : 'Pilih Proyek'"></span> ▾</span>
+                            </button>
+                            
+                            <div 
+                                x-show="openProjectMenu" 
+                                @click.outside="openProjectMenu = false"
+                                x-cloak
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.22); min-width: 300px; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
+                            >
+                                <div style="padding: 6px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase; border-bottom: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Pilih Proyek (<span x-text="allProjects.length"></span>)</span>
+                                    <button 
+                                        type="button" 
+                                        @click="openNewProjectModal = true; openProjectMenu = false;"
+                                        style="border: none; background: #0878E5; color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 800; cursor: pointer;"
+                                    >+ Proyek Baru</button>
+                                </div>
+
+                                <template x-for="p in allProjects" :key="p.id">
+                                    <div 
+                                        style="display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; border-radius: 8px; transition: background 0.15s ease;"
+                                        :style="currentProject && currentProject.id === p.id ? 'background: #F0FDF4; border: 1px solid #BBF7D0;' : ''"
+                                    >
+                                        <button 
+                                            type="button" 
+                                            @click="switchProject(p.id)"
+                                            style="flex: 1; text-align: left; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 8px;"
+                                        >
+                                            <div style="width: 10px; height: 10px; border-radius: 50%;" :style="'background:' + (p.color || '#0878E5')"></div>
+                                            <div>
+                                                <div style="font-size: 0.78rem; font-weight: 800; color: #0F172A;" x-text="p.name"></div>
+                                                <div style="font-size: 0.65rem; color: #64748B;" x-text="(p.elements_count || 0) + ' objek jaringan'"></div>
+                                            </div>
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            x-show="allProjects.length > 1"
+                                            @click="deleteProject(p.id, p.name)"
+                                            style="border: none; background: transparent; color: #EF4444; cursor: pointer; padding: 4px 6px; font-size: 12px; border-radius: 4px;"
+                                            title="Hapus proyek ini"
+                                            onmouseover="this.style.background='#FEE2E2'"
+                                            onmouseout="this.style.background='transparent'"
+                                        >🗑️</button>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <span style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin: 0 2px 0 4px;">
                             Mode:
                         </span>
                         <button 
@@ -258,7 +321,7 @@
                             :class="currentMode === 'select' ? 'active' : ''"
                             class="ims-tool-btn"
                         >
-                            👆 Jelajah Peta
+                            👆 Jelajah
                         </button>
                         
                         {{-- Dropdown Add Marker --}}
@@ -629,12 +692,73 @@
             </div>
         </div>
 
+        {{-- ── 3. MODAL TAMBAH PROYEK BARU ── --}}
+        <div 
+            x-show="openNewProjectModal" 
+            x-cloak
+            style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); z-index: 99999999; display: flex; align-items: center; justify-content: center; padding: 1rem;"
+        >
+            <div 
+                @click.outside="openNewProjectModal = false"
+                style="background: #ffffff; border-radius: 16px; box-shadow: 0 24px 48px rgba(0,0,0,0.28); width: 100%; max-width: 440px; padding: 1.5rem; position: relative;"
+            >
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; color: #0878E5;">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.05rem; font-weight: 900; color: #0F172A; margin: 0;">Tambah Proyek FTTH Baru</h3>
+                        <p style="font-size: 0.74rem; color: #64748B; margin: 2px 0 0 0;">Buat area pemetaan jaringan baru terpisah.</p>
+                    </div>
+                </div>
+
+                <div style="margin: 14px 0 12px 0;">
+                    <label style="display: block; font-size: 0.76rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Nama Proyek / Area *</label>
+                    <input 
+                        type="text" 
+                        x-model="newProjectName" 
+                        placeholder="Contoh: Konsorsium CJP, Area Arcamanik, Proyek Dago..."
+                        style="width: 100%; height: 38px; padding: 0 12px; border: 1.5px solid #CBD5E1; border-radius: 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; box-sizing: border-box; outline: none;"
+                    >
+                </div>
+
+                <div style="margin-bottom: 18px;">
+                    <label style="display: block; font-size: 0.76rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Deskripsi / Catatan (Opsional)</label>
+                    <textarea 
+                        x-model="newProjectDescription" 
+                        rows="2"
+                        placeholder="Keterangan wilayah, klien, atau kapasitas..."
+                        style="width: 100%; padding: 8px 12px; border: 1.5px solid #CBD5E1; border-radius: 10px; font-size: 0.78rem; font-weight: 600; color: #0F172A; box-sizing: border-box; outline: none; resize: none;"
+                    ></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                    <button 
+                        type="button" 
+                        @click="openNewProjectModal = false"
+                        style="padding: 8px 14px; border: 1px solid #CBD5E1; background: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; color: #64748B; cursor: pointer;"
+                    >Batal</button>
+                    <button 
+                        type="button" 
+                        @click="submitNewProject()"
+                        style="padding: 8px 18px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(8, 120, 229, 0.25);"
+                    >Simpan & Buka Proyek</button>
+                </div>
+            </div>
+        </div>
+
         @script
         <script>
             window.imsFtthNetworkMapComponent = function() {
                 return {
                     allOdps: {!! json_encode($this->allOdps) !!},
                     customElements: {!! json_encode($this->customElements) !!},
+                    allProjects: {!! json_encode($this->allProjects) !!},
+                    currentProject: {!! json_encode($this->currentProject) !!},
+                    openProjectMenu: false,
+                    openNewProjectModal: false,
+                    newProjectName: '',
+                    newProjectDescription: '',
                     mapInstance: null,
                     mapMode: 'roadmap',
                     tileLayers: {},
@@ -704,6 +828,8 @@
                             if (typeof IMS !== 'undefined' && typeof IMS.success === 'function') {
                                 IMS.success(data.message || 'Peta KMZ berhasil diimpor!');
                             }
+                            if (data.project) this.currentProject = data.project;
+                            if (data.allProjects) this.allProjects = data.allProjects;
                             if (data.elements) {
                                 this.customElements = data.elements.map(el => {
                                     if (el.latitude !== undefined && el.latitude !== null) el.latitude = parseFloat(el.latitude);
@@ -725,6 +851,67 @@
                                         }
                                     }
                                 }, 300);
+                            }
+                        });
+
+                        this.$wire.on('project-created', (event) => {
+                            const data = Array.isArray(event) ? event[0] : event;
+                            if (typeof IMS !== 'undefined' && typeof IMS.success === 'function') {
+                                IMS.success(data.message || 'Proyek baru berhasil dibuat!');
+                            }
+                            if (data.project) this.currentProject = data.project;
+                            if (data.allProjects) this.allProjects = data.allProjects;
+                            this.customElements = [];
+                            this.renderCustomElements();
+                        });
+
+                        this.$wire.on('project-switched', (event) => {
+                            const data = Array.isArray(event) ? event[0] : event;
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast(data.message || 'Proyek dialihkan!', 'info');
+                            }
+                            if (data.project) this.currentProject = data.project;
+                            if (data.allProjects) this.allProjects = data.allProjects;
+                            if (data.elements) {
+                                this.customElements = data.elements.map(el => {
+                                    if (el.latitude !== undefined && el.latitude !== null) el.latitude = parseFloat(el.latitude);
+                                    if (el.longitude !== undefined && el.longitude !== null) el.longitude = parseFloat(el.longitude);
+                                    if (typeof el.path_coordinates === 'string') {
+                                        try { el.path_coordinates = JSON.parse(el.path_coordinates); } catch(e) {}
+                                    }
+                                    return el;
+                                });
+                                this.renderCustomElements();
+
+                                setTimeout(() => {
+                                    if (this.customLayerGroup && this.mapInstance) {
+                                        const layers = this.customLayerGroup.getLayers();
+                                        if (layers.length > 0) {
+                                            const group = L.featureGroup(layers);
+                                            this.mapInstance.fitBounds(group.getBounds().pad(0.15));
+                                        }
+                                    }
+                                }, 250);
+                            }
+                        });
+
+                        this.$wire.on('project-deleted', (event) => {
+                            const data = Array.isArray(event) ? event[0] : event;
+                            if (typeof IMS !== 'undefined' && typeof IMS.success === 'function') {
+                                IMS.success(data.message || 'Proyek berhasil dihapus!');
+                            }
+                            if (data.fallbackProject) this.currentProject = data.fallbackProject;
+                            if (data.allProjects) this.allProjects = data.allProjects;
+                            if (data.elements) {
+                                this.customElements = data.elements.map(el => {
+                                    if (el.latitude !== undefined && el.latitude !== null) el.latitude = parseFloat(el.latitude);
+                                    if (el.longitude !== undefined && el.longitude !== null) el.longitude = parseFloat(el.longitude);
+                                    if (typeof el.path_coordinates === 'string') {
+                                        try { el.path_coordinates = JSON.parse(el.path_coordinates); } catch(e) {}
+                                    }
+                                    return el;
+                                });
+                                this.renderCustomElements();
                             }
                         });
 
@@ -1496,6 +1683,37 @@
                             }
                             this.isFullscreen = false;
                             setTimeout(() => this.mapInstance && this.mapInstance.invalidateSize(), 200);
+                        }
+                    },
+
+                    submitNewProject() {
+                        if (!this.newProjectName || !this.newProjectName.trim()) {
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('Silakan masukkan nama proyek!', 'warning');
+                            }
+                            return;
+                        }
+                        this.$wire.createProject(this.newProjectName.trim(), this.newProjectDescription ? this.newProjectDescription.trim() : '');
+                        this.newProjectName = '';
+                        this.newProjectDescription = '';
+                        this.openNewProjectModal = false;
+                    },
+
+                    switchProject(projectId) {
+                        this.openProjectMenu = false;
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('⏳ Memuat data proyek...', 'info', 1500);
+                        }
+                        this.$wire.switchProject(projectId);
+                    },
+
+                    deleteProject(projectId, projectName) {
+                        this.openProjectMenu = false;
+                        if (confirm(`Apakah Anda yakin ingin menghapus proyek "${projectName}" beserta seluruh titik tiang dan kabel di dalamnya?`)) {
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('⏳ Menghapus proyek...', 'info', 2000);
+                            }
+                            this.$wire.deleteProject(projectId);
                         }
                     },
 

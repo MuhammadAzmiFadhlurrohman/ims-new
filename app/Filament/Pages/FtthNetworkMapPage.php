@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\FtthNetworkElement;
+use App\Models\FtthProject;
 use App\Models\Odp;
 use App\Models\Olt;
 use Filament\Pages\Page;
@@ -27,7 +28,23 @@ class FtthNetworkMapPage extends Page
     protected static string $view = 'filament.pages.ftth-network-map';
 
     public ?string $selectedOlt = null;
+    public ?int $selectedProjectId = null;
     public $kmzFile = null;
+
+    public function mount(): void
+    {
+        // Ensure at least one project exists
+        $firstProject = FtthProject::first();
+        if (!$firstProject) {
+            $firstProject = FtthProject::create([
+                'name' => 'Proyek Utama (Default)',
+                'code' => 'PRJ-DEFAULT',
+                'description' => 'Area pemetaan utama jaringan FTTH',
+                'color' => '#0878E5',
+            ]);
+        }
+        $this->selectedProjectId = $firstProject->id;
+    }
 
     public function getHeading(): string
     {
@@ -37,6 +54,16 @@ class FtthNetworkMapPage extends Page
     public function getBreadcrumbs(): array
     {
         return [];
+    }
+
+    public function getAllProjectsProperty()
+    {
+        return FtthProject::query()->withCount('elements')->orderBy('name')->get();
+    }
+
+    public function getCurrentProjectProperty()
+    {
+        return $this->selectedProjectId ? FtthProject::find($this->selectedProjectId) : null;
     }
 
     public function getAllOltsProperty()
@@ -73,6 +100,11 @@ class FtthNetworkMapPage extends Page
     public function getCustomElementsProperty()
     {
         $query = FtthNetworkElement::query()->latest('id');
+
+        if (!empty($this->selectedProjectId)) {
+            $query->where('project_id', $this->selectedProjectId);
+        }
+
         if (!empty($this->selectedOlt)) {
             $query->where(function ($q) {
                 $q->where('olt_code', $this->selectedOlt)
@@ -80,6 +112,79 @@ class FtthNetworkMapPage extends Page
             });
         }
         return $query->get();
+    }
+
+    public function createProject(string $name, ?string $description = null)
+    {
+        $name = trim($name);
+        if (empty($name)) {
+            $this->dispatch('project-action-failed', ['message' => 'Nama proyek tidak boleh kosong!']);
+            return;
+        }
+
+        $colors = ['#0878E5', '#059669', '#7C3AED', '#D97706', '#DB2777', '#2563EB', '#0D9488'];
+        $randomColor = $colors[array_rand($colors)];
+
+        $project = FtthProject::create([
+            'name' => $name,
+            'description' => $description,
+            'color' => $randomColor,
+        ]);
+
+        $this->selectedProjectId = $project->id;
+
+        $this->dispatch('project-created', [
+            'message' => 'Proyek "' . $project->name . '" berhasil dibuat!',
+            'project' => $project,
+            'elements' => [],
+            'allProjects' => $this->allProjects->toArray(),
+        ]);
+    }
+
+    public function switchProject(int $id)
+    {
+        $project = FtthProject::find($id);
+        if (!$project) return;
+
+        $this->selectedProjectId = $project->id;
+        $elements = $this->customElements->toArray();
+
+        $this->dispatch('project-switched', [
+            'message' => 'Beralih ke proyek: ' . $project->name,
+            'project' => $project,
+            'elements' => $elements,
+            'allProjects' => $this->allProjects->toArray(),
+        ]);
+    }
+
+    public function deleteProject(int $id)
+    {
+        $project = FtthProject::find($id);
+        if (!$project) return;
+
+        $projectName = $project->name;
+        // Delete all elements belonging to this project
+        FtthNetworkElement::where('project_id', $project->id)->delete();
+        $project->delete();
+
+        // Switch to the first available project or create default
+        $fallback = FtthProject::first();
+        if (!$fallback) {
+            $fallback = FtthProject::create([
+                'name' => 'Proyek Utama (Default)',
+                'code' => 'PRJ-DEFAULT',
+                'description' => 'Area pemetaan utama jaringan FTTH',
+                'color' => '#0878E5',
+            ]);
+        }
+        $this->selectedProjectId = $fallback->id;
+
+        $this->dispatch('project-deleted', [
+            'message' => 'Proyek "' . $projectName . '" berhasil dihapus!',
+            'fallbackProject' => $fallback,
+            'elements' => $this->customElements->toArray(),
+            'allProjects' => $this->allProjects->toArray(),
+        ]);
     }
 
     public function saveElement(array $data)
@@ -102,6 +207,7 @@ class FtthNetworkMapPage extends Page
         $color = $data['color'] ?? ($defaultColors[$elementType] ?? '#0878E5');
 
         $element = FtthNetworkElement::create([
+            'project_id' => $this->selectedProjectId,
             'name' => $data['name'] ?? ('Objek ' . strtoupper($elementType)),
             'category' => $category,
             'element_type' => $elementType,
@@ -138,11 +244,15 @@ class FtthNetworkMapPage extends Page
 
     public function clearAllCustomElements()
     {
-        $count = FtthNetworkElement::count();
-        FtthNetworkElement::truncate();
+        $query = FtthNetworkElement::query();
+        if (!empty($this->selectedProjectId)) {
+            $query->where('project_id', $this->selectedProjectId);
+        }
+        $count = $query->count();
+        $query->delete();
 
         $this->dispatch('elements-cleared', [
-            'message' => 'Berhasil membersihkan ' . $count . ' elemen custom dari peta!',
+            'message' => 'Berhasil membersihkan ' . $count . ' elemen dari proyek ini!',
         ]);
     }
 
@@ -155,6 +265,8 @@ class FtthNetworkMapPage extends Page
 
         $path = $this->kmzFile->getRealPath();
         $extension = strtolower($this->kmzFile->getClientOriginalExtension());
+        $originalFileName = $this->kmzFile->getClientOriginalName();
+        $projectName = pathinfo($originalFileName, PATHINFO_FILENAME);
         $kmlContent = null;
 
         if ($extension === 'kmz') {
@@ -179,17 +291,29 @@ class FtthNetworkMapPage extends Page
             return;
         }
 
-        $imported = $this->parseAndSaveKml($kmlContent);
+        // Create or find project for this KMZ import
+        $project = FtthProject::firstOrCreate(
+            ['name' => $projectName],
+            [
+                'description' => 'Diimpor otomatis dari file KMZ: ' . $originalFileName,
+                'color' => '#059669',
+            ]
+        );
+
+        $this->selectedProjectId = $project->id;
+        $imported = $this->parseAndSaveKml($kmlContent, $project->id);
         $this->kmzFile = null;
 
         $this->dispatch('kmz-imported', [
-            'message' => 'Berhasil mengimpor ' . $imported['total'] . ' objek jaringan (' . $imported['markers'] . ' titik & ' . $imported['lines'] . ' jalur kabel) dari KMZ!',
+            'message' => 'Berhasil membuat proyek "' . $project->name . '" dan mengimpor ' . $imported['total'] . ' objek (' . $imported['markers'] . ' titik & ' . $imported['lines'] . ' kabel)!',
             'count' => $imported['total'],
-            'elements' => FtthNetworkElement::latest('id')->get()->toArray(),
+            'project' => $project,
+            'elements' => FtthNetworkElement::where('project_id', $project->id)->latest('id')->get()->toArray(),
+            'allProjects' => $this->allProjects->toArray(),
         ]);
     }
 
-    protected function parseAndSaveKml(string $kmlContent): array
+    protected function parseAndSaveKml(string $kmlContent, ?int $projectId = null): array
     {
         // Clean Google Earth extension prefixes and XML namespaces
         $cleanKml = str_replace(['gx:', 'kml:'], '', $kmlContent);
@@ -200,6 +324,7 @@ class FtthNetworkMapPage extends Page
 
         $markersCount = 0;
         $linesCount = 0;
+        $targetProjectId = $projectId ?: $this->selectedProjectId;
 
         if ($xml) {
             $placemarks = $xml->xpath('//Placemark') ?: [];
@@ -231,6 +356,7 @@ class FtthNetworkMapPage extends Page
                                 ];
 
                                 $recordsToInsert[] = [
+                                    'project_id' => $targetProjectId,
                                     'name' => $name,
                                     'category' => 'marker',
                                     'element_type' => $type,
@@ -285,6 +411,7 @@ class FtthNetworkMapPage extends Page
                             }
 
                             $recordsToInsert[] = [
+                                'project_id' => $targetProjectId,
                                 'name' => $name,
                                 'category' => 'line',
                                 'element_type' => $type,
@@ -319,34 +446,36 @@ class FtthNetworkMapPage extends Page
         ];
     }
 
-    protected function classifyMarkerType(string $name, string $desc): string
+    protected function classifyMarkerType(string $name, string $description): string
     {
-        $text = strtolower($name . ' ' . $desc);
-        if (str_contains($text, 'olt') || str_contains($text, 'server') || str_contains($text, 'headend') || str_contains($text, 'core')) {
+        $text = strtolower($name . ' ' . $description);
+
+        if (str_contains($text, 'olt') || str_contains($text, 'core') || str_contains($text, 'server') || str_contains($text, 'headend')) {
             return 'olt';
         }
-        if (str_contains($text, 'odc') || str_contains($text, 'fdt') || str_contains($text, 'cabinet')) {
+        if (str_contains($text, 'odc') || str_contains($text, 'fdt') || str_contains($text, 'cabinet') || str_contains($text, 'rk ')) {
             return 'odc';
         }
-        if (str_contains($text, 'joint') || str_contains($text, 'sambung') || str_contains($text, 'closure') || str_contains($text, 'fosc') || str_contains($text, 'jb') || str_contains($text, 'handhole') || str_contains($text, 'manhole') || preg_match('/\bhh\b/i', $text) || str_starts_with($text, 'hh ') || str_starts_with($text, 'hh-')) {
+        if (str_contains($text, 'hh') || str_contains($text, 'handhole') || str_contains($text, 'joint') || str_contains($text, 'closure') || str_contains($text, 'fosc') || str_contains($text, 'splice')) {
             return 'joint_box';
         }
-        if (str_contains($text, 'customer') || str_contains($text, 'pelanggan') || str_contains($text, 'ont') || str_contains($text, 'rumah') || str_contains($text, 'user')) {
+        if (str_contains($text, 'pelanggan') || str_contains($text, 'ont') || str_contains($text, 'customer') || str_contains($text, 'rumah') || str_contains($text, 'home')) {
             return 'customer';
         }
-        return 'pole';
+        return 'pole'; // Default marker type is pole / tiang
     }
 
-    protected function classifyLineType(string $name, string $desc): string
+    protected function classifyLineType(string $name, string $description): string
     {
-        $text = strtolower($name . ' ' . $desc);
-        if (str_contains($text, 'feeder') || str_contains($text, 'backbone') || str_contains($text, '48c') || str_contains($text, '96c') || str_contains($text, '24c')) {
+        $text = strtolower($name . ' ' . $description);
+
+        if (str_contains($text, 'feeder') || str_contains($text, 'backbone') || str_contains($text, 'trunk') || str_contains($text, '96c') || str_contains($text, '48c')) {
             return 'feeder';
         }
-        if (str_contains($text, 'drop') || str_contains($text, 'dropcore') || str_contains($text, '1c') || str_contains($text, '2c') || str_contains($text, 'pelanggan')) {
+        if (str_contains($text, 'drop') || str_contains($text, 'dc ') || str_contains($text, '1c') || str_contains($text, '2c') || str_contains($text, 'pelanggan')) {
             return 'dropcore';
         }
-        return 'distribution';
+        return 'distribution'; // Default line type is distribution
     }
 
     protected function calcDistMeters($lat1, $lon1, $lat2, $lon2): int

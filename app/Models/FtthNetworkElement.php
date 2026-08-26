@@ -26,4 +26,9 @@ class FtthNetworkElement extends Model
     {
         return $this->belongsTo(Olt::class, 'olt_code', 'code');
     }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(FtthProject::class, 'project_id');
+    }
 }
