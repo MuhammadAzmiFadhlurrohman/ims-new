@@ -271,7 +271,9 @@
                 <div class="flex items-center gap-2 sm:gap-3">
                     <!-- Session 1-Hour Countdown Badge (Glass Pill) -->
                     <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-300/60 backdrop-blur-md text-amber-900 text-xs font-bold font-mono shadow-xs">
-                        <span class="text-[11px]">⏱️</span>
+                        <svg class="w-3.5 h-3.5 text-amber-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
                         <span class="hidden sm:inline text-[11px] font-sans font-semibold text-amber-800">Sesi:</span>
                         <span x-text="formattedTime" class="font-black text-amber-900"></span>
                     </div>
@@ -301,7 +303,7 @@
     </nav>
 
     {{-- ══════════════════════════════════════════════════════════════
-         ── 3-TAB MAIN NAVIGATION BAR (GLASSMORPHISM) ──
+         ── 3-TAB MAIN NAVIGATION BAR (GLASSMORPHISM WITH PRO ICONS) ──
          ══════════════════════════════════════════════════════════════ --}}
     <div class="glass-tab-bar sticky top-14 sm:top-16 z-40 py-2 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -313,8 +315,10 @@
                 <button 
                     @click="currentNav = 'dashboard'" 
                     :class="currentNav === 'dashboard' ? 'btn-glass-primary font-black' : 'btn-glass-inactive font-bold'" 
-                    class="py-2 px-3 sm:px-5 rounded-xl text-xs flex items-center justify-center gap-2 text-center">
-                    <span class="text-xs">📊</span>
+                    class="py-2 px-3 sm:px-5 rounded-xl text-xs flex items-center justify-center gap-2 text-center group">
+                    <svg class="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10-4a1 1 0 011-1h4a1 1 0 011 1v8a1 1 0 01-1 1h-4a1 1 0 01-1-1v-8z"/>
+                    </svg>
                     <span class="sm:hidden">Info</span>
                     <span class="hidden sm:inline">Dashboard Informasi</span>
                 </button>
@@ -323,8 +327,10 @@
                 <button 
                     @click="currentNav = 'tiket'" 
                     :class="currentNav === 'tiket' ? 'btn-glass-primary font-black' : 'btn-glass-inactive font-bold'" 
-                    class="py-2 px-3 sm:px-5 rounded-xl text-xs flex items-center justify-center gap-2 text-center relative">
-                    <span class="text-xs">🎫</span>
+                    class="py-2 px-3 sm:px-5 rounded-xl text-xs flex items-center justify-center gap-2 text-center relative group">
+                    <svg class="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
+                    </svg>
                     <span class="sm:hidden">Tiket</span>
                     <span class="hidden sm:inline">Menu Tiket &amp; Layanan</span>
                     @if($activeTickets->count() > 0)
@@ -338,8 +344,10 @@
                 <button 
                     @click="currentNav = 'tagihan'" 
                     :class="currentNav === 'tagihan' ? 'btn-glass-primary font-black' : 'btn-glass-inactive font-bold'" 
-                    class="py-2 px-3 sm:px-5 rounded-xl text-xs flex items-center justify-center gap-2 text-center relative">
-                    <span class="text-xs">💳</span>
+                    class="py-2 px-3 sm:px-5 rounded-xl text-xs flex items-center justify-center gap-2 text-center relative group">
+                    <svg class="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                    </svg>
                     <span class="sm:hidden">Tagihan</span>
                     <span class="hidden sm:inline">Menu Tagihan &amp; Riwayat</span>
                     @if($hasArrears)
@@ -362,7 +370,11 @@
         @if(session('success'))
             <div class="p-4 sm:p-5 rounded-2xl glass-panel bg-emerald-500/10 border-emerald-300/60 text-emerald-900 text-xs font-semibold flex items-center justify-between shadow-xs backdrop-blur-md">
                 <div class="flex items-center gap-3">
-                    <span class="w-7 h-7 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center text-sm font-bold">✅</span>
+                    <div class="w-7 h-7 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center text-sm font-bold border border-emerald-400/40">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
                     <span class="font-bold">{{ session('success') }}</span>
                 </div>
                 <button onclick="this.parentElement.remove()" class="text-emerald-700/60 hover:text-emerald-900 font-black text-base">&times;</button>
@@ -371,14 +383,24 @@
 
         @if(session('ticket_created'))
             <div class="p-4 sm:p-5 rounded-2xl glass-panel bg-amber-500/10 border-amber-300/60 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs backdrop-blur-md">
-                <div>
-                    <strong class="text-amber-950 text-sm font-heading block mb-1">🎉 Pengajuan Tiket Berhasil Dibuat!</strong>
-                    <p class="text-slate-700">
-                        Nomor Tiket: <strong class="text-slate-900 font-mono bg-amber-200/60 px-2 py-0.5 rounded-lg border border-amber-300/80">{{ session('ticket_created')['ticket_no'] }}</strong>. Tim NOC akan segera menindaklanjuti.
-                    </p>
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-800 flex items-center justify-center shrink-0 border border-amber-400/40 mt-0.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <strong class="text-amber-950 text-sm font-heading block mb-1">Pengajuan Tiket Berhasil Dibuat!</strong>
+                        <p class="text-slate-700">
+                            Nomor Tiket: <strong class="text-slate-900 font-mono bg-amber-200/60 px-2 py-0.5 rounded-lg border border-amber-300/80">{{ session('ticket_created')['ticket_no'] }}</strong>. Tim NOC akan segera menindaklanjuti.
+                        </p>
+                    </div>
                 </div>
-                <button @click="currentNav = 'tiket'" class="w-full sm:w-auto px-5 py-2.5 rounded-xl btn-glass-primary font-black text-xs shrink-0 shadow-sm text-center">
-                    Lihat Progres Tiket &rarr;
+                <button @click="currentNav = 'tiket'" class="w-full sm:w-auto px-5 py-2.5 rounded-xl btn-glass-primary font-black text-xs shrink-0 shadow-sm text-center flex items-center justify-center gap-1.5">
+                    <span>Lihat Progres Tiket</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
                 </button>
             </div>
         @endif
@@ -396,7 +418,10 @@
                     <div>
                         <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                             <div class="flex items-center gap-2.5">
-                                <span class="px-3.5 py-1 rounded-full glass-tile-accent text-brand font-black text-[11px] uppercase tracking-wider font-mono">
+                                <span class="px-3.5 py-1 rounded-full glass-tile-accent text-brand font-black text-[11px] uppercase tracking-wider font-mono flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/>
+                                    </svg>
                                     ID: {{ $subscription->internet_number }}
                                 </span>
                                 @if(!$subscription->is_isolated && !$subscription->is_terminated)
@@ -405,19 +430,30 @@
                                         Aktif (Normal)
                                     </span>
                                 @else
-                                    <span class="px-3.5 py-1 rounded-full bg-rose-500/15 border border-rose-400/60 text-rose-800 font-extrabold text-[11px] backdrop-blur-md">
-                                        ⚠️ Isolir
+                                    <span class="px-3.5 py-1 rounded-full bg-rose-500/15 border border-rose-400/60 text-rose-800 font-extrabold text-[11px] flex items-center gap-1.5 backdrop-blur-md">
+                                        <svg class="w-3 h-3 text-rose-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                        </svg>
+                                        Isolir
                                     </span>
                                 @endif
                             </div>
-                            <span class="text-xs text-slate-500 font-medium">Siklus Tagihan: <strong class="text-brand-navy font-bold">Tgl {{ $subscription->billing_cycle_day ?? '05' }}</strong></span>
+                            <span class="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                Siklus Tagihan: <strong class="text-brand-navy font-bold">Tgl {{ $subscription->billing_cycle_day ?? '05' }}</strong>
+                            </span>
                         </div>
 
                         <h1 class="font-heading text-2xl sm:text-3xl font-black text-brand-navy mb-1.5 tracking-tight">
                             {{ $subscription->customer_name }}
                         </h1>
                         <p class="text-xs text-slate-600 flex items-start gap-1.5 mb-5 max-w-xl font-medium">
-                            <span class="text-brand shrink-0 text-sm">📍</span>
+                            <svg class="w-4 h-4 text-brand shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
                             <span>{{ $subscription->installation_address ?? 'Bandung Raya, Jawa Barat' }}</span>
                         </p>
                     </div>
@@ -425,19 +461,39 @@
                     <!-- Kontak & Node ODP (Glass Sub-tiles) -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-4 border-t border-white/60 text-xs">
                         <div class="p-3 rounded-2xl glass-tile">
-                            <span class="text-[10px] text-slate-500 block font-semibold mb-0.5">No. WhatsApp</span>
+                            <div class="flex items-center gap-1.5 mb-1 text-slate-500">
+                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                                <span class="text-[10px] font-semibold">No. WhatsApp</span>
+                            </div>
                             <strong class="text-brand-navy text-xs block truncate font-bold">{{ $subscription->phone_number ?? '-' }}</strong>
                         </div>
                         <div class="p-3 rounded-2xl glass-tile">
-                            <span class="text-[10px] text-slate-500 block font-semibold mb-0.5">Email Pelanggan</span>
+                            <div class="flex items-center gap-1.5 mb-1 text-slate-500">
+                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                <span class="text-[10px] font-semibold">Email Pelanggan</span>
+                            </div>
                             <strong class="text-brand font-extrabold text-xs block truncate">{{ $subscription->email ?? '-' }}</strong>
                         </div>
                         <div class="p-3 rounded-2xl glass-tile">
-                            <span class="text-[10px] text-slate-500 block font-semibold mb-0.5">Titik ODP Node</span>
+                            <div class="flex items-center gap-1.5 mb-1 text-slate-500">
+                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                </svg>
+                                <span class="text-[10px] font-semibold">Titik ODP Node</span>
+                            </div>
                             <strong class="text-brand-navy text-xs block truncate font-bold">{{ $subscription->odp_code ?? 'ODP-BDG-BRAGA-01' }} (Port {{ $subscription->odp_port ?? '03' }})</strong>
                         </div>
                         <div class="p-3 rounded-2xl glass-tile">
-                            <span class="text-[10px] text-slate-500 block font-semibold mb-0.5">Tgl Terdaftar</span>
+                            <div class="flex items-center gap-1.5 mb-1 text-slate-500">
+                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <span class="text-[10px] font-semibold">Tgl Terdaftar</span>
+                            </div>
                             <strong class="text-brand-navy text-xs block truncate font-bold">{{ $subscription->created_at ? $subscription->created_at->format('d M Y') : '-' }}</strong>
                         </div>
                     </div>
@@ -447,14 +503,25 @@
                 <div class="lg:col-span-4 glass-panel rounded-3xl p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-white/80 via-sky-50/50 to-white/70">
                     <div>
                         <div class="flex items-center justify-between pb-3.5 border-b border-white/70 mb-4">
-                            <span class="text-xs font-black text-slate-500 uppercase tracking-wider">TAGIHAN BULAN INI</span>
+                            <span class="text-xs font-black text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                                TAGIHAN BULAN INI
+                            </span>
                             @if(!$hasArrears)
-                                <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-800 border border-emerald-400/60 text-[11px] font-black backdrop-blur-md shadow-xs">
-                                    ✓ LUNAS
+                                <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-800 border border-emerald-400/60 text-[11px] font-black backdrop-blur-md shadow-xs flex items-center gap-1">
+                                    <svg class="w-3 h-3 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    LUNAS
                                 </span>
                             @else
-                                <span class="px-3 py-1 rounded-full bg-rose-500/15 text-rose-800 border border-rose-400/60 text-[11px] font-black backdrop-blur-md shadow-xs animate-pulse">
-                                    ⚠️ BELUM DIBAYAR
+                                <span class="px-3 py-1 rounded-full bg-rose-500/15 text-rose-800 border border-rose-400/60 text-[11px] font-black backdrop-blur-md shadow-xs animate-pulse flex items-center gap-1">
+                                    <svg class="w-3 h-3 text-rose-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    BELUM DIBAYAR
                                 </span>
                             @endif
                         </div>
@@ -464,13 +531,21 @@
                             <div class="font-heading text-3xl font-black text-brand-navy mt-1 tracking-tight">
                                 Rp {{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}
                             </div>
-                            <span class="text-[10.5px] text-brand block mt-1 font-bold">✓ Termasuk PPN &amp; Sewa Router WiFi 6</span>
+                            <span class="text-[10.5px] text-brand flex items-center gap-1 mt-1 font-bold">
+                                <svg class="w-3.5 h-3.5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Termasuk PPN &amp; Sewa Router WiFi 6
+                            </span>
                         </div>
                     </div>
 
                     <div class="pt-4 border-t border-white/70">
                         <a href="https://wa.me/6281234567890?text=Halo%20CS%20IMS%20ONE%2C%20saya%20pelanggan%20{{ urlencode($subscription->customer_name) }}%20(CID%3A%20{{ $subscription->internet_number }})%20ingin%20berkonsultasi" target="_blank" class="w-full py-3 rounded-2xl btn-glass-primary font-black text-xs flex items-center justify-center gap-2 shadow-sm text-center">
-                            <span>💬 Chat CS WhatsApp 24/7</span>
+                            <svg class="w-4 h-4 fill-white shrink-0" viewBox="0 0 24 24">
+                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                            </svg>
+                            <span>Chat CS WhatsApp 24/7</span>
                         </a>
                     </div>
                 </div>
@@ -525,7 +600,13 @@
 
                     <!-- Alamat KTP (Glass Tile) -->
                     <div class="p-3.5 rounded-2xl glass-tile-accent text-xs">
-                        <span class="text-[10px] text-brand block mb-1 font-bold">📍 ALAMAT DOMISILI KTP:</span>
+                        <span class="text-[10px] text-brand flex items-center gap-1 mb-1 font-bold">
+                            <svg class="w-3.5 h-3.5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            ALAMAT DOMISILI KTP:
+                        </span>
                         <p class="text-slate-700 leading-snug font-medium text-[11px]">
                             {{ $subscription->address_ktp ? ($subscription->address_ktp . ($subscription->rt_ktp ? ' RT ' . $subscription->rt_ktp . '/RW ' . $subscription->rw_ktp : '') . ($subscription->village_ktp ? ', Kel. ' . $subscription->village_ktp : '') . ($subscription->district_ktp ? ', Kec. ' . $subscription->district_ktp : '') . ($subscription->city_ktp ? ', ' . $subscription->city_ktp : '')) : ($subscription->installation_address ?? '-') }}
                         </p>
@@ -573,7 +654,13 @@
 
                     <!-- Alamat Pemasangan (Glass Tile) -->
                     <div class="p-3.5 rounded-2xl glass-tile-accent text-xs">
-                        <span class="text-[10px] text-brand block mb-1 font-bold">📍 ALAMAT LOKASI INSTALASI FIBER:</span>
+                        <span class="text-[10px] text-brand flex items-center gap-1 mb-1 font-bold">
+                            <svg class="w-3.5 h-3.5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            ALAMAT LOKASI INSTALASI FIBER:
+                        </span>
                         <p class="text-slate-700 leading-snug font-medium text-[11px]">
                             {{ $subscription->installation_address ?? '-' }}
                         </p>
@@ -592,8 +679,11 @@
                             <p class="text-[11px] text-slate-500">Peralatan dan material yang diinput teknisi saat proses instalasi terpasang di lokasi Anda.</p>
                         </div>
                     </div>
-                    <span class="self-start sm:self-auto px-3 py-1 rounded-full glass-tile-accent text-brand text-[10.5px] font-extrabold shrink-0">
-                        🛡️ Hak Pakai (Rental Termasuk)
+                    <span class="self-start sm:self-auto px-3 py-1 rounded-full glass-tile-accent text-brand text-[10.5px] font-extrabold shrink-0 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                        Hak Pakai (Rental Termasuk)
                     </span>
                 </div>
 
@@ -662,7 +752,11 @@
 
                 <!-- Warranty Notice (Glass Sheen) -->
                 <div class="mt-4 p-3.5 rounded-2xl glass-tile-accent text-xs text-slate-600 flex items-start gap-3">
-                    <span class="text-brand text-lg shrink-0">🛡️</span>
+                    <div class="w-8 h-8 rounded-xl bg-brand/10 border border-brand/20 text-brand flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
                     <div>
                         <strong class="text-brand-navy block font-bold mb-0.5 text-[11px]">Garansi Penuh &amp; Penggantian Unit Gratis</strong>
                         <span class="text-[10.5px] text-slate-500">Seluruh perangkat yang dipinjamkan bergaransi penuh. Jika terjadi kerusakan perangkat akibat faktor usia pakai atau sambaran petir, teknisi kami akan mengganti unit modem baru secara cuma-cuma.</span>
@@ -690,19 +784,31 @@
                         Pilih jenis permohonan yang Anda butuhkan. Laporan akan langsung ditangani tim NOC teknisi kami.
                     </p>
 
-                    <!-- Service Sub-Tabs (Glass Capsule Buttons) -->
+                    <!-- Service Sub-Tabs (Glass Capsule Buttons with Pro Icons) -->
                     <div class="flex items-center gap-2 mt-4 border-b border-white/60 pb-3.5 overflow-x-auto no-scrollbar">
                         <button @click="activeTicketTab = 'gangguan'" :class="{'btn-glass-primary font-black': activeTicketTab === 'gangguan', 'btn-glass-inactive font-bold': activeTicketTab !== 'gangguan'}" class="px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-1.5 shrink-0">
-                            <span>🚨 Laporkan Gangguan</span>
+                            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                            <span>Laporkan Gangguan</span>
                         </button>
                         <button @click="activeTicketTab = 'upgrade'" :class="{'btn-glass-primary font-black': activeTicketTab === 'upgrade', 'btn-glass-inactive font-bold': activeTicketTab !== 'upgrade'}" class="px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-1.5 shrink-0">
-                            <span>🚀 Ubah Paket</span>
+                            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                            <span>Ubah Paket</span>
                         </button>
                         <button @click="activeTicketTab = 'relokasi'" :class="{'btn-glass-primary font-black': activeTicketTab === 'relokasi', 'btn-glass-inactive font-bold': activeTicketTab !== 'relokasi'}" class="px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-1.5 shrink-0">
-                            <span>🏠 Relokasi</span>
+                            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            </svg>
+                            <span>Relokasi</span>
                         </button>
                         <button @click="activeTicketTab = 'password'" :class="{'btn-glass-primary font-black': activeTicketTab === 'password', 'btn-glass-inactive font-bold': activeTicketTab !== 'password'}" class="px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-1.5 shrink-0">
-                            <span>🔑 Ganti Password</span>
+                            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                            </svg>
+                            <span>Ganti Password</span>
                         </button>
                     </div>
                 </div>
@@ -738,7 +844,10 @@
                         </div>
 
                         <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-700 hover:to-rose-600 text-white font-black text-xs shadow-md shadow-rose-500/25 border border-white/30 transition-all flex items-center justify-center gap-2">
-                            <span>🚨 Kirim Laporan Gangguan ke NOC</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                            <span>Kirim Laporan Gangguan ke NOC</span>
                         </button>
                     </div>
 
@@ -771,8 +880,11 @@
                             <textarea name="description" rows="3" placeholder="Contoh: Kebutuhan bandwidth bertambah untuk kantor / streaming studio..." required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-medium"></textarea>
                         </div>
 
-                        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm transition-all flex items-center justify-center">
-                            <span>🚀 Ajukan Perubahan Paket</span>
+                        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm transition-all flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                            <span>Ajukan Perubahan Paket</span>
                         </button>
                     </div>
 
@@ -796,8 +908,11 @@
                             <textarea name="description" rows="3" placeholder="Contoh: Sebelah Masjid Al-Ikhlas, rumah pagar hitam. PIC di lokasi: Bpk. Bambang..." required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-medium"></textarea>
                         </div>
 
-                        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm transition-all flex items-center justify-center">
-                            <span>🏠 Ajukan Jadwal Relokasi Teknisi</span>
+                        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm transition-all flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            </svg>
+                            <span>Ajukan Jadwal Relokasi Teknisi</span>
                         </button>
                     </div>
 
@@ -822,7 +937,10 @@
                         </div>
 
                         <button type="submit" class="w-full sm:w-auto px-8 py-3 rounded-2xl btn-glass-primary font-black text-xs shadow-md transition-all flex items-center justify-center gap-2">
-                            <span>🔑 Simpan &amp; Ajukan Ganti Password</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                            </svg>
+                            <span>Simpan &amp; Ajukan Ganti Password</span>
                         </button>
                     </div>
 
@@ -843,7 +961,11 @@
 
                 @if($tickets->isEmpty())
                     <div class="text-center py-12 text-slate-400 text-xs">
-                        <span class="text-4xl block mb-2.5">🎉</span>
+                        <div class="w-12 h-12 rounded-2xl bg-brand/10 text-brand flex items-center justify-center mx-auto mb-3 border border-brand/20">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
                         <strong class="text-brand-navy block text-base font-bold mb-1">Belum Ada Riwayat Tiket Gangguan</strong>
                         <span>Koneksi internet fiber Anda berjalan lancar dan optimal.</span>
                     </div>
@@ -856,7 +978,7 @@
                                         <strong class="font-mono text-xs sm:text-sm font-black text-brand">{{ $tkt->ticket_number }}</strong>
                                         <span class="px-3 py-1 rounded-full text-[10.5px] font-extrabold uppercase backdrop-blur-md
                                             {{ $tkt->status === 'RESOLVED' ? 'bg-emerald-500/15 text-emerald-800 border border-emerald-400/60' : ($tkt->status === 'IN_PROGRESS' ? 'bg-sky-500/15 text-sky-800 border border-sky-400/60' : 'bg-amber-500/15 text-amber-800 border border-amber-400/60') }}">
-                                            {{ $tkt->status === 'RESOLVED' ? '✅ Selesai' : ($tkt->status === 'IN_PROGRESS' ? '⚙️ Diproses Teknisi' : '❌ Tiket Diterima') }}
+                                            {{ $tkt->status === 'RESOLVED' ? '✓ Selesai' : ($tkt->status === 'IN_PROGRESS' ? 'Diproses Teknisi' : 'Tiket Diterima') }}
                                         </span>
                                         <span class="text-[11px] text-slate-500 font-medium">📅 {{ $tkt->created_at->format('d M Y, H:i') }} WIB</span>
                                     </div>
@@ -899,12 +1021,18 @@
                                 <h3 class="font-heading text-lg sm:text-xl font-bold text-brand-navy mt-0.5">{{ $currentPackage->name ?? 'Paket Internet Fiber' }}</h3>
                             </div>
                             @if(!$hasArrears)
-                                <span class="px-3.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/60 text-emerald-800 text-xs font-black backdrop-blur-md">
-                                    ✓ LUNAS
+                                <span class="px-3.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/60 text-emerald-800 text-xs font-black backdrop-blur-md flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    LUNAS
                                 </span>
                             @else
-                                <span class="px-3.5 py-1 rounded-full bg-rose-500/15 border border-rose-400/60 text-rose-800 text-xs font-black backdrop-blur-md animate-pulse">
-                                    ⚠️ BELUM DIBAYAR
+                                <span class="px-3.5 py-1 rounded-full bg-rose-500/15 border border-rose-400/60 text-rose-800 text-xs font-black backdrop-blur-md animate-pulse flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5 text-rose-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    BELUM DIBAYAR
                                 </span>
                             @endif
                         </div>
@@ -932,8 +1060,11 @@
 
                     <div class="p-3.5 rounded-2xl glass-tile-accent flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
                         <span class="text-slate-600 text-center sm:text-left text-xs font-medium">Jatuh tempo setiap <strong class="text-brand-navy">Tanggal {{ $subscription->billing_cycle_day ?? '05' }}</strong>.</span>
-                        <a href="https://wa.me/6281234567890?text=Halo%20Billing%20IMS%20ONE%2C%20saya%20ingin%20konfirmasi%20pembayaran%20tagihan%20CID%20{{ $subscription->internet_number }}" target="_blank" class="px-5 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm text-center">
-                            Konfirmasi Pembayaran
+                        <a href="https://wa.me/6281234567890?text=Halo%20Billing%20IMS%20ONE%2C%20saya%20ingin%20konfirmasi%20pembayaran%20tagihan%20CID%20{{ $subscription->internet_number }}" target="_blank" class="px-5 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm text-center flex items-center justify-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>Konfirmasi Pembayaran</span>
                         </a>
                     </div>
                 </div>
@@ -943,17 +1074,38 @@
                     <div>
                         <h4 class="font-heading text-base font-black text-brand-navy mb-3.5">Metode Pembayaran</h4>
                         <div class="space-y-2.5 text-xs text-slate-700">
-                            <div class="p-3 rounded-2xl glass-tile">
-                                <strong class="text-brand-navy block font-bold mb-0.5">🏦 Virtual Account (Otomatis)</strong>
-                                <span class="text-[10.5px] text-slate-500">BCA, Mandiri, BRI, BNI via m-Banking/ATM.</span>
+                            <div class="p-3 rounded-2xl glass-tile flex items-start gap-2.5">
+                                <div class="w-7 h-7 rounded-xl bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <strong class="text-brand-navy block font-bold mb-0.5">Virtual Account (Otomatis)</strong>
+                                    <span class="text-[10.5px] text-slate-500">BCA, Mandiri, BRI, BNI via m-Banking/ATM.</span>
+                                </div>
                             </div>
-                            <div class="p-3 rounded-2xl glass-tile">
-                                <strong class="text-brand-navy block font-bold mb-0.5">📱 QRIS &amp; E-Wallet</strong>
-                                <span class="text-[10.5px] text-slate-500">GoPay, OVO, Dana, ShopeePay.</span>
+                            <div class="p-3 rounded-2xl glass-tile flex items-start gap-2.5">
+                                <div class="w-7 h-7 rounded-xl bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <strong class="text-brand-navy block font-bold mb-0.5">QRIS &amp; E-Wallet</strong>
+                                    <span class="text-[10.5px] text-slate-500">GoPay, OVO, Dana, ShopeePay.</span>
+                                </div>
                             </div>
-                            <div class="p-3 rounded-2xl glass-tile">
-                                <strong class="text-brand-navy block font-bold mb-0.5">🏪 Gerai Retail</strong>
-                                <span class="text-[10.5px] text-slate-500">Alfamart &amp; Indomaret sebutkan CID Anda.</span>
+                            <div class="p-3 rounded-2xl glass-tile flex items-start gap-2.5">
+                                <div class="w-7 h-7 rounded-xl bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <strong class="text-brand-navy block font-bold mb-0.5">Gerai Retail</strong>
+                                    <span class="text-[10.5px] text-slate-500">Alfamart &amp; Indomaret sebutkan CID Anda.</span>
+                                </div>
                             </div>
                         </div>
                     </div>
