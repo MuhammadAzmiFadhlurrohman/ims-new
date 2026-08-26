@@ -291,31 +291,31 @@
                                     <template x-for="p in allProjects" :key="p.id">
                                         <div 
                                             @click="switchProject(p.id)"
-                                            style="display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: space-between !important; gap: 12px !important; width: 100% !important; box-sizing: border-box !important; padding: 10px 14px !important; border-radius: 14px !important; cursor: pointer !important; user-select: none !important; transition: all 0.2s ease !important;"
+                                            style="display: grid !important; grid-template-columns: 36px 1fr auto !important; align-items: center !important; gap: 12px !important; width: 100% !important; box-sizing: border-box !important; padding: 10px 14px !important; border-radius: 14px !important; cursor: pointer !important; user-select: none !important; transition: all 0.2s ease !important;"
                                             :style="currentProject && currentProject.id === p.id 
                                                 ? 'background: #F0FDF4 !important; border: 1.5px solid #86EFAC !important; box-shadow: 0 3px 10px rgba(22,163,74,0.1) !important;' 
                                                 : 'background: #FFFFFF !important; border: 1.5px solid #F1F5F9 !important; box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;'"
                                             onmouseover="if (!this.style.background.includes('240')) { this.style.background='#F8FAFC'; this.style.borderColor='#CBD5E1'; }"
                                             onmouseout="if (!this.style.background.includes('240')) { this.style.background='#FFFFFF'; this.style.borderColor='#F1F5F9'; }"
                                         >
-                                            {{-- Left: Project Icon Avatar & Info --}}
-                                            <div style="display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; gap: 12px !important; min-width: 0 !important; flex: 1 1 auto !important; overflow: hidden !important;">
-                                                <div 
-                                                    style="width: 38px !important; height: 38px !important; border-radius: 10px !important; display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; transition: all 0.15s ease !important;"
-                                                    :style="currentProject && currentProject.id === p.id 
-                                                        ? 'background: #DCFCE7 !important; border: 1px solid #BBF7D0 !important; color: #16A34A !important;' 
-                                                        : 'background: #F1F5F9 !important; border: 1px solid #E2E8F0 !important; color: #64748B !important;'"
-                                                >
-                                                    <svg style="width: 18px !important; height: 18px !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                                                </div>
-                                                <div style="min-width: 0 !important; flex: 1 1 auto !important; overflow: hidden !important;">
-                                                    <div style="font-size: 0.85rem !important; font-weight: 800 !important; color: #0F172A !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; line-height: 1.25 !important;" x-text="p.name"></div>
-                                                    <div style="font-size: 0.7rem !important; color: #64748B !important; font-weight: 600 !important; margin-top: 2px !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;" x-text="(p.elements_count || 0) + ' objek tersimpan'"></div>
-                                                </div>
+                                            {{-- Col 1: Icon Avatar --}}
+                                            <div 
+                                                style="width: 36px !important; height: 36px !important; border-radius: 10px !important; display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; transition: all 0.15s ease !important;"
+                                                :style="currentProject && currentProject.id === p.id 
+                                                    ? 'background: #DCFCE7 !important; border: 1px solid #BBF7D0 !important; color: #16A34A !important;' 
+                                                    : 'background: #F1F5F9 !important; border: 1px solid #E2E8F0 !important; color: #64748B !important;'"
+                                            >
+                                                <svg style="width: 18px !important; height: 18px !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
                                             </div>
 
-                                            {{-- Right: Status Badge or Delete Action Locked on the Right End --}}
-                                            <div style="display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: flex-end !important; gap: 6px !important; flex: 0 0 auto !important; margin-left: auto !important;">
+                                            {{-- Col 2: Info Text --}}
+                                            <div style="min-width: 0 !important; overflow: hidden !important; text-align: left !important;">
+                                                <div style="font-size: 0.84rem !important; font-weight: 800 !important; color: #0F172A !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; line-height: 1.25 !important;" x-text="p.name"></div>
+                                                <div style="font-size: 0.7rem !important; color: #64748B !important; font-weight: 600 !important; margin-top: 2px !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;" x-text="(p.elements_count || 0) + ' objek tersimpan'"></div>
+                                            </div>
+
+                                            {{-- Col 3: Right Action/Badge --}}
+                                            <div style="display: flex !important; align-items: center !important; justify-content: flex-end !important; flex-shrink: 0 !important;">
                                                 {{-- Active Status Pill --}}
                                                 <span 
                                                     x-show="currentProject && currentProject.id === p.id"
@@ -335,7 +335,7 @@
                                                     onmouseover="this.style.background='#FEE2E2'; this.style.borderColor='#F87171';"
                                                     onmouseout="this.style.background='#FEF2F2'; this.style.borderColor='#FECACA';"
                                                 >
-                                                    <svg style="width: 15px !important; height: 15px !important; color: #EF4444 !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                    <svg style="width: 15px !important; height: 15px !important; color: #EF4444 !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                                 </button>
 
                                                 {{-- Default Project Tag for inactive default --}}
