@@ -247,18 +247,18 @@
             style="overflow: visible !important; position: relative; z-index: 50;"
         >
             
-            {{-- Toolbar Top Header --}}
-            <div style="padding: 0.85rem 1.15rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 1000;">
-                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; position: relative;">
+            {{-- Toolbar Top Header: 100% Single Row (No Wrap) --}}
+            <div style="padding: 0.65rem 1rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 1000; overflow-x: auto; scrollbar-width: none;">
+                <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; position: relative; width: 100%; min-width: max-content;">
                     
                     {{-- Left Tool Group: Project Selector & Mode Selection --}}
-                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+                    <div style="display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; flex-shrink: 0;">
                         
                         {{-- Project Selector Dropdown --}}
                         <div style="position: relative;">
                             <button 
                                 type="button" 
-                                @click="openProjectMenu = !openProjectMenu; openMarkerMenu = false; openLineMenu = false;" 
+                                @click="openProjectMenu = !openProjectMenu; openMarkerMenu = false; openLineMenu = false; openMapTypeMenu = false;" 
                                 class="ims-tool-btn"
                                 style="background: #F0FDF4; border-color: #BBF7D0; color: #166534; font-weight: 900;"
                                 title="Pilih atau kelola proyek GIS FTTH"
@@ -312,7 +312,7 @@
                             </div>
                         </div>
 
-                        <span style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin: 0 2px 0 4px;">
+                        <span style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin: 0 2px;">
                             Mode:
                         </span>
                         <button 
@@ -328,7 +328,7 @@
                         <div style="position: relative;">
                             <button 
                                 type="button" 
-                                @click="openMarkerMenu = !openMarkerMenu; openLineMenu = false;" 
+                                @click="openMarkerMenu = !openMarkerMenu; openLineMenu = false; openProjectMenu = false; openMapTypeMenu = false;" 
                                 :class="(currentMode === 'add_marker' || openMarkerMenu) ? 'active' : ''"
                                 class="ims-tool-btn"
                             >
@@ -396,7 +396,7 @@
                         <div style="position: relative;">
                             <button 
                                 type="button" 
-                                @click="openLineMenu = !openLineMenu; openMarkerMenu = false;" 
+                                @click="openLineMenu = !openLineMenu; openMarkerMenu = false; openProjectMenu = false; openMapTypeMenu = false;" 
                                 :class="(currentMode === 'draw_line' || openLineMenu) ? 'active' : ''"
                                 class="ims-tool-btn"
                             >
@@ -442,7 +442,7 @@
                     </div>
 
                     {{-- Middle Tool Group: Live Universal GIS Search Bar --}}
-                    <div style="position: relative; flex: 1; max-width: 360px; min-width: 220px;">
+                    <div style="position: relative; flex: 1 1 auto; max-width: 300px; min-width: 140px; flex-shrink: 1;">
                         <div class="ims-search-box-container">
                             <div class="ims-search-box-icon">
                                 <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -454,7 +454,7 @@
                                 @focus="searchFocused = true"
                                 @click.outside="searchFocused = false"
                                 @keydown.escape="searchFocused = false"
-                                placeholder="Cari Tiang, ODP, Kabel, ODC, ONT..." 
+                                placeholder="Cari Tiang, ODP, Kabel..." 
                             >
                             <button 
                                 type="button" 
@@ -469,7 +469,7 @@
                         <div 
                             x-show="searchFocused && searchResults.length > 0"
                             x-cloak
-                            style="position: absolute; top: calc(100% + 6px); left: 0; right: 0; min-width: 320px; max-height: 380px; overflow-y: auto; background: #ffffff; border: 1px solid #CBD5E1; border-radius: 14px; box-shadow: 0 18px 40px rgba(15,23,42,0.24); z-index: 999999; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
+                            style="position: absolute; top: calc(100% + 6px); left: 0; right: 0; min-width: 300px; max-height: 380px; overflow-y: auto; background: #ffffff; border: 1px solid #CBD5E1; border-radius: 14px; box-shadow: 0 18px 40px rgba(15,23,42,0.24); z-index: 999999; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
                         >
                             <div style="padding: 6px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase; border-bottom: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center;">
                                 <span>Hasil Pencarian (<span x-text="searchResults.length"></span>)</span>
@@ -490,8 +490,8 @@
                                     ></div>
                                     <div style="flex: 1; min-width: 0;">
                                         <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="item.title"></span>
-                                            <span style="font-size: 0.62rem; font-weight: 800; padding: 1px 6px; border-radius: 4px;" :style="'background:' + item.badgeBg + '; color:' + item.badgeColor" x-text="item.badgeLabel"></span>
+                                             <span style="font-size: 0.78rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="item.title"></span>
+                                             <span style="font-size: 0.62rem; font-weight: 800; padding: 1px 6px; border-radius: 4px;" :style="'background:' + item.badgeBg + '; color:' + item.badgeColor" x-text="item.badgeLabel"></span>
                                         </div>
                                         <div style="font-size: 0.68rem; color: #64748B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;" x-text="item.subtitle"></div>
                                     </div>
@@ -500,8 +500,8 @@
                         </div>
                     </div>
 
-                    {{-- Right Tool Group: Layer filters & Map Controls --}}
-                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+                    {{-- Right Tool Group: Map Switcher, KMZ, GeoJSON, Fullscreen --}}
+                    <div style="display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; flex-shrink: 0;">
                         
                         {{-- Google Maps View Type Dropdown (Roadmap / Satelit) --}}
                         <div style="position: relative;">
@@ -569,7 +569,7 @@
                             title="Import peta jaringan dari Google My Maps / Google Earth (.kmz / .kml)"
                         >
                             <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                            <span>📤 Import KMZ</span>
+                            <span>Import KMZ</span>
                         </button>
 
                         <button 
@@ -578,7 +578,7 @@
                             class="ims-tool-btn"
                             title="Export Peta ke format GeoJSON"
                         >
-                            📥 Export GeoJSON
+                            <span>Export GeoJSON</span>
                         </button>
 
                         {{-- Fullscreen Icon-Only Button --}}
