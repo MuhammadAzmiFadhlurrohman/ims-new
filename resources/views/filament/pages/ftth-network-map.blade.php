@@ -76,6 +76,62 @@
                 border-color: #0878E5 !important;
                 box-shadow: 0 2px 8px rgba(8,120,229,0.35);
             }
+            .ims-floating-layer-btn {
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                padding: 7px 12px !important;
+                border-radius: 12px !important;
+                background: rgba(255, 255, 255, 0.96) !important;
+                color: #1E293B !important;
+                border: 1.5px solid #CBD5E1 !important;
+                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.14) !important;
+                backdrop-filter: blur(8px) !important;
+                cursor: pointer !important;
+                user-select: none !important;
+                transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                line-height: 1 !important;
+            }
+            .ims-floating-layer-btn:hover {
+                background: #FFFFFF !important;
+                border-color: #0878E5 !important;
+                color: #0878E5 !important;
+                box-shadow: 0 6px 20px rgba(8, 120, 229, 0.2) !important;
+            }
+            .ims-floating-layer-btn-active {
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                padding: 7px 12px !important;
+                border-radius: 12px !important;
+                background: #0F172A !important;
+                color: #FFFFFF !important;
+                border: 1.5px solid #0F172A !important;
+                box-shadow: 0 6px 20px rgba(15, 23, 42, 0.28) !important;
+                backdrop-filter: blur(8px) !important;
+                cursor: pointer !important;
+                user-select: none !important;
+                transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                line-height: 1 !important;
+            }
+            .ims-floating-layer-btn .ims-floating-badge {
+                background: #0878E5 !important;
+                color: #FFFFFF !important;
+                font-size: 10px !important;
+                font-weight: 900 !important;
+                padding: 2px 7px !important;
+                border-radius: 9999px !important;
+                line-height: 1 !important;
+            }
+            .ims-floating-layer-btn-active .ims-floating-badge {
+                background: #38BDF8 !important;
+                color: #0F172A !important;
+                font-size: 10px !important;
+                font-weight: 900 !important;
+                padding: 2px 7px !important;
+                border-radius: 9999px !important;
+                line-height: 1 !important;
+            }
             .ims-badge-stat {
                 padding: 4px 10px;
                 border-radius: 8px;
@@ -292,14 +348,12 @@
             style="overflow: visible !important; position: relative; z-index: 50;"
         >
             
-            {{-- Toolbar Top Header: 100% Single Row (No Wrap & Visible Over Map) --}}
-            <div style="padding: 0.65rem 1rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow: visible !important;">
-                <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; position: relative; width: 100%; overflow: visible !important;">
+            {{-- Toolbar Top Header: 100% Single Row (No Staggering / Sejajar) --}}
+            <div style="padding: 0.65rem 1rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow-x: auto; overflow-y: visible;">
+                <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 10px; min-width: 900px; width: 100%;">
                     
-                    {{-- Left Tool Group: Project Selector & Mode Selection --}}
-                    <div style="display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; flex-shrink: 0; overflow: visible !important;">
-                        
-                        {{-- Project Selector Dropdown --}}
+                    {{-- 1. Project Selector --}}
+                    <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
                         <div style="position: relative;" @click.outside="openProjectMenu = false">
                             <button 
                                 type="button" 
@@ -308,7 +362,7 @@
                                 style="background: #F0FDF4; border-color: #BBF7D0; color: #166534; font-weight: 900;"
                                 title="Pilih atau kelola proyek GIS FTTH"
                             >
-                                <svg style="width: 14px; height: 14px; color: #16A34A;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                                <svg style="width: 14px; height: 14px; color: #16A34A; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
                                 <span><span x-text="currentProject ? currentProject.name : 'Pilih Proyek'"></span> ▾</span>
                             </button>
                             
@@ -514,10 +568,14 @@
                                     </template>
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
-                        <span style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin: 0 2px;">
-                            Mode:
-                        </span>
+                    {{-- Vertical Divider --}}
+                    <div style="width: 1px; height: 24px; background: #E2E8F0; flex-shrink: 0;"></div>
+
+                    {{-- 2. Creation & Mode Tools (Jelajah, Ukur, Tambah Node, Tarik Kabel) --}}
+                    <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
                         <button 
                             type="button" 
                             @click="setMode('select')" 
@@ -527,7 +585,6 @@
                             👆 Jelajah
                         </button>
 
-                        {{-- Button Mode Penggaris / Ukur Jarak --}}
                         <button 
                             type="button" 
                             @click="startMeasure()" 
@@ -535,7 +592,7 @@
                             class="ims-tool-btn"
                             title="Ukur estimasi jarak kabel secara bebas di peta"
                         >
-                            <svg style="width: 14px; height: 14px; color: #7C3AED;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3l-6.6 6.6c-.4.4-1 .4-1.4 0l-11-11c-.4-.4-.4-1 0-1.4l6.6-6.6c.4-.4 1-.4 1.4 0l11 11c.4.4.4 1 0 1.4z"/><line x1="7.5" y1="10.5" x2="6.5" y2="9.5"/><line x1="10.5" y1="13.5" x2="8.5" y2="11.5"/><line x1="13.5" y1="16.5" x2="12.5" y2="15.5"/><line x1="16.5" y1="19.5" x2="14.5" y2="17.5"/></svg>
+                            <svg style="width: 14px; height: 14px; color: #7C3AED; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3l-6.6 6.6c-.4.4-1 .4-1.4 0l-11-11c-.4-.4-.4-1 0-1.4l6.6-6.6c.4-.4 1-.4 1.4 0l11 11c.4.4.4 1 0 1.4z"/><line x1="7.5" y1="10.5" x2="6.5" y2="9.5"/><line x1="10.5" y1="13.5" x2="8.5" y2="11.5"/><line x1="13.5" y1="16.5" x2="12.5" y2="15.5"/><line x1="16.5" y1="19.5" x2="14.5" y2="17.5"/></svg>
                             <span>📏 Ukur Jarak</span>
                         </button>
                         
@@ -547,7 +604,7 @@
                                 :class="(currentMode === 'add_marker' || openMarkerMenu) ? 'active' : ''"
                                 class="ims-tool-btn"
                             >
-                                <svg style="width: 14px; height: 14px; color: #0878E5;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                                <svg style="width: 14px; height: 14px; color: #0878E5; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                                 <span>Tambah Titik / Node ▾</span>
                             </button>
                             <div 
@@ -615,7 +672,7 @@
                                 :class="(currentMode === 'draw_line' || openLineMenu) ? 'active' : ''"
                                 class="ims-tool-btn"
                             >
-                                <svg style="width: 14px; height: 14px; color: #0878E5;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                <svg style="width: 14px; height: 14px; color: #0878E5; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                 <span>Tarik Jalur Kabel ▾</span>
                             </button>
                             <div 
@@ -656,8 +713,8 @@
                         </div>
                     </div>
 
-                    {{-- Middle Tool Group: Live Universal GIS Search Bar --}}
-                    <div style="position: relative; flex: 1 1 auto; max-width: 300px; min-width: 140px; flex-shrink: 1;">
+                    {{-- 3. Live Universal GIS Search Bar --}}
+                    <div style="position: relative; flex: 1 1 180px; min-width: 140px; max-width: 280px; flex-shrink: 1;">
                         <div class="ims-search-box-container">
                             <div class="ims-search-box-icon">
                                 <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -715,7 +772,10 @@
                         </div>
                     </div>
 
-                    {{-- Right Tool Group: Map Switcher, KMZ, GeoJSON, Fullscreen --}}
+                    {{-- Vertical Divider --}}
+                    <div style="width: 1px; height: 24px; background: #E2E8F0; flex-shrink: 0;"></div>
+
+                    {{-- 4. Right Tool Group: Map Switcher, KMZ, GeoJSON, Fullscreen --}}
                     <div style="display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; flex-shrink: 0;">
                         
                         {{-- Google Maps View Type Dropdown (Roadmap / Satelit) --}}
@@ -1208,26 +1268,19 @@
                     </div>
                 </div>
 
-                {{-- ── FLOATING TOGGLE BUTTON: OBJEK & LAYER (TOP-RIGHT CORNER OF MAP) ── --}}
-                <div style="position: absolute; top: 12px; right: 12px; z-index: 500; display: flex; align-items: center; gap: 8px;">
+                {{-- ── FLOATING TOGGLE BUTTON: OBJEK & LAYER (TOP-LEFT CORNER OF MAP) ── --}}
+                <div style="position: absolute; top: 12px; left: 12px; z-index: 500; pointer-events: auto;">
                     <button 
                         type="button" 
                         @click="openSidebarDrawer = !openSidebarDrawer" 
-                        :style="openSidebarDrawer ? 'background: #0F172A; color: #ffffff; border-color: #0F172A; box-shadow: 0 4px 16px rgba(15,23,42,0.3);' : 'background: rgba(255, 255, 255, 0.95); color: #1E293B; border-color: #CBD5E1; box-shadow: 0 4px 14px rgba(15,23,42,0.14);'"
-                        style="backdrop-filter: blur(8px); padding: 7px 13px; border-radius: 12px; border: 1.5px solid; font-size: 0.76rem; font-weight: 800; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); user-select: none;"
-                        onmouseover="if(!window.Alpine?.$data(this)?.openSidebarDrawer) { this.style.background='#FFFFFF'; this.style.borderColor='#94A3B8'; this.style.boxShadow='0 6px 20px rgba(15,23,42,0.18)'; }"
-                        onmouseout="if(!window.Alpine?.$data(this)?.openSidebarDrawer) { this.style.background='rgba(255, 255, 255, 0.95)'; this.style.borderColor='#CBD5E1'; this.style.boxShadow='0 4px 14px rgba(15,23,42,0.14)'; }"
+                        :class="openSidebarDrawer ? 'ims-floating-layer-btn-active' : 'ims-floating-layer-btn'"
                         title="Buka / Tutup Panel Objek & Filter Layer GIS"
                     >
-                        <svg style="width: 15px; height: 15px;" :style="openSidebarDrawer ? 'color: #38BDF8;' : 'color: #0878E5;'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M4 6h16M4 12h16M4 18h7"/>
+                        <svg width="16" height="16" style="width: 16px !important; height: 16px !important; min-width: 16px !important; max-width: 16px !important; flex-shrink: 0 !important; display: block !important;" :style="openSidebarDrawer ? 'color: #38BDF8 !important;' : 'color: #0878E5 !important;'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M4 6h16M4 12h16M4 18h7"/>
                         </svg>
-                        <span>Objek & Layer</span>
-                        <span 
-                            :style="openSidebarDrawer ? 'background: #38BDF8; color: #0F172A;' : 'background: #0878E5; color: #ffffff;'"
-                            style="font-size: 10px; font-weight: 900; padding: 1px 7px; border-radius: 9999px; transition: all 0.15s ease;" 
-                            x-text="customElements.length + allOdps.length"
-                        ></span>
+                        <span style="font-size: 11.5px; font-weight: 800; white-space: nowrap; line-height: 1;">Objek & Layer</span>
+                        <span class="ims-floating-badge" x-text="customElements.length + allOdps.length"></span>
                     </button>
                 </div>
 
