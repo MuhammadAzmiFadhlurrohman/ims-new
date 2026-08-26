@@ -284,11 +284,10 @@
 
                     {{-- Middle Tool Group: Live Universal GIS Search Bar --}}
                     <div style="position: relative; flex: 1; max-width: 360px; min-width: 220px;">
-                        <div 
-                            style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; background: #F8FAFC; border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 0 10px; height: 34px; box-sizing: border-box; gap: 8px; transition: all 0.2s ease;"
-                            :style="searchFocused || searchQuery ? 'border-color: #0878E5; background: #ffffff; box-shadow: 0 0 0 3px rgba(8, 120, 229, 0.12);' : ''"
-                        >
-                            <svg style="width: 15px; height: 15px; color: #0878E5; flex-shrink: 0; display: block;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <div style="position: relative; width: 100%; display: block;">
+                            <div style="position: absolute; left: 10px; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 3;">
+                                <svg style="width: 15px; height: 15px; color: #0878E5;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            </div>
                             <input 
                                 type="text" 
                                 x-model="searchQuery" 
@@ -296,13 +295,14 @@
                                 @click.outside="searchFocused = false"
                                 @keydown.escape="searchFocused = false"
                                 placeholder="Cari Tiang, ODP, Kabel, ODC, ONT..." 
-                                style="border: none !important; background: transparent !important; outline: none !important; box-shadow: none !important; font-size: 0.76rem !important; font-weight: 700 !important; width: 100% !important; height: 100% !important; color: #0F172A !important; padding: 0 !important; margin: 0 !important;"
+                                style="width: 100% !important; height: 34px !important; min-height: 34px !important; line-height: 34px !important; padding: 0 30px 0 32px !important; margin: 0 !important; background: #F8FAFC !important; border: 1.5px solid #CBD5E1 !important; border-radius: 10px !important; font-size: 0.76rem !important; font-weight: 700 !important; color: #0F172A !important; box-sizing: border-box !important; outline: none !important; display: block !important;"
+                                :style="searchFocused || searchQuery ? 'border-color: #0878E5 !important; background: #ffffff !important; box-shadow: 0 0 0 3px rgba(8, 120, 229, 0.12) !important;' : ''"
                             >
                             <button 
                                 type="button" 
                                 x-show="searchQuery" 
                                 @click="searchQuery = ''" 
-                                style="border: none; background: transparent; color: #94A3B8; cursor: pointer; font-size: 13px; font-weight: 900; padding: 0 2px; line-height: 1; flex-shrink: 0;"
+                                style="position: absolute; right: 8px; top: 0; bottom: 0; margin: auto; height: 20px; border: none; background: transparent; color: #94A3B8; cursor: pointer; font-size: 13px; font-weight: 900; z-index: 3; display: flex; align-items: center;"
                                 title="Hapus pencarian"
                             >✕</button>
                         </div>
