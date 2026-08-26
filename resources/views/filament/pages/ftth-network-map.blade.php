@@ -487,24 +487,6 @@
 
                         <button 
                             type="button" 
-                            @click="
-                                if (confirm('Apakah Anda yakin ingin menghapus SEMUA titik custom (tiang, joint box, ODC, kabel import) dari database peta ini?')) {
-                                    if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                                        IMS.toast('⏳ Menghapus semua elemen custom...', 'info', 2000);
-                                    }
-                                    $wire.clearAllCustomElements();
-                                }
-                            " 
-                            class="ims-tool-btn"
-                            style="background: #FEF2F2; border-color: #FECACA; color: #DC2626;"
-                            title="Bersihkan semua elemen custom & hasil import dari database peta"
-                        >
-                            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-                            <span>🗑️ Hapus Data Custom</span>
-                        </button>
-
-                        <button 
-                            type="button" 
                             @click="exportGeoJson()" 
                             class="ims-tool-btn"
                             title="Export Peta ke format GeoJSON"
