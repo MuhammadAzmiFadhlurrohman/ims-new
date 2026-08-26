@@ -2162,36 +2162,157 @@ html.dark .fi-checkbox-list label:hover {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   MOBILE 2-2-1 FILTER GRID (REGISTRASI & PIPELINE)
+   IMS STANDALONE FILTERS (MOBILE 2-2-1 & DESKTOP 5 LAYOUT)
+   Independent of Tailwind & Filament default conflicts
    ══════════════════════════════════════════════════════════════ */
+/* 1. Main Above-Content Card Container */
+.fi-ta-filters-above-content-ctn,
+div[class*="fi-ta-filters-above-content"] {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 1rem 1.25rem !important;
+    border-radius: 16px !important;
+}
+
+/* 2. Top Header (Filters Title & Reset Button Full Width) */
+.fi-ta-filters-above-content-ctn > div:first-child,
+.fi-ta-filters-above-content-header,
+div[class*="fi-ta-filters-above-content-header"] {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    margin-bottom: 0.85rem !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.15) !important;
+}
+
+.fi-ta-filters-above-content-ctn h3,
+.fi-ta-filters-above-content-heading,
+div[class*="fi-ta-filters-above-content"] h3 {
+    font-size: 0.95rem !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.01em !important;
+    margin: 0 !important;
+    color: #ffffff !important;
+}
+
+.fi-ta-filters-above-content-ctn button[wire\:click*="resetTableFiltersForm"],
+.fi-ta-filters-reset-action,
+button[class*="fi-ta-filters-reset"] {
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    color: #f87171 !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    padding: 2px 6px !important;
+}
+
+/* 3. Form & Grid Wrapper */
+.fi-ta-filters-above-content-ctn form,
+.fi-ta-filters-above-content-ctn .fi-ta-filters-form,
+.fi-ta-filters-form {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Grid on Mobile (< 1024px) -> 2, 2, 1 ke pinggir */
 @media (max-width: 1023px) {
-    .fi-ta-filters-above-content-ctn form,
-    .fi-ta-filters-above-content-ctn .grid,
+    .fi-ta-filters-above-content-ctn form > div,
     .fi-ta-filters-above-content-ctn .fi-grid,
-    .fi-ta-filter-form,
-    .fi-ta-filters-form {
+    .fi-ta-filters-above-content-ctn .grid,
+    .fi-ta-filters-form .grid,
+    .fi-ta-filters-form .fi-grid {
         display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 0.65rem !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.75rem 0.65rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Individual Filter Fields */
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp,
+    .fi-ta-filters-above-content-ctn [class*="fi-fo-field-wrp"],
+    .fi-ta-filters-above-content-ctn .fi-grid-col,
+    .fi-ta-filters-form .fi-fo-field-wrp {
+        grid-column: span 1 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* The 5th item (Wilayah) sits on Row 3, Column 1 on the left */
+    .fi-ta-filters-above-content-ctn form > div > div:nth-child(5),
+    .fi-ta-filters-above-content-ctn .fi-grid > div:nth-child(5),
+    .fi-ta-filters-above-content-ctn .grid > div:nth-child(5),
+    .fi-ta-filters-form .grid > div:nth-child(5) {
+        grid-column: 1 / 2 !important;
+        width: 100% !important;
+    }
+}
+
+/* Grid on Desktop (>= 1024px) -> 5 Columns */
+@media (min-width: 1024px) {
+    .fi-ta-filters-above-content-ctn form > div,
+    .fi-ta-filters-above-content-ctn .fi-grid,
+    .fi-ta-filters-above-content-ctn .grid,
+    .fi-ta-filters-form .grid,
+    .fi-ta-filters-form .fi-grid {
+        display: grid !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        gap: 0.75rem !important;
+        width: 100% !important;
     }
 
     .fi-ta-filters-above-content-ctn .fi-fo-field-wrp,
-    .fi-ta-filters-above-content-ctn .fi-grid-col {
+    .fi-ta-filters-above-content-ctn [class*="fi-fo-field-wrp"],
+    .fi-ta-filters-above-content-ctn .fi-grid-col,
+    .fi-ta-filters-form .fi-fo-field-wrp {
         grid-column: span 1 !important;
+        width: 100% !important;
     }
+}
 
-    .fi-ta-filters-above-content-ctn label,
-    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label {
-        font-size: 0.72rem !important;
-        font-weight: 800 !important;
-        margin-bottom: 0.25rem !important;
-    }
+/* 4. Labels & Input Styling */
+.fi-ta-filters-above-content-ctn label,
+.fi-ta-filters-above-content-ctn span[class*="label"],
+.fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label span {
+    display: block !important;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    color: #94a3b8 !important;
+    margin-bottom: 0.35rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
 
-    .fi-ta-filters-above-content-ctn input,
-    .fi-ta-filters-above-content-ctn select,
-    .fi-ta-filters-above-content-ctn .fi-input,
-    .fi-ta-filters-above-content-ctn .fi-select-input {
-        font-size: 0.75rem !important;
-        height: 38px !important;
-    }
+html.dark .fi-ta-filters-above-content-ctn label,
+html.dark .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label span {
+    color: #94a3b8 !important;
+}
+
+/* Inputs & Select Elements inside Filters */
+.fi-ta-filters-above-content-ctn input,
+.fi-ta-filters-above-content-ctn select,
+.fi-ta-filters-above-content-ctn .fi-input,
+.fi-ta-filters-above-content-ctn .fi-select-input,
+.fi-ta-filters-above-content-ctn [class*="fi-input-wrp"] {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    border-radius: 9px !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    box-sizing: border-box !important;
 }
