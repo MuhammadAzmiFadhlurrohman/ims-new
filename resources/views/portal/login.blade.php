@@ -308,10 +308,5 @@
 
     </main>
 
-    <!-- Footer (Glass Footer) -->
-    <footer class="w-full glass-navbar max-w-7xl mx-auto px-4 py-3.5 text-center text-xs text-slate-500 relative z-10 shrink-0 rounded-2xl border border-white/60 mb-2">
-        &copy; {{ date('Y') }} IMS ONE Fiber Network. Portal Layanan Mandiri Pelanggan.
-    </footer>
-
 </body>
 </html>
