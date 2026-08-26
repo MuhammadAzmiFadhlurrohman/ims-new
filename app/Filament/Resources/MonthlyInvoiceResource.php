@@ -698,6 +698,14 @@ class MonthlyInvoiceResource extends Resource
                         Notification::make()->title('Pembayaran berhasil diterima')->success()->send();
                     }),
 
+                Tables\Actions\Action::make('cetak_pdf')
+                    ->label('Cetak PDF')
+                    ->icon('heroicon-m-document-arrow-down')
+                    ->color('info')
+                    ->button()
+                    ->url(fn (MonthlyInvoice $record): string => url("/admin/invoices/{$record->invoice_number}/pdf"))
+                    ->openUrlInNewTab(),
+
                 Tables\Actions\DeleteAction::make()
                     ->label('Hapus')
                     ->icon('heroicon-m-trash')

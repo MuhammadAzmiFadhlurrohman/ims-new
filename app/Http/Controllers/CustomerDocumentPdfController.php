@@ -55,7 +55,18 @@ class CustomerDocumentPdfController extends Controller
 
     public function monthlyInvoicePdf(Request $request, string $invoiceNumber): Response
     {
-        $invoice = \App\Models\MonthlyInvoice::with(['subscription.customer', 'subscription.package', 'package'])->findOrFail($invoiceNumber);
+        $decodedNo = urldecode($invoiceNumber);
+        $invoice = \App\Models\MonthlyInvoice::with(['subscription.customer', 'subscription.package', 'package'])
+            ->where('invoice_number', $invoiceNumber)
+            ->orWhere('invoice_number', $decodedNo)
+            ->first();
+
+        if (! $invoice) {
+            $cleanNo = str_replace('/', '', $decodedNo);
+            $invoice = \App\Models\MonthlyInvoice::with(['subscription.customer', 'subscription.package', 'package'])
+                ->where('invoice_number', 'like', "%{$decodedNo}%")
+                ->firstOrFail();
+        }
         
         // Security Verification:
         // 1. Logged-in Admin User (via Web/Filament Auth)
@@ -91,13 +102,18 @@ class CustomerDocumentPdfController extends Controller
             'paymentUrl' => $invoice->payment_url ?? url("/pay/{$invoice->invoice_number}"),
         ])->setPaper('a4', 'portrait');
 
-        $filename = "INVOICE-{$invoice->invoice_number}.pdf";
+        $safeInvName = str_replace(['/', '\\', ' '], '-', $invoice->invoice_number);
+        $filename = "INVOICE-{$safeInvName}.pdf";
         return $pdf->stream($filename);
     }
 
     public function registrationInvoicePdf(Request $request, string $invoiceNumber): Response
     {
-        $invoice = \App\Models\RegistrationInvoice::with(['subscription.customer', 'subscription.package'])->findOrFail($invoiceNumber);
+        $decodedNo = urldecode($invoiceNumber);
+        $invoice = \App\Models\RegistrationInvoice::with(['subscription.customer', 'subscription.package'])
+            ->where('invoice_number', $invoiceNumber)
+            ->orWhere('invoice_number', $decodedNo)
+            ->firstOrFail();
 
         // Security Verification:
         $isAdmin = auth()->check();
@@ -118,7 +134,7 @@ class CustomerDocumentPdfController extends Controller
         $discount = 0;
         $terbilangText = $this->terbilang($total);
 
-        $pdf = Pdf::loadView('pdf.monthly_invoice', [
+        $pdf = Pdf::loadView('pdf.registration_invoice', [
             'invoice' => $invoice,
             'subscription' => $subscription,
             'customer' => $customer,
@@ -130,7 +146,8 @@ class CustomerDocumentPdfController extends Controller
             'paymentUrl' => url("/pay/{$invoice->invoice_number}"),
         ])->setPaper('a4', 'portrait');
 
-        $filename = "INVOICE-REG-{$invoice->invoice_number}.pdf";
+        $safeInvName = str_replace(['/', '\\', ' '], '-', $invoice->invoice_number);
+        $filename = "INVOICE-REG-{$safeInvName}.pdf";
         return $pdf->stream($filename);
     }
 

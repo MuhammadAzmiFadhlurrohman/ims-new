@@ -171,18 +171,22 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     // ── PDF Invoices ──
     Route::get('/admin/invoices/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'monthlyInvoicePdf'])
+        ->where('invoiceNumber', '.*')
         ->name('invoices.monthly-pdf');
 
     Route::get('/admin/registration-invoices/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'registrationInvoicePdf'])
+        ->where('invoiceNumber', '.*')
         ->name('invoices.registration-pdf');
 });
 
 // Public access routes for invoice link in SMS / WhatsApp / Email (Secured via Signed URLs & Rate Limiting)
 Route::get('/invoices/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'monthlyInvoicePdf'])
+    ->where('invoiceNumber', '.*')
     ->middleware('throttle:30,1')
     ->name('invoices.monthly-pdf.public');
 
 Route::get('/invoices/registration/{invoiceNumber}/pdf', [CustomerDocumentPdfController::class, 'registrationInvoicePdf'])
+    ->where('invoiceNumber', '.*')
     ->middleware('throttle:30,1')
     ->name('invoices.registration-pdf.public');
 
