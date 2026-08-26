@@ -15,6 +15,28 @@
                 box-shadow: 0 4px 20px rgba(8, 120, 229, 0.06);
                 overflow: hidden;
             }
+            .ims-map-card.is-fullscreen {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                z-index: 9999999 !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                display: flex !important;
+                flex-direction: column !important;
+                background: #ffffff !important;
+            }
+            .ims-map-card.is-fullscreen .ims-map-canvas {
+                flex: 1 !important;
+                height: calc(100vh - 105px) !important;
+                min-height: calc(100vh - 105px) !important;
+            }
             .ims-map-canvas {
                 width: 100% !important;
                 height: 620px !important;
@@ -209,7 +231,12 @@
         </div>
 
         {{-- ── 2. UNIFIED GIS TOOLBAR & MAP CONTAINER ── --}}
-        <div class="ims-map-card" style="overflow: visible !important; position: relative; z-index: 50;">
+        <div 
+            class="ims-map-card" 
+            :class="isFullscreen ? 'is-fullscreen' : ''"
+            @keydown.window.escape="if (isFullscreen) toggleFullscreen()"
+            style="overflow: visible !important; position: relative; z-index: 50;"
+        >
             
             {{-- Toolbar Top Header --}}
             <div style="padding: 0.85rem 1.15rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 1000;">
@@ -461,6 +488,18 @@
                         >
                             📥 Export GeoJSON
                         </button>
+
+                        <button 
+                            type="button" 
+                            @click="toggleFullscreen()" 
+                            :class="isFullscreen ? 'active' : ''"
+                            class="ims-tool-btn"
+                            title="Mode Layar Penuh (Tekan Esc untuk keluar)"
+                        >
+                            <svg x-show="!isFullscreen" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+                            <svg x-show="isFullscreen" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/></svg>
+                            <span x-text="isFullscreen ? '🗗 Keluar Fullscreen' : '⛶ Layar Penuh'"></span>
+                        </button>
                     </div>
                 </div>
 
@@ -599,6 +638,7 @@
                     openLineMenu: false,
                     searchQuery: '',
                     searchFocused: false,
+                    isFullscreen: false,
                     autoSnapRoad: false, // Default to exact manual drawing; user can enable Auto-Snap when needed
                     activeElementType: 'pole', // 'pole', 'joint_box', 'odc', 'olt', 'customer', 'feeder', 'distribution', 'dropcore'
                     currentLinePoints: [],
@@ -1399,6 +1439,23 @@
                                 this.mapInstance.removeLayer(pulseMarker);
                             }
                         }, 4000);
+                    },
+
+                    toggleFullscreen() {
+                        this.isFullscreen = !this.isFullscreen;
+                        if (this.isFullscreen) {
+                            document.body.style.overflow = 'hidden';
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('Mode Layar Penuh aktif. Tekan tombol Esc untuk keluar.', 'info', 2500);
+                            }
+                        } else {
+                            document.body.style.overflow = '';
+                        }
+                        setTimeout(() => {
+                            if (this.mapInstance) {
+                                this.mapInstance.invalidateSize();
+                            }
+                        }, 200);
                     },
 
                     calculateDistanceMeters(lat1, lon1, lat2, lon2) {
