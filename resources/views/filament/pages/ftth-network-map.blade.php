@@ -222,7 +222,7 @@
                 </div>
                 <div class="ims-badge-stat" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff;">
                     <span>⚡ ODP:</span>
-                    <strong style="color: #55C7FF;" x-text="allOdps.length"></strong>
+                    <strong style="color: #55C7FF;" x-text="showOdpLayer ? allOdps.length : 0"></strong>
                 </div>
                 <div class="ims-badge-stat" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff;">
                     <span>📍 Tiang & Node:</span>
@@ -502,6 +502,18 @@
 
                     {{-- Right Tool Group: Layer filters & Map Controls --}}
                     <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+                        {{-- ODP Layer Visibility Toggle --}}
+                        <button 
+                            type="button" 
+                            @click="toggleOdpLayer()" 
+                            :class="showOdpLayer ? 'active' : ''"
+                            class="ims-tool-btn"
+                            :style="showOdpLayer ? 'background: #EFF6FF !important; border-color: #0878E5 !important; color: #0878E5 !important;' : ''"
+                            title="Tampilkan / Sembunyikan titik ODP Master Database"
+                        >
+                            <span x-text="showOdpLayer ? '👁️ ODP Master (Aktif)' : '👁️ ODP Master (Off)'"></span>
+                        </button>
+
                         {{-- Google Maps View Type Switcher --}}
                         <button 
                             type="button" 
@@ -759,6 +771,7 @@
                     openNewProjectModal: false,
                     newProjectName: '',
                     newProjectDescription: '',
+                    showOdpLayer: false, // Default to clean/empty canvas for custom projects
                     mapInstance: null,
                     mapMode: 'roadmap',
                     tileLayers: {},
@@ -1371,9 +1384,18 @@
                         }
                     },
 
+                    toggleOdpLayer() {
+                        this.showOdpLayer = !this.showOdpLayer;
+                        this.renderOdpMarkers();
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast(this.showOdpLayer ? 'Layer ODP Master ditampilkan' : 'Layer ODP Master disembunyikan', 'info', 1500);
+                        }
+                    },
+
                     renderOdpMarkers() {
                         if (!this.odpLayerGroup || typeof L === 'undefined') return;
                         this.odpLayerGroup.clearLayers();
+                        if (!this.showOdpLayer) return; // Clean/empty if disabled
 
                         this.allOdps.forEach((odp) => {
                             const isAvailable = odp.has_slot;
