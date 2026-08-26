@@ -1064,28 +1064,41 @@
                     </div>
 
                     {{-- Segmented Tab Control (Pill Switch) --}}
-                    <div style="padding: 10px 14px 6px 14px; background: #ffffff; flex-shrink: 0;">
-                        <div style="display: flex; background: #F1F5F9; padding: 3px; border-radius: 10px; border: 1px solid #E2E8F0; gap: 3px;">
+                    <div style="padding: 12px 14px 8px 14px; background: #ffffff; flex-shrink: 0;">
+                        <div style="display: flex; background: #F1F5F9; padding: 3px; border-radius: 10px; border: 1px solid #E2E8F0; gap: 4px;">
                             <button 
                                 type="button" 
                                 @click="sidebarTab = 'objects'" 
-                                style="flex: 1; padding: 6px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);"
-                                :style="sidebarTab === 'objects' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                                style="flex: 1; padding: 7px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);"
+                                :style="sidebarTab === 'objects' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
                             >
-                                <span>📋 Daftar Objek</span>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                                    <circle cx="3.5" cy="6" r="1.5" fill="currentColor"></circle>
+                                    <circle cx="3.5" cy="12" r="1.5" fill="currentColor"></circle>
+                                    <circle cx="3.5" cy="18" r="1.5" fill="currentColor"></circle>
+                                </svg>
+                                <span>Daftar Objek</span>
                                 <span 
-                                    style="font-size: 0.64rem; padding: 1px 6px; border-radius: 9999px; font-weight: 900; transition: all 0.15s ease;"
-                                    :style="sidebarTab === 'objects' ? 'background: #EFF6FF; color: #0878E5;' : 'background: #E2E8F0; color: #64748B;'"
+                                    style="font-size: 0.65rem; padding: 1.5px 7px; border-radius: 9999px; font-weight: 900; line-height: 1; transition: all 0.15s ease;"
+                                    :style="sidebarTab === 'objects' ? 'background: #EFF6FF; color: #0878E5; border: 1px solid #BFDBFE;' : 'background: #E2E8F0; color: #64748B;'"
                                     x-text="customElements.length"
                                 ></span>
                             </button>
                             <button 
                                 type="button" 
                                 @click="sidebarTab = 'layers'" 
-                                style="flex: 1; padding: 6px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);"
-                                :style="sidebarTab === 'layers' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                                style="flex: 1; padding: 7px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);"
+                                :style="sidebarTab === 'layers' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
                             >
-                                <span>🗂️ Filter Layer</span>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                    <polyline points="2 17 12 22 22 17"></polyline>
+                                    <polyline points="2 12 12 17 22 12"></polyline>
+                                </svg>
+                                <span>Filter Layer</span>
                             </button>
                         </div>
                     </div>
@@ -1093,45 +1106,55 @@
                     {{-- ── TAB 1: DAFTAR OBJEK JARINGAN ── --}}
                     <div x-show="sidebarTab === 'objects'" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0;">
                         {{-- Search and Category Filter --}}
-                        <div style="padding: 6px 14px 10px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex-shrink: 0;">
+                        <div style="padding: 6px 14px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex-shrink: 0;">
                             <div style="position: relative; width: 100%;">
-                                <div style="position: absolute; left: 10px; top: 9px; color: #94A3B8; pointer-events: none;">
-                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                <div style="position: absolute; left: 11px; top: 10px; color: #94A3B8; pointer-events: none;">
+                                    <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                                 </div>
                                 <input 
                                     type="text" 
                                     x-model="sidebarSearch" 
-                                    placeholder="Saring nama kabel / tiang..." 
-                                    style="width: 100%; height: 34px; font-size: 0.75rem; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 26px 0 30px; box-sizing: border-box; background: #F8FAFC; outline: none; transition: border-color 0.15s ease;"
-                                    onfocus="this.style.borderColor='#0878E5'; this.style.background='#ffffff'"
-                                    onblur="this.style.borderColor='#CBD5E1'; this.style.background='#F8FAFC'"
+                                    placeholder="Saring nama kabel, tiang, node..." 
+                                    style="width: 100%; height: 36px; font-size: 0.76rem; font-weight: 600; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 0 28px 0 34px; box-sizing: border-box; background: #F8FAFC; outline: none; transition: all 0.15s ease;"
+                                    onfocus="this.style.borderColor='#0878E5'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 3px rgba(8,120,229,0.1)'"
+                                    onblur="this.style.borderColor='#CBD5E1'; this.style.background='#F8FAFC'; this.style.boxShadow='none'"
                                 >
                                 <button 
                                     type="button" 
                                     x-show="sidebarSearch" 
                                     @click="sidebarSearch = ''" 
-                                    style="position: absolute; right: 8px; top: 8px; border: none; background: #E2E8F0; color: #475569; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer;"
+                                    style="position: absolute; right: 9px; top: 9px; border: none; background: #E2E8F0; color: #475569; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer;"
                                 >✕</button>
                             </div>
-                            <div style="display: flex; gap: 5px; overflow-x: auto; padding-bottom: 2px;">
+                            <div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px;">
                                 <button 
                                     type="button" 
                                     @click="sidebarCategoryFilter = 'all'" 
-                                    style="font-size: 0.68rem; font-weight: 800; padding: 4px 10px; border-radius: 8px; border: 1.5px solid; cursor: pointer; white-space: nowrap; transition: all 0.15s ease;"
-                                    :style="sidebarCategoryFilter === 'all' ? 'background: #0F172A; color: #ffffff; border-color: #0F172A; box-shadow: 0 2px 6px rgba(15,23,42,0.2);' : 'background: #F8FAFC; color: #475569; border-color: #E2E8F0;'"
+                                    style="font-size: 0.68rem; font-weight: 800; padding: 5px 11px; border-radius: 8px; border: 1.5px solid; cursor: pointer; white-space: nowrap; transition: all 0.15s ease;"
+                                    :style="sidebarCategoryFilter === 'all' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.3);' : 'background: #F8FAFC; color: #475569; border-color: #E2E8F0;'"
                                 >Semua</button>
+                                
                                 <button 
                                     type="button" 
                                     @click="sidebarCategoryFilter = 'line'" 
-                                    style="font-size: 0.68rem; font-weight: 800; padding: 4px 10px; border-radius: 8px; border: 1.5px solid; cursor: pointer; white-space: nowrap; transition: all 0.15s ease;"
-                                    :style="sidebarCategoryFilter === 'line' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5; box-shadow: 0 2px 6px rgba(8,120,229,0.25);' : 'background: #EFF6FF; color: #0878E5; border-color: #BFDBFE;'"
-                                >〰️ Kabel (<span x-text="customElements.filter(e => e.category === 'line').length"></span>)</button>
+                                    style="font-size: 0.68rem; font-weight: 800; padding: 5px 11px; border-radius: 8px; border: 1.5px solid; cursor: pointer; white-space: nowrap; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 5px;"
+                                    :style="sidebarCategoryFilter === 'line' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.3);' : 'background: #EFF6FF; color: #0878E5; border-color: #BFDBFE;'"
+                                >
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    <span>Kabel</span>
+                                    <span style="font-size: 0.62rem; padding: 0.5px 5px; border-radius: 6px; font-weight: 900;" :style="sidebarCategoryFilter === 'line' ? 'background: rgba(255,255,255,0.25); color: #ffffff;' : 'background: #DBEAFE; color: #0878E5;'" x-text="customElements.filter(e => e.category === 'line').length"></span>
+                                </button>
+                                
                                 <button 
                                     type="button" 
                                     @click="sidebarCategoryFilter = 'marker'" 
-                                    style="font-size: 0.68rem; font-weight: 800; padding: 4px 10px; border-radius: 8px; border: 1.5px solid; cursor: pointer; white-space: nowrap; transition: all 0.15s ease;"
-                                    :style="sidebarCategoryFilter === 'marker' ? 'background: #16A34A; color: #ffffff; border-color: #16A34A; box-shadow: 0 2px 6px rgba(22,163,74,0.25);' : 'background: #F0FDF4; color: #16A34A; border-color: #BBF7D0;'"
-                                >📍 Tiang & Node (<span x-text="customElements.filter(e => e.category === 'marker').length"></span>)</button>
+                                    style="font-size: 0.68rem; font-weight: 800; padding: 5px 11px; border-radius: 8px; border: 1.5px solid; cursor: pointer; white-space: nowrap; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 5px;"
+                                    :style="sidebarCategoryFilter === 'marker' ? 'background: #16A34A; color: #ffffff; border-color: #16A34A; box-shadow: 0 2px 8px rgba(22,163,74,0.3);' : 'background: #F0FDF4; color: #16A34A; border-color: #BBF7D0;'"
+                                >
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    <span>Tiang & Node</span>
+                                    <span style="font-size: 0.62rem; padding: 0.5px 5px; border-radius: 6px; font-weight: 900;" :style="sidebarCategoryFilter === 'marker' ? 'background: rgba(255,255,255,0.25); color: #ffffff;' : 'background: #DCFCE7; color: #16A34A;'" x-text="customElements.filter(e => e.category === 'marker').length"></span>
+                                </button>
                             </div>
                         </div>
 
@@ -1158,9 +1181,9 @@
                                     <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;">
                                         <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
                                             <div 
-                                                style="width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; font-weight: 900;"
+                                                style="width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
                                                 :style="'background:' + getElementBadge(item).bg + '; color:' + getElementBadge(item).color + '; border: 1px solid ' + getElementBadge(item).border"
-                                                x-text="getElementBadge(item).icon"
+                                                x-html="getElementBadge(item).iconHtml"
                                             ></div>
                                             <div style="min-width: 0;">
                                                 <div style="font-size: 0.8rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="item.name"></div>
@@ -2190,16 +2213,57 @@
 
                     getElementBadge(item) {
                         if (item.category === 'line') {
-                            if (item.element_type === 'feeder') return { icon: '🔴', bg: '#FEF2F2', border: '#FECACA', color: '#DC2626' };
-                            if (item.element_type === 'distribution') return { icon: '🔵', bg: '#EFF6FF', border: '#BFDBFE', color: '#2563EB' };
-                            return { icon: '🟡', bg: '#FFFBEB', border: '#FDE68A', color: '#D97706' };
+                            if (item.element_type === 'feeder') {
+                                return {
+                                    iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>`,
+                                    bg: '#FEF2F2', border: '#FECACA', color: '#DC2626'
+                                };
+                            }
+                            if (item.element_type === 'distribution') {
+                                return {
+                                    iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>`,
+                                    bg: '#EFF6FF', border: '#BFDBFE', color: '#2563EB'
+                                };
+                            }
+                            return {
+                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="3 3"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>`,
+                                bg: '#FFFBEB', border: '#FDE68A', color: '#D97706'
+                            };
                         }
-                        if (item.element_type === 'pole') return { icon: '📍', bg: '#F1F5F9', border: '#CBD5E1', color: '#334155' };
-                        if (item.element_type === 'joint_box') return { icon: '🔗', bg: '#ECFDF5', border: '#A7F3D0', color: '#059669' };
-                        if (item.element_type === 'odc') return { icon: '🔲', bg: '#FFFBEB', border: '#FDE68A', color: '#D97706' };
-                        if (item.element_type === 'olt') return { icon: '🏢', bg: '#F5F3FF', border: '#DDD6FE', color: '#7C3AED' };
-                        if (item.element_type === 'customer') return { icon: '🏠', bg: '#FDF2F8', border: '#FBCFE8', color: '#DB2777' };
-                        return { icon: '📍', bg: '#EFF6FF', border: '#BFDBFE', color: '#0878E5' };
+                        if (item.element_type === 'pole') {
+                            return {
+                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="6" x2="19" y2="6"/><line x1="8" y1="11" x2="16" y2="11"/><circle cx="5" cy="6" r="1.5" fill="currentColor"/><circle cx="19" cy="6" r="1.5" fill="currentColor"/></svg>`,
+                                bg: '#F1F5F9', border: '#CBD5E1', color: '#334155'
+                            };
+                        }
+                        if (item.element_type === 'joint_box') {
+                            return {
+                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>`,
+                                bg: '#ECFDF5', border: '#A7F3D0', color: '#059669'
+                            };
+                        }
+                        if (item.element_type === 'odc') {
+                            return {
+                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></svg>`,
+                                bg: '#FFFBEB', border: '#FDE68A', color: '#D97706'
+                            };
+                        }
+                        if (item.element_type === 'olt') {
+                            return {
+                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.5" fill="currentColor"/><circle cx="9" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6" cy="16.5" r="1.5" fill="currentColor"/><circle cx="9" cy="16.5" r="1.5" fill="currentColor"/></svg>`,
+                                bg: '#F5F3FF', border: '#DDD6FE', color: '#7C3AED'
+                            };
+                        }
+                        if (item.element_type === 'customer') {
+                            return {
+                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>`,
+                                bg: '#FDF2F8', border: '#FBCFE8', color: '#DB2777'
+                            };
+                        }
+                        return {
+                            iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>`,
+                            bg: '#EFF6FF', border: '#BFDBFE', color: '#0878E5'
+                        };
                     },
 
                     flyToCustomElement(item) {
