@@ -271,44 +271,78 @@
                                 x-show="openProjectMenu" 
                                 @click.outside="openProjectMenu = false"
                                 x-cloak
-                                style="position: absolute; top: calc(100% + 8px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #CBD5E1; border-radius: 20px; box-shadow: 0 24px 60px rgba(15,23,42,0.28); min-width: 330px; padding: 14px; display: flex; flex-direction: column;"
+                                style="position: absolute; top: calc(100% + 8px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #E2E8F0; border-radius: 18px; box-shadow: 0 20px 50px rgba(15,23,42,0.18), 0 4px 12px rgba(15,23,42,0.06); min-width: 340px; padding: 12px; display: flex; flex-direction: column; gap: 6px;"
                             >
-                                <div style="padding: 2px 4px 12px 4px; font-size: 0.72rem; font-weight: 900; color: #64748B; text-transform: uppercase; border-bottom: 1.5px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                                    <span>Pilih Proyek (<span x-text="allProjects.length"></span>)</span>
+                                <div style="padding: 2px 4px 10px 4px; font-size: 0.72rem; font-weight: 900; color: #64748B; text-transform: uppercase; border-bottom: 1.5px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <span>Proyek FTTH</span>
+                                        <span style="background: #F1F5F9; color: #475569; padding: 1px 7px; border-radius: 20px; font-size: 0.68rem; font-weight: 800;" x-text="allProjects.length"></span>
+                                    </div>
                                     <button 
                                         type="button" 
                                         @click="openNewProjectModal = true; openProjectMenu = false;"
-                                        style="border: none; background: #0878E5; color: #ffffff; padding: 5px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(8,120,229,0.28);"
+                                        style="border: none; background: linear-gradient(135deg, #0878E5, #0284C7); color: #ffffff; padding: 5px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(8,120,229,0.3); transition: transform 0.1s ease;"
+                                        onmousedown="this.style.transform='scale(0.96)'"
+                                        onmouseup="this.style.transform='scale(1)'"
                                     >+ Proyek Baru</button>
                                 </div>
 
-                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
                                     <template x-for="p in allProjects" :key="p.id">
                                         <div 
                                             @click="switchProject(p.id)"
-                                            style="position: relative !important; width: 100% !important; box-sizing: border-box !important; padding: 13px 52px 13px 16px !important; border-radius: 14px !important; cursor: pointer !important; user-select: none !important; transition: all 0.15s ease !important;"
-                                            :style="currentProject && currentProject.id === p.id ? 'background: #F0FDF4 !important; border: 2px solid #86EFAC !important; box-shadow: 0 3px 10px rgba(22,163,74,0.12) !important;' : 'background: #ffffff !important; border: 1.5px solid #E2E8F0 !important; box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;'"
-                                            onmouseover="if (!this.style.background.includes('240')) this.style.background='#F8FAFC'"
-                                            onmouseout="if (!this.style.background.includes('240')) this.style.background='#ffffff'"
+                                            style="display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 10px !important; width: 100% !important; box-sizing: border-box !important; padding: 10px 12px !important; border-radius: 12px !important; cursor: pointer !important; user-select: none !important; transition: all 0.2s ease !important;"
+                                            :style="currentProject && currentProject.id === p.id 
+                                                ? 'background: #F0FDF4 !important; border: 1.5px solid #86EFAC !important; box-shadow: 0 3px 10px rgba(22,163,74,0.1) !important;' 
+                                                : 'background: #FFFFFF !important; border: 1.5px solid #F1F5F9 !important; box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;'"
+                                            onmouseover="if (!this.style.background.includes('240')) { this.style.background='#F8FAFC'; this.style.borderColor='#CBD5E1'; }"
+                                            onmouseout="if (!this.style.background.includes('240')) { this.style.background='#FFFFFF'; this.style.borderColor='#F1F5F9'; }"
                                         >
-                                            <div style="display: flex !important; align-items: center !important; gap: 12px !important; width: 100% !important; cursor: pointer !important;">
-                                                <div style="width: 13px !important; height: 13px !important; border-radius: 50% !important; flex-shrink: 0 !important; cursor: pointer !important; box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;" :style="'background:' + (p.color || '#0878E5')"></div>
-                                                <div style="flex: 1 !important; min-width: 0 !important; cursor: pointer !important;">
-                                                    <div style="font-size: 0.85rem !important; font-weight: 900 !important; color: #0F172A !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; cursor: pointer !important; line-height: 1.3 !important;" x-text="p.name"></div>
-                                                    <div style="font-size: 0.7rem !important; color: #64748B !important; font-weight: 600 !important; margin-top: 3px !important; cursor: pointer !important;" x-text="(p.elements_count || 0) + ' objek jaringan'"></div>
+                                            {{-- Left: Project Icon Avatar & Info --}}
+                                            <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;">
+                                                <div 
+                                                    style="width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s ease;"
+                                                    :style="currentProject && currentProject.id === p.id 
+                                                        ? 'background: #DCFCE7; border: 1px solid #BBF7D0; color: #16A34A;' 
+                                                        : 'background: #F1F5F9; border: 1px solid #E2E8F0; color: #64748B;'"
+                                                >
+                                                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                                                </div>
+                                                <div style="min-width: 0; flex: 1;">
+                                                    <div style="font-size: 0.84rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.25;" x-text="p.name"></div>
+                                                    <div style="font-size: 0.7rem; color: #64748B; font-weight: 600; margin-top: 2px;" x-text="(p.elements_count || 0) + ' objek tersimpan'"></div>
                                                 </div>
                                             </div>
-                                            <button 
-                                                type="button" 
-                                                x-show="allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'"
-                                                @click.stop="deleteProject(p.id, p.name)"
-                                                style="position: absolute !important; right: 12px !important; top: 50% !important; transform: translateY(-50%) !important; z-index: 20 !important; border: 1px solid #FECACA !important; background: #FEF2F2 !important; color: #EF4444 !important; cursor: pointer !important; padding: 6px !important; border-radius: 10px !important; width: 32px !important; height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: all 0.15s ease !important;"
-                                                title="Hapus proyek ini"
-                                                onmouseover="this.style.background='#FEE2E2'; this.style.borderColor='#F87171';"
-                                                onmouseout="this.style.background='#FEF2F2'; this.style.borderColor='#FECACA';"
-                                            >
-                                                <svg style="width: 16px !important; height: 16px !important; color: #EF4444 !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                            </button>
+
+                                            {{-- Right: Status Badge or Delete Action --}}
+                                            <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                                                {{-- Active Status Pill --}}
+                                                <template x-if="currentProject && currentProject.id === p.id">
+                                                    <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 800; background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC;">
+                                                        <svg style="width: 12px; height: 12px;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                                        Aktif
+                                                    </span>
+                                                </template>
+
+                                                {{-- Delete Button for Inactive Custom Projects --}}
+                                                <template x-if="(!currentProject || currentProject.id !== p.id) && allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'">
+                                                    <button 
+                                                        type="button" 
+                                                        @click.stop="deleteProject(p.id, p.name)"
+                                                        style="border: 1px solid #FECACA; background: #FEF2F2; color: #EF4444; cursor: pointer; padding: 6px; border-radius: 8px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease;"
+                                                        title="Hapus proyek ini"
+                                                        onmouseover="this.style.background='#FEE2E2'; this.style.borderColor='#F87171';"
+                                                        onmouseout="this.style.background='#FEF2F2'; this.style.borderColor='#FECACA';"
+                                                    >
+                                                        <svg style="width: 14px; height: 14px; color: #EF4444; pointer-events: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                    </button>
+                                                </template>
+
+                                                {{-- Default Project Tag for inactive default --}}
+                                                <template x-if="(!currentProject || currentProject.id !== p.id) && p.code === 'PRJ-DEFAULT'">
+                                                    <span style="font-size: 0.68rem; color: #94A3B8; font-weight: 700; padding: 3px 6px;">Utama</span>
+                                                </template>
+                                            </div>
                                         </div>
                                     </template>
                                 </div>
