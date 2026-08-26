@@ -181,103 +181,123 @@ class FtthNetworkMapPage extends Page
 
     protected function parseAndSaveKml(string $kmlContent): array
     {
-        // Suppress XML errors and clean namespaces if necessary
+        // Clean Google Earth extension prefixes and XML namespaces
+        $cleanKml = str_replace(['gx:', 'kml:'], '', $kmlContent);
+        $cleanKml = preg_replace('/\sxmlns[^=]*="[^"]*"/i', '', $cleanKml);
+
         libxml_use_internal_errors(true);
-        $xml = simplexml_load_string($kmlContent);
-        if (!$xml) {
-            // Try cleaning namespace prefixes
-            $cleaned = preg_replace('/(<\/?)[a-z0-9]+:/i', '$1', $kmlContent);
-            $xml = simplexml_load_string($cleaned);
-        }
+        $xml = simplexml_load_string($cleanKml);
 
         $markersCount = 0;
         $linesCount = 0;
 
         if ($xml) {
-            // Find all Placemark tags recursively
             $placemarks = $xml->xpath('//Placemark') ?: [];
+            $recordsToInsert = [];
+            $now = now();
 
             foreach ($placemarks as $pm) {
                 $name = trim((string) ($pm->name ?? 'Objek Tanpa Nama'));
                 $description = trim((string) ($pm->description ?? ''));
 
-                // 1. Check for Point
-                if (isset($pm->Point) && isset($pm->Point->coordinates)) {
-                    $coordsStr = trim((string) $pm->Point->coordinates);
-                    $parts = explode(',', $coordsStr);
-                    if (count($parts) >= 2) {
-                        $lng = (float) trim($parts[0]);
-                        $lat = (float) trim($parts[1]);
+                // 1. Find all Points inside Placemark (including nested MultiGeometry)
+                $points = $pm->xpath('.//Point') ?: [];
+                foreach ($points as $pt) {
+                    if (isset($pt->coordinates)) {
+                        $coordsStr = trim((string) $pt->coordinates);
+                        $parts = explode(',', $coordsStr);
+                        if (count($parts) >= 2) {
+                            $lng = (float) trim($parts[0]);
+                            $lat = (float) trim($parts[1]);
 
-                        if ($lat != 0 && $lng != 0) {
-                            $type = $this->classifyMarkerType($name, $description);
-                            $colorMap = [
-                                'olt' => '#7C3AED',
-                                'odc' => '#D97706',
-                                'pole' => '#334155',
-                                'joint_box' => '#059669',
-                                'customer' => '#DB2777',
-                            ];
+                            if ($lat != 0 && $lng != 0) {
+                                $type = $this->classifyMarkerType($name, $description);
+                                $colorMap = [
+                                    'olt' => '#7C3AED',
+                                    'odc' => '#D97706',
+                                    'pole' => '#334155',
+                                    'joint_box' => '#059669',
+                                    'customer' => '#DB2777',
+                                ];
 
-                            FtthNetworkElement::create([
-                                'name' => $name,
-                                'category' => 'marker',
-                                'element_type' => $type,
-                                'olt_code' => $this->selectedOlt ?: null,
-                                'latitude' => $lat,
-                                'longitude' => $lng,
-                                'color' => $colorMap[$type] ?? '#334155',
-                                'notes' => $description ? strip_tags($description) : null,
-                            ]);
-                            $markersCount++;
+                                $recordsToInsert[] = [
+                                    'name' => $name,
+                                    'category' => 'marker',
+                                    'element_type' => $type,
+                                    'olt_code' => $this->selectedOlt ?: null,
+                                    'latitude' => $lat,
+                                    'longitude' => $lng,
+                                    'path_coordinates' => null,
+                                    'length_meters' => null,
+                                    'color' => $colorMap[$type] ?? '#334155',
+                                    'notes' => $description ? strip_tags($description) : null,
+                                    'created_at' => $now,
+                                    'updated_at' => $now,
+                                ];
+                                $markersCount++;
+                            }
                         }
                     }
                 }
 
-                // 2. Check for LineString
-                if (isset($pm->LineString) && isset($pm->LineString->coordinates)) {
-                    $coordsStr = trim((string) $pm->LineString->coordinates);
-                    $rawPoints = preg_split('/[\s\n\r]+/', $coordsStr);
-                    $lineCoords = [];
+                // 2. Find all LineStrings inside Placemark (including nested MultiGeometry)
+                $lineStrings = $pm->xpath('.//LineString') ?: [];
+                foreach ($lineStrings as $ls) {
+                    if (isset($ls->coordinates)) {
+                        $coordsStr = trim((string) $ls->coordinates);
+                        $rawPoints = preg_split('/[\s\n\r]+/', $coordsStr);
+                        $lineCoords = [];
 
-                    foreach ($rawPoints as $rp) {
-                        $rp = trim($rp);
-                        if (!$rp) continue;
-                        $parts = explode(',', $rp);
-                        if (count($parts) >= 2) {
-                            $lng = (float) trim($parts[0]);
-                            $lat = (float) trim($parts[1]);
-                            if ($lat != 0 && $lng != 0) {
-                                $lineCoords[] = [$lat, $lng];
+                        foreach ($rawPoints as $rp) {
+                            $rp = trim($rp);
+                            if (!$rp) continue;
+                            $parts = explode(',', $rp);
+                            if (count($parts) >= 2) {
+                                $lng = (float) trim($parts[0]);
+                                $lat = (float) trim($parts[1]);
+                                if ($lat != 0 && $lng != 0) {
+                                    $lineCoords[] = [$lat, $lng];
+                                }
                             }
                         }
-                    }
 
-                    if (count($lineCoords) >= 2) {
-                        $type = $this->classifyLineType($name, $description);
-                        $colorMap = [
-                            'feeder' => '#EF4444',
-                            'distribution' => '#0878E5',
-                            'dropcore' => '#F59E0B',
-                        ];
+                        if (count($lineCoords) >= 2) {
+                            $type = $this->classifyLineType($name, $description);
+                            $colorMap = [
+                                'feeder' => '#EF4444',
+                                'distribution' => '#0878E5',
+                                'dropcore' => '#F59E0B',
+                            ];
 
-                        $calcDist = 0;
-                        for ($i = 0; $i < count($lineCoords) - 1; $i++) {
-                            $calcDist += $this->calcDistMeters($lineCoords[$i][0], $lineCoords[$i][1], $lineCoords[$i+1][0], $lineCoords[$i+1][1]);
+                            $calcDist = 0;
+                            for ($i = 0; $i < count($lineCoords) - 1; $i++) {
+                                $calcDist += $this->calcDistMeters($lineCoords[$i][0], $lineCoords[$i][1], $lineCoords[$i+1][0], $lineCoords[$i+1][1]);
+                            }
+
+                            $recordsToInsert[] = [
+                                'name' => $name,
+                                'category' => 'line',
+                                'element_type' => $type,
+                                'olt_code' => $this->selectedOlt ?: null,
+                                'latitude' => null,
+                                'longitude' => null,
+                                'path_coordinates' => json_encode($lineCoords),
+                                'length_meters' => $calcDist,
+                                'color' => $colorMap[$type] ?? '#0878E5',
+                                'notes' => $description ? strip_tags($description) : null,
+                                'created_at' => $now,
+                                'updated_at' => $now,
+                            ];
+                            $linesCount++;
                         }
-
-                        FtthNetworkElement::create([
-                            'name' => $name,
-                            'category' => 'line',
-                            'element_type' => $type,
-                            'olt_code' => $this->selectedOlt ?: null,
-                            'path_coordinates' => $lineCoords,
-                            'length_meters' => $calcDist,
-                            'color' => $colorMap[$type] ?? '#0878E5',
-                            'notes' => $description ? strip_tags($description) : null,
-                        ]);
-                        $linesCount++;
                     }
+                }
+            }
+
+            // Bulk insert in chunks for blazing performance
+            if (!empty($recordsToInsert)) {
+                foreach (array_chunk($recordsToInsert, 100) as $chunk) {
+                    FtthNetworkElement::insert($chunk);
                 }
             }
         }
@@ -298,7 +318,7 @@ class FtthNetworkMapPage extends Page
         if (str_contains($text, 'odc') || str_contains($text, 'fdt') || str_contains($text, 'cabinet')) {
             return 'odc';
         }
-        if (str_contains($text, 'joint') || str_contains($text, 'sambung') || str_contains($text, 'closure') || str_contains($text, 'fosc') || str_contains($text, 'jb')) {
+        if (str_contains($text, 'joint') || str_contains($text, 'sambung') || str_contains($text, 'closure') || str_contains($text, 'fosc') || str_contains($text, 'jb') || str_contains($text, 'handhole') || str_contains($text, 'manhole') || preg_match('/\bhh\b/i', $text) || str_starts_with($text, 'hh ') || str_starts_with($text, 'hh-')) {
             return 'joint_box';
         }
         if (str_contains($text, 'customer') || str_contains($text, 'pelanggan') || str_contains($text, 'ont') || str_contains($text, 'rumah') || str_contains($text, 'user')) {
