@@ -65,19 +65,19 @@
 
             /* Custom Map Cursors by Active Tool */
             .ims-cursor-pole, .ims-cursor-pole .leaflet-container, .ims-cursor-pole * {
-                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%2364748B' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='18' y='23' font-size='16' text-anchor='middle'%3E📍%3C/text%3E%3C/svg%3E") 18 18, crosshair !important;
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='16' fill='%23334155' stroke='%23ffffff' stroke-width='2.5'/%3E%3Cpath d='M18 7v22M10 13h16M13 18h10' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='10' cy='13' r='2' fill='%2355C7FF'/%3E%3Ccircle cx='26' cy='13' r='2' fill='%2355C7FF'/%3E%3C/svg%3E") 18 18, crosshair !important;
             }
             .ims-cursor-joint_box, .ims-cursor-joint_box .leaflet-container, .ims-cursor-joint_box * {
-                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%2310B981' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='18' y='23' font-size='16' text-anchor='middle'%3E🔗%3C/text%3E%3C/svg%3E") 18 18, crosshair !important;
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='16' fill='%23059669' stroke='%23ffffff' stroke-width='2.5'/%3E%3Crect x='10' y='12' width='16' height='12' rx='3' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Cline x1='6' y1='18' x2='10' y2='18' stroke='%23ffffff' stroke-width='2'/%3E%3Cline x1='26' y1='18' x2='30' y2='18' stroke='%23ffffff' stroke-width='2'/%3E%3Ccircle cx='14' cy='18' r='1.5' fill='%23ffffff'/%3E%3Ccircle cx='22' cy='18' r='1.5' fill='%23ffffff'/%3E%3C/svg%3E") 18 18, crosshair !important;
             }
             .ims-cursor-odc, .ims-cursor-odc .leaflet-container, .ims-cursor-odc * {
-                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%23F59E0B' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='18' y='23' font-size='16' text-anchor='middle'%3E🔲%3C/text%3E%3C/svg%3E") 18 18, crosshair !important;
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='16' fill='%23D97706' stroke='%23ffffff' stroke-width='2.5'/%3E%3Crect x='11' y='9' width='14' height='18' rx='2' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Cline x1='18' y1='9' x2='18' y2='27' stroke='%23ffffff' stroke-width='1.5'/%3E%3Ccircle cx='14.5' cy='14' r='1.2' fill='%23ffffff'/%3E%3Ccircle cx='14.5' cy='18' r='1.2' fill='%23ffffff'/%3E%3Ccircle cx='21.5' cy='14' r='1.2' fill='%23ffffff'/%3E%3Ccircle cx='21.5' cy='18' r='1.2' fill='%23ffffff'/%3E%3C/svg%3E") 18 18, crosshair !important;
             }
             .ims-cursor-olt, .ims-cursor-olt .leaflet-container, .ims-cursor-olt * {
-                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%238B5CF6' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='18' y='23' font-size='16' text-anchor='middle'%3E🏢%3C/text%3E%3C/svg%3E") 18 18, crosshair !important;
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='16' fill='%237C3AED' stroke='%23ffffff' stroke-width='2.5'/%3E%3Crect x='9' y='10' width='18' height='6' rx='1.5' fill='none' stroke='%23ffffff' stroke-width='1.8'/%3E%3Crect x='9' y='19' width='18' height='6' rx='1.5' fill='none' stroke='%23ffffff' stroke-width='1.8'/%3E%3Ccircle cx='13' cy='13' r='1' fill='%23ffffff'/%3E%3Ccircle cx='16' cy='13' r='1' fill='%23ffffff'/%3E%3Ccircle cx='13' cy='22' r='1' fill='%23ffffff'/%3E%3Ccircle cx='16' cy='22' r='1' fill='%23ffffff'/%3E%3C/svg%3E") 18 18, crosshair !important;
             }
             .ims-cursor-customer, .ims-cursor-customer .leaflet-container, .ims-cursor-customer * {
-                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%23EC4899' stroke='%23ffffff' stroke-width='2.5'/%3E%3Ctext x='18' y='23' font-size='16' text-anchor='middle'%3E🏠%3C/text%3E%3C/svg%3E") 18 18, crosshair !important;
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='16' fill='%23DB2777' stroke='%23ffffff' stroke-width='2.5'/%3E%3Cpath d='M10 17l8-7 8 7v10a1 1 0 01-1 1h-14a1 1 0 01-1-1V17z' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M15 27v-6h6v6' fill='none' stroke='%23ffffff' stroke-width='1.8'/%3E%3C/svg%3E") 18 18, crosshair !important;
             }
             .ims-cursor-draw_line, .ims-cursor-draw_line .leaflet-container, .ims-cursor-draw_line * {
                 cursor: crosshair !important;
@@ -162,27 +162,62 @@
                                 :class="(currentMode === 'add_marker' || openMarkerMenu) ? 'active' : ''"
                                 class="ims-tool-btn"
                             >
-                                📍 Tambah Titik / Perangkat ▾
+                                <svg style="width: 14px; height: 14px; color: #0878E5;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                                <span>Tambah Titik / Node ▾</span>
                             </button>
                             <div 
                                 x-show="openMarkerMenu" 
                                 @click.outside="openMarkerMenu = false"
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 99999; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 12px; box-shadow: 0 14px 35px rgba(0,0,0,0.28); min-width: 230px; padding: 6px 0; display: flex; flex-direction: column;"
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 99999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 270px; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
                             >
-                                <button type="button" @click="startAddMarker('pole')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
-                                    📍 <span>Tiang Fiber (*Pole*)</span>
+                                <button type="button" @click="startAddMarker('pole')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #F1F5F9; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #334155;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="6" x2="19" y2="6"/><line x1="8" y1="11" x2="16" y2="11"/><circle cx="5" cy="6" r="1.5" fill="currentColor"/><circle cx="19" cy="6" r="1.5" fill="currentColor"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E293B;">Tiang Fiber (*Pole*)</div>
+                                        <div style="font-size: 0.68rem; color: #64748B; font-weight: 500;">Tiang distribusi 7m / 9m PLN</div>
+                                    </div>
                                 </button>
-                                <button type="button" @click="startAddMarker('joint_box')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
-                                    🔗 <span>Kotak Sambung (*Joint Closure*)</span>
+
+                                <button type="button" @click="startAddMarker('joint_box')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#ECFDF5'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #065F46;">Kotak Sambung (*Joint Closure*)</div>
+                                        <div style="font-size: 0.68rem; color: #047857; font-weight: 500;">FOSC Splice Tray 24/48 Core</div>
+                                    </div>
                                 </button>
-                                <button type="button" @click="startAddMarker('odc')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
-                                    🔲 <span>ODC / FDT</span>
+
+                                <button type="button" @click="startAddMarker('odc')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #FFFBEB; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #D97706;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="16" cy="8" r="1" fill="currentColor"/><circle cx="16" cy="12" r="1" fill="currentColor"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #92400E;">ODC / FDT Cabinet</div>
+                                        <div style="font-size: 0.68rem; color: #B45309; font-weight: 500;">Sentral Distribusi 96/144 Core</div>
+                                    </div>
                                 </button>
-                                <button type="button" @click="startAddMarker('olt')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
-                                    🏢 <span>Server Core / OLT</span>
+
+                                <button type="button" @click="startAddMarker('olt')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F5F3FF'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #F5F3FF; border: 1px solid #DDD6FE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #7C3AED;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1" fill="currentColor"/><circle cx="9" cy="7.5" r="1" fill="currentColor"/><circle cx="6" cy="16.5" r="1" fill="currentColor"/><circle cx="9" cy="16.5" r="1" fill="currentColor"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #5B21B6;">Server Core / OLT Chassis</div>
+                                        <div style="font-size: 0.68rem; color: #6D28D9; font-weight: 500;">Headend Core PON Uplink</div>
+                                    </div>
                                 </button>
-                                <button type="button" @click="startAddMarker('customer')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #334155; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
-                                    🏠 <span>Rumah Pelanggan ONT</span>
+
+                                <button type="button" @click="startAddMarker('customer')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FDF2F8'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #FDF2F8; border: 1px solid #FBCFE8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #DB2777;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #9D174D;">Rumah Pelanggan ONT</div>
+                                        <div style="font-size: 0.68rem; color: #BE185D; font-weight: 500;">Modem Fiberhome / ZTE Premise</div>
+                                    </div>
                                 </button>
                             </div>
                         </div>
@@ -195,21 +230,42 @@
                                 :class="(currentMode === 'draw_line' || openLineMenu) ? 'active' : ''"
                                 class="ims-tool-btn"
                             >
-                                〰️ Tarik Jalur Kabel ▾
+                                <svg style="width: 14px; height: 14px; color: #0878E5;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                <span>Tarik Jalur Kabel ▾</span>
                             </button>
                             <div 
                                 x-show="openLineMenu" 
                                 @click.outside="openLineMenu = false"
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 99999; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 12px; box-shadow: 0 14px 35px rgba(0,0,0,0.28); min-width: 240px; padding: 6px 0; display: flex; flex-direction: column;"
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 99999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 270px; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
                             >
-                                <button type="button" @click="startDrawLine('feeder')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #EF4444; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
-                                    🔴 <span>Kabel Feeder (24/48 Core)</span>
+                                <button type="button" @click="startDrawLine('feeder')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF2F2; border: 1px solid #FECACA; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #EF4444;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #991B1B;">Kabel Feeder (Backbone)</div>
+                                        <div style="font-size: 0.68rem; color: #DC2626; font-weight: 500;">ADSS 24 / 48 / 96 Core</div>
+                                    </div>
                                 </button>
-                                <button type="button" @click="startDrawLine('distribution')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #0878E5; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'">
-                                    🔵 <span>Kabel Distribusi (12/24 Core)</span>
+
+                                <button type="button" @click="startDrawLine('distribution')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E40AF;">Kabel Distribusi PON</div>
+                                        <div style="font-size: 0.68rem; color: #2563EB; font-weight: 500;">Distribusi 12 / 24 Core ke ODP</div>
+                                    </div>
                                 </button>
-                                <button type="button" @click="startDrawLine('dropcore')" style="text-align: left; padding: 10px 14px; font-size: 0.8rem; font-weight: 800; border: none; background: transparent; cursor: pointer; color: #D97706; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
-                                    🟡 <span>Kabel Dropcore (1/2 Core)</span>
+
+                                <button type="button" @click="startDrawLine('dropcore')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #FFFBEB; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #D97706;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="3 3" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #92400E;">Kabel Dropcore Pelanggan</div>
+                                        <div style="font-size: 0.68rem; color: #B45309; font-weight: 500;">1 / 2 Core G.657A ke ONT</div>
+                                    </div>
                                 </button>
                             </div>
                         </div>
@@ -322,35 +378,47 @@
             ></div>
 
             {{-- Legend Footer --}}
-            <div style="padding: 0.65rem 1.15rem; background: #F4FAFF; border-top: 1px solid #dbeafe; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.72rem; color: #475569;">
-                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px;">
-                    <span style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #0878E5; display: inline-block;"></span>
-                        <span>ODP Database</span>
+            <div style="padding: 0.75rem 1.25rem; background: #F8FAFC; border-top: 1px solid #E2E8F0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; font-size: 0.72rem; color: #475569;">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px;">
+                    <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #0878E5; border: 1.5px solid #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); display: inline-block;"></span>
+                        <span style="color: #0F172A;">ODP Database</span>
                     </span>
-                    <span style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #64748B; display: inline-block;"></span>
-                        <span>Tiang Fiber</span>
+                    <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #334155; border: 1.5px solid #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); display: inline-block;"></span>
+                        <span style="color: #0F172A;">Tiang Fiber</span>
                     </span>
-                    <span style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
-                        <span>Joint Box / JB</span>
+                    <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #059669; border: 1.5px solid #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); display: inline-block;"></span>
+                        <span style="color: #0F172A;">Joint Box (JB)</span>
                     </span>
-                    <span style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 14px; height: 3px; background: #EF4444; display: inline-block;"></span>
-                        <span>Kabel Feeder</span>
+                    <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #D97706; border: 1.5px solid #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); display: inline-block;"></span>
+                        <span style="color: #0F172A;">ODC / FDT</span>
                     </span>
-                    <span style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 14px; height: 3px; background: #0878E5; display: inline-block;"></span>
-                        <span>Kabel Distribusi</span>
+                    <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #7C3AED; border: 1.5px solid #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); display: inline-block;"></span>
+                        <span style="color: #0F172A;">Server Core / OLT</span>
                     </span>
-                    <span style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 14px; height: 3px; background: #F59E0B; display: inline-block; border-bottom: 1.5px dashed #F59E0B;"></span>
-                        <span>Kabel Dropcore</span>
+                    <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #DB2777; border: 1.5px solid #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); display: inline-block;"></span>
+                        <span style="color: #0F172A;">Rumah Pelanggan ONT</span>
+                    </span>
+                    <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+                        <span style="width: 16px; height: 3.5px; background: #EF4444; border-radius: 2px; display: inline-block;"></span>
+                        <span style="color: #991B1B;">Kabel Feeder</span>
+                    </span>
+                    <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+                        <span style="width: 16px; height: 3.5px; background: #0878E5; border-radius: 2px; display: inline-block;"></span>
+                        <span style="color: #1E40AF;">Kabel Distribusi</span>
+                    </span>
+                    <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+                        <span style="width: 16px; height: 3.5px; background: #F59E0B; border-radius: 2px; display: inline-block; border-bottom: 2px dashed #D97706;"></span>
+                        <span style="color: #92400E;">Dropcore</span>
                     </span>
                 </div>
-                <span style="color: #64748B;">
-                    💡 Tips: Klik pada elemen di peta untuk mengedit nama atau menghapusnya.
+                <span style="color: #64748B; font-weight: 600;">
+                    💡 Tips: Klik pada penanda di peta untuk melihat detail atau menghapusnya.
                 </span>
             </div>
         </div>
@@ -933,32 +1001,40 @@
                     },
 
                     getMarkerIconHtml(type, color) {
-                        const bg = color || '#0878E5';
-                        let symbol = '📍';
-                        let size = 26;
+                        let bg = color;
+                        let size = 28;
+                        let svgContent = '';
 
                         if (type === 'pole') {
-                            symbol = '📍';
-                            size = 24;
+                            bg = bg || '#334155';
+                            size = 26;
+                            svgContent = `<svg style="width: 14px; height: 14px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="6" x2="19" y2="6"/><line x1="8" y1="11" x2="16" y2="11"/><circle cx="5" cy="6" r="1.5" fill="currentColor"/><circle cx="19" cy="6" r="1.5" fill="currentColor"/></svg>`;
                         } else if (type === 'joint_box') {
-                            symbol = '🔗';
-                            size = 26;
-                        } else if (type === 'odc') {
-                            symbol = '🔲';
+                            bg = bg || '#059669';
                             size = 28;
-                        } else if (type === 'olt') {
-                            symbol = '🏢';
+                            svgContent = `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>`;
+                        } else if (type === 'odc') {
+                            bg = bg || '#D97706';
                             size = 30;
+                            svgContent = `<svg style="width: 16px; height: 16px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></svg>`;
+                        } else if (type === 'olt') {
+                            bg = bg || '#7C3AED';
+                            size = 32;
+                            svgContent = `<svg style="width: 18px; height: 18px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.2" fill="currentColor"/><circle cx="9" cy="7.5" r="1.2" fill="currentColor"/><circle cx="6" cy="16.5" r="1.2" fill="currentColor"/><circle cx="9" cy="16.5" r="1.2" fill="currentColor"/></svg>`;
                         } else if (type === 'customer') {
-                            symbol = '🏠';
-                            size = 26;
+                            bg = bg || '#DB2777';
+                            size = 28;
+                            svgContent = `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>`;
+                        } else {
+                            bg = bg || '#0878E5';
+                            svgContent = `<svg style="width: 14px; height: 14px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>`;
                         }
 
                         return {
                             size: size,
                             html: `
-                                <div style='width: ${size}px; height: ${size}px; border-radius: 50%; background: ${bg}; border: 2px solid #ffffff; box-shadow: 0 3px 10px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; font-size: ${size * 0.45}px; color: #fff; cursor: pointer;'>
-                                    ${symbol}
+                                <div style='width: ${size}px; height: ${size}px; border-radius: 50%; background: ${bg}; border: 2.5px solid #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.38); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.15s ease;'>
+                                    ${svgContent}
                                 </div>
                             `
                         };
