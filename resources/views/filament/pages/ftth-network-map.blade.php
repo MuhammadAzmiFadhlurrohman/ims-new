@@ -205,6 +205,29 @@
                 margin: 8px 10px !important;
                 line-height: 1.4 !important;
             }
+            .leaflet-control-zoom {
+                border-radius: 12px !important;
+                overflow: hidden !important;
+                border: 1.5px solid #CBD5E1 !important;
+                box-shadow: 0 4px 14px rgba(15,23,42,0.14) !important;
+                margin-right: 14px !important;
+                margin-bottom: 14px !important;
+            }
+            .leaflet-control-zoom a {
+                width: 32px !important;
+                height: 32px !important;
+                line-height: 32px !important;
+                font-size: 16px !important;
+                font-weight: 800 !important;
+                color: #1E293B !important;
+                background: rgba(255, 255, 255, 0.96) !important;
+                backdrop-filter: blur(8px) !important;
+                transition: all 0.15s ease !important;
+            }
+            .leaflet-control-zoom a:hover {
+                background: #F1F5F9 !important;
+                color: #0878E5 !important;
+            }
 
             @keyframes imsMapPulse {
                 0% { transform: scale(0.6); opacity: 1; }
@@ -490,19 +513,7 @@
                                         </div>
                                     </template>
                                 </div>
-                            </div>                        {{-- Button Toggle Sidebar Objek & Layer --}}
-                        <button 
-                            type="button" 
-                            @click="openSidebarDrawer = !openSidebarDrawer" 
-                            :class="openSidebarDrawer ? 'active' : ''"
-                            class="ims-tool-btn"
-                            style="background: #F8FAFC; border-color: #CBD5E1; color: #1E293B; font-weight: 800;"
-                            title="Buka / Tutup Panel Daftar Objek & Filter Layer"
-                        >
-                            <svg style="width: 14px; height: 14px; color: #0878E5;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M4 6h16M4 12h16M4 18h7"/></svg>
-                            <span>Objek & Layer</span>
-                            <span style="background: #0878E5; color: #ffffff; font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 9999px;" x-text="customElements.length + allOdps.length"></span>
-                        </button>
+                            </div>
 
                         <span style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin: 0 2px;">
                             Mode:
@@ -1197,6 +1208,29 @@
                     </div>
                 </div>
 
+                {{-- ── FLOATING TOGGLE BUTTON: OBJEK & LAYER (TOP-RIGHT CORNER OF MAP) ── --}}
+                <div style="position: absolute; top: 12px; right: 12px; z-index: 500; display: flex; align-items: center; gap: 8px;">
+                    <button 
+                        type="button" 
+                        @click="openSidebarDrawer = !openSidebarDrawer" 
+                        :style="openSidebarDrawer ? 'background: #0F172A; color: #ffffff; border-color: #0F172A; box-shadow: 0 4px 16px rgba(15,23,42,0.3);' : 'background: rgba(255, 255, 255, 0.95); color: #1E293B; border-color: #CBD5E1; box-shadow: 0 4px 14px rgba(15,23,42,0.14);'"
+                        style="backdrop-filter: blur(8px); padding: 7px 13px; border-radius: 12px; border: 1.5px solid; font-size: 0.76rem; font-weight: 800; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); user-select: none;"
+                        onmouseover="if(!window.Alpine?.$data(this)?.openSidebarDrawer) { this.style.background='#FFFFFF'; this.style.borderColor='#94A3B8'; this.style.boxShadow='0 6px 20px rgba(15,23,42,0.18)'; }"
+                        onmouseout="if(!window.Alpine?.$data(this)?.openSidebarDrawer) { this.style.background='rgba(255, 255, 255, 0.95)'; this.style.borderColor='#CBD5E1'; this.style.boxShadow='0 4px 14px rgba(15,23,42,0.14)'; }"
+                        title="Buka / Tutup Panel Objek & Filter Layer GIS"
+                    >
+                        <svg style="width: 15px; height: 15px;" :style="openSidebarDrawer ? 'color: #38BDF8;' : 'color: #0878E5;'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M4 6h16M4 12h16M4 18h7"/>
+                        </svg>
+                        <span>Objek & Layer</span>
+                        <span 
+                            :style="openSidebarDrawer ? 'background: #38BDF8; color: #0F172A;' : 'background: #0878E5; color: #ffffff;'"
+                            style="font-size: 10px; font-weight: 900; padding: 1px 7px; border-radius: 9999px; transition: all 0.15s ease;" 
+                            x-text="customElements.length + allOdps.length"
+                        ></span>
+                    </button>
+                </div>
+
                 {{-- Map Canvas --}}
                 <div 
                     id="ims-ftth-builder-canvas" 
@@ -1622,9 +1656,12 @@
                             center: [defaultLat, defaultLng],
                             zoom: 16,
                             preferCanvas: true,
-                            zoomControl: true,
+                            zoomControl: false,
                             attributionControl: false
                         });
+
+                        // Zoom control (+ and -) positioned on the right (bottom-right)
+                        L.control.zoom({ position: 'bottomright' }).addTo(this.mapInstance);
 
                         // Google Maps Roadmap tile layer
                         this.tileLayers['roadmap'] = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
