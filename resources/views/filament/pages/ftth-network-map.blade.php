@@ -490,8 +490,19 @@
                                         </div>
                                     </template>
                                 </div>
-                            </div>
-                        </div>
+                            </div>                        {{-- Button Toggle Sidebar Objek & Layer --}}
+                        <button 
+                            type="button" 
+                            @click="openSidebarDrawer = !openSidebarDrawer" 
+                            :class="openSidebarDrawer ? 'active' : ''"
+                            class="ims-tool-btn"
+                            style="background: #F8FAFC; border-color: #CBD5E1; color: #1E293B; font-weight: 800;"
+                            title="Buka / Tutup Panel Daftar Objek & Filter Layer"
+                        >
+                            <svg style="width: 14px; height: 14px; color: #0878E5;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M4 6h16M4 12h16M4 18h7"/></svg>
+                            <span>Objek & Layer</span>
+                            <span style="background: #0878E5; color: #ffffff; font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 9999px;" x-text="customElements.length + allOdps.length"></span>
+                        </button>
 
                         <span style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin: 0 2px;">
                             Mode:
@@ -503,6 +514,18 @@
                             class="ims-tool-btn"
                         >
                             👆 Jelajah
+                        </button>
+
+                        {{-- Button Mode Penggaris / Ukur Jarak --}}
+                        <button 
+                            type="button" 
+                            @click="startMeasure()" 
+                            :class="currentMode === 'measure' ? 'active' : ''"
+                            class="ims-tool-btn"
+                            title="Ukur estimasi jarak kabel secara bebas di peta"
+                        >
+                            <svg style="width: 14px; height: 14px; color: #7C3AED;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3l-6.6 6.6c-.4.4-1 .4-1.4 0l-11-11c-.4-.4-.4-1 0-1.4l6.6-6.6c.4-.4 1-.4 1.4 0l11 11c.4.4.4 1 0 1.4z"/><line x1="7.5" y1="10.5" x2="6.5" y2="9.5"/><line x1="10.5" y1="13.5" x2="8.5" y2="11.5"/><line x1="13.5" y1="16.5" x2="12.5" y2="15.5"/><line x1="16.5" y1="19.5" x2="14.5" y2="17.5"/></svg>
+                            <span>📏 Ukur Jarak</span>
                         </button>
                         
                         {{-- Dropdown Add Marker --}}
@@ -553,7 +576,7 @@
 
                                 <button type="button" @click="startAddMarker('olt')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F5F3FF'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #F5F3FF; border: 1px solid #DDD6FE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #7C3AED;">
-                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1" fill="currentColor"/><circle cx="9" cy="7.5" r="1" fill="currentColor"/><circle cx="6" cy="16.5" r="1" fill="currentColor"/><circle cx="9" cy="16.5" r="1" fill="currentColor"/></svg>
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.5" fill="currentColor"/><circle cx="9" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6" cy="16.5" r="1.5" fill="currentColor"/><circle cx="9" cy="16.5" r="1.5" fill="currentColor"/></svg>
                                     </div>
                                     <div>
                                         <div style="font-size: 0.8rem; font-weight: 800; color: #5B21B6;">Server Core / OLT Chassis</div>
@@ -825,6 +848,83 @@
                     </div>
                 </div>
 
+                {{-- Dynamic Sub-Bar: Ruler / Measurement Mode --}}
+                <div 
+                    x-show="currentMode === 'measure'" 
+                    x-cloak
+                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #F5F3FF; border: 1.5px dashed #7C3AED; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #5B21B6;"
+                >
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-weight: 800;">📏 Mode Penggaris Jarak:</span>
+                        <span>Klik beberapa titik pada peta untuk mengukur estimasi jalur kabel.</span>
+                        <span style="background: #ffffff; padding: 2px 10px; border-radius: 6px; font-weight: 900; color: #7C3AED; font-family: monospace; border: 1px solid #DDD6FE;">
+                            Total Jarak: <span x-text="measureDistance"></span> m (<span x-text="(measureDistance / 1000).toFixed(2)"></span> Km)
+                        </span>
+                        <span style="font-size: 0.7rem; color: #6D28D9;">• Titik: <strong x-text="measurePoints.length"></strong></span>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <button 
+                            type="button" 
+                            @click="undoMeasurePoint()" 
+                            :disabled="measurePoints.length === 0"
+                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #475569; border: 1px solid #cbd5e1; cursor: pointer;"
+                            title="Hapus titik pengukuran terakhir"
+                        >
+                            ↩️ Undo Titik
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="clearMeasure()" 
+                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #FECACA; cursor: pointer;"
+                        >
+                            🗑️ Reset Ukuran
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="setMode('select')" 
+                            style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #7C3AED; color: #ffffff; border: none; cursor: pointer;"
+                        >
+                            ✕ Tutup Penggaris
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Dynamic Sub-Bar: Edit Draggable Vertex / Element Mode --}}
+                <div 
+                    x-show="currentMode === 'edit_element'" 
+                    x-cloak
+                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #EFF6FF; border: 1.5px dashed #0878E5; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #1E40AF;"
+                >
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-weight: 800;">✏️ Mode Edit Rute / Titik:</span>
+                        <strong style="color: #0F172A;" x-text="editingElement ? editingElement.name : ''"></strong>
+                        <span>• Geser titik putih untuk mengubah posisi. Klik titik [+] untuk menambah sudut.</span>
+                        <template x-if="editingElement && editingElement.category === 'line'">
+                            <span style="background: #ffffff; padding: 2px 8px; border-radius: 6px; font-weight: 900; color: #0878E5; font-family: monospace; border: 1px solid #BFDBFE;">
+                                Panjang Baru: ~<span x-text="editingDistance"></span> m
+                            </span>
+                        </template>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <button 
+                            type="button" 
+                            @click="saveEditElement()" 
+                            style="padding: 4px 14px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(5,150,105,0.3);"
+                        >
+                            💾 Simpan Perubahan
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="cancelEditElement()" 
+                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #DC2626; cursor: pointer;"
+                        >
+                            ✕ Batal
+                        </button>
+                    </div>
+                </div>
+
                 <div 
                     x-show="currentMode === 'add_marker'" 
                     x-cloak
@@ -843,14 +943,269 @@
                 </div>
             </div>
 
-            {{-- Map Canvas --}}
-            <div 
-                id="ims-ftth-builder-canvas" 
-                class="ims-map-canvas" 
-                :class="currentMode === 'add_marker' ? ('ims-cursor-' + activeElementType) : (currentMode === 'draw_line' ? 'ims-cursor-draw_line' : '')"
-                wire:ignore 
-                style="position: relative; z-index: 1;"
-            ></div>
+            {{-- Map Container Relative Wrapper (for hosting sidebar drawer overlay) --}}
+            <div style="position: relative; width: 100%; height: auto; overflow: hidden;">
+
+                {{-- ── 2.1 GOOGLE MY MAPS STYLE FLOATING SIDEBAR DRAWER ── --}}
+                <div 
+                    x-show="openSidebarDrawer" 
+                    x-transition:enter="transition ease-out duration-250"
+                    x-transition:enter-start="transform -translate-x-full opacity-0"
+                    x-transition:enter-end="transform translate-x-0 opacity-100"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="transform translate-x-0 opacity-100"
+                    x-transition:leave-end="transform -translate-x-full opacity-0"
+                    x-cloak
+                    style="position: absolute; top: 0; left: 0; bottom: 0; width: 340px; max-width: 88vw; z-index: 1000; background: #ffffff; border-right: 1px solid #CBD5E1; box-shadow: 6px 0 24px rgba(15,23,42,0.18); display: flex; flex-direction: column; box-sizing: border-box;"
+                >
+                    {{-- Sidebar Header --}}
+                    <div style="padding: 12px 14px; background: #0F172A; color: #ffffff; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="width: 28px; height: 28px; border-radius: 8px; background: #0878E5; display: flex; align-items: center; justify-content: center;">
+                                <svg style="width: 15px; height: 15px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M4 6h16M4 12h16M4 18h7"/></svg>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.82rem; font-weight: 900; line-height: 1.2;">Objek & Layer GIS</div>
+                                <div style="font-size: 0.65rem; color: #94A3B8; font-weight: 600;" x-text="currentProject ? currentProject.name : 'Proyek Default'"></div>
+                            </div>
+                        </div>
+                        <button 
+                            type="button" 
+                            @click="openSidebarDrawer = false" 
+                            style="background: transparent; border: none; color: #94A3B8; cursor: pointer; padding: 4px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"
+                            onmouseover="this.style.color='#ffffff'; this.style.background='#334155'"
+                            onmouseout="this.style.color='#94A3B8'; this.style.background='transparent'"
+                            title="Tutup Panel"
+                        >
+                            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+
+                    {{-- Sidebar Tabs (Filter Layer vs Daftar Objek) --}}
+                    <div style="display: flex; border-bottom: 1px solid #E2E8F0; background: #F8FAFC; padding: 4px 8px; gap: 4px;">
+                        <button 
+                            type="button" 
+                            @click="sidebarTab = 'objects'" 
+                            style="flex: 1; padding: 6px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s ease;"
+                            :style="sidebarTab === 'objects' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #E2E8F0;' : 'background: transparent; color: #64748B;'"
+                        >
+                            <span>📋 Daftar Objek</span>
+                            <span style="font-size: 0.64rem; padding: 1px 5px; border-radius: 9999px; background: #EFF6FF; color: #0878E5; font-weight: 900;" x-text="customElements.length"></span>
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="sidebarTab = 'layers'" 
+                            style="flex: 1; padding: 6px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s ease;"
+                            :style="sidebarTab === 'layers' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #E2E8F0;' : 'background: transparent; color: #64748B;'"
+                        >
+                            <span>🗂️ Filter Layer</span>
+                        </button>
+                    </div>
+
+                    {{-- ── TAB 1: DAFTAR OBJEK JARINGAN ── --}}
+                    <div x-show="sidebarTab === 'objects'" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                        {{-- Search and Category Filter --}}
+                        <div style="padding: 8px 10px; border-bottom: 1px solid #F1F5F9; display: flex; flex-direction: column; gap: 6px;">
+                            <div style="position: relative;">
+                                <input 
+                                    type="text" 
+                                    x-model="sidebarSearch" 
+                                    placeholder="Saring nama kabel / tiang..." 
+                                    style="width: 100%; height: 32px; font-size: 0.74rem; border-radius: 8px; border: 1px solid #CBD5E1; padding: 0 24px 0 8px; box-sizing: border-box;"
+                                >
+                                <button 
+                                    type="button" 
+                                    x-show="sidebarSearch" 
+                                    @click="sidebarSearch = ''" 
+                                    style="position: absolute; right: 6px; top: 7px; border: none; background: transparent; color: #94A3B8; font-size: 11px; cursor: pointer;"
+                                >✕</button>
+                            </div>
+                            <div style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px;">
+                                <button 
+                                    type="button" 
+                                    @click="sidebarCategoryFilter = 'all'" 
+                                    style="font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; border: 1px solid; cursor: pointer; white-space: nowrap;"
+                                    :style="sidebarCategoryFilter === 'all' ? 'background: #0F172A; color: #ffffff; border-color: #0F172A;' : 'background: #F1F5F9; color: #475569; border-color: #E2E8F0;'"
+                                >Semua</button>
+                                <button 
+                                    type="button" 
+                                    @click="sidebarCategoryFilter = 'line'" 
+                                    style="font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; border: 1px solid; cursor: pointer; white-space: nowrap;"
+                                    :style="sidebarCategoryFilter === 'line' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #EFF6FF; color: #0878E5; border-color: #BFDBFE;'"
+                                >〰️ Kabel (<span x-text="customElements.filter(e => e.category === 'line').length"></span>)</button>
+                                <button 
+                                    type="button" 
+                                    @click="sidebarCategoryFilter = 'marker'" 
+                                    style="font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; border: 1px solid; cursor: pointer; white-space: nowrap;"
+                                    :style="sidebarCategoryFilter === 'marker' ? 'background: #16A34A; color: #ffffff; border-color: #16A34A;' : 'background: #F0FDF4; color: #16A34A; border-color: #BBF7D0;'"
+                                >📍 Tiang & Node (<span x-text="customElements.filter(e => e.category === 'marker').length"></span>)</button>
+                            </div>
+                        </div>
+
+                        {{-- Scrollable List --}}
+                        <div style="flex: 1; overflow-y: auto; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px;">
+                            <template x-if="filteredSidebarElements.length === 0">
+                                <div style="padding: 24px 10px; text-align: center; color: #94A3B8; font-size: 0.74rem;">
+                                    Tidak ada objek yang sesuai dengan filter.
+                                </div>
+                            </template>
+
+                            <template x-for="item in filteredSidebarElements" :key="item.id">
+                                <div 
+                                    style="padding: 8px 10px; border-radius: 10px; background: #F8FAFC; border: 1px solid #E2E8F0; display: flex; flex-direction: column; gap: 6px; transition: all 0.15s ease;"
+                                    onmouseover="this.style.background='#FFFFFF'; this.style.borderColor='#CBD5E1'; this.style.boxShadow='0 2px 6px rgba(0,0,0,0.06)'"
+                                    onmouseout="this.style.background='#F8FAFC'; this.style.borderColor='#E2E8F0'; this.style.boxShadow='none'"
+                                >
+                                    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;">
+                                        <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                                            <div 
+                                                style="width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px;"
+                                                :style="'background:' + getElementBadge(item).bg + '; color:' + getElementBadge(item).color + '; border: 1px solid ' + getElementBadge(item).border"
+                                                x-text="getElementBadge(item).icon"
+                                            ></div>
+                                            <div style="min-width: 0;">
+                                                <div style="font-size: 0.76rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="item.name"></div>
+                                                <div style="font-size: 0.65rem; color: #64748B;" x-text="item.category === 'line' ? ('Panjang: ~' + (item.length_meters || 0) + ' m') : ('GPS: ' + (item.latitude ? item.latitude.toFixed(5) : '-') + ', ' + (item.longitude ? item.longitude.toFixed(5) : '-'))"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Quick Action Buttons on Item Card --}}
+                                    <div style="display: flex; align-items: center; gap: 4px; padding-top: 4px; border-top: 1px solid #F1F5F9;">
+                                        <button 
+                                            type="button" 
+                                            @click="flyToCustomElement(item)" 
+                                            style="flex: 1; padding: 3px 6px; border-radius: 6px; font-size: 0.68rem; font-weight: 800; background: #EFF6FF; color: #0878E5; border: 1px solid #BFDBFE; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 3px;"
+                                            title="Menuju ke lokasi objek di peta"
+                                        >
+                                            <span>🎯 Fokus</span>
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            @click="startEditElement(item.id)" 
+                                            style="padding: 3px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 800; background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; cursor: pointer; display: flex; align-items: center; gap: 3px;"
+                                            title="Edit rute garis / geser posisi titik"
+                                        >
+                                            <span>✏️ Edit</span>
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            @click="deleteCustomElementDirect(item.id, item.name)" 
+                                            style="padding: 3px 6px; border-radius: 6px; font-size: 0.68rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; display: flex; align-items: center;"
+                                            title="Hapus elemen ini"
+                                        >
+                                            <span>🗑️</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    {{-- ── TAB 2: FILTER LAYER (SHOW / HIDE) ── --}}
+                    <div x-show="sidebarTab === 'layers'" style="flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 6px; border-bottom: 1px solid #F1F5F9;">
+                            <span style="font-size: 0.72rem; font-weight: 800; color: #334155; text-transform: uppercase;">Visibilitas Layer</span>
+                            <div style="display: flex; gap: 6px;">
+                                <button type="button" @click="setAllLayers(true)" style="font-size: 0.64rem; font-weight: 800; color: #0878E5; background: none; border: none; cursor: pointer; text-decoration: underline;">Tampilkan Semua</button>
+                                <span style="color: #CBD5E1;">|</span>
+                                <button type="button" @click="setAllLayers(false)" style="font-size: 0.64rem; font-weight: 800; color: #DC2626; background: none; border: none; cursor: pointer; text-decoration: underline;">Sembunyikan</button>
+                            </div>
+                        </div>
+
+                        {{-- Category Checkbox Rows --}}
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" :checked="layerVisibility.odp" @change="toggleLayer('odp')" style="border-radius: 4px; color: #0878E5; width: 15px; height: 15px; cursor: pointer;">
+                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #0878E5; display: inline-block;"></span>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #1E293B;">ODP Database</span>
+                            </div>
+                            <span style="font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 6px; background: #EFF6FF; color: #0878E5;" x-text="allOdps.length"></span>
+                        </label>
+
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" :checked="layerVisibility.pole" @change="toggleLayer('pole')" style="border-radius: 4px; color: #334155; width: 15px; height: 15px; cursor: pointer;">
+                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #334155; display: inline-block;"></span>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #1E293B;">Tiang Fiber (Pole)</span>
+                            </div>
+                            <span style="font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 6px; background: #F1F5F9; color: #475569;" x-text="customElements.filter(e => e.element_type === 'pole').length"></span>
+                        </label>
+
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" :checked="layerVisibility.joint_box" @change="toggleLayer('joint_box')" style="border-radius: 4px; color: #059669; width: 15px; height: 15px; cursor: pointer;">
+                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #059669; display: inline-block;"></span>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #1E293B;">Joint Box / Closure</span>
+                            </div>
+                            <span style="font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 6px; background: #ECFDF5; color: #059669;" x-text="customElements.filter(e => e.element_type === 'joint_box').length"></span>
+                        </label>
+
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" :checked="layerVisibility.odc" @change="toggleLayer('odc')" style="border-radius: 4px; color: #D97706; width: 15px; height: 15px; cursor: pointer;">
+                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #D97706; display: inline-block;"></span>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #1E293B;">ODC / FDT Cabinet</span>
+                            </div>
+                            <span style="font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 6px; background: #FFFBEB; color: #D97706;" x-text="customElements.filter(e => e.element_type === 'odc').length"></span>
+                        </label>
+
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" :checked="layerVisibility.olt" @change="toggleLayer('olt')" style="border-radius: 4px; color: #7C3AED; width: 15px; height: 15px; cursor: pointer;">
+                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #7C3AED; display: inline-block;"></span>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #1E293B;">Server Core / OLT</span>
+                            </div>
+                            <span style="font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 6px; background: #F5F3FF; color: #7C3AED;" x-text="customElements.filter(e => e.element_type === 'olt').length"></span>
+                        </label>
+
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" :checked="layerVisibility.customer" @change="toggleLayer('customer')" style="border-radius: 4px; color: #DB2777; width: 15px; height: 15px; cursor: pointer;">
+                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #DB2777; display: inline-block;"></span>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #1E293B;">Rumah Pelanggan ONT</span>
+                            </div>
+                            <span style="font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 6px; background: #FDF2F8; color: #DB2777;" x-text="customElements.filter(e => e.element_type === 'customer').length"></span>
+                        </label>
+
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" :checked="layerVisibility.feeder" @change="toggleLayer('feeder')" style="border-radius: 4px; color: #EF4444; width: 15px; height: 15px; cursor: pointer;">
+                                <span style="width: 14px; height: 4px; border-radius: 2px; background: #EF4444; display: inline-block;"></span>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #1E293B;">Kabel Feeder</span>
+                            </div>
+                            <span style="font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 6px; background: #FEF2F2; color: #EF4444;" x-text="customElements.filter(e => e.element_type === 'feeder').length"></span>
+                        </label>
+
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" :checked="layerVisibility.distribution" @change="toggleLayer('distribution')" style="border-radius: 4px; color: #0878E5; width: 15px; height: 15px; cursor: pointer;">
+                                <span style="width: 14px; height: 4px; border-radius: 2px; background: #0878E5; display: inline-block;"></span>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #1E293B;">Kabel Distribusi</span>
+                            </div>
+                            <span style="font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 6px; background: #EFF6FF; color: #0878E5;" x-text="customElements.filter(e => e.element_type === 'distribution').length"></span>
+                        </label>
+
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" :checked="layerVisibility.dropcore" @change="toggleLayer('dropcore')" style="border-radius: 4px; color: #F59E0B; width: 15px; height: 15px; cursor: pointer;">
+                                <span style="width: 14px; height: 4px; border-radius: 2px; background: #F59E0B; display: inline-block; border-bottom: 2px dashed #D97706;"></span>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #1E293B;">Kabel Dropcore</span>
+                            </div>
+                            <span style="font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 6px; background: #FFFBEB; color: #D97706;" x-text="customElements.filter(e => e.element_type === 'dropcore').length"></span>
+                        </label>
+                    </div>
+                </div>
+
+                {{-- Map Canvas --}}
+                <div 
+                    id="ims-ftth-builder-canvas" 
+                    class="ims-map-canvas" 
+                    :class="currentMode === 'add_marker' ? ('ims-cursor-' + activeElementType) : (currentMode === 'draw_line' ? 'ims-cursor-draw_line' : '')"
+                    wire:ignore 
+                    style="position: relative; z-index: 1;"
+                ></div>
+            </div>
 
             {{-- Legend Footer --}}
             <div style="padding: 0.75rem 1.25rem; background: #F8FAFC; border-top: 1px solid #E2E8F0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; font-size: 0.72rem; color: #475569;">
@@ -969,14 +1324,51 @@
                     mapInstance: null,
                     mapMode: 'roadmap',
                     tileLayers: {},
-                    currentMode: 'select', // 'select', 'add_marker', 'draw_line'
+                    currentMode: 'select', // 'select', 'add_marker', 'draw_line', 'measure', 'edit_element'
                     openMarkerMenu: false,
                     openLineMenu: false,
                     searchQuery: '',
                     searchFocused: false,
                     isFullscreen: false,
-                    autoSnapRoad: false, // Default to exact manual drawing; user can enable Auto-Snap when needed
-                    activeElementType: 'pole', // 'pole', 'joint_box', 'odc', 'olt', 'customer', 'feeder', 'distribution', 'dropcore'
+                    autoSnapRoad: false,
+                    activeElementType: 'pole',
+
+                    // Sidebar Drawer & Layer Visibility State
+                    openSidebarDrawer: false,
+                    sidebarTab: 'objects', // 'objects', 'layers'
+                    sidebarSearch: '',
+                    sidebarCategoryFilter: 'all', // 'all', 'line', 'marker'
+                    layerVisibility: {
+                        odp: true,
+                        pole: true,
+                        joint_box: true,
+                        odc: true,
+                        olt: true,
+                        customer: true,
+                        feeder: true,
+                        distribution: true,
+                        dropcore: true
+                    },
+
+                    // Ruler / Measurement State
+                    measurePoints: [],
+                    measureDistance: 0,
+                    tempMeasurePolyline: null,
+                    tempMeasureRubberband: null,
+                    tempMeasureMarkers: [],
+
+                    // Draggable Vertex & Element Editing State
+                    editingElement: null,
+                    editingPoints: [],
+                    editingDistance: 0,
+                    editingPolyline: null,
+                    editingVertexMarkers: [],
+                    editingMidpointMarkers: [],
+                    editingMarkerHandle: null,
+                    editingMarkerLat: null,
+                    editingMarkerLng: null,
+
+                    // Point-to-point drawing state
                     currentLinePoints: [],
                     currentLineDistance: 0,
                     tempPolyline: null,
@@ -985,6 +1377,8 @@
                     tempPointHistory: [],
                     odpLayerGroup: null,
                     customLayerGroup: null,
+                    editLayerGroup: null,
+                    measureLayerGroup: null,
 
                     init() {
                         this.loadLeafletAndInit();
@@ -995,7 +1389,6 @@
                             if (typeof IMS !== 'undefined' && typeof IMS.success === 'function') {
                                 IMS.success(data.message || 'Elemen berhasil disimpan!');
                             }
-                            // Refresh list
                             if (data.element) {
                                 const el = data.element;
                                 if (el.latitude !== undefined && el.latitude !== null) el.latitude = parseFloat(el.latitude);
@@ -1010,9 +1403,30 @@
                                     this.customElements.unshift(el);
                                 }
                                 this.renderCustomElements();
-                                if (this.mapInstance) {
-                                    this.mapInstance.invalidateSize();
+                                if (this.mapInstance) this.mapInstance.invalidateSize();
+                            }
+                        });
+
+                        this.$wire.on('element-updated', (event) => {
+                            const data = Array.isArray(event) ? event[0] : event;
+                            if (typeof IMS !== 'undefined' && typeof IMS.success === 'function') {
+                                IMS.success(data.message || 'Perubahan rute berhasil disimpan!');
+                            }
+                            if (data.element) {
+                                const el = data.element;
+                                if (el.latitude !== undefined && el.latitude !== null) el.latitude = parseFloat(el.latitude);
+                                if (el.longitude !== undefined && el.longitude !== null) el.longitude = parseFloat(el.longitude);
+                                if (typeof el.path_coordinates === 'string') {
+                                    try { el.path_coordinates = JSON.parse(el.path_coordinates); } catch(e) {}
                                 }
+                                const idx = this.customElements.findIndex(e => e.id === el.id);
+                                if (idx >= 0) {
+                                    this.customElements[idx] = el;
+                                } else {
+                                    this.customElements.unshift(el);
+                                }
+                                this.renderCustomElements();
+                                if (this.mapInstance) this.mapInstance.invalidateSize();
                             }
                         });
 
@@ -1024,9 +1438,7 @@
                             if (data.id) {
                                 this.customElements = this.customElements.filter(e => e.id !== data.id);
                                 this.renderCustomElements();
-                                if (this.mapInstance) {
-                                    this.mapInstance.invalidateSize();
-                                }
+                                if (this.mapInstance) this.mapInstance.invalidateSize();
                             }
                         });
 
@@ -1048,7 +1460,6 @@
                                 });
                                 this.renderCustomElements();
 
-                                // Fit map bounds to show imported elements
                                 setTimeout(() => {
                                     if (this.customLayerGroup && this.mapInstance) {
                                         const layers = this.customLayerGroup.getLayers();
@@ -1148,9 +1559,7 @@
                             }
                             this.customElements = [];
                             this.renderCustomElements();
-                            if (this.mapInstance) {
-                                this.mapInstance.invalidateSize();
-                            }
+                            if (this.mapInstance) this.mapInstance.invalidateSize();
                         });
 
                         // Browser native fullscreen change listeners
@@ -1233,6 +1642,8 @@
 
                         this.odpLayerGroup = L.layerGroup().addTo(this.mapInstance);
                         this.customLayerGroup = L.layerGroup().addTo(this.mapInstance);
+                        this.editLayerGroup = L.layerGroup().addTo(this.mapInstance);
+                        this.measureLayerGroup = L.layerGroup().addTo(this.mapInstance);
 
                         this.renderOdpMarkers();
                         this.renderCustomElements();
@@ -1250,7 +1661,7 @@
                             this.handleMapClick(e.latlng.lat, e.latlng.lng);
                         });
 
-                        // Live mousemove handler for rubberband cable guideline
+                        // Live mousemove handler
                         this.mapInstance.on('mousemove', (e) => {
                             this.handleMapMouseMove(e);
                         });
@@ -1266,13 +1677,431 @@
                     setMode(mode) {
                         this.openMarkerMenu = false;
                         this.openLineMenu = false;
+                        if (this.currentMode === 'measure') this.clearMeasure();
+                        if (this.currentMode === 'edit_element') this.cancelEditElement();
                         this.currentMode = mode;
                         this.cancelDrawing();
+                    },
+
+                    // ── LAYER VISIBILITY METHODS ──
+                    toggleLayer(type) {
+                        this.layerVisibility[type] = !this.layerVisibility[type];
+                        this.renderOdpMarkers();
+                        this.renderCustomElements();
+                    },
+
+                    setAllLayers(val) {
+                        Object.keys(this.layerVisibility).forEach(k => {
+                            this.layerVisibility[k] = val;
+                        });
+                        this.renderOdpMarkers();
+                        this.renderCustomElements();
+                    },
+
+                    // ── RULER / MEASUREMENT METHODS ──
+                    startMeasure() {
+                        this.openMarkerMenu = false;
+                        this.openLineMenu = false;
+                        if (this.currentMode === 'edit_element') this.cancelEditElement();
+                        this.cancelDrawing();
+                        this.clearMeasure();
+                        this.currentMode = 'measure';
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('📏 Klik pada peta untuk mulai mengukur jarak kabel.', 'info', 2500);
+                        }
+                    },
+
+                    clearMeasure() {
+                        if (this.measureLayerGroup) {
+                            this.measureLayerGroup.clearLayers();
+                        }
+                        this.measurePoints = [];
+                        this.measureDistance = 0;
+                        this.tempMeasurePolyline = null;
+                        this.tempMeasureRubberband = null;
+                        this.tempMeasureMarkers = [];
+                    },
+
+                    undoMeasurePoint() {
+                        if (this.measurePoints.length === 0) return;
+                        this.measurePoints.pop();
+                        const lastMarker = this.tempMeasureMarkers.pop();
+                        if (lastMarker && this.measureLayerGroup) {
+                            this.measureLayerGroup.removeLayer(lastMarker);
+                        }
+                        this.updateMeasurePolyline();
+                        if (this.measurePoints.length === 0 && this.tempMeasureRubberband && this.measureLayerGroup) {
+                            this.measureLayerGroup.removeLayer(this.tempMeasureRubberband);
+                            this.tempMeasureRubberband = null;
+                        }
+                    },
+
+                    handleMeasureClick(lat, lng) {
+                        // Magnetic auto-snap to nearby Node
+                        const snap = this.findSnapTarget(lat, lng, 24);
+                        if (snap) {
+                            lat = snap.lat;
+                            lng = snap.lng;
+                        }
+
+                        this.measurePoints.push([lat, lng]);
+
+                        // Calculate distance up to this point
+                        let distSoFar = 0;
+                        for (let i = 0; i < this.measurePoints.length - 1; i++) {
+                            const p1 = this.measurePoints[i];
+                            const p2 = this.measurePoints[i + 1];
+                            distSoFar += this.calculateDistanceMeters(p1[0], p1[1], p2[0], p2[1]);
+                        }
+
+                        // Add numbered pin with distance tooltip
+                        const ptIndex = this.measurePoints.length;
+                        const labelText = ptIndex === 1 ? 'Start (0m)' : `${distSoFar}m`;
+
+                        const pinIcon = L.divIcon({
+                            className: 'ims-measure-pin',
+                            html: `
+                                <div style="display: flex; align-items: center; gap: 4px; pointer-events: none;">
+                                    <div style="width: 14px; height: 14px; border-radius: 50%; background: #7C3AED; border: 2.5px solid #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.35);"></div>
+                                    <span style="background: #7C3AED; color: #ffffff; font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.25); white-space: nowrap;">${labelText}</span>
+                                </div>
+                            `,
+                            iconSize: [80, 20],
+                            iconAnchor: [7, 7]
+                        });
+
+                        const marker = L.marker([lat, lng], { icon: pinIcon });
+                        this.measureLayerGroup.addLayer(marker);
+                        this.tempMeasureMarkers.push(marker);
+
+                        this.updateMeasurePolyline();
+                    },
+
+                    updateMeasurePolyline() {
+                        if (!this.measureLayerGroup || typeof L === 'undefined') return;
+
+                        if (!this.tempMeasurePolyline) {
+                            this.tempMeasurePolyline = L.polyline(this.measurePoints, {
+                                color: '#7C3AED',
+                                weight: 4,
+                                dashArray: '6, 6',
+                                opacity: 0.95
+                            });
+                            this.measureLayerGroup.addLayer(this.tempMeasurePolyline);
+                        } else {
+                            this.tempMeasurePolyline.setLatLngs(this.measurePoints);
+                        }
+
+                        // Calculate total distance
+                        let dist = 0;
+                        for (let i = 0; i < this.measurePoints.length - 1; i++) {
+                            const p1 = this.measurePoints[i];
+                            const p2 = this.measurePoints[i + 1];
+                            dist += this.calculateDistanceMeters(p1[0], p1[1], p2[0], p2[1]);
+                        }
+                        this.measureDistance = dist;
+                    },
+
+                    // ── DRAGGABLE VERTEX & ELEMENT EDITING METHODS ──
+                    startEditElement(elementId) {
+                        const el = this.customElements.find(e => e.id === elementId);
+                        if (!el) return;
+
+                        this.cancelDrawing();
+                        this.clearMeasure();
+                        this.currentMode = 'edit_element';
+                        this.editingElement = el;
+
+                        if (this.editLayerGroup) {
+                            this.editLayerGroup.clearLayers();
+                        }
+                        this.editingVertexMarkers = [];
+                        this.editingMidpointMarkers = [];
+
+                        if (el.category === 'line') {
+                            this.editingPoints = JSON.parse(JSON.stringify(el.path_coordinates || []));
+                            this.editingDistance = el.length_meters || 0;
+                            this.renderEditingVertexHandles();
+
+                            // Fly to line bounds
+                            if (this.editingPoints.length >= 2 && this.mapInstance) {
+                                const poly = L.polyline(this.editingPoints);
+                                this.mapInstance.fitBounds(poly.getBounds().pad(0.2));
+                            }
+                        } else if (el.category === 'marker') {
+                            this.editingMarkerLat = el.latitude;
+                            this.editingMarkerLng = el.longitude;
+
+                            // Create animated draggable marker handle
+                            const iconConfig = this.getMarkerIconHtml(el.element_type, el.color);
+                            const dragIcon = L.divIcon({
+                                className: 'ims-drag-edit-marker',
+                                html: `
+                                    <div style="position: relative; width: ${iconConfig.size}px; height: ${iconConfig.size}px;">
+                                        ${iconConfig.html}
+                                        <div style="position: absolute; -inset: 6px; top: -6px; left: -6px; right: -6px; bottom: -6px; border: 2.5px dashed #0878E5; border-radius: 50%; animation: spin 4s linear infinite; pointer-events: none;"></div>
+                                    </div>
+                                `,
+                                iconSize: [iconConfig.size, iconConfig.size],
+                                iconAnchor: [iconConfig.size / 2, iconConfig.size / 2]
+                            });
+
+                            this.editingMarkerHandle = L.marker([el.latitude, el.longitude], {
+                                icon: dragIcon,
+                                draggable: true,
+                                zIndexOffset: 2000
+                            });
+
+                            this.editingMarkerHandle.on('drag', (e) => {
+                                const pos = e.target.getLatLng();
+                                this.editingMarkerLat = pos.lat;
+                                this.editingMarkerLng = pos.lng;
+                            });
+
+                            this.editingMarkerHandle.on('dragend', (e) => {
+                                const pos = e.target.getLatLng();
+                                const snap = this.findSnapTarget(pos.lat, pos.lng, 22);
+                                if (snap) {
+                                    e.target.setLatLng([snap.lat, snap.lng]);
+                                    this.editingMarkerLat = snap.lat;
+                                    this.editingMarkerLng = snap.lng;
+                                    if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                        IMS.toast('🧲 Terkunci ke: ' + snap.name, 'info', 800);
+                                    }
+                                }
+                            });
+
+                            this.editLayerGroup.addLayer(this.editingMarkerHandle);
+
+                            if (this.mapInstance) {
+                                this.mapInstance.flyTo([el.latitude, el.longitude], 19);
+                            }
+                        }
+
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('✏️ Geser titik pada peta untuk mengubah posisi ' + el.name, 'info', 3000);
+                        }
+                    },
+
+                    renderEditingVertexHandles() {
+                        if (!this.editLayerGroup || typeof L === 'undefined') return;
+                        this.editLayerGroup.clearLayers();
+                        this.editingVertexMarkers = [];
+                        this.editingMidpointMarkers = [];
+
+                        const lineColor = this.editingElement.color || (this.editingElement.element_type === 'feeder' ? '#EF4444' : (this.editingElement.element_type === 'distribution' ? '#0878E5' : '#F59E0B'));
+
+                        // 1. Render active editing line
+                        this.editingPolyline = L.polyline(this.editingPoints, {
+                            color: lineColor,
+                            weight: 5,
+                            opacity: 0.95
+                        });
+                        this.editLayerGroup.addLayer(this.editingPolyline);
+
+                        // 2. Render draggable vertex markers
+                        this.editingPoints.forEach((pt, idx) => {
+                            const isFirst = idx === 0;
+                            const isLast = idx === this.editingPoints.length - 1;
+
+                            const vertexIcon = L.divIcon({
+                                className: 'ims-vertex-handle',
+                                html: `
+                                    <div style="width: 16px; height: 16px; min-width: 16px; min-height: 16px; border-radius: 50%; background: #ffffff; border: 3px solid ${isFirst || isLast ? '#059669' : '#0878E5'}; box-shadow: 0 2px 6px rgba(0,0,0,0.4); cursor: grab; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 900; color: #1E293B;">
+                                        ${idx + 1}
+                                    </div>
+                                `,
+                                iconSize: [16, 16],
+                                iconAnchor: [8, 8]
+                            });
+
+                            const marker = L.marker(pt, {
+                                icon: vertexIcon,
+                                draggable: true,
+                                zIndexOffset: 1500 + idx
+                            });
+
+                            marker.on('drag', (e) => {
+                                const pos = e.target.getLatLng();
+                                this.editingPoints[idx] = [pos.lat, pos.lng];
+                                this.editingPolyline.setLatLngs(this.editingPoints);
+                                this.recalcEditingDistance();
+                            });
+
+                            marker.on('dragend', (e) => {
+                                const pos = e.target.getLatLng();
+                                const snap = this.findSnapTarget(pos.lat, pos.lng, 20);
+                                if (snap) {
+                                    this.editingPoints[idx] = [snap.lat, snap.lng];
+                                    e.target.setLatLng([snap.lat, snap.lng]);
+                                    this.editingPolyline.setLatLngs(this.editingPoints);
+                                    this.recalcEditingDistance();
+                                }
+                                this.renderEditingVertexHandles();
+                            });
+
+                            // Click vertex to delete if more than 2 points
+                            marker.on('contextmenu', (e) => {
+                                e.originalEvent.preventDefault();
+                                this.removeVertex(idx);
+                            });
+
+                            this.editLayerGroup.addLayer(marker);
+                            this.editingVertexMarkers.push(marker);
+                        });
+
+                        // 3. Render Midpoint "+" Add Handles
+                        for (let i = 0; i < this.editingPoints.length - 1; i++) {
+                            const p1 = this.editingPoints[i];
+                            const p2 = this.editingPoints[i + 1];
+                            const midLat = (p1[0] + p2[0]) / 2;
+                            const midLng = (p1[1] + p2[1]) / 2;
+
+                            const midIcon = L.divIcon({
+                                className: 'ims-mid-handle',
+                                html: `
+                                    <div style="width: 14px; height: 14px; min-width: 14px; min-height: 14px; border-radius: 50%; background: rgba(255,255,255,0.9); border: 2px solid ${lineColor}; box-shadow: 0 1px 4px rgba(0,0,0,0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; color: ${lineColor}; line-height: 1;" title="Klik untuk menambah titik belokan di sini">
+                                        +
+                                    </div>
+                                `,
+                                iconSize: [14, 14],
+                                iconAnchor: [7, 7]
+                            });
+
+                            const midMarker = L.marker([midLat, midLng], {
+                                icon: midIcon,
+                                zIndexOffset: 1200
+                            });
+
+                            const insertIdx = i;
+                            midMarker.on('click', () => {
+                                this.addVertexAtMidpoint(insertIdx, midLat, midLng);
+                            });
+
+                            this.editLayerGroup.addLayer(midMarker);
+                            this.editingMidpointMarkers.push(midMarker);
+                        }
+                    },
+
+                    addVertexAtMidpoint(index, lat, lng) {
+                        this.editingPoints.splice(index + 1, 0, [lat, lng]);
+                        this.recalcEditingDistance();
+                        this.renderEditingVertexHandles();
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('➕ Titik sudut baru ditambahkan! Silakan geser titik tersebut.', 'info', 1500);
+                        }
+                    },
+
+                    removeVertex(index) {
+                        if (this.editingPoints.length <= 2) {
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('Jalur kabel minimal harus memiliki 2 titik sudut!', 'warning');
+                            }
+                            return;
+                        }
+                        this.editingPoints.splice(index, 1);
+                        this.recalcEditingDistance();
+                        this.renderEditingVertexHandles();
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('🗑️ Titik sudut #' + (index + 1) + ' dihapus.', 'info', 1200);
+                        }
+                    },
+
+                    recalcEditingDistance() {
+                        let dist = 0;
+                        for (let i = 0; i < this.editingPoints.length - 1; i++) {
+                            const p1 = this.editingPoints[i];
+                            const p2 = this.editingPoints[i + 1];
+                            dist += this.calculateDistanceMeters(p1[0], p1[1], p2[0], p2[1]);
+                        }
+                        this.editingDistance = dist;
+                    },
+
+                    saveEditElement() {
+                        if (!this.editingElement) return;
+
+                        if (this.editingElement.category === 'line') {
+                            if (this.editingPoints.length < 2) return;
+                            this.$wire.updateElement(this.editingElement.id, {
+                                path_coordinates: this.editingPoints,
+                                length_meters: this.editingDistance
+                            });
+                        } else if (this.editingElement.category === 'marker') {
+                            if (this.editingMarkerLat === null || this.editingMarkerLng === null) return;
+                            this.$wire.updateElement(this.editingElement.id, {
+                                latitude: this.editingMarkerLat,
+                                longitude: this.editingMarkerLng
+                            });
+                        }
+
+                        this.cancelEditElement();
+                    },
+
+                    cancelEditElement() {
+                        if (this.editLayerGroup) {
+                            this.editLayerGroup.clearLayers();
+                        }
+                        this.editingElement = null;
+                        this.editingPoints = [];
+                        this.editingDistance = 0;
+                        this.editingPolyline = null;
+                        this.editingVertexMarkers = [];
+                        this.editingMidpointMarkers = [];
+                        this.editingMarkerHandle = null;
+                        this.editingMarkerLat = null;
+                        this.editingMarkerLng = null;
+                        this.currentMode = 'select';
+                    },
+
+                    // ── SIDEBAR HELPERS ──
+                    get filteredSidebarElements() {
+                        let list = this.customElements || [];
+                        if (this.sidebarCategoryFilter !== 'all') {
+                            list = list.filter(e => e.category === this.sidebarCategoryFilter);
+                        }
+                        if (this.sidebarSearch && this.sidebarSearch.trim().length > 0) {
+                            const q = this.sidebarSearch.toLowerCase().trim();
+                            list = list.filter(e => (e.name && e.name.toLowerCase().includes(q)) || (e.notes && e.notes.toLowerCase().includes(q)) || (e.element_type && e.element_type.toLowerCase().includes(q)));
+                        }
+                        return list;
+                    },
+
+                    getElementBadge(item) {
+                        if (item.category === 'line') {
+                            if (item.element_type === 'feeder') return { icon: '🔴', bg: '#FEF2F2', border: '#FECACA', color: '#DC2626' };
+                            if (item.element_type === 'distribution') return { icon: '🔵', bg: '#EFF6FF', border: '#BFDBFE', color: '#2563EB' };
+                            return { icon: '🟡', bg: '#FFFBEB', border: '#FDE68A', color: '#D97706' };
+                        }
+                        if (item.element_type === 'pole') return { icon: '📍', bg: '#F1F5F9', border: '#CBD5E1', color: '#334155' };
+                        if (item.element_type === 'joint_box') return { icon: '🔗', bg: '#ECFDF5', border: '#A7F3D0', color: '#059669' };
+                        if (item.element_type === 'odc') return { icon: '🔲', bg: '#FFFBEB', border: '#FDE68A', color: '#D97706' };
+                        if (item.element_type === 'olt') return { icon: '🏢', bg: '#F5F3FF', border: '#DDD6FE', color: '#7C3AED' };
+                        if (item.element_type === 'customer') return { icon: '🏠', bg: '#FDF2F8', border: '#FBCFE8', color: '#DB2777' };
+                        return { icon: '📍', bg: '#EFF6FF', border: '#BFDBFE', color: '#0878E5' };
+                    },
+
+                    flyToCustomElement(item) {
+                        this.flyToItem({
+                            uniqueId: 'custom_' + item.id,
+                            category: item.category,
+                            elementType: item.element_type,
+                            id: item.id,
+                            title: item.name,
+                            lat: item.category === 'line' ? (item.path_coordinates && item.path_coordinates[0] ? item.path_coordinates[0][0] : null) : item.latitude,
+                            lng: item.category === 'line' ? (item.path_coordinates && item.path_coordinates[0] ? item.path_coordinates[0][1] : null) : item.longitude,
+                            bounds: item.category === 'line' ? item.path_coordinates : null
+                        });
+                    },
+
+                    deleteCustomElementDirect(id, name) {
+                        window.imsDeleteFtthElement(id, name);
                     },
 
                     startAddMarker(type) {
                         this.openMarkerMenu = false;
                         this.openLineMenu = false;
+                        if (this.currentMode === 'measure') this.clearMeasure();
+                        if (this.currentMode === 'edit_element') this.cancelEditElement();
                         this.currentMode = 'add_marker';
                         this.activeElementType = type;
                         if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
@@ -1283,6 +2112,8 @@
                     startDrawLine(type) {
                         this.openMarkerMenu = false;
                         this.openLineMenu = false;
+                        if (this.currentMode === 'measure') this.clearMeasure();
+                        if (this.currentMode === 'edit_element') this.cancelEditElement();
                         this.currentMode = 'draw_line';
                         this.activeElementType = type;
                         this.clearTempDrawing();
@@ -1295,7 +2126,7 @@
                         this.openMarkerMenu = false;
                         this.openLineMenu = false;
                         this.clearTempDrawing();
-                        if (this.currentMode !== 'select') {
+                        if (this.currentMode !== 'select' && this.currentMode !== 'measure' && this.currentMode !== 'edit_element') {
                             this.currentMode = 'select';
                         }
                     },
@@ -1364,6 +2195,30 @@
                     },
 
                     handleMapMouseMove(e) {
+                        if (this.currentMode === 'measure' && this.measurePoints.length > 0 && this.mapInstance) {
+                            const lastPt = this.measurePoints[this.measurePoints.length - 1];
+                            let targetLat = e.latlng.lat;
+                            let targetLng = e.latlng.lng;
+                            const snap = this.findSnapTarget(targetLat, targetLng, 20);
+                            if (snap) {
+                                targetLat = snap.lat;
+                                targetLng = snap.lng;
+                            }
+                            const mouseLatLng = [targetLat, targetLng];
+                            if (!this.tempMeasureRubberband) {
+                                this.tempMeasureRubberband = L.polyline([lastPt, mouseLatLng], {
+                                    color: '#7C3AED',
+                                    weight: 2.5,
+                                    dashArray: '4, 4',
+                                    opacity: 0.8
+                                });
+                                this.measureLayerGroup.addLayer(this.tempMeasureRubberband);
+                            } else {
+                                this.tempMeasureRubberband.setLatLngs([lastPt, mouseLatLng]);
+                            }
+                            return;
+                        }
+
                         if (this.currentMode !== 'draw_line' || this.currentLinePoints.length === 0 || !this.mapInstance) {
                             if (this.tempRubberbandLine && this.mapInstance) {
                                 this.mapInstance.removeLayer(this.tempRubberbandLine);
@@ -1399,6 +2254,15 @@
                     },
 
                     async handleMapClick(lat, lng) {
+                        if (this.currentMode === 'measure') {
+                            this.handleMeasureClick(lat, lng);
+                            return;
+                        }
+
+                        if (this.currentMode === 'edit_element') {
+                            return;
+                        }
+
                         // Magnetic auto-snap to nearby Node / Tiang / ODP
                         const snap = this.findSnapTarget(lat, lng, 24);
                         if (snap) {
@@ -1467,7 +2331,7 @@
                                     newPointsAdded.push([lat, lng]);
                                 }
                             } else {
-                                // Direct, exact manual point-to-point drawing (100% faithful to clicks)
+                                // Direct, exact manual point-to-point drawing
                                 this.currentLinePoints.push([lat, lng]);
                                 newPointsAdded.push([lat, lng]);
                             }
@@ -1662,6 +2526,7 @@
                     renderOdpMarkers() {
                         if (!this.odpLayerGroup || typeof L === 'undefined') return;
                         this.odpLayerGroup.clearLayers();
+                        if (!this.layerVisibility.odp) return;
                         if (!this.allOdps || this.allOdps.length === 0) return;
 
                         this.allOdps.forEach((odp) => {
@@ -1698,6 +2563,9 @@
                         this.customLayerGroup.clearLayers();
 
                         this.customElements.forEach((el) => {
+                            // Check layer visibility filter
+                            if (!this.layerVisibility[el.element_type]) return;
+
                             if (el.category === 'marker' && el.latitude && el.longitude) {
                                 const iconConfig = this.getMarkerIconHtml(el.element_type, el.color);
                                 const customIcon = L.divIcon({
@@ -1710,13 +2578,14 @@
 
                                 const marker = L.marker([el.latitude, el.longitude], { icon: customIcon });
                                 marker.bindPopup(`
-                                    <div style='font-family: inherit; padding: 4px; min-width: 190px;'>
+                                    <div style='font-family: inherit; padding: 4px; min-width: 200px;'>
                                         <div style='font-size: 10px; font-weight: 800; color: ${el.color || '#0878E5'}; text-transform: uppercase;'>📍 ${el.element_type.replace('_', ' ')}</div>
                                         <div style='font-size: 13px; font-weight: 900; color: #0B1F33; margin: 2px 0;'>${el.name}</div>
                                         ${el.notes ? `<div style='font-size: 11px; color: #475569; margin: 3px 0;'>${el.notes}</div>` : ''}
                                         <div style='font-size: 10px; color: #94A3B8; margin-top: 4px;'>GPS: ${el.latitude.toFixed(6)}, ${el.longitude.toFixed(6)}</div>
                                         <div style='margin-top: 8px; padding-top: 6px; border-top: 1px solid #E2E8F0; display: flex; gap: 4px;'>
-                                            <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name}')" style='flex: 1; border: none; background: #FEE2E2; color: #DC2626; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>🗑️ Hapus</button>
+                                            <button onclick="window.imsEditFtthElement(${el.id})" style='flex: 1; border: none; background: #EFF6FF; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>✏️ Geser Posisi</button>
+                                            <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name}')" style='border: none; background: #FEE2E2; color: #DC2626; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>🗑️ Hapus</button>
                                         </div>
                                     </div>
                                 `);
@@ -1734,13 +2603,14 @@
                                 });
 
                                 polyline.bindPopup(`
-                                    <div style='font-family: inherit; padding: 4px; min-width: 190px;'>
+                                    <div style='font-family: inherit; padding: 4px; min-width: 200px;'>
                                         <div style='font-size: 10px; font-weight: 800; color: ${lineColor}; text-transform: uppercase;'>〰️ JALUR KABEL ${el.element_type}</div>
                                         <div style='font-size: 13px; font-weight: 900; color: #0B1F33; margin: 2px 0;'>${el.name}</div>
                                         <div style='font-size: 11.5px; font-weight: 800; color: #0878E5; margin: 3px 0;'>Panjang: ~${el.length_meters || 0} meter</div>
                                         ${el.notes ? `<div style='font-size: 11px; color: #475569;'>${el.notes}</div>` : ''}
                                         <div style='margin-top: 8px; padding-top: 6px; border-top: 1px solid #E2E8F0; display: flex; gap: 4px;'>
-                                            <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name}')" style='flex: 1; border: none; background: #FEE2E2; color: #DC2626; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>🗑️ Hapus Jalur</button>
+                                            <button onclick="window.imsEditFtthElement(${el.id})" style='flex: 1; border: none; background: #EFF6FF; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>✏️ Edit Rute Jalur</button>
+                                            <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name}')" style='border: none; background: #FEE2E2; color: #DC2626; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>🗑️ Hapus</button>
                                         </div>
                                     </div>
                                 `);
@@ -1816,7 +2686,7 @@
                             }
                         });
 
-                        // 2. Search in Custom Elements (Poles, Handholes, ODC, OLT, Customers, Cables)
+                        // 2. Search in Custom Elements
                         this.customElements.forEach(el => {
                             const text = `${el.name} ${el.element_type} ${el.notes || ''}`.toLowerCase();
                             if (text.includes(q)) {
@@ -1888,7 +2758,6 @@
                         if (!this.mapInstance) return;
 
                         if (item.bounds && item.bounds.length >= 2) {
-                            // Fly to polyline bounds
                             const poly = L.polyline(item.bounds);
                             this.mapInstance.fitBounds(poly.getBounds().pad(0.2));
 
@@ -1896,7 +2765,6 @@
                                 this.highlightMarker(item.lat, item.lng);
                             }
 
-                            // Open popup for line
                             if (this.customLayerGroup) {
                                 this.customLayerGroup.eachLayer(layer => {
                                     if (layer instanceof L.Polyline && !(layer instanceof L.Polygon) && layer.getLatLngs) {
@@ -1908,7 +2776,6 @@
                                 });
                             }
                         } else if (item.lat && item.lng) {
-                            // Fly directly to marker
                             this.mapInstance.flyTo([item.lat, item.lng], 19, {
                                 animate: true,
                                 duration: 1.0
@@ -1916,7 +2783,6 @@
 
                             this.highlightMarker(item.lat, item.lng);
 
-                            // Find and open popup
                             setTimeout(() => {
                                 if (item.category === 'odp' && this.odpLayerGroup) {
                                     this.odpLayerGroup.eachLayer(layer => {
@@ -2097,6 +2963,17 @@
                         URL.revokeObjectURL(url);
                     }
                 };
+            };
+
+            // Global edit helper
+            window.imsEditFtthElement = function(id) {
+                const componentEl = document.querySelector('[x-data*="imsFtthNetworkMapComponent"]');
+                if (componentEl && window.Alpine) {
+                    const alpineData = window.Alpine.$data(componentEl);
+                    if (alpineData && typeof alpineData.startEditElement === 'function') {
+                        alpineData.startEditElement(id);
+                    }
+                }
             };
 
             // Global delete helper

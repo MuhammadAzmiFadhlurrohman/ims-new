@@ -285,6 +285,33 @@ class FtthNetworkMapPage extends Page
         return $element->toArray();
     }
 
+    public function updateElement(int $id, array $data)
+    {
+        $element = FtthNetworkElement::find($id);
+        if (!$element) {
+            $this->dispatch('element-action-failed', ['message' => 'Elemen tidak ditemukan!']);
+            return null;
+        }
+
+        $updateData = [];
+        if (isset($data['name'])) $updateData['name'] = $data['name'];
+        if (array_key_exists('latitude', $data)) $updateData['latitude'] = $data['latitude'] !== null ? (float) $data['latitude'] : null;
+        if (array_key_exists('longitude', $data)) $updateData['longitude'] = $data['longitude'] !== null ? (float) $data['longitude'] : null;
+        if (array_key_exists('path_coordinates', $data)) $updateData['path_coordinates'] = $data['path_coordinates'];
+        if (array_key_exists('length_meters', $data)) $updateData['length_meters'] = (int) $data['length_meters'];
+        if (array_key_exists('notes', $data)) $updateData['notes'] = $data['notes'];
+        if (isset($data['color'])) $updateData['color'] = $data['color'];
+
+        $element->update($updateData);
+
+        $this->dispatch('element-updated', [
+            'message' => 'Perubahan "' . $element->name . '" berhasil disimpan!',
+            'element' => $element->fresh(),
+        ]);
+
+        return $element->toArray();
+    }
+
     public function deleteElement(int $id)
     {
         $element = FtthNetworkElement::find($id);
