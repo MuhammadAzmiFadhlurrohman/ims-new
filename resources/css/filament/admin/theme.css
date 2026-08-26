@@ -2160,3 +2160,38 @@ html.dark .fi-checkbox-list label:hover {
     border-color: #38bdf8 !important;
     color: #e0f2fe !important;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE 2-2-1 FILTER GRID (REGISTRASI & PIPELINE)
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 1023px) {
+    .fi-ta-filters-above-content-ctn form,
+    .fi-ta-filters-above-content-ctn .grid,
+    .fi-ta-filters-above-content-ctn .fi-grid,
+    .fi-ta-filter-form,
+    .fi-ta-filters-form {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 0.65rem !important;
+    }
+
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp,
+    .fi-ta-filters-above-content-ctn .fi-grid-col {
+        grid-column: span 1 !important;
+    }
+
+    .fi-ta-filters-above-content-ctn label,
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label {
+        font-size: 0.72rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 0.25rem !important;
+    }
+
+    .fi-ta-filters-above-content-ctn input,
+    .fi-ta-filters-above-content-ctn select,
+    .fi-ta-filters-above-content-ctn .fi-input,
+    .fi-ta-filters-above-content-ctn .fi-select-input {
+        font-size: 0.75rem !important;
+        height: 38px !important;
+    }
+}

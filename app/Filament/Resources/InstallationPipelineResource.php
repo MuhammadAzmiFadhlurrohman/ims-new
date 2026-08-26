@@ -933,7 +933,13 @@ class InstallationPipelineResource extends Resource
                         'KOTA CIMAHI' => 'KOTA CIMAHI',
                     ]),
             ], layout: Tables\Enums\FiltersLayout::AboveContent)
-            ->filtersFormColumns(5)
+            ->filtersFormColumns([
+                'default' => 2,
+                'sm' => 2,
+                'md' => 3,
+                'lg' => 5,
+                'xl' => 5,
+            ])
 
 
             ->actionsColumnLabel('Aksi')
