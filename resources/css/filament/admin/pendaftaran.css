@@ -515,8 +515,17 @@ html.dark .ims-temp-badge:hover {
         color: #ffffff !important;
     }
 
-    /* 2-Column Fields Grid: Strictly 2 columns on mobile */
-    .fi-ta-filters-above-content-ctn form,
+    /* Form wrapper: MUST be block 100% so its child grid spans full width */
+    .fi-ta-filters-above-content-ctn form {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 2-Column Fields Grid: Strictly 2 columns spanning full width on mobile */
     .fi-ta-filters-above-content-ctn .fi-fo-component-ctn,
     .fi-ta-filters-above-content-ctn form > div {
         display: grid !important;
@@ -528,7 +537,7 @@ html.dark .ims-temp-badge:hover {
         --cols-default: 2 !important;
     }
 
-    /* Each field column wrapper (spans 1 column by default) */
+    /* Each field column wrapper (spans 1 column = 50% width) */
     .fi-ta-filters-above-content-ctn .fi-fo-component-ctn > div,
     .fi-ta-filters-above-content-ctn form > div > div {
         grid-column: span 1 !important;
@@ -539,7 +548,7 @@ html.dark .ims-temp-badge:hover {
         display: block !important;
     }
 
-    /* 5th filter (Wilayah): explicitly stays in column 1 (left side) -> 2 2 1 layout */
+    /* 5th filter (Wilayah): stays in column 1 on row 3 (left side only) -> 2 2 1 layout */
     .fi-ta-filters-above-content-ctn .fi-fo-component-ctn > div:nth-child(5),
     .fi-ta-filters-above-content-ctn form > div > div:nth-child(5) {
         grid-column: 1 / 2 !important;
@@ -570,21 +579,19 @@ html.dark .ims-temp-badge:hover {
         box-sizing: border-box !important;
     }
 
-    /* Field Label: Top of input, clean and readable */
+    /* Field Label: Top of input, clean, readable, full width */
     .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label,
     .fi-ta-filters-above-content-ctn .fi-fo-field-wrp label,
     .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label span {
         display: block !important;
-        font-size: 11.5px !important;
+        font-size: 11px !important;
         font-weight: 700 !important;
         color: #334155 !important;
         letter-spacing: 0.01em !important;
-        margin: 0 0 2px 0 !important;
+        margin: 0 0 3px 0 !important;
         padding: 0 !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
         width: 100% !important;
+        line-height: 1.25 !important;
     }
 
     html.dark .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label,
