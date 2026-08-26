@@ -285,28 +285,28 @@
                                 <template x-for="p in allProjects" :key="p.id">
                                     <div 
                                         @click="switchProject(p.id)"
-                                        style="display: grid !important; grid-template-columns: 1fr auto !important; align-items: center !important; gap: 10px !important; padding: 8px 12px; border-radius: 10px; cursor: pointer !important; user-select: none; transition: all 0.15s ease;"
-                                        :style="currentProject && currentProject.id === p.id ? 'background: #F0FDF4; border: 1.5px solid #86EFAC;' : 'background: #ffffff; border: 1.5px solid #F1F5F9;'"
+                                        style="position: relative !important; width: 100% !important; box-sizing: border-box !important; padding: 10px 48px 10px 12px !important; border-radius: 10px !important; cursor: pointer !important; user-select: none !important; transition: all 0.15s ease !important;"
+                                        :style="currentProject && currentProject.id === p.id ? 'background: #F0FDF4 !important; border: 1.5px solid #86EFAC !important;' : 'background: #ffffff !important; border: 1.5px solid #F1F5F9 !important;'"
                                         onmouseover="if (!this.style.background.includes('240')) this.style.background='#F8FAFC'"
                                         onmouseout="if (!this.style.background.includes('240')) this.style.background='#ffffff'"
                                     >
-                                        <div style="display: flex; align-items: center; gap: 10px; min-width: 0; cursor: pointer !important;">
-                                            <div style="width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; cursor: pointer !important;" :style="'background:' + (p.color || '#0878E5')"></div>
-                                            <div style="min-width: 0; flex: 1; cursor: pointer !important;">
-                                                <div style="font-size: 0.82rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer !important; line-height: 1.25;" x-text="p.name"></div>
-                                                <div style="font-size: 0.68rem; color: #64748B; font-weight: 600; margin-top: 2px; cursor: pointer !important;" x-text="(p.elements_count || 0) + ' objek jaringan'"></div>
+                                        <div style="display: flex !important; align-items: center !important; gap: 10px !important; width: 100% !important; cursor: pointer !important;">
+                                            <div style="width: 12px !important; height: 12px !important; border-radius: 50% !important; flex-shrink: 0 !important; cursor: pointer !important;" :style="'background:' + (p.color || '#0878E5')"></div>
+                                            <div style="flex: 1 !important; min-width: 0 !important; cursor: pointer !important;">
+                                                <div style="font-size: 0.82rem !important; font-weight: 800 !important; color: #0F172A !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; cursor: pointer !important; line-height: 1.25 !important;" x-text="p.name"></div>
+                                                <div style="font-size: 0.68rem !important; color: #64748B !important; font-weight: 600 !important; margin-top: 2px !important; cursor: pointer !important;" x-text="(p.elements_count || 0) + ' objek jaringan'"></div>
                                             </div>
                                         </div>
                                         <button 
                                             type="button" 
                                             x-show="allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'"
                                             @click.stop="deleteProject(p.id, p.name)"
-                                            style="border: 1px solid #FECACA; background: #FEF2F2; color: #EF4444; cursor: pointer !important; padding: 5px; border-radius: 7px; flex-shrink: 0; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease;"
+                                            style="position: absolute !important; right: 10px !important; top: 50% !important; transform: translateY(-50%) !important; z-index: 20 !important; border: 1px solid #FECACA !important; background: #FEF2F2 !important; color: #EF4444 !important; cursor: pointer !important; padding: 5px !important; border-radius: 7px !important; width: 28px !important; height: 28px !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: all 0.15s ease !important;"
                                             title="Hapus proyek ini"
                                             onmouseover="this.style.background='#FEE2E2'; this.style.borderColor='#F87171';"
                                             onmouseout="this.style.background='#FEF2F2'; this.style.borderColor='#FECACA';"
                                         >
-                                            <svg style="width: 14px; height: 14px; color: #EF4444; pointer-events: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                            <svg style="width: 14px !important; height: 14px !important; color: #EF4444 !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                         </button>
                                     </div>
                                 </template>
