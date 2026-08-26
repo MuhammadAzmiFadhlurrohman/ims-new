@@ -255,7 +255,7 @@
                     <div style="display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; flex-shrink: 0; overflow: visible !important;">
                         
                         {{-- Project Selector Dropdown --}}
-                        <div style="position: relative;">
+                        <div style="position: relative;" @click.outside="openProjectMenu = false">
                             <button 
                                 type="button" 
                                 @click="openProjectMenu = !openProjectMenu; openMarkerMenu = false; openLineMenu = false; openMapTypeMenu = false;" 
@@ -405,7 +405,6 @@
 
                             <div 
                                 x-show="openProjectMenu" 
-                                @click.outside="openProjectMenu = false"
                                 x-cloak
                                 class="ims-prj-menu-box"
                             >
@@ -426,7 +425,7 @@
                                 <div style="display: flex; flex-direction: column; gap: 10px;">
                                     <template x-for="p in allProjects" :key="p.id">
                                         <div 
-                                            @click="switchProject(p.id)"
+                                            @click="switchProject(p.id); openProjectMenu = false;"
                                             class="ims-prj-card-item"
                                             :class="currentProject && currentProject.id === p.id ? 'is-active' : ''"
                                         >
@@ -443,24 +442,24 @@
 
                                             {{-- Right: Trash Icon in Rounded Box OR Active Badge --}}
                                             <div class="ims-prj-right-col">
-                                                {{-- Active Badge in Rounded Box (Gambar 2) --}}
-                                                <span 
-                                                    x-show="currentProject && currentProject.id === p.id"
-                                                    class="ims-prj-active-pill"
-                                                >Active</span>
+                                                {{-- Active Badge in Rounded Box (Shown ONLY for active project) --}}
+                                                <template x-if="currentProject && currentProject.id === p.id">
+                                                    <span class="ims-prj-active-pill">Active</span>
+                                                </template>
 
-                                                {{-- Trash Button in Rounded Box (Gambar 2) --}}
-                                                <button 
-                                                    type="button" 
-                                                    x-show="(!currentProject || currentProject.id !== p.id) && allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'"
-                                                    @click.stop="deleteProject(p.id, p.name)"
-                                                    class="ims-prj-del-btn"
-                                                    title="Hapus proyek ini"
-                                                >
-                                                    <svg width="18" height="18" style="width: 18px !important; height: 18px !important; min-width: 18px !important; max-width: 18px !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                    </svg>
-                                                </button>
+                                                {{-- Trash Button in Rounded Box (Shown ONLY for deletable inactive projects) --}}
+                                                <template x-if="(!currentProject || currentProject.id !== p.id) && allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'">
+                                                    <button 
+                                                        type="button" 
+                                                        @click.stop="deleteProject(p.id, p.name)"
+                                                        class="ims-prj-del-btn"
+                                                        title="Hapus proyek ini"
+                                                    >
+                                                        <svg width="18" height="18" style="width: 18px !important; height: 18px !important; min-width: 18px !important; max-width: 18px !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                        </svg>
+                                                    </button>
+                                                </template>
                                             </div>
                                         </div>
                                     </template>
@@ -1218,6 +1217,10 @@
 
                         // Map click handler
                         this.mapInstance.on('click', (e) => {
+                            this.openProjectMenu = false;
+                            this.openMarkerMenu = false;
+                            this.openLineMenu = false;
+                            this.openMapTypeMenu = false;
                             this.handleMapClick(e.latlng.lat, e.latlng.lng);
                         });
 
