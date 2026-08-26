@@ -460,7 +460,7 @@ html.dark .ims-temp-badge:hover {
         display: none !important;
     }
 
-    /* ── A. 2-COLUMN MOBILE FILTERS CONTAINER (2-2-1 LAYOUT) ── */
+    /* ── A. FULL-WIDTH MOBILE FILTERS CONTAINER (< 1024px) ── */
     .fi-ta-filters-above-content-ctn {
         display: block !important;
         width: 100% !important;
@@ -468,7 +468,7 @@ html.dark .ims-temp-badge:hover {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 16px !important;
-        padding: 12px 10px !important;
+        padding: 14px 12px !important;
         margin-bottom: 12px !important;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
         box-sizing: border-box !important;
@@ -483,7 +483,7 @@ html.dark .ims-temp-badge:hover {
     .fi-ta-filters {
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
+        gap: 12px !important;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
@@ -496,7 +496,7 @@ html.dark .ims-temp-badge:hover {
         justify-content: space-between !important;
         align-items: center !important;
         width: 100% !important;
-        padding-bottom: 8px !important;
+        padding-bottom: 10px !important;
         border-bottom: 1px solid #f1f5f9 !important;
     }
 
@@ -505,7 +505,7 @@ html.dark .ims-temp-badge:hover {
     }
 
     .fi-ta-filters > div:first-child h4 {
-        font-size: 13.5px !important;
+        font-size: 14px !important;
         font-weight: 800 !important;
         color: #0f172a !important;
         margin: 0 !important;
@@ -525,34 +525,36 @@ html.dark .ims-temp-badge:hover {
         box-sizing: border-box !important;
     }
 
-    /* 2-Column Fields Grid: Strictly 2 columns spanning full width on mobile */
+    /* 1-Column Fields Grid: Full width per filter row on mobile */
     .fi-ta-filters-above-content-ctn .fi-fo-component-ctn,
     .fi-ta-filters-above-content-ctn form > div {
         display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 12px 8px !important;
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
-        --cols-default: 2 !important;
+        --cols-default: 1 !important;
     }
 
-    /* Each field column wrapper (spans 1 column = 50% width) */
+    /* Each field column wrapper (spans full width = 100%) */
     .fi-ta-filters-above-content-ctn .fi-fo-component-ctn > div,
     .fi-ta-filters-above-content-ctn form > div > div {
-        grid-column: span 1 !important;
+        grid-column: 1 / -1 !important;
         width: 100% !important;
-        min-width: 0 !important;
+        min-width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
         display: block !important;
     }
 
-    /* 5th filter (Wilayah): stays in column 1 on row 3 (left side only) -> 2 2 1 layout */
+    /* 5th filter (Wilayah): also spans full width on mobile */
     .fi-ta-filters-above-content-ctn .fi-fo-component-ctn > div:nth-child(5),
     .fi-ta-filters-above-content-ctn form > div > div:nth-child(5) {
-        grid-column: 1 / 2 !important;
+        grid-column: 1 / -1 !important;
         width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
     }
 
     /* Each Field Component */
@@ -560,7 +562,7 @@ html.dark .ims-temp-badge:hover {
         display: flex !important;
         flex-direction: column !important;
         width: 100% !important;
-        min-width: 0 !important;
+        min-width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
         box-sizing: border-box !important;
@@ -571,9 +573,9 @@ html.dark .ims-temp-badge:hover {
     .fi-ta-filters-above-content-ctn .fi-fo-field-wrp .grid {
         display: flex !important;
         flex-direction: column !important;
-        gap: 3px !important;
+        gap: 4px !important;
         width: 100% !important;
-        min-width: 0 !important;
+        min-width: 100% !important;
         max-width: 100% !important;
         grid-template-columns: none !important;
         box-sizing: border-box !important;
@@ -584,7 +586,7 @@ html.dark .ims-temp-badge:hover {
     .fi-ta-filters-above-content-ctn .fi-fo-field-wrp label,
     .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label span {
         display: block !important;
-        font-size: 11px !important;
+        font-size: 11.5px !important;
         font-weight: 700 !important;
         color: #334155 !important;
         letter-spacing: 0.01em !important;
@@ -600,19 +602,19 @@ html.dark .ims-temp-badge:hover {
         color: #cbd5e1 !important;
     }
 
-    /* Field Input Container */
+    /* Field Input Container (spans 100% to the right) */
     .fi-ta-filters-above-content-ctn .fi-input-wrp {
         display: flex !important;
         align-items: center !important;
         width: 100% !important;
-        min-width: 0 !important;
+        min-width: 100% !important;
         max-width: 100% !important;
-        height: 36px !important;
-        min-height: 36px !important;
+        height: 38px !important;
+        min-height: 38px !important;
         background: #f1f5f9 !important;
         border: 1.5px solid #cbd5e1 !important;
-        border-radius: 9px !important;
-        padding: 0 6px !important;
+        border-radius: 10px !important;
+        padding: 0 10px !important;
         box-sizing: border-box !important;
         box-shadow: none !important;
         flex: 1 1 100% !important;
@@ -640,7 +642,7 @@ html.dark .ims-temp-badge:hover {
         display: flex !important;
         flex: 1 1 100% !important;
         width: 100% !important;
-        min-width: 0 !important;
+        min-width: 100% !important;
         max-width: 100% !important;
         height: 100% !important;
         align-items: center !important;
@@ -652,16 +654,16 @@ html.dark .ims-temp-badge:hover {
     .fi-ta-filters-above-content-ctn .fi-input {
         display: block !important;
         width: 100% !important;
-        min-width: 0 !important;
+        min-width: 100% !important;
         max-width: 100% !important;
         height: 100% !important;
         border: none !important;
         background: transparent !important;
-        font-size: 10.5px !important;
+        font-size: 11.5px !important;
         font-weight: 600 !important;
         color: #0f172a !important;
         outline: none !important;
-        padding: 0 2px !important;
+        padding: 0 4px !important;
         margin: 0 !important;
         box-sizing: border-box !important;
         flex: 1 1 100% !important;
@@ -669,8 +671,8 @@ html.dark .ims-temp-badge:hover {
 
     .fi-ta-filters-above-content-ctn .fi-input-wrp select,
     .fi-ta-filters-above-content-ctn .fi-select-input {
-        padding-right: 14px !important;
-        background-position: right 2px center !important;
+        padding-right: 20px !important;
+        background-position: right 6px center !important;
     }
 
     html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp select,
