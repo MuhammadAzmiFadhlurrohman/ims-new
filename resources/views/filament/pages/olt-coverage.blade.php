@@ -427,11 +427,29 @@
                         });
 
                         // Google Maps Roadmap tile layer
-                        L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                        this.tileLayers['roadmap'] = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
                             maxZoom: 20,
                             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
                             tileSize: 256
-                        }).addTo(this.mapInstance);
+                        });
+
+                        // Google Maps Hybrid Satellite tile layer
+                        this.tileLayers['hybrid'] = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                            maxZoom: 20,
+                            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                            tileSize: 256
+                        });
+
+                        // Google Maps Terrain / Medan tile layer
+                        this.tileLayers['terrain'] = L.tileLayer('https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+                            maxZoom: 20,
+                            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                            tileSize: 256
+                        });
+
+                        // Add default roadmap layer
+                        this.tileLayers['roadmap'].addTo(this.mapInstance);
+                        this.mapMode = 'roadmap';
 
                         this.odpMarkersLayer = L.layerGroup().addTo(this.mapInstance);
                         this.renderAllOdpMarkers();
@@ -452,9 +470,19 @@
 
                     setMapMode(mode) {
                         if (!this.mapInstance || !this.tileLayers[mode]) return;
-                        this.mapInstance.removeLayer(this.tileLayers[this.mapMode]);
+                        if (this.tileLayers[this.mapMode]) {
+                            this.mapInstance.removeLayer(this.tileLayers[this.mapMode]);
+                        }
                         this.mapMode = mode;
                         this.tileLayers[mode].addTo(this.mapInstance);
+                    },
+
+                    resetMapView() {
+                        if (!this.mapInstance || !this.odpMarkersLayer) return;
+                        const layers = this.odpMarkersLayer.getLayers();
+                        if (layers.length > 0) {
+                            this.mapInstance.fitBounds(L.featureGroup(layers).getBounds().pad(0.15));
+                        }
                     },
 
                     renderAllOdpMarkers() {
