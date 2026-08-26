@@ -285,28 +285,28 @@
                                 <template x-for="p in allProjects" :key="p.id">
                                     <div 
                                         @click="switchProject(p.id)"
-                                        style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 10px; cursor: pointer; transition: all 0.15s ease;"
-                                        :style="currentProject && currentProject.id === p.id ? 'background: #F0FDF4; border: 1.5px solid #86EFAC;' : 'background: #ffffff; border: 1.5px solid transparent;'"
+                                        style="display: grid !important; grid-template-columns: 1fr auto !important; align-items: center !important; gap: 10px !important; padding: 8px 12px; border-radius: 10px; cursor: pointer !important; user-select: none; transition: all 0.15s ease;"
+                                        :style="currentProject && currentProject.id === p.id ? 'background: #F0FDF4; border: 1.5px solid #86EFAC;' : 'background: #ffffff; border: 1.5px solid #F1F5F9;'"
                                         onmouseover="if (!this.style.background.includes('240')) this.style.background='#F8FAFC'"
                                         onmouseout="if (!this.style.background.includes('240')) this.style.background='#ffffff'"
                                     >
-                                        <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
-                                            <div style="width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;" :style="'background:' + (p.color || '#0878E5')"></div>
-                                            <div style="min-width: 0; flex: 1;">
-                                                <div style="font-size: 0.8rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="p.name"></div>
-                                                <div style="font-size: 0.68rem; color: #64748B; margin-top: 1px;" x-text="(p.elements_count || 0) + ' objek jaringan'"></div>
+                                        <div style="display: flex; align-items: center; gap: 10px; min-width: 0; cursor: pointer !important;">
+                                            <div style="width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; cursor: pointer !important;" :style="'background:' + (p.color || '#0878E5')"></div>
+                                            <div style="min-width: 0; flex: 1; cursor: pointer !important;">
+                                                <div style="font-size: 0.82rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer !important; line-height: 1.25;" x-text="p.name"></div>
+                                                <div style="font-size: 0.68rem; color: #64748B; font-weight: 600; margin-top: 2px; cursor: pointer !important;" x-text="(p.elements_count || 0) + ' objek jaringan'"></div>
                                             </div>
                                         </div>
                                         <button 
                                             type="button" 
                                             x-show="allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'"
                                             @click.stop="deleteProject(p.id, p.name)"
-                                            style="border: none; background: transparent; color: #EF4444; cursor: pointer; padding: 4px 6px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease;"
+                                            style="border: 1px solid #FECACA; background: #FEF2F2; color: #EF4444; cursor: pointer !important; padding: 5px; border-radius: 7px; flex-shrink: 0; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease;"
                                             title="Hapus proyek ini"
-                                            onmouseover="this.style.background='#FEE2E2'"
-                                            onmouseout="this.style.background='transparent'"
+                                            onmouseover="this.style.background='#FEE2E2'; this.style.borderColor='#F87171';"
+                                            onmouseout="this.style.background='#FEF2F2'; this.style.borderColor='#FECACA';"
                                         >
-                                            <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                            <svg style="width: 14px; height: 14px; color: #EF4444; pointer-events: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                         </button>
                                     </div>
                                 </template>
