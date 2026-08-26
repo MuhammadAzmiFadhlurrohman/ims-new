@@ -2027,3 +2027,136 @@ body.swal2-toast-shown .swal2-container .swal2-popup.swal2-toast,
 .ims-swal-toast {
     pointer-events: auto !important;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   IMS ONE – ACTION MODALS & WORKFLOW FORM ENHANCEMENTS
+   ══════════════════════════════════════════════════════════════ */
+.fi-modal-window {
+    border-radius: 18px !important;
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
+    overflow: hidden !important;
+}
+
+html.dark .fi-modal-window {
+    border: 1px solid rgba(30, 41, 59, 0.8) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+}
+
+.fi-modal-header {
+    padding: 1.1rem 1.5rem !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    background: linear-gradient(to right, #f8fafc, #ffffff) !important;
+}
+
+html.dark .fi-modal-header {
+    border-bottom: 1px solid #1e293b !important;
+    background: linear-gradient(to right, #0f172a, #1e293b) !important;
+}
+
+.fi-modal-heading {
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.01em !important;
+}
+
+html.dark .fi-modal-heading {
+    color: #f8fafc !important;
+}
+
+.fi-modal-footer,
+.fi-modal-window footer {
+    padding: 0.9rem 1.5rem !important;
+    border-top: 1px solid #f1f5f9 !important;
+    background: #f8fafc !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0.75rem !important;
+}
+
+html.dark .fi-modal-footer,
+html.dark .fi-modal-window footer {
+    border-top: 1px solid #1e293b !important;
+    background: #0f172a !important;
+}
+
+/* ── Modal Submit Button ── */
+.fi-modal-window footer button.fi-btn-primary,
+.fi-modal-window footer button[type="submit"] {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    font-size: 0.82rem !important;
+    padding: 0.55rem 1.35rem !important;
+    border-radius: 9px !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35) !important;
+    transition: all 0.15s ease-in-out !important;
+    cursor: pointer !important;
+}
+
+.fi-modal-window footer button.fi-btn-primary:hover,
+.fi-modal-window footer button[type="submit"]:hover {
+    background: linear-gradient(135deg, #0369a1 0%, #075985 100%) !important;
+    box-shadow: 0 6px 16px rgba(2, 132, 199, 0.45) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ── Modal Cancel Button ── */
+.fi-modal-window footer button.fi-btn-color-gray,
+.fi-modal-window footer button[x-on\:click*="close"],
+.fi-modal-window footer button:has-text("Batal"),
+.fi-modal-window footer button:has-text("Cancel") {
+    background: #ffffff !important;
+    color: #64748b !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    padding: 0.55rem 1.15rem !important;
+    border-radius: 9px !important;
+    border: 1px solid #cbd5e1 !important;
+    transition: all 0.15s ease-in-out !important;
+    cursor: pointer !important;
+}
+
+html.dark .fi-modal-window footer button.fi-btn-color-gray {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+    border-color: #334155 !important;
+}
+
+/* ── Checkbox List Items (Technicians & Teams) ── */
+.fi-fo-checkbox-list .fi-checkbox-list-option-label,
+.fi-checkbox-list label {
+    padding: 0.45rem 0.65rem !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    transition: all 0.15s ease !important;
+    cursor: pointer !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+}
+
+.fi-fo-checkbox-list .fi-checkbox-list-option-label:hover,
+.fi-checkbox-list label:hover {
+    background: #f0f9ff !important;
+    border-color: #7dd3fc !important;
+    color: #0369a1 !important;
+}
+
+html.dark .fi-fo-checkbox-list .fi-checkbox-list-option-label,
+html.dark .fi-checkbox-list label {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    color: #cbd5e1 !important;
+}
+
+html.dark .fi-fo-checkbox-list .fi-checkbox-list-option-label:hover,
+html.dark .fi-checkbox-list label:hover {
+    background: #0c4a6e !important;
+    border-color: #38bdf8 !important;
+    color: #e0f2fe !important;
+}

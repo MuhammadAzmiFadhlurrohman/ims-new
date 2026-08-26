@@ -1107,38 +1107,70 @@ class InstallationPipelineResource extends Resource
                         'odp_code' => $record->odp_code ?? null,
                     ])
                     ->form([
-                        Forms\Components\Checkbox::make('is_reschedule')
-                            ->label('Jadwal Ulang Survey ?  Ya, Jadwal Ulang')
-                            ->helperText('Centang jika survey perlu dijadwalkan ulang')
-                            ->reactive(),
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('reschedule_notice_survey')
+                                ->label('')
+                                ->content(new \Illuminate\Support\HtmlString("
+                                    <div class='flex items-center gap-2.5 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl mb-1'>
+                                        <span class='text-base'>⚠️</span>
+                                        <div class='text-xs font-semibold text-amber-800 dark:text-amber-300'>
+                                            Centang opsi di bawah jika proses survey lapangan perlu dijadwalkan ulang.
+                                        </div>
+                                    </div>
+                                "))
+                                ->visible(fn (Forms\Get $get) => (bool) $get('is_reschedule')),
+
+                            Forms\Components\Checkbox::make('is_reschedule')
+                                ->label('Jadwal Ulang Survey ? (Reschedule)')
+                                ->helperText('Centang jika survey perlu dijadwalkan ulang ke hari lain')
+                                ->reactive(),
+                        ])->columnSpanFull(),
 
                         Forms\Components\Grid::make(2)
                             ->schema([
+                                // ── Kolom Kiri: Hasil Survey & Perangkat Distribusi ──
                                 Forms\Components\Group::make([
+                                    Forms\Components\Placeholder::make('header_info_survey')
+                                        ->label('')
+                                        ->content(new \Illuminate\Support\HtmlString("
+                                            <div style='display: flex; align-items: center; gap: 6px; margin-bottom: 8px;'>
+                                                <span style='font-size: 12px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 0.03em;'>📅 Hasil & Kelayakan Survey</span>
+                                            </div>
+                                        ")),
+
                                     Forms\Components\Grid::make(2)
                                         ->schema([
                                             Forms\Components\DatePicker::make('survey_finished_at')
                                                 ->label('Selesai Survey *')
-                                                ->placeholder('Tanggal Survey')
+                                                ->placeholder('Pilih Tanggal')
                                                 ->default(now())
                                                 ->required(),
 
                                             Forms\Components\TextInput::make('survey_finished_note')
                                                 ->label('Catatan Selesai Survey *')
-                                                ->placeholder('catatan Survey')
+                                                ->placeholder('Contoh: Redaman baik (-18dB)')
                                                 ->required(),
                                         ]),
 
                                     Forms\Components\Radio::make('is_installable')
-                                        ->label('Bisa Dilakukan Pemasangan *')
+                                        ->label('Bisa Dilakukan Pemasangan ? *')
                                         ->options([
-                                            1 => 'YA',
-                                            0 => 'Tidak',
+                                            1 => 'YA, BISA DIPASANG',
+                                            0 => 'TIDAK TERCOVER / KENDALA',
                                         ])
                                         ->inline()
                                         ->default(1)
                                         ->required()
                                         ->reactive()
+                                        ->hidden(fn (Forms\Get $get) => (bool) $get('is_reschedule')),
+
+                                    Forms\Components\Placeholder::make('header_odp_survey')
+                                        ->label('')
+                                        ->content(new \Illuminate\Support\HtmlString("
+                                            <div style='display: flex; align-items: center; gap: 6px; margin-top: 12px; margin-bottom: 6px;'>
+                                                <span style='font-size: 12px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 0.03em;'>📍 Titik Distribusi Jaringan (OLT / ODP)</span>
+                                            </div>
+                                        "))
                                         ->hidden(fn (Forms\Get $get) => (bool) $get('is_reschedule')),
 
                                     Forms\Components\Grid::make(3)
@@ -1196,7 +1228,7 @@ class InstallationPipelineResource extends Resource
                                         ]),
 
                                     Forms\Components\FileUpload::make('mapping_photo')
-                                        ->label('Update Foto Mapping')
+                                        ->label('Foto Mapping & Lokasi')
                                         ->image()
                                         ->disk('public')
                                         ->directory('survey-mappings')
@@ -1205,9 +1237,18 @@ class InstallationPipelineResource extends Resource
                                         ->hidden(fn (Forms\Get $get) => (bool) $get('is_reschedule')),
                                 ]),
 
+                                // ── Kolom Kanan: Tim Survey & Material ──
                                 Forms\Components\Group::make([
+                                    Forms\Components\Placeholder::make('header_tim_survey')
+                                        ->label('')
+                                        ->content(new \Illuminate\Support\HtmlString("
+                                            <div style='display: flex; align-items: center; gap: 6px; margin-bottom: 8px;'>
+                                                <span style='font-size: 12px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 0.03em;'>👷 Tim Teknisi Survey *</span>
+                                            </div>
+                                        ")),
+
                                     Forms\Components\CheckboxList::make('survey_team')
-                                        ->label('Team Survey *')
+                                        ->label('Pilih Tim Survey')
                                         ->options(static::getTechnicianOptions())
                                         ->columns(2)
                                         ->required(),
@@ -1387,40 +1428,81 @@ class InstallationPipelineResource extends Resource
                         'installation_mapping_photo' => $record->installation_mapping_photo ?? $record->mapping_photo,
                     ])
                     ->form([
-                        Forms\Components\Checkbox::make('is_reschedule')
-                            ->label('Jadwal Ulang Pemasangan ?  Ya, Jadwal Ulang')
-                            ->helperText('Centang jika instalasi perlu dijadwalkan ulang')
-                            ->reactive(),
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('reschedule_notice')
+                                ->label('')
+                                ->content(new \Illuminate\Support\HtmlString("
+                                    <div class='flex items-center gap-2.5 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl mb-1'>
+                                        <span class='text-base'>⚠️</span>
+                                        <div class='text-xs font-semibold text-amber-800 dark:text-amber-300'>
+                                            Centang opsi di bawah jika proses pemasangan / instalasi perlu dijadwalkan ulang karena kendala di lapangan.
+                                        </div>
+                                    </div>
+                                "))
+                                ->visible(fn (Forms\Get $get) => (bool) $get('is_reschedule')),
+
+                            Forms\Components\Checkbox::make('is_reschedule')
+                                ->label('Jadwal Ulang Pemasangan ? (Reschedule)')
+                                ->helperText('Centang jika instalasi perlu dijadwalkan ulang ke hari lain')
+                                ->reactive(),
+                        ])->columnSpanFull(),
 
                         Forms\Components\Grid::make(2)
                             ->schema([
+                                // ── Kolom Kiri: Tanggal, Catatan & Foto Bukti ──
                                 Forms\Components\Group::make([
+                                    Forms\Components\Placeholder::make('header_info_instalasi')
+                                        ->label('')
+                                        ->content(new \Illuminate\Support\HtmlString("
+                                            <div style='display: flex; align-items: center; gap: 6px; margin-bottom: 8px;'>
+                                                <span style='font-size: 12px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 0.03em;'>📅 Hasil & Catatan Selesai Instalasi</span>
+                                            </div>
+                                        ")),
+
                                     Forms\Components\Grid::make(2)
                                         ->schema([
                                             Forms\Components\DatePicker::make('installation_finished_at')
                                                 ->label('Selesai Instalasi *')
-                                                ->placeholder('Tanggal Instalasi')
+                                                ->placeholder('Pilih Tanggal')
                                                 ->default(now())
                                                 ->required(),
 
                                             Forms\Components\TextInput::make('installation_finished_note')
                                                 ->label('Catatan Selesai Instalasi *')
-                                                ->placeholder('catatan Instalasi')
+                                                ->placeholder('Contoh: Penarikan FO & ONT OK')
                                                 ->required(),
                                         ]),
 
+                                    Forms\Components\Placeholder::make('header_foto_instalasi')
+                                        ->label('')
+                                        ->content(new \Illuminate\Support\HtmlString("
+                                            <div style='display: flex; align-items: center; gap: 6px; margin-top: 12px; margin-bottom: 6px;'>
+                                                <span style='font-size: 12px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 0.03em;'>📷 Dokumentasi / Update Foto Mapping</span>
+                                            </div>
+                                        ")),
+
                                     Forms\Components\FileUpload::make('installation_mapping_photo')
-                                        ->label('Update Foto Mapping')
+                                        ->label('Foto Bukti / Mapping Lapangan')
                                         ->image()
                                         ->disk('public')
                                         ->directory('installation-mappings')
                                         ->visibility('public')
-                                        ->maxSize(10240),
+                                        ->maxSize(10240)
+                                        ->helperText('Format JPG/PNG/WEBP, maksimal 10MB'),
                                 ]),
 
+                                // ── Kolom Kanan: Tim Teknisi & Perangkat ──
                                 Forms\Components\Group::make([
+                                    Forms\Components\Placeholder::make('header_tim_instalasi')
+                                        ->label('')
+                                        ->content(new \Illuminate\Support\HtmlString("
+                                            <div style='display: flex; align-items: center; gap: 6px; margin-bottom: 8px;'>
+                                                <span style='font-size: 12px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 0.03em;'>👷 Tim Teknisi Bertugas *</span>
+                                            </div>
+                                        ")),
+
                                     Forms\Components\CheckboxList::make('installation_team')
-                                        ->label('Team Instalasi *')
+                                        ->label('Pilih Teknisi Lapangan')
                                         ->options(static::getTechnicianOptions())
                                         ->columns(2)
                                         ->required(),

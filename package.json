@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "test:e2e": "node tests/e2e/run_full_lifecycle_flow.js"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
