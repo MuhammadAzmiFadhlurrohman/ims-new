@@ -1819,7 +1819,9 @@
 
                         this.mapInstance = L.map('ims-ftth-builder-canvas', {
                             center: [defaultLat, defaultLng],
-                            zoom: 16,
+                            zoom: 17,
+                            minZoom: 3,
+                            maxZoom: 22,
                             preferCanvas: true,
                             zoomControl: false,
                             attributionControl: false
@@ -1828,16 +1830,18 @@
                         // Zoom control (+ and -) positioned on the right (bottom-right)
                         L.control.zoom({ position: 'bottomright' }).addTo(this.mapInstance);
 
-                        // Google Maps Roadmap tile layer
+                        // Google Maps Roadmap tile layer (supports deep zoom up to 22)
                         this.tileLayers['roadmap'] = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-                            maxZoom: 20,
+                            maxZoom: 22,
+                            maxNativeZoom: 20,
                             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
                             tileSize: 256
                         }).addTo(this.mapInstance);
 
                         // Hybrid satellite
                         this.tileLayers['hybrid'] = L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
-                            maxZoom: 20,
+                            maxZoom: 22,
+                            maxNativeZoom: 20,
                             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
                             tileSize: 256
                         });
@@ -1851,8 +1855,17 @@
                         this.renderCustomElements();
 
                         setTimeout(() => {
-                            if (this.mapInstance) this.mapInstance.invalidateSize();
-                        }, 300);
+                            if (this.mapInstance) {
+                                this.mapInstance.invalidateSize();
+                                if (this.customElements && this.customElements.length > 0 && this.customLayerGroup) {
+                                    const layers = this.customLayerGroup.getLayers();
+                                    if (layers.length > 0) {
+                                        const group = L.featureGroup(layers);
+                                        this.mapInstance.fitBounds(group.getBounds().pad(0.12), { maxZoom: 18 });
+                                    }
+                                }
+                            }
+                        }, 350);
 
                         // Map click handler
                         this.mapInstance.on('click', (e) => {
