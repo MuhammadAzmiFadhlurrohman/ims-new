@@ -15,7 +15,9 @@
                 box-shadow: 0 4px 20px rgba(8, 120, 229, 0.06);
                 overflow: hidden;
             }
-            .ims-map-card.is-fullscreen {
+            #ims-ftth-map-card-root:fullscreen,
+            #ims-ftth-map-card-root:-webkit-full-screen,
+            #ims-ftth-map-card-root.is-fullscreen {
                 position: fixed !important;
                 top: 0 !important;
                 left: 0 !important;
@@ -23,7 +25,7 @@
                 height: 100vh !important;
                 max-width: 100vw !important;
                 max-height: 100vh !important;
-                z-index: 9999999 !important;
+                z-index: 99999999 !important;
                 border-radius: 0 !important;
                 margin: 0 !important;
                 border: none !important;
@@ -32,10 +34,13 @@
                 flex-direction: column !important;
                 background: #ffffff !important;
             }
-            .ims-map-card.is-fullscreen .ims-map-canvas {
+            #ims-ftth-map-card-root:fullscreen .ims-map-canvas,
+            #ims-ftth-map-card-root:-webkit-full-screen .ims-map-canvas,
+            #ims-ftth-map-card-root.is-fullscreen .ims-map-canvas {
                 flex: 1 !important;
-                height: calc(100vh - 105px) !important;
-                min-height: calc(100vh - 105px) !important;
+                height: calc(100vh - 100px) !important;
+                min-height: calc(100vh - 100px) !important;
+                width: 100% !important;
             }
             .ims-map-canvas {
                 width: 100% !important;
@@ -232,9 +237,9 @@
 
         {{-- ── 2. UNIFIED GIS TOOLBAR & MAP CONTAINER ── --}}
         <div 
+            id="ims-ftth-map-card-root"
             class="ims-map-card" 
             :class="isFullscreen ? 'is-fullscreen' : ''"
-            @keydown.window.escape="if (isFullscreen) toggleFullscreen()"
             style="overflow: visible !important; position: relative; z-index: 50;"
         >
             
@@ -728,6 +733,20 @@
                             if (typeof IMS !== 'undefined' && typeof IMS.error === 'function') {
                                 IMS.error(data.message || 'Gagal mengimpor file KMZ!');
                             }
+                        });
+
+                        // Browser native fullscreen change listeners
+                        document.addEventListener('fullscreenchange', () => {
+                            this.isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+                            setTimeout(() => {
+                                if (this.mapInstance) this.mapInstance.invalidateSize();
+                            }, 200);
+                        });
+                        document.addEventListener('webkitfullscreenchange', () => {
+                            this.isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+                            setTimeout(() => {
+                                if (this.mapInstance) this.mapInstance.invalidateSize();
+                            }, 200);
                         });
                     },
 
@@ -1442,20 +1461,30 @@
                     },
 
                     toggleFullscreen() {
-                        this.isFullscreen = !this.isFullscreen;
-                        if (this.isFullscreen) {
-                            document.body.style.overflow = 'hidden';
-                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                                IMS.toast('Mode Layar Penuh aktif. Tekan tombol Esc untuk keluar.', 'info', 2500);
+                        const el = document.getElementById('ims-ftth-map-card-root');
+                        if (!el) return;
+
+                        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                            if (el.requestFullscreen) {
+                                el.requestFullscreen().catch(() => {
+                                    this.isFullscreen = true;
+                                    setTimeout(() => this.mapInstance && this.mapInstance.invalidateSize(), 200);
+                                });
+                            } else if (el.webkitRequestFullscreen) {
+                                el.webkitRequestFullscreen();
+                            } else {
+                                this.isFullscreen = true;
+                                setTimeout(() => this.mapInstance && this.mapInstance.invalidateSize(), 200);
                             }
                         } else {
-                            document.body.style.overflow = '';
-                        }
-                        setTimeout(() => {
-                            if (this.mapInstance) {
-                                this.mapInstance.invalidateSize();
+                            if (document.exitFullscreen) {
+                                document.exitFullscreen().catch(() => {});
+                            } else if (document.webkitExitFullscreen) {
+                                document.webkitExitFullscreen();
                             }
-                        }, 200);
+                            this.isFullscreen = false;
+                            setTimeout(() => this.mapInstance && this.mapInstance.invalidateSize(), 200);
+                        }
                     },
 
                     calculateDistanceMeters(lat1, lon1, lat2, lon2) {
