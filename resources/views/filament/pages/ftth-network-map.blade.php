@@ -289,36 +289,40 @@
                                     <template x-for="p in allProjects" :key="p.id">
                                         <div 
                                             @click="switchProject(p.id)"
-                                            style="display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: space-between !important; gap: 14px !important; width: 100% !important; box-sizing: border-box !important; padding: 12px 14px !important; border-radius: 12px !important; cursor: pointer !important; user-select: none !important; transition: all 0.15s ease !important;"
-                                            :style="currentProject && currentProject.id === p.id 
-                                                ? 'background: #F0FDF4 !important; border: 2px solid #16A34A !important; box-shadow: 0 3px 10px rgba(22,163,74,0.1) !important;' 
-                                                : 'background: #FFFFFF !important; border: 2px solid #0F172A !important; box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;'"
-                                            onmouseover="if (!this.style.background.includes('240')) { this.style.background='#F8FAFC'; }"
-                                            onmouseout="if (!this.style.background.includes('240')) { this.style.background='#FFFFFF'; }"
+                                            style="display: grid !important; grid-template-columns: 1fr auto !important; align-items: center !important; gap: 16px !important; width: 100% !important; box-sizing: border-box !important; padding: 12px 16px !important; border: 2px solid #000000 !important; border-radius: 12px !important; background: #FFFFFF !important; cursor: pointer !important; user-select: none !important; transition: all 0.15s ease !important;"
+                                            onmouseover="this.style.background='#F8FAFC'"
+                                            onmouseout="this.style.background='#FFFFFF'"
                                         >
                                             {{-- Left: Folder Icon + Title on Row 1, Subtitle on Row 2 --}}
-                                            <div style="min-width: 0 !important; flex: 1 1 auto !important; text-align: left !important;">
-                                                <div style="display: flex !important; align-items: center !important; gap: 8px !important;">
-                                                    <svg style="width: 20px !important; height: 20px !important; flex-shrink: 0 !important; color: #0F172A !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                                            <div style="min-width: 0 !important; overflow: hidden !important; text-align: left !important;">
+                                                <div style="display: flex !important; align-items: center !important; gap: 10px !important;">
+                                                    <svg style="width: 24px !important; height: 24px !important; flex-shrink: 0 !important; color: #000000 !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
                                                     </svg>
-                                                    <span style="font-size: 0.92rem !important; font-weight: 800 !important; color: #0F172A !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; line-height: 1.2 !important;" x-text="p.name"></span>
+                                                    <span style="font-size: 1.05rem !important; font-weight: 900 !important; color: #000000 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; line-height: 1.2 !important;" x-text="p.name"></span>
                                                 </div>
-                                                <div style="font-size: 0.76rem !important; color: #64748B !important; font-weight: 500 !important; margin-top: 4px !important; padding-left: 2px !important;" x-text="(p.elements_count || 0) + ' Objek Tersimpan'"></div>
+                                                <div style="font-size: 0.85rem !important; color: #000000 !important; font-weight: 500 !important; margin-top: 4px !important;" x-text="(p.elements_count || 0) + ' Objek Tersimpan'"></div>
                                             </div>
 
-                                            {{-- Right: Trash Icon in Rounded Box --}}
+                                            {{-- Right: Trash Icon in Rounded Box OR Active Badge --}}
                                             <div style="display: flex !important; align-items: center !important; justify-content: flex-end !important; flex-shrink: 0 !important;">
+                                                {{-- Active Badge in Rounded Box (Gambar 2) --}}
+                                                <span 
+                                                    x-show="currentProject && currentProject.id === p.id"
+                                                    style="border: 2px solid #000000 !important; background: #FFFFFF !important; color: #000000 !important; border-radius: 8px !important; padding: 4px 14px !important; font-size: 0.82rem !important; font-weight: 800 !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; white-space: nowrap !important;"
+                                                >Active</span>
+
+                                                {{-- Trash Button in Rounded Box (Gambar 2) --}}
                                                 <button 
                                                     type="button" 
-                                                    x-show="allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'"
+                                                    x-show="(!currentProject || currentProject.id !== p.id) && allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'"
                                                     @click.stop="deleteProject(p.id, p.name)"
-                                                    style="border: 2px solid #0F172A !important; background: #FFFFFF !important; color: #0F172A !important; cursor: pointer !important; padding: 6px !important; border-radius: 8px !important; width: 34px !important; height: 34px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; transition: all 0.15s ease !important;"
+                                                    style="border: 2px solid #000000 !important; background: #FFFFFF !important; color: #000000 !important; cursor: pointer !important; padding: 6px !important; border-radius: 8px !important; width: 38px !important; height: 38px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; transition: all 0.15s ease !important;"
                                                     title="Hapus proyek ini"
                                                     onmouseover="this.style.background='#FEE2E2'; this.style.borderColor='#EF4444'; this.style.color='#EF4444';"
-                                                    onmouseout="this.style.background='#FFFFFF'; this.style.borderColor='#0F172A'; this.style.color='#0F172A';"
+                                                    onmouseout="this.style.background='#FFFFFF'; this.style.borderColor='#000000'; this.style.color='#000000';"
                                                 >
-                                                    <svg style="width: 17px !important; height: 17px !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg style="width: 20px !important; height: 20px !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                                     </svg>
                                                 </button>
