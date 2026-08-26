@@ -264,7 +264,7 @@
                                 title="Pilih atau kelola proyek GIS FTTH"
                             >
                                 <svg style="width: 14px; height: 14px; color: #16A34A;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                                <span>📁 <span x-text="currentProject ? currentProject.name : 'Pilih Proyek'"></span> ▾</span>
+                                <span><span x-text="currentProject ? currentProject.name : 'Pilih Proyek'"></span> ▾</span>
                             </button>
                             
                             <div 
