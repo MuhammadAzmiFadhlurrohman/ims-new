@@ -468,8 +468,8 @@ html.dark .ims-temp-badge:hover {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 16px !important;
-        padding: 16px !important;
-        margin-bottom: 14px !important;
+        padding: 12px 10px !important;
+        margin-bottom: 12px !important;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
         box-sizing: border-box !important;
     }
@@ -483,7 +483,7 @@ html.dark .ims-temp-badge:hover {
     .fi-ta-filters {
         display: flex !important;
         flex-direction: column !important;
-        gap: 12px !important;
+        gap: 10px !important;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
@@ -505,7 +505,7 @@ html.dark .ims-temp-badge:hover {
     }
 
     .fi-ta-filters > div:first-child h4 {
-        font-size: 14px !important;
+        font-size: 13.5px !important;
         font-weight: 800 !important;
         color: #0f172a !important;
         margin: 0 !important;
@@ -530,7 +530,7 @@ html.dark .ims-temp-badge:hover {
     .fi-ta-filters-above-content-ctn form > div {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 14px 12px !important;
+        gap: 12px 8px !important;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
@@ -571,7 +571,7 @@ html.dark .ims-temp-badge:hover {
     .fi-ta-filters-above-content-ctn .fi-fo-field-wrp .grid {
         display: flex !important;
         flex-direction: column !important;
-        gap: 4px !important;
+        gap: 3px !important;
         width: 100% !important;
         min-width: 0 !important;
         max-width: 100% !important;
@@ -588,10 +588,10 @@ html.dark .ims-temp-badge:hover {
         font-weight: 700 !important;
         color: #334155 !important;
         letter-spacing: 0.01em !important;
-        margin: 0 0 3px 0 !important;
+        margin: 0 0 2px 0 !important;
         padding: 0 !important;
         width: 100% !important;
-        line-height: 1.25 !important;
+        line-height: 1.2 !important;
     }
 
     html.dark .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label,
@@ -607,12 +607,12 @@ html.dark .ims-temp-badge:hover {
         width: 100% !important;
         min-width: 0 !important;
         max-width: 100% !important;
-        height: 38px !important;
-        min-height: 38px !important;
+        height: 36px !important;
+        min-height: 36px !important;
         background: #f1f5f9 !important;
         border: 1.5px solid #cbd5e1 !important;
-        border-radius: 10px !important;
-        padding: 0 10px !important;
+        border-radius: 9px !important;
+        padding: 0 6px !important;
         box-sizing: border-box !important;
         box-shadow: none !important;
         flex: 1 1 100% !important;
@@ -657,14 +657,20 @@ html.dark .ims-temp-badge:hover {
         height: 100% !important;
         border: none !important;
         background: transparent !important;
-        font-size: 11.5px !important;
-        font-weight: 700 !important;
+        font-size: 10.5px !important;
+        font-weight: 600 !important;
         color: #0f172a !important;
         outline: none !important;
-        padding: 0 !important;
+        padding: 0 2px !important;
         margin: 0 !important;
         box-sizing: border-box !important;
         flex: 1 1 100% !important;
+    }
+
+    .fi-ta-filters-above-content-ctn .fi-input-wrp select,
+    .fi-ta-filters-above-content-ctn .fi-select-input {
+        padding-right: 14px !important;
+        background-position: right 2px center !important;
     }
 
     html.dark .fi-ta-filters-above-content-ctn .fi-input-wrp select,
