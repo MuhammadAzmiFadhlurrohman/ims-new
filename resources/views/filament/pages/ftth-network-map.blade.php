@@ -270,20 +270,24 @@
                             {{-- Standalone Project Dropdown Styles (100% Isolated from Tailwind/Filament) --}}
                             <style>
                                 .ims-prj-menu-box {
-                                    position: absolute !important;
-                                    top: calc(100% + 8px) !important;
-                                    left: 0 !important;
-                                    z-index: 999999 !important;
-                                    background: #ffffff !important;
-                                    border: 1px solid #CBD5E1 !important;
-                                    border-radius: 18px !important;
-                                    box-shadow: 0 20px 48px rgba(15,23,42,0.18) !important;
-                                    min-width: 360px !important;
-                                    padding: 14px !important;
-                                    display: flex !important;
-                                    flex-direction: column !important;
-                                    gap: 8px !important;
-                                    box-sizing: border-box !important;
+                                    position: absolute;
+                                    top: calc(100% + 8px);
+                                    left: 0;
+                                    z-index: 999999;
+                                    background: #ffffff;
+                                    border: 1px solid #CBD5E1;
+                                    border-radius: 18px;
+                                    box-shadow: 0 20px 48px rgba(15,23,42,0.18);
+                                    min-width: 360px;
+                                    padding: 14px;
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 8px;
+                                    box-sizing: border-box;
+                                }
+                                .ims-prj-menu-box[style*="display: none"],
+                                .ims-prj-menu-box[style*="display:none"] {
+                                    display: none !important;
                                 }
                                 .ims-prj-card-item {
                                     display: flex !important;
