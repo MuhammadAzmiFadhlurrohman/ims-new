@@ -255,9 +255,10 @@
                     <div style="display: flex; align-items: center; gap: 6px;">
                         <span style="font-weight: 800;">⚡ Sedang Menarik Jalur:</span>
                         <span style="font-weight: 900; text-transform: uppercase;" x-text="activeElementType"></span>
-                        <span>• Klik titik demi titik pada peta untuk membuat rute kabel.</span>
+                        <span>•</span>
+                        <span x-text="currentLinePoints.length === 0 ? 'Klik titik awal di peta untuk menanam pangkal kabel.' : 'Kabel terpasang! Gerakkan mouse lalu klik titik berikutnya untuk menanam.'"></span>
                         <span style="background: #ffffff; padding: 2px 8px; border-radius: 6px; font-weight: 900; color: #0878E5; font-family: monospace;">
-                            Titik: <span x-text="currentLinePoints.length"></span> | Panjang: ~<span x-text="currentLineDistance"></span> meter
+                            Titik Tertanam: <span x-text="tempVertexMarkers.length"></span> | Panjang: ~<span x-text="currentLineDistance"></span> meter
                         </span>
                     </div>
 
@@ -266,6 +267,15 @@
                             <input type="checkbox" x-model="autoSnapRoad" style="border-radius: 4px; color: #0878E5;">
                             <span>🛣️ Auto-Snap Ikuti Jalan</span>
                         </label>
+                        <button 
+                            type="button" 
+                            @click="undoLastPoint()" 
+                            :disabled="currentLinePoints.length === 0"
+                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #475569; border: 1px solid #cbd5e1; cursor: pointer;"
+                            title="Batalkan titik terakhir"
+                        >
+                            ↩️ Undo Titik
+                        </button>
                         <button 
                             type="button" 
                             @click="finishDrawLine()" 
@@ -362,6 +372,9 @@
                     currentLinePoints: [],
                     currentLineDistance: 0,
                     tempPolyline: null,
+                    tempRubberbandLine: null,
+                    tempVertexMarkers: [],
+                    tempPointHistory: [],
                     odpLayerGroup: null,
                     customLayerGroup: null,
 
@@ -486,6 +499,11 @@
                         this.mapInstance.on('click', (e) => {
                             this.handleMapClick(e.latlng.lat, e.latlng.lng);
                         });
+
+                        // Live mousemove handler for rubberband cable guideline
+                        this.mapInstance.on('mousemove', (e) => {
+                            this.handleMapMouseMove(e);
+                        });
                     },
 
                     setMapMode(mode) {
@@ -517,28 +535,61 @@
                         this.openLineMenu = false;
                         this.currentMode = 'draw_line';
                         this.activeElementType = type;
-                        this.currentLinePoints = [];
-                        this.currentLineDistance = 0;
-                        if (this.tempPolyline) {
-                            this.mapInstance.removeLayer(this.tempPolyline);
-                            this.tempPolyline = null;
-                        }
+                        this.clearTempDrawing();
                         if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                            IMS.toast('Klik titik demi titik di peta untuk menggambar rute kabel ' + type.toUpperCase(), 'info', 3000);
+                            IMS.toast('Klik titik awal di peta untuk menanam pangkal kabel ' + type.toUpperCase(), 'info', 3500);
                         }
                     },
 
                     cancelDrawing() {
                         this.openMarkerMenu = false;
                         this.openLineMenu = false;
+                        this.clearTempDrawing();
+                        if (this.currentMode !== 'select') {
+                            this.currentMode = 'select';
+                        }
+                    },
+
+                    clearTempDrawing() {
                         if (this.tempPolyline && this.mapInstance) {
                             this.mapInstance.removeLayer(this.tempPolyline);
                             this.tempPolyline = null;
                         }
+                        if (this.tempRubberbandLine && this.mapInstance) {
+                            this.mapInstance.removeLayer(this.tempRubberbandLine);
+                            this.tempRubberbandLine = null;
+                        }
+                        if (this.tempVertexMarkers && this.mapInstance) {
+                            this.tempVertexMarkers.forEach(m => this.mapInstance.removeLayer(m));
+                        }
+                        this.tempVertexMarkers = [];
+                        this.tempPointHistory = [];
                         this.currentLinePoints = [];
                         this.currentLineDistance = 0;
-                        if (this.currentMode !== 'select') {
-                            this.currentMode = 'select';
+                    },
+
+                    handleMapMouseMove(e) {
+                        if (this.currentMode !== 'draw_line' || this.currentLinePoints.length === 0 || !this.mapInstance) {
+                            if (this.tempRubberbandLine && this.mapInstance) {
+                                this.mapInstance.removeLayer(this.tempRubberbandLine);
+                                this.tempRubberbandLine = null;
+                            }
+                            return;
+                        }
+
+                        const lastPt = this.currentLinePoints[this.currentLinePoints.length - 1];
+                        const mouseLatLng = [e.latlng.lat, e.latlng.lng];
+                        const lineColor = this.activeElementType === 'feeder' ? '#EF4444' : (this.activeElementType === 'distribution' ? '#0878E5' : '#F59E0B');
+
+                        if (!this.tempRubberbandLine) {
+                            this.tempRubberbandLine = L.polyline([lastPt, mouseLatLng], {
+                                color: lineColor,
+                                weight: 3,
+                                dashArray: '6, 6',
+                                opacity: 0.85
+                            }).addTo(this.mapInstance);
+                        } else {
+                            this.tempRubberbandLine.setLatLngs([lastPt, mouseLatLng]);
                         }
                     },
 
@@ -546,11 +597,17 @@
                         if (this.currentMode === 'add_marker') {
                             this.promptSaveMarker(lat, lng);
                         } else if (this.currentMode === 'draw_line') {
+                            const lineColor = this.activeElementType === 'feeder' ? '#EF4444' : (this.activeElementType === 'distribution' ? '#0878E5' : '#F59E0B');
+                            let newPointsAdded = [];
+
                             if (this.autoSnapRoad && this.currentLinePoints.length > 0) {
                                 const lastPt = this.currentLinePoints[this.currentLinePoints.length - 1];
                                 if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                                    IMS.toast('🛣️ Menghitung rute menyusuri jalan...', 'info', 1000);
+                                    IMS.toast('🛣️ Menyusuri jalan...', 'info', 600);
                                 }
+                                let routeFound = false;
+
+                                // 1. Try OSM foot/pedestrian routing
                                 try {
                                     const url = `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${lastPt[1]},${lastPt[0]};${lng},${lat}?overview=full&geometries=geojson`;
                                     const res = await fetch(url);
@@ -560,16 +617,85 @@
                                             const roadCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
                                             for (let k = 1; k < roadCoords.length; k++) {
                                                 this.currentLinePoints.push(roadCoords[k]);
+                                                newPointsAdded.push(roadCoords[k]);
                                             }
-                                            this.updateTempPolyline();
-                                            return;
+                                            routeFound = true;
                                         }
                                     }
                                 } catch (err) {}
+
+                                // 2. Try OSRM driving fallback
+                                if (!routeFound) {
+                                    try {
+                                        const url2 = `https://router.project-osrm.org/route/v1/driving/${lastPt[1]},${lastPt[0]};${lng},${lat}?overview=full&geometries=geojson`;
+                                        const res2 = await fetch(url2);
+                                        if (res2.ok) {
+                                            const data2 = await res2.json();
+                                            if (data2.routes && data2.routes[0] && data2.routes[0].geometry && data2.routes[0].geometry.coordinates) {
+                                                const roadCoords = data2.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                                                for (let k = 1; k < roadCoords.length; k++) {
+                                                    this.currentLinePoints.push(roadCoords[k]);
+                                                    newPointsAdded.push(roadCoords[k]);
+                                                }
+                                                routeFound = true;
+                                            }
+                                        }
+                                    } catch (err2) {}
+                                }
+
+                                if (!routeFound) {
+                                    this.currentLinePoints.push([lat, lng]);
+                                    newPointsAdded.push([lat, lng]);
+                                }
+                            } else {
+                                this.currentLinePoints.push([lat, lng]);
+                                newPointsAdded.push([lat, lng]);
                             }
 
-                            this.currentLinePoints.push([lat, lng]);
+                            // Add visual anchor pin planted firmly at this spot
+                            const anchorMarker = L.circleMarker([lat, lng], {
+                                radius: 6.5,
+                                color: '#ffffff',
+                                weight: 2.5,
+                                fillColor: lineColor,
+                                fillOpacity: 1
+                            }).addTo(this.mapInstance);
+
+                            this.tempVertexMarkers.push(anchorMarker);
+                            this.tempPointHistory.push({
+                                marker: anchorMarker,
+                                count: newPointsAdded.length
+                            });
+
                             this.updateTempPolyline();
+
+                            // Reset rubberband line starting point to this newly planted vertex
+                            if (this.tempRubberbandLine) {
+                                this.tempRubberbandLine.setLatLngs([[lat, lng], [lat, lng]]);
+                            }
+                        }
+                    },
+
+                    undoLastPoint() {
+                        if (this.tempPointHistory.length === 0) return;
+                        const lastAction = this.tempPointHistory.pop();
+                        if (lastAction.marker && this.mapInstance) {
+                            this.mapInstance.removeLayer(lastAction.marker);
+                            const idx = this.tempVertexMarkers.indexOf(lastAction.marker);
+                            if (idx >= 0) this.tempVertexMarkers.splice(idx, 1);
+                        }
+                        for (let i = 0; i < lastAction.count; i++) {
+                            this.currentLinePoints.pop();
+                        }
+                        this.updateTempPolyline();
+                        if (this.currentLinePoints.length === 0) {
+                            if (this.tempRubberbandLine && this.mapInstance) {
+                                this.mapInstance.removeLayer(this.tempRubberbandLine);
+                                this.tempRubberbandLine = null;
+                            }
+                        } else if (this.tempRubberbandLine) {
+                            const lastPt = this.currentLinePoints[this.currentLinePoints.length - 1];
+                            this.tempRubberbandLine.setLatLngs([lastPt, lastPt]);
                         }
                     },
 
@@ -582,9 +708,9 @@
 
                             this.tempPolyline = L.polyline(this.currentLinePoints, {
                                 color: lineColor,
-                                weight: 4,
+                                weight: 4.5,
                                 dashArray: isDash ? '8, 6' : undefined,
-                                opacity: 0.85
+                                opacity: 0.9
                             }).addTo(this.mapInstance);
                         } else {
                             this.tempPolyline.setLatLngs(this.currentLinePoints);
