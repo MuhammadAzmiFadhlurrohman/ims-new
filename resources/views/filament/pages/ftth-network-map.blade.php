@@ -367,7 +367,7 @@
                     currentMode: 'select', // 'select', 'add_marker', 'draw_line'
                     openMarkerMenu: false,
                     openLineMenu: false,
-                    autoSnapRoad: true, // Auto-snap cable polylines along real roads & alleys
+                    autoSnapRoad: false, // Default to exact manual drawing; user can enable Auto-Snap when needed
                     activeElementType: 'pole', // 'pole', 'joint_box', 'odc', 'olt', 'customer', 'feeder', 'distribution', 'dropcore'
                     currentLinePoints: [],
                     currentLineDistance: 0,
@@ -603,7 +603,7 @@
                             if (this.autoSnapRoad && this.currentLinePoints.length > 0) {
                                 const lastPt = this.currentLinePoints[this.currentLinePoints.length - 1];
                                 if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                                    IMS.toast('🛣️ Menyusuri jalan...', 'info', 600);
+                                    IMS.toast('🛣️ Menyusuri rute jalan...', 'info', 600);
                                 }
                                 let routeFound = false;
 
@@ -615,10 +615,12 @@
                                         const data = await res.json();
                                         if (data.routes && data.routes[0] && data.routes[0].geometry && data.routes[0].geometry.coordinates) {
                                             const roadCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                                            for (let k = 1; k < roadCoords.length; k++) {
+                                            for (let k = 1; k < roadCoords.length - 1; k++) {
                                                 this.currentLinePoints.push(roadCoords[k]);
                                                 newPointsAdded.push(roadCoords[k]);
                                             }
+                                            this.currentLinePoints.push([lat, lng]);
+                                            newPointsAdded.push([lat, lng]);
                                             routeFound = true;
                                         }
                                     }
@@ -633,10 +635,12 @@
                                             const data2 = await res2.json();
                                             if (data2.routes && data2.routes[0] && data2.routes[0].geometry && data2.routes[0].geometry.coordinates) {
                                                 const roadCoords = data2.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                                                for (let k = 1; k < roadCoords.length; k++) {
+                                                for (let k = 1; k < roadCoords.length - 1; k++) {
                                                     this.currentLinePoints.push(roadCoords[k]);
                                                     newPointsAdded.push(roadCoords[k]);
                                                 }
+                                                this.currentLinePoints.push([lat, lng]);
+                                                newPointsAdded.push([lat, lng]);
                                                 routeFound = true;
                                             }
                                         }
@@ -648,13 +652,14 @@
                                     newPointsAdded.push([lat, lng]);
                                 }
                             } else {
+                                // Direct, exact manual point-to-point drawing (100% faithful to clicks)
                                 this.currentLinePoints.push([lat, lng]);
                                 newPointsAdded.push([lat, lng]);
                             }
 
                             // Add visual anchor pin planted firmly at this spot
                             const anchorMarker = L.circleMarker([lat, lng], {
-                                radius: 6.5,
+                                radius: 6,
                                 color: '#ffffff',
                                 weight: 2.5,
                                 fillColor: lineColor,
