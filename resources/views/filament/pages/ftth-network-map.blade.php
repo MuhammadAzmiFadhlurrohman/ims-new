@@ -271,7 +271,7 @@
                                 x-show="openProjectMenu" 
                                 @click.outside="openProjectMenu = false"
                                 x-cloak
-                                style="position: absolute; top: calc(100% + 8px); left: 0; z-index: 999999; background: #ffffff; border: 1.5px solid #CBD5E1; border-radius: 18px; box-shadow: 0 20px 50px rgba(15,23,42,0.22); min-width: 340px; padding: 14px; display: flex; flex-direction: column; gap: 8px;"
+                                style="position: absolute; top: calc(100% + 8px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #CBD5E1; border-radius: 18px; box-shadow: 0 20px 48px rgba(15,23,42,0.18); min-width: 360px; padding: 14px; display: flex; flex-direction: column; gap: 8px;"
                             >
                                 <div style="padding: 2px 4px 10px 4px; font-size: 0.72rem; font-weight: 900; color: #64748B; text-transform: uppercase; border-bottom: 1.5px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                                     <div style="display: flex; align-items: center; gap: 6px;">
@@ -281,7 +281,9 @@
                                     <button 
                                         type="button" 
                                         @click="openNewProjectModal = true; openProjectMenu = false;"
-                                        style="border: none; background: #0878E5; color: #ffffff; padding: 5px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(8,120,229,0.28);"
+                                        style="border: none; background: #0878E5; color: #ffffff; padding: 5px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(8,120,229,0.28); transition: transform 0.1s ease;"
+                                        onmousedown="this.style.transform='scale(0.96)'"
+                                        onmouseup="this.style.transform='scale(1)'"
                                     >+ Proyek Baru</button>
                                 </div>
 
@@ -289,40 +291,57 @@
                                     <template x-for="p in allProjects" :key="p.id">
                                         <div 
                                             @click="switchProject(p.id)"
-                                            style="display: grid !important; grid-template-columns: 1fr auto !important; align-items: center !important; gap: 16px !important; width: 100% !important; box-sizing: border-box !important; padding: 12px 16px !important; border: 2px solid #000000 !important; border-radius: 12px !important; background: #FFFFFF !important; cursor: pointer !important; user-select: none !important; transition: all 0.15s ease !important;"
-                                            onmouseover="this.style.background='#F8FAFC'"
-                                            onmouseout="this.style.background='#FFFFFF'"
+                                            style="display: grid !important; grid-template-columns: 1fr auto !important; align-items: center !important; gap: 16px !important; width: 100% !important; box-sizing: border-box !important; padding: 12px 16px !important; border-radius: 12px !important; cursor: pointer !important; user-select: none !important; transition: all 0.2s ease !important;"
+                                            :style="currentProject && currentProject.id === p.id 
+                                                ? 'background: #F0FDF4 !important; border: 2px solid #22C55E !important; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.12) !important;' 
+                                                : 'background: #FFFFFF !important; border: 1.5px solid #CBD5E1 !important; box-shadow: 0 2px 6px rgba(0,0,0,0.02) !important;'"
+                                            onmouseover="if (!this.style.background.includes('240')) { this.style.background='#F8FAFC'; this.style.borderColor='#94A3B8'; }"
+                                            onmouseout="if (!this.style.background.includes('240')) { this.style.background='#FFFFFF'; this.style.borderColor='#CBD5E1'; }"
                                         >
                                             {{-- Left: Folder Icon + Title on Row 1, Subtitle on Row 2 --}}
                                             <div style="min-width: 0 !important; overflow: hidden !important; text-align: left !important;">
                                                 <div style="display: flex !important; align-items: center !important; gap: 10px !important;">
-                                                    <svg style="width: 24px !important; height: 24px !important; flex-shrink: 0 !important; color: #000000 !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg 
+                                                        style="width: 22px !important; height: 22px !important; flex-shrink: 0 !important; transition: color 0.15s ease !important;" 
+                                                        :style="currentProject && currentProject.id === p.id ? 'color: #16A34A !important;' : 'color: #0878E5 !important;'"
+                                                        fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                                    >
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
                                                     </svg>
-                                                    <span style="font-size: 1.05rem !important; font-weight: 900 !important; color: #000000 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; line-height: 1.2 !important;" x-text="p.name"></span>
+                                                    <span 
+                                                        style="font-size: 0.95rem !important; font-weight: 800 !important; color: #0F172A !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; line-height: 1.25 !important;" 
+                                                        x-text="p.name"
+                                                    ></span>
                                                 </div>
-                                                <div style="font-size: 0.85rem !important; color: #000000 !important; font-weight: 500 !important; margin-top: 4px !important;" x-text="(p.elements_count || 0) + ' Objek Tersimpan'"></div>
+                                                <div 
+                                                    style="font-size: 0.76rem !important; font-weight: 600 !important; margin-top: 4px !important; padding-left: 2px !important;" 
+                                                    :style="currentProject && currentProject.id === p.id ? 'color: #15803D !important;' : 'color: #64748B !important;'"
+                                                    x-text="(p.elements_count || 0) + ' Objek Tersimpan'"
+                                                ></div>
                                             </div>
 
                                             {{-- Right: Trash Icon in Rounded Box OR Active Badge --}}
                                             <div style="display: flex !important; align-items: center !important; justify-content: flex-end !important; flex-shrink: 0 !important;">
-                                                {{-- Active Badge in Rounded Box (Gambar 2) --}}
+                                                {{-- Active Badge in Rounded Box (Attractive Green Glow) --}}
                                                 <span 
                                                     x-show="currentProject && currentProject.id === p.id"
-                                                    style="border: 2px solid #000000 !important; background: #FFFFFF !important; color: #000000 !important; border-radius: 8px !important; padding: 4px 14px !important; font-size: 0.82rem !important; font-weight: 800 !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; white-space: nowrap !important;"
-                                                >Active</span>
+                                                    style="border: 1.5px solid #86EFAC !important; background: #DCFCE7 !important; color: #15803D !important; border-radius: 8px !important; padding: 5px 14px !important; font-size: 0.78rem !important; font-weight: 800 !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 4px !important; white-space: nowrap !important; box-shadow: 0 2px 6px rgba(22,163,74,0.15) !important;"
+                                                >
+                                                    <svg style="width: 12px; height: 12px;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                                    Active
+                                                </span>
 
-                                                {{-- Trash Button in Rounded Box (Gambar 2) --}}
+                                                {{-- Trash Button in Soft Ruby Box --}}
                                                 <button 
                                                     type="button" 
                                                     x-show="(!currentProject || currentProject.id !== p.id) && allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'"
                                                     @click.stop="deleteProject(p.id, p.name)"
-                                                    style="border: 2px solid #000000 !important; background: #FFFFFF !important; color: #000000 !important; cursor: pointer !important; padding: 6px !important; border-radius: 8px !important; width: 38px !important; height: 38px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; transition: all 0.15s ease !important;"
+                                                    style="border: 1.5px solid #FECACA !important; background: #FEF2F2 !important; color: #EF4444 !important; cursor: pointer !important; padding: 6px !important; border-radius: 8px !important; width: 36px !important; height: 36px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; transition: all 0.15s ease !important;"
                                                     title="Hapus proyek ini"
-                                                    onmouseover="this.style.background='#FEE2E2'; this.style.borderColor='#EF4444'; this.style.color='#EF4444';"
-                                                    onmouseout="this.style.background='#FFFFFF'; this.style.borderColor='#000000'; this.style.color='#000000';"
+                                                    onmouseover="this.style.background='#FEE2E2'; this.style.borderColor='#F87171'; this.style.color='#DC2626';"
+                                                    onmouseout="this.style.background='#FEF2F2'; this.style.borderColor='#FECACA'; this.style.color='#EF4444';"
                                                 >
-                                                    <svg style="width: 20px !important; height: 20px !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg style="width: 17px !important; height: 17px !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                                     </svg>
                                                 </button>
