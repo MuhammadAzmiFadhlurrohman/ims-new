@@ -294,6 +294,34 @@
                             🛰️ Satelit
                         </button>
 
+                        {{-- Hidden KMZ/KML File Input --}}
+                        <input 
+                            type="file" 
+                            id="ims-kmz-file-input" 
+                            wire:model="kmzFile" 
+                            accept=".kmz,.kml" 
+                            style="display: none;"
+                            @change="
+                                if ($event.target.files.length > 0) {
+                                    if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                        IMS.toast('⏳ Mengunggah & membaca data KMZ...', 'info', 3000);
+                                    }
+                                    $wire.importKmzUpload();
+                                }
+                            "
+                        >
+
+                        <button 
+                            type="button" 
+                            onclick="document.getElementById('ims-kmz-file-input').click()" 
+                            class="ims-tool-btn"
+                            style="background: #ECFDF5; border-color: #A7F3D0; color: #059669;"
+                            title="Import peta jaringan dari Google My Maps / Google Earth (.kmz / .kml)"
+                        >
+                            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <span>📤 Import KMZ / KML</span>
+                        </button>
+
                         <button 
                             type="button" 
                             @click="exportGeoJson()" 
@@ -490,6 +518,42 @@
                                 if (this.mapInstance) {
                                     this.mapInstance.invalidateSize();
                                 }
+                            }
+                        });
+
+                        this.$wire.on('kmz-imported', (event) => {
+                            const data = Array.isArray(event) ? event[0] : event;
+                            if (typeof IMS !== 'undefined' && typeof IMS.success === 'function') {
+                                IMS.success(data.message || 'Peta KMZ berhasil diimpor!');
+                            }
+                            if (data.elements) {
+                                this.customElements = data.elements.map(el => {
+                                    if (el.latitude !== undefined && el.latitude !== null) el.latitude = parseFloat(el.latitude);
+                                    if (el.longitude !== undefined && el.longitude !== null) el.longitude = parseFloat(el.longitude);
+                                    if (typeof el.path_coordinates === 'string') {
+                                        try { el.path_coordinates = JSON.parse(el.path_coordinates); } catch(e) {}
+                                    }
+                                    return el;
+                                });
+                                this.renderCustomElements();
+
+                                // Fit map bounds to show imported elements
+                                setTimeout(() => {
+                                    if (this.customLayerGroup && this.mapInstance) {
+                                        const layers = this.customLayerGroup.getLayers();
+                                        if (layers.length > 0) {
+                                            const group = L.featureGroup(layers);
+                                            this.mapInstance.fitBounds(group.getBounds().pad(0.1));
+                                        }
+                                    }
+                                }, 300);
+                            }
+                        });
+
+                        this.$wire.on('import-failed', (event) => {
+                            const data = Array.isArray(event) ? event[0] : event;
+                            if (typeof IMS !== 'undefined' && typeof IMS.error === 'function') {
+                                IMS.error(data.message || 'Gagal mengimpor file KMZ!');
                             }
                         });
                     },

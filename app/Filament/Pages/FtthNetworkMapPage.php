@@ -6,9 +6,14 @@ use App\Models\FtthNetworkElement;
 use App\Models\Odp;
 use App\Models\Olt;
 use Filament\Pages\Page;
+use Livewire\WithFileUploads;
+use SimpleXMLElement;
+use ZipArchive;
 
 class FtthNetworkMapPage extends Page
 {
+    use WithFileUploads;
+
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
 
     protected static ?string $navigationGroup = 'OLT';
@@ -22,6 +27,7 @@ class FtthNetworkMapPage extends Page
     protected static string $view = 'filament.pages.ftth-network-map';
 
     public ?string $selectedOlt = null;
+    public $kmzFile = null;
 
     public function getHeading(): string
     {
@@ -81,14 +87,13 @@ class FtthNetworkMapPage extends Page
         $category = $data['category'] ?? 'marker';
         $elementType = $data['element_type'] ?? 'pole';
 
-        // Default colors by element type
         $defaultColors = [
-            'olt' => '#8B5CF6',
-            'odc' => '#F59E0B',
+            'olt' => '#7C3AED',
+            'odc' => '#D97706',
             'odp' => '#0878E5',
-            'pole' => '#64748B',
-            'joint_box' => '#10B981',
-            'customer' => '#EC4899',
+            'pole' => '#334155',
+            'joint_box' => '#059669',
+            'customer' => '#DB2777',
             'feeder' => '#EF4444',
             'distribution' => '#0878E5',
             'dropcore' => '#F59E0B',
@@ -129,5 +134,200 @@ class FtthNetworkMapPage extends Page
                 'id' => $id,
             ]);
         }
+    }
+
+    public function importKmzUpload()
+    {
+        if (!$this->kmzFile) {
+            $this->dispatch('import-failed', ['message' => 'Silakan pilih file KMZ atau KML terlebih dahulu!']);
+            return;
+        }
+
+        $path = $this->kmzFile->getRealPath();
+        $extension = strtolower($this->kmzFile->getClientOriginalExtension());
+        $kmlContent = null;
+
+        if ($extension === 'kmz') {
+            $zip = new ZipArchive();
+            if ($zip->open($path) === true) {
+                // Find doc.kml or any .kml file inside the KMZ archive
+                for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $filename = $zip->getNameIndex($i);
+                    if (str_ends_with(strtolower($filename), '.kml')) {
+                        $kmlContent = $zip->getFromIndex($i);
+                        break;
+                    }
+                }
+                $zip->close();
+            }
+        } elseif ($extension === 'kml') {
+            $kmlContent = file_get_contents($path);
+        }
+
+        if (!$kmlContent) {
+            $this->dispatch('import-failed', ['message' => 'Gagal mengekstrak data KML dari file yang diupload. Pastikan file KMZ/KML valid!']);
+            return;
+        }
+
+        $imported = $this->parseAndSaveKml($kmlContent);
+        $this->kmzFile = null;
+
+        $this->dispatch('kmz-imported', [
+            'message' => 'Berhasil mengimpor ' . $imported['total'] . ' objek jaringan (' . $imported['markers'] . ' titik & ' . $imported['lines'] . ' jalur kabel) dari KMZ!',
+            'count' => $imported['total'],
+            'elements' => FtthNetworkElement::latest('id')->get()->toArray(),
+        ]);
+    }
+
+    protected function parseAndSaveKml(string $kmlContent): array
+    {
+        // Suppress XML errors and clean namespaces if necessary
+        libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($kmlContent);
+        if (!$xml) {
+            // Try cleaning namespace prefixes
+            $cleaned = preg_replace('/(<\/?)[a-z0-9]+:/i', '$1', $kmlContent);
+            $xml = simplexml_load_string($cleaned);
+        }
+
+        $markersCount = 0;
+        $linesCount = 0;
+
+        if ($xml) {
+            // Find all Placemark tags recursively
+            $placemarks = $xml->xpath('//Placemark') ?: [];
+
+            foreach ($placemarks as $pm) {
+                $name = trim((string) ($pm->name ?? 'Objek Tanpa Nama'));
+                $description = trim((string) ($pm->description ?? ''));
+
+                // 1. Check for Point
+                if (isset($pm->Point) && isset($pm->Point->coordinates)) {
+                    $coordsStr = trim((string) $pm->Point->coordinates);
+                    $parts = explode(',', $coordsStr);
+                    if (count($parts) >= 2) {
+                        $lng = (float) trim($parts[0]);
+                        $lat = (float) trim($parts[1]);
+
+                        if ($lat != 0 && $lng != 0) {
+                            $type = $this->classifyMarkerType($name, $description);
+                            $colorMap = [
+                                'olt' => '#7C3AED',
+                                'odc' => '#D97706',
+                                'pole' => '#334155',
+                                'joint_box' => '#059669',
+                                'customer' => '#DB2777',
+                            ];
+
+                            FtthNetworkElement::create([
+                                'name' => $name,
+                                'category' => 'marker',
+                                'element_type' => $type,
+                                'olt_code' => $this->selectedOlt ?: null,
+                                'latitude' => $lat,
+                                'longitude' => $lng,
+                                'color' => $colorMap[$type] ?? '#334155',
+                                'notes' => $description ? strip_tags($description) : null,
+                            ]);
+                            $markersCount++;
+                        }
+                    }
+                }
+
+                // 2. Check for LineString
+                if (isset($pm->LineString) && isset($pm->LineString->coordinates)) {
+                    $coordsStr = trim((string) $pm->LineString->coordinates);
+                    $rawPoints = preg_split('/[\s\n\r]+/', $coordsStr);
+                    $lineCoords = [];
+
+                    foreach ($rawPoints as $rp) {
+                        $rp = trim($rp);
+                        if (!$rp) continue;
+                        $parts = explode(',', $rp);
+                        if (count($parts) >= 2) {
+                            $lng = (float) trim($parts[0]);
+                            $lat = (float) trim($parts[1]);
+                            if ($lat != 0 && $lng != 0) {
+                                $lineCoords[] = [$lat, $lng];
+                            }
+                        }
+                    }
+
+                    if (count($lineCoords) >= 2) {
+                        $type = $this->classifyLineType($name, $description);
+                        $colorMap = [
+                            'feeder' => '#EF4444',
+                            'distribution' => '#0878E5',
+                            'dropcore' => '#F59E0B',
+                        ];
+
+                        $calcDist = 0;
+                        for ($i = 0; $i < count($lineCoords) - 1; $i++) {
+                            $calcDist += $this->calcDistMeters($lineCoords[$i][0], $lineCoords[$i][1], $lineCoords[$i+1][0], $lineCoords[$i+1][1]);
+                        }
+
+                        FtthNetworkElement::create([
+                            'name' => $name,
+                            'category' => 'line',
+                            'element_type' => $type,
+                            'olt_code' => $this->selectedOlt ?: null,
+                            'path_coordinates' => $lineCoords,
+                            'length_meters' => $calcDist,
+                            'color' => $colorMap[$type] ?? '#0878E5',
+                            'notes' => $description ? strip_tags($description) : null,
+                        ]);
+                        $linesCount++;
+                    }
+                }
+            }
+        }
+
+        return [
+            'total' => $markersCount + $linesCount,
+            'markers' => $markersCount,
+            'lines' => $linesCount,
+        ];
+    }
+
+    protected function classifyMarkerType(string $name, string $desc): string
+    {
+        $text = strtolower($name . ' ' . $desc);
+        if (str_contains($text, 'olt') || str_contains($text, 'server') || str_contains($text, 'headend') || str_contains($text, 'core')) {
+            return 'olt';
+        }
+        if (str_contains($text, 'odc') || str_contains($text, 'fdt') || str_contains($text, 'cabinet')) {
+            return 'odc';
+        }
+        if (str_contains($text, 'joint') || str_contains($text, 'sambung') || str_contains($text, 'closure') || str_contains($text, 'fosc') || str_contains($text, 'jb')) {
+            return 'joint_box';
+        }
+        if (str_contains($text, 'customer') || str_contains($text, 'pelanggan') || str_contains($text, 'ont') || str_contains($text, 'rumah') || str_contains($text, 'user')) {
+            return 'customer';
+        }
+        return 'pole';
+    }
+
+    protected function classifyLineType(string $name, string $desc): string
+    {
+        $text = strtolower($name . ' ' . $desc);
+        if (str_contains($text, 'feeder') || str_contains($text, 'backbone') || str_contains($text, '48c') || str_contains($text, '96c') || str_contains($text, '24c')) {
+            return 'feeder';
+        }
+        if (str_contains($text, 'drop') || str_contains($text, 'dropcore') || str_contains($text, '1c') || str_contains($text, '2c') || str_contains($text, 'pelanggan')) {
+            return 'dropcore';
+        }
+        return 'distribution';
+    }
+
+    protected function calcDistMeters($lat1, $lon1, $lat2, $lon2): int
+    {
+        $R = 6371000;
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+             sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        return (int) round($R * $c);
     }
 }
