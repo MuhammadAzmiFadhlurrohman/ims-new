@@ -2207,11 +2207,10 @@ html.dark .fi-checkbox-list label:hover {
         gap: 0.75rem 0.6rem !important;
         width: 100% !important;
         box-sizing: border-box !important;
-        /* Override Filament's CSS variable grid-cols */
         --cols-default: 2;
     }
 
-    /* All filter field cells: span 1 */
+    /* All filter field cells: span 1, full width */
     .fi-ta-filters-above-content-ctn .fi-fo-component-ctn > div {
         grid-column: span 1 !important;
         width: 100% !important;
@@ -2226,12 +2225,27 @@ html.dark .fi-checkbox-list label:hover {
         grid-column: 1 / 2 !important;
     }
 
-    /* Inputs & selects: full width, not truncated */
-    .fi-ta-filters-above-content-ctn input,
-    .fi-ta-filters-above-content-ctn select,
+    /* All descendants: full width */
+    .fi-ta-filters-above-content-ctn .fi-fo-component-ctn > div *,
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp,
+    .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label,
+    .fi-ta-filters-above-content-ctn .fi-input-wrp,
     .fi-ta-filters-above-content-ctn .fi-select-input,
+    .fi-ta-filters-above-content-ctn .choices,
+    .fi-ta-filters-above-content-ctn .choices__inner,
+    .fi-ta-filters-above-content-ctn .choices__list,
     .fi-ta-filters-above-content-ctn [class*="fi-input-wrp"],
-    .fi-ta-filters-above-content-ctn [class*="fi-select"] {
+    .fi-ta-filters-above-content-ctn [class*="fi-select"],
+    .fi-ta-filters-above-content-ctn [class*="fi-fo-"] {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Inputs & selects: full width, proper height */
+    .fi-ta-filters-above-content-ctn input,
+    .fi-ta-filters-above-content-ctn select {
         width: 100% !important;
         min-width: 0 !important;
         max-width: 100% !important;
@@ -2245,7 +2259,7 @@ html.dark .fi-checkbox-list label:hover {
         white-space: nowrap !important;
     }
 
-    /* Labels: short, no wrap, uppercase */
+    /* Labels: compact, uppercase */
     .fi-ta-filters-above-content-ctn label,
     .fi-ta-filters-above-content-ctn .fi-fo-field-wrp-label span {
         display: block !important;
