@@ -5,9 +5,6 @@
         style="display: flex; flex-direction: column; gap: 1.25rem; width: 100%; font-family: 'Plus Jakarta Sans', sans-serif;"
     >
         <style>
-            html {
-                zoom: 1 !important;
-            }
             .ims-coverage-root * {
                 box-sizing: border-box;
             }
@@ -422,6 +419,7 @@
                         this.mapInstance = L.map('ims-google-map-canvas', {
                             center: [defaultLat, defaultLng],
                             zoom: 15,
+                            preferCanvas: true,
                             zoomControl: true,
                             attributionControl: false
                         });
