@@ -13,7 +13,64 @@
                 border: 1px solid #dbeafe;
                 border-radius: 16px;
                 box-shadow: 0 4px 20px rgba(8, 120, 229, 0.06);
-                overflow: hidden;
+                overflow: visible !important;
+                position: relative;
+            }
+            .ims-sidebar-tab-btn {
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 6px !important;
+                padding: 7px 10px !important;
+                border-radius: 8px !important;
+                font-size: 12px !important;
+                font-weight: 800 !important;
+                border: none !important;
+                cursor: pointer !important;
+                white-space: nowrap !important;
+                transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                flex: 1 1 0 !important;
+                line-height: 1 !important;
+            }
+            .ims-sidebar-tab-btn svg {
+                display: inline-block !important;
+                vertical-align: middle !important;
+                width: 15px !important;
+                height: 15px !important;
+                min-width: 15px !important;
+                max-width: 15px !important;
+                flex-shrink: 0 !important;
+                margin: 0 !important;
+            }
+            .ims-sidebar-filter-btn {
+                display: inline-flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 5px !important;
+                padding: 5px 10px !important;
+                border-radius: 8px !important;
+                font-size: 11.5px !important;
+                font-weight: 800 !important;
+                white-space: nowrap !important;
+                border: 1.5px solid !important;
+                cursor: pointer !important;
+                transition: all 0.15s ease !important;
+                line-height: 1.2 !important;
+                flex-shrink: 0 !important;
+            }
+            .ims-sidebar-filter-btn svg {
+                display: inline-block !important;
+                vertical-align: middle !important;
+                width: 12px !important;
+                height: 12px !important;
+                min-width: 12px !important;
+                max-width: 12px !important;
+                flex-shrink: 0 !important;
+                margin: 0 !important;
             }
             .ims-map-container-wrap {
                 position: relative !important;
@@ -360,8 +417,8 @@
         >
             
             {{-- Toolbar Top Header: 100% Single Row (No Staggering / Sejajar) --}}
-            <div style="padding: 0.65rem 1rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow-x: auto; overflow-y: visible;">
-                <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 10px; min-width: 900px; width: 100%;">
+            <div style="padding: 0.65rem 1rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow: visible !important;">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; width: 100%;">
                     
                     {{-- 1. Project Selector --}}
                     <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
@@ -1069,10 +1126,10 @@
                             <button 
                                 type="button" 
                                 @click="sidebarTab = 'objects'" 
-                                style="flex: 1; padding: 7px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);"
+                                class="ims-sidebar-tab-btn"
                                 :style="sidebarTab === 'objects' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
                             >
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="8" y1="6" x2="21" y2="6"></line>
                                     <line x1="8" y1="12" x2="21" y2="12"></line>
                                     <line x1="8" y1="18" x2="21" y2="18"></line>
@@ -1082,7 +1139,7 @@
                                 </svg>
                                 <span>Daftar Objek</span>
                                 <span 
-                                    style="font-size: 0.65rem; padding: 1.5px 7px; border-radius: 9999px; font-weight: 900; line-height: 1; transition: all 0.15s ease;"
+                                    style="font-size: 0.65rem; padding: 1.5px 7px; border-radius: 9999px; font-weight: 900; line-height: 1; transition: all 0.15s ease; display: inline-block;"
                                     :style="sidebarTab === 'objects' ? 'background: #EFF6FF; color: #0878E5; border: 1px solid #BFDBFE;' : 'background: #E2E8F0; color: #64748B;'"
                                     x-text="customElements.length"
                                 ></span>
@@ -1090,10 +1147,10 @@
                             <button 
                                 type="button" 
                                 @click="sidebarTab = 'layers'" 
-                                style="flex: 1; padding: 7px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);"
+                                class="ims-sidebar-tab-btn"
                                 :style="sidebarTab === 'layers' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
                             >
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                     <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                                     <polyline points="2 17 12 22 22 17"></polyline>
                                     <polyline points="2 12 12 17 22 12"></polyline>
@@ -1130,30 +1187,30 @@
                                 <button 
                                     type="button" 
                                     @click="sidebarCategoryFilter = 'all'" 
-                                    style="font-size: 0.68rem; font-weight: 800; padding: 5px 11px; border-radius: 8px; border: 1.5px solid; cursor: pointer; white-space: nowrap; transition: all 0.15s ease;"
+                                    class="ims-sidebar-filter-btn"
                                     :style="sidebarCategoryFilter === 'all' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.3);' : 'background: #F8FAFC; color: #475569; border-color: #E2E8F0;'"
                                 >Semua</button>
                                 
                                 <button 
                                     type="button" 
                                     @click="sidebarCategoryFilter = 'line'" 
-                                    style="font-size: 0.68rem; font-weight: 800; padding: 5px 11px; border-radius: 8px; border: 1.5px solid; cursor: pointer; white-space: nowrap; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 5px;"
+                                    class="ims-sidebar-filter-btn"
                                     :style="sidebarCategoryFilter === 'line' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.3);' : 'background: #EFF6FF; color: #0878E5; border-color: #BFDBFE;'"
                                 >
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                     <span>Kabel</span>
-                                    <span style="font-size: 0.62rem; padding: 0.5px 5px; border-radius: 6px; font-weight: 900;" :style="sidebarCategoryFilter === 'line' ? 'background: rgba(255,255,255,0.25); color: #ffffff;' : 'background: #DBEAFE; color: #0878E5;'" x-text="customElements.filter(e => e.category === 'line').length"></span>
+                                    <span style="font-size: 0.62rem; padding: 0.5px 5px; border-radius: 6px; font-weight: 900; display: inline-block;" :style="sidebarCategoryFilter === 'line' ? 'background: rgba(255,255,255,0.25); color: #ffffff;' : 'background: #DBEAFE; color: #0878E5;'" x-text="customElements.filter(e => e.category === 'line').length"></span>
                                 </button>
                                 
                                 <button 
                                     type="button" 
                                     @click="sidebarCategoryFilter = 'marker'" 
-                                    style="font-size: 0.68rem; font-weight: 800; padding: 5px 11px; border-radius: 8px; border: 1.5px solid; cursor: pointer; white-space: nowrap; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 5px;"
+                                    class="ims-sidebar-filter-btn"
                                     :style="sidebarCategoryFilter === 'marker' ? 'background: #16A34A; color: #ffffff; border-color: #16A34A; box-shadow: 0 2px 8px rgba(22,163,74,0.3);' : 'background: #F0FDF4; color: #16A34A; border-color: #BBF7D0;'"
                                 >
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
                                     <span>Tiang & Node</span>
-                                    <span style="font-size: 0.62rem; padding: 0.5px 5px; border-radius: 6px; font-weight: 900;" :style="sidebarCategoryFilter === 'marker' ? 'background: rgba(255,255,255,0.25); color: #ffffff;' : 'background: #DCFCE7; color: #16A34A;'" x-text="customElements.filter(e => e.category === 'marker').length"></span>
+                                    <span style="font-size: 0.62rem; padding: 0.5px 5px; border-radius: 6px; font-weight: 900; display: inline-block;" :style="sidebarCategoryFilter === 'marker' ? 'background: rgba(255,255,255,0.25); color: #ffffff;' : 'background: #DCFCE7; color: #16A34A;'" x-text="customElements.filter(e => e.category === 'marker').length"></span>
                                 </button>
                             </div>
                         </div>
