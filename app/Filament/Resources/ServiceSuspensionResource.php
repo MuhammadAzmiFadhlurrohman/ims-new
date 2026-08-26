@@ -245,6 +245,106 @@ class ServiceSuspensionResource extends Resource
                     })
                     ->sortable(),
             ])
+            ->filters([
+                // 1. Filter Wilayah (Kota / Kabupaten)
+                Tables\Filters\SelectFilter::make('wilayah')
+                    ->label('Wilayah')
+                    ->placeholder('SEMUA WILAYAH')
+                    ->options(function () {
+                        $cities = \App\Models\CustomerSubscription::whereNotNull('city')
+                            ->where('city', '!=', '')
+                            ->distinct()
+                            ->pluck('city', 'city')
+                            ->toArray();
+
+                        if (empty($cities)) {
+                            return [
+                                'KOTA BANDUNG' => 'KOTA BANDUNG',
+                                'KABUPATEN BANDUNG' => 'KABUPATEN BANDUNG',
+                                'KABUPATEN BANDUNG BARAT' => 'KABUPATEN BANDUNG BARAT',
+                                'KOTA CIMAHI' => 'KOTA CIMAHI',
+                                'KABUPATEN BEKASI' => 'KABUPATEN BEKASI',
+                                'KOTA BEKASI' => 'KOTA BEKASI',
+                            ];
+                        }
+                        return $cities;
+                    })
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'] ?? null,
+                            fn (Builder $q, $val) => $q->whereHas('subscription', fn ($sub) => $sub->where('city', $val))
+                        );
+                    }),
+
+                // 2. Filter Alamat
+                Tables\Filters\Filter::make('alamat')
+                    ->form([
+                        Forms\Components\TextInput::make('alamat')
+                            ->label('Alamat')
+                            ->placeholder('ALAMAT / LOKASI'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['alamat'] ?? null,
+                            fn (Builder $q, $addr) => $q->whereHas('subscription', fn ($sub) => $sub->where('installation_address', 'like', "%{$addr}%")
+                                ->orWhere('address_ktp', 'like', "%{$addr}%")
+                                ->orWhere('district', 'like', "%{$addr}%")
+                                ->orWhere('village_code', 'like', "%{$addr}%")
+                            )
+                        );
+                    }),
+
+                // 3. Filter Bulan
+                Tables\Filters\SelectFilter::make('bulan')
+                    ->label('Bulan')
+                    ->placeholder('SEMUA BULAN')
+                    ->options([
+                        '1' => 'Januari',
+                        '2' => 'Februari',
+                        '3' => 'Maret',
+                        '4' => 'April',
+                        '5' => 'Mei',
+                        '6' => 'Juni',
+                        '7' => 'Juli',
+                        '8' => 'Agustus',
+                        '9' => 'September',
+                        '10' => 'Oktober',
+                        '11' => 'November',
+                        '12' => 'Desember',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'] ?? null,
+                            fn (Builder $q, $val) => $q->where(function ($sub) use ($val) {
+                                $sub->whereMonth('suspended_at', $val)
+                                    ->orWhereMonth('created_at', $val);
+                            })
+                        );
+                    }),
+
+                // 4. Filter Tahun
+                Tables\Filters\SelectFilter::make('tahun')
+                    ->label('Tahun')
+                    ->placeholder('SEMUA TAHUN')
+                    ->options([
+                        '2028' => '2028',
+                        '2027' => '2027',
+                        '2026' => '2026',
+                        '2025' => '2025',
+                        '2024' => '2024',
+                        '2023' => '2023',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'] ?? null,
+                            fn (Builder $q, $val) => $q->where(function ($sub) use ($val) {
+                                $sub->whereYear('suspended_at', $val)
+                                    ->orWhereYear('created_at', $val);
+                            })
+                        );
+                    }),
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
+            ->filtersFormColumns(4)
             ->actions([
                 // ── Action Approve (Gambar 1 & Gambar 2: Modal Form Approve suspend) ──
                 Tables\Actions\Action::make('approve')
