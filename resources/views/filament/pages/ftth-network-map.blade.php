@@ -98,58 +98,50 @@
             .ims-floating-layer-btn {
                 display: inline-flex !important;
                 align-items: center !important;
-                gap: 8px !important;
-                padding: 7px 12px !important;
+                justify-content: center !important;
+                width: 42px !important;
+                height: 42px !important;
+                min-width: 42px !important;
+                min-height: 42px !important;
+                padding: 0 !important;
                 border-radius: 12px !important;
                 background: rgba(255, 255, 255, 0.96) !important;
-                color: #1E293B !important;
+                color: #0878E5 !important;
                 border: 1.5px solid #CBD5E1 !important;
                 box-shadow: 0 4px 14px rgba(15, 23, 42, 0.14) !important;
                 backdrop-filter: blur(8px) !important;
                 cursor: pointer !important;
                 user-select: none !important;
                 transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                line-height: 1 !important;
             }
             .ims-floating-layer-btn:hover {
                 background: #FFFFFF !important;
                 border-color: #0878E5 !important;
                 color: #0878E5 !important;
-                box-shadow: 0 6px 20px rgba(8, 120, 229, 0.2) !important;
+                transform: scale(1.05) !important;
+                box-shadow: 0 6px 20px rgba(8, 120, 229, 0.25) !important;
             }
             .ims-floating-layer-btn-active {
                 display: inline-flex !important;
                 align-items: center !important;
-                gap: 8px !important;
-                padding: 7px 12px !important;
+                justify-content: center !important;
+                width: 42px !important;
+                height: 42px !important;
+                min-width: 42px !important;
+                min-height: 42px !important;
+                padding: 0 !important;
                 border-radius: 12px !important;
                 background: #0F172A !important;
-                color: #FFFFFF !important;
+                color: #38BDF8 !important;
                 border: 1.5px solid #0F172A !important;
-                box-shadow: 0 6px 20px rgba(15, 23, 42, 0.28) !important;
+                box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3) !important;
                 backdrop-filter: blur(8px) !important;
                 cursor: pointer !important;
                 user-select: none !important;
                 transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                line-height: 1 !important;
             }
-            .ims-floating-layer-btn .ims-floating-badge {
-                background: #0878E5 !important;
-                color: #FFFFFF !important;
-                font-size: 10px !important;
-                font-weight: 900 !important;
-                padding: 2px 7px !important;
-                border-radius: 9999px !important;
-                line-height: 1 !important;
-            }
-            .ims-floating-layer-btn-active .ims-floating-badge {
-                background: #38BDF8 !important;
-                color: #0F172A !important;
-                font-size: 10px !important;
-                font-weight: 900 !important;
-                padding: 2px 7px !important;
-                border-radius: 9999px !important;
-                line-height: 1 !important;
+            .ims-floating-layer-btn-active:hover {
+                transform: scale(1.05) !important;
             }
             .ims-badge-stat {
                 padding: 4px 10px;
@@ -1287,7 +1279,7 @@
                     </div>
                 </div>
 
-                {{-- ── FLOATING TOGGLE BUTTON: OBJEK & LAYER (TOP-LEFT CORNER OF MAP) ── --}}
+                {{-- ── FLOATING TOGGLE BUTTON: SIDEBAR & LAYER DRAWER (TOP-LEFT CORNER OF MAP) ── --}}
                 <div style="position: absolute; top: 12px; left: 12px; z-index: 500; pointer-events: auto;">
                     <button 
                         type="button" 
@@ -1295,11 +1287,9 @@
                         :class="openSidebarDrawer ? 'ims-floating-layer-btn-active' : 'ims-floating-layer-btn'"
                         title="Buka / Tutup Panel Objek & Filter Layer GIS"
                     >
-                        <svg width="16" height="16" style="width: 16px !important; height: 16px !important; min-width: 16px !important; max-width: 16px !important; flex-shrink: 0 !important; display: block !important;" :style="openSidebarDrawer ? 'color: #38BDF8 !important;' : 'color: #0878E5 !important;'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M4 6h16M4 12h16M4 18h7"/>
+                        <svg width="22" height="22" style="width: 22px !important; height: 22px !important; min-width: 22px !important; max-width: 22px !important; flex-shrink: 0 !important; display: block !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M4 6h16M4 12h16M4 18h7"/>
                         </svg>
-                        <span style="font-size: 11.5px; font-weight: 800; white-space: nowrap; line-height: 1;">Objek & Layer</span>
-                        <span class="ims-floating-badge" x-text="customElements.length + allOdps.length"></span>
                     </button>
                 </div>
 
