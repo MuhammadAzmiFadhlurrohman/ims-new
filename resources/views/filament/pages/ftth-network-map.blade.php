@@ -34,17 +34,28 @@
                 flex-direction: column !important;
                 background: #ffffff !important;
             }
+            #ims-ftth-map-card-root:fullscreen .ims-map-container-wrap,
+            #ims-ftth-map-card-root:-webkit-full-screen .ims-map-container-wrap,
+            #ims-ftth-map-card-root.is-fullscreen .ims-map-container-wrap {
+                flex: 1 1 auto !important;
+                height: 100% !important;
+                min-height: 0 !important;
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                position: relative !important;
+            }
             #ims-ftth-map-card-root:fullscreen .ims-map-canvas,
             #ims-ftth-map-card-root:-webkit-full-screen .ims-map-canvas,
             #ims-ftth-map-card-root.is-fullscreen .ims-map-canvas {
-                flex: 1 !important;
-                height: calc(100vh - 100px) !important;
-                min-height: calc(100vh - 100px) !important;
+                flex: 1 1 auto !important;
+                height: 100% !important;
+                min-height: 0 !important;
                 width: 100% !important;
             }
             .ims-map-canvas {
                 width: 100% !important;
-                height: 620px !important;
+                height: 100% !important;
                 min-height: 520px !important;
                 background: #f8fafc !important;
                 display: block !important;
@@ -1015,7 +1026,7 @@
             </div>
 
             {{-- Map Container Relative Wrapper (for hosting sidebar drawer overlay) --}}
-            <div style="position: relative; width: 100%; height: auto; overflow: hidden;">
+            <div class="ims-map-container-wrap" style="position: relative; width: 100%; height: 620px; overflow: hidden;">
 
                 {{-- ── 2.1 GOOGLE MY MAPS STYLE FLOATING SIDEBAR DRAWER ── --}}
                 <div 
@@ -1295,7 +1306,7 @@
             </div>
 
             {{-- Legend Footer --}}
-            <div style="padding: 0.75rem 1.25rem; background: #F8FAFC; border-top: 1px solid #E2E8F0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; font-size: 0.72rem; color: #475569;">
+            <div style="padding: 0.55rem 1.25rem; background: #F8FAFC; border-top: 1px solid #E2E8F0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.72rem; color: #475569; flex-shrink: 0;">
                 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px;">
                     <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
                         <span style="width: 12px; height: 12px; border-radius: 50%; background: #0878E5; border: 1.5px solid #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); display: inline-block;"></span>
