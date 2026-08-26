@@ -36,7 +36,7 @@
         .header-mesh-banner {
             width: 100%;
             height: 48px;
-            background-color: #2b3940;
+            background-color: #041328;
             position: relative;
             overflow: hidden;
             border-bottom: 3.5px solid #00bcd4;
@@ -161,9 +161,9 @@
             font-size: 8.5pt;
             vertical-align: middle;
         }
-        .cell-cyan-tagihan {
-            background-color: #00c2cb !important;
-            color: #000000 !important;
+        .cell-dark-tagihan {
+            background-color: #041328 !important;
+            color: #ffffff !important;
             font-weight: bold;
         }
 
@@ -257,12 +257,12 @@
             margin-bottom: 1px;
         }
 
-        /* ── FOOTER BANNER ── */
+        /* ── FOOTER BANNER (Dark Navy Blue) ── */
         .footer-banner {
             width: 100%;
-            background-color: #00a8b5;
+            background-color: #041328;
             color: #ffffff;
-            padding: 5px 8px;
+            padding: 6px 8px;
             font-size: 6.8pt;
             line-height: 1.2;
             border-collapse: collapse;
@@ -287,7 +287,7 @@
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.3px;
-            color: #ffffff;
+            color: #00bcd4;
         }
     </style>
 </head>
@@ -323,14 +323,14 @@
     <!-- ── 1. HEADER SECTION ── -->
     <table class="header-table">
         <tr>
-            <!-- Left: High-Tech Geometric Network Banner -->
+            <!-- Left: Dark Navy Sidebar Geometric Banner -->
             <td class="header-left-col">
                 <div class="header-mesh-banner">
                     <svg width="100%" height="48" viewBox="0 0 350 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Dark background base -->
-                        <rect width="350" height="48" fill="#263339" />
+                        <!-- Dark navy base (match sidebar #041328) -->
+                        <rect width="350" height="48" fill="#041328" />
                         <!-- Geometric network mesh pattern -->
-                        <g stroke="#3a4d56" stroke-width="1" opacity="0.65">
+                        <g stroke="#1e3a5f" stroke-width="1" opacity="0.6">
                             <line x1="15" y1="10" x2="65" y2="28" />
                             <line x1="65" y1="28" x2="115" y2="12" />
                             <line x1="115" y1="12" x2="175" y2="35" />
@@ -357,36 +357,31 @@
                             <circle cx="225" cy="15" r="2.2" />
                             <circle cx="285" cy="38" r="2.5" />
                             <circle cx="340" cy="18" r="2.2" />
-                            <circle cx="40" cy="40" r="1.8" fill="#4dd0e1" />
-                            <circle cx="90" cy="44" r="1.8" fill="#4dd0e1" />
-                            <circle cx="200" cy="45" r="1.8" fill="#4dd0e1" />
+                            <circle cx="40" cy="40" r="1.8" fill="#38bdf8" />
+                            <circle cx="90" cy="44" r="1.8" fill="#38bdf8" />
+                            <circle cx="200" cy="45" r="1.8" fill="#38bdf8" />
                         </g>
                     </svg>
                 </div>
             </td>
 
-            <!-- Right: Media Solusi Network Brand Logo with IMS ONE -->
+            <!-- Right: IMS ONE Brand Header -->
             <td class="header-right-col">
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
-                        <!-- IMS ONE Badge -->
-                        <td style="width: 60px; vertical-align: middle; text-align: right; padding-right: 8px;">
-                            <div style="border: 2px solid #00bcd4; border-radius: 6px; text-align: center; padding: 4px 6px; display: inline-block; background-color: #f0fdfa;">
-                                <div style="font-size: 8.5pt; font-weight: 900; color: #008ba3; letter-spacing: 0.5px; white-space: nowrap; line-height: 1.1;">
-                                    IMS ONE
-                                </div>
-                            </div>
+                        <!-- IMS ONE WiFi Icon -->
+                        <td style="width: 32px; vertical-align: middle; text-align: right; padding-right: 8px;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="#00bcd4" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 3c-4.97 0-9.47 2.02-12.73 5.27l1.41 1.41C3.35 6.99 7.42 5 12 5s8.65 1.99 11.32 4.69l1.41-1.41C21.47 5.02 16.97 3 12 3zm0 4C8.13 7 4.62 8.57 2.05 11.14l1.41 1.41C5.69 10.32 8.67 9 12 9s6.31 1.32 8.54 3.55l1.41-1.41C19.38 8.57 15.87 7 12 7zm0 4c-2.76 0-5.26 1.12-7.07 2.93l1.41 1.41C7.79 13.89 9.77 13 12 13s4.21.89 5.66 2.34l1.41-1.41C17.26 12.12 14.76 11 12 11zm0 4c-1.38 0-2.63.56-3.54 1.46l3.54 3.54 3.54-3.54C14.63 15.56 13.38 15 12 15z"/>
+                            </svg>
                         </td>
-                        <!-- Logo Typography -->
+                        <!-- Brand Typography -->
                         <td style="vertical-align: middle; text-align: left;">
-                            <div style="font-size: 13pt; font-weight: 800; color: #0097a7; line-height: 1.05; letter-spacing: -0.2px;">
-                                Media Solusi
+                            <div style="font-size: 16pt; font-weight: 900; color: #041328; line-height: 1.05; letter-spacing: -0.3px;">
+                                IMS ONE
                             </div>
-                            <div style="font-size: 12.5pt; font-weight: 800; color: #37474f; line-height: 1.05; letter-spacing: -0.2px;">
-                                Network
-                            </div>
-                            <div style="font-size: 5.8pt; font-weight: bold; color: #78909c; letter-spacing: 0.8px; margin-top: 1px;">
-                                INTERNET SERVICE PROVIDER
+                            <div style="font-size: 6.8pt; font-weight: 600; color: #64748b; letter-spacing: 0.3px; margin-top: 1px;">
+                                Integrated Management System
                             </div>
                         </td>
                     </tr>
@@ -415,7 +410,7 @@
 
             <!-- Right: Company & Invoice Info -->
             <td class="info-company-col">
-                <div class="company-name-heading">PT MEDIA SOLUSI NETWORK</div>
+                <div class="company-name-heading">IMS ONE</div>
                 <table class="meta-kv-table">
                     <tr>
                         <td class="meta-kv-label">No tagihan</td>
@@ -487,12 +482,12 @@
                 </td>
             </tr>
 
-            <!-- Row 4: Tagihan Bulan Ini (Cyan Highlight) -->
+            <!-- Row 4: Tagihan Bulan Ini (Dark Navy Blue like Sidebar) -->
             <tr>
-                <td colspan="2" class="cell-cyan-tagihan" style="text-align: center; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.5px; height: 20px;">
+                <td colspan="2" class="cell-dark-tagihan" style="text-align: center; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.5px; height: 20px;">
                     TAGIHAN BULAN INI
                 </td>
-                <td colspan="2" class="cell-cyan-tagihan" style="text-align: right; font-size: 9pt;">
+                <td colspan="2" class="cell-dark-tagihan" style="text-align: right; font-size: 9pt;">
                     Rp {{ number_format($total, 2, ',', '.') }}
                 </td>
             </tr>
@@ -513,7 +508,7 @@
                 <!-- Col 1: Pembayaran Info -->
                 <td style="text-align: center; vertical-align: middle; padding: 8px 12px;">
                     <div style="font-size: 8pt; line-height: 1.35;">
-                        PEMBAYARAN : Bank BCA KCP Riau Bandung 086-0796023 an/ PT MEDIA SOLUSI NETWOR
+                        PEMBAYARAN : Bank BCA KCP Riau Bandung 086-0796023 an/ IMS ONE
                     </div>
                     <div style="font-size: 8pt; line-height: 1.35; margin-top: 4px;">
                         konfirmasi pembayaran kirim bukti TF ke nomor <strong>089508416636</strong>
@@ -545,7 +540,7 @@
     <!-- ── 7. SLIP PEMBAYARAN ── -->
     <table class="slip-header-table">
         <tr>
-            <td class="slip-company-name">PT. MEDIA SOLUSI NETWORK</td>
+            <td class="slip-company-name">IMS ONE</td>
             <td class="slip-title">SLIP PEMBAYARAN</td>
         </tr>
     </table>
@@ -586,7 +581,7 @@
         <li>Untuk pelanggan yang melakukan pembayaran melalui <strong>Transfer Bank</strong>, mohon memberikan konfirmasi via Whatsapp ke nomor <strong>089508416636</strong> dengan mencantumkan bukti pembayaran.</li>
     </ul>
 
-    <!-- ── 8. BOTTOM FOOTER BANNER ── -->
+    <!-- ── 8. BOTTOM FOOTER BANNER (Dark Navy Blue like Sidebar) ── -->
     <table class="footer-banner">
         <tr>
             <!-- Office -->
@@ -595,8 +590,8 @@
                     <tr>
                         <td style="width: 16px; vertical-align: top; padding: 0;">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="11" fill="#ffffff" />
-                                <path d="M12 6C9.79 6 8 7.79 8 10C8 13 12 18 12 18C12 18 16 13 16 10C16 7.79 14.21 6 12 6ZM12 11.5C11.17 11.5 10.5 10.83 10.5 10C10.5 9.17 11.17 8.5 12 8.5C12.83 8.5 13.5 9.17 13.5 10C13.5 10.83 12.83 11.5 12 11.5Z" fill="#00a8b5" />
+                                <circle cx="12" cy="12" r="11" fill="#00bcd4" />
+                                <path d="M12 6C9.79 6 8 7.79 8 10C8 13 12 18 12 18C12 18 16 13 16 10C16 7.79 14.21 6 12 6ZM12 11.5C11.17 11.5 10.5 10.83 10.5 10C10.5 9.17 11.17 8.5 12 8.5C12.83 8.5 13.5 9.17 13.5 10C13.5 10.83 12.83 11.5 12 11.5Z" fill="#041328" />
                             </svg>
                         </td>
                         <td style="vertical-align: top; padding-left: 3px;">
@@ -613,8 +608,8 @@
                     <tr>
                         <td style="width: 16px; vertical-align: top; padding: 0;">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="11" fill="#ffffff" />
-                                <path d="M12 6C9.79 6 8 7.79 8 10C8 13 12 18 12 18C12 18 16 13 16 10C16 7.79 14.21 6 12 6ZM12 11.5C11.17 11.5 10.5 10.83 10.5 10C10.5 9.17 11.17 8.5 12 8.5C12.83 8.5 13.5 9.17 13.5 10C13.5 10.83 12.83 11.5 12 11.5Z" fill="#00a8b5" />
+                                <circle cx="12" cy="12" r="11" fill="#00bcd4" />
+                                <path d="M12 6C9.79 6 8 7.79 8 10C8 13 12 18 12 18C12 18 16 13 16 10C16 7.79 14.21 6 12 6ZM12 11.5C11.17 11.5 10.5 10.83 10.5 10C10.5 9.17 11.17 8.5 12 8.5C12.83 8.5 13.5 9.17 13.5 10C13.5 10.83 12.83 11.5 12 11.5Z" fill="#041328" />
                             </svg>
                         </td>
                         <td style="vertical-align: top; padding-left: 3px;">
@@ -631,11 +626,12 @@
                     <tr>
                         <td style="width: 16px; vertical-align: top; padding: 0;">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="11" fill="#ffffff" />
-                                <path d="M6.62 10.79C8.06 13.62 10.38 15.94 13.21 17.38L15.41 15.18C15.69 14.9 16.08 14.82 16.43 14.93C17.55 15.3 18.75 15.5 20 15.5C20.55 15.5 21 15.95 21 16.5V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z" fill="#00a8b5" />
+                                <circle cx="12" cy="12" r="11" fill="#00bcd4" />
+                                <path d="M6.62 10.79C8.06 13.62 10.38 15.94 13.21 17.38L15.41 15.18C15.69 14.9 16.08 14.82 16.43 14.93C17.55 15.3 18.75 15.5 20 15.5C20.55 15.5 21 15.95 21 16.5V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z" fill="#041328" />
                             </svg>
                         </td>
                         <td style="vertical-align: top; padding-left: 3px;">
+                            <span class="footer-label">TELEPON</span><br>
                             022-3050-0111<br>
                             0852-2013-7627
                         </td>
@@ -649,13 +645,14 @@
                     <tr>
                         <td style="width: 16px; vertical-align: top; padding: 0;">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="11" fill="#ffffff" />
-                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 19.93C7.05 19.44 4 16.08 4 12C4 11.38 4.08 10.79 4.21 10.21L9 15V16C9 17.1 9.9 18 11 18V19.93ZM17.9 17.39C17.64 16.58 16.9 16 16 16H15V13C15 12.45 14.55 12 14 12H8V10H10C10.55 10 11 9.55 11 9V7H13C14.1 7 15 6.1 15 5V4.59C17.93 5.78 20 8.65 20 12C20 14.08 19.2 15.97 17.9 17.39Z" fill="#00a8b5" />
+                                <circle cx="12" cy="12" r="11" fill="#00bcd4" />
+                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 19.93C7.05 19.44 4 16.08 4 12C4 11.38 4.08 10.79 4.21 10.21L9 15V16C9 17.1 9.9 18 11 18V19.93ZM17.9 17.39C17.64 16.58 16.9 16 16 16H15V13C15 12.45 14.55 12 14 12H8V10H10C10.55 10 11 9.55 11 9V7H13C14.1 7 15 6.1 15 5V4.59C17.93 5.78 20 8.65 20 12C20 14.08 19.2 15.97 17.9 17.39Z" fill="#041328" />
                             </svg>
                         </td>
                         <td style="vertical-align: top; padding-left: 3px;">
-                            ptmsn.co.id<br>
-                            info@ptmsn.co.id
+                            <span class="footer-label">EMAIL &amp; WEB</span><br>
+                            ims.drafweb.site<br>
+                            info@imsone.id
                         </td>
                     </tr>
                 </table>
