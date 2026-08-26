@@ -283,26 +283,26 @@
                     </div>
 
                     {{-- Middle Tool Group: Live Universal GIS Search Bar --}}
-                    <div style="position: relative; flex: 1; max-width: 380px; min-width: 220px;">
+                    <div style="position: relative; flex: 1; max-width: 360px; min-width: 220px;">
                         <div 
-                            style="display: flex; align-items: center; background: #F8FAFC; border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 4px 10px; gap: 6px; transition: all 0.2s ease;"
+                            style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; background: #F8FAFC; border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 0 10px; height: 34px; box-sizing: border-box; gap: 8px; transition: all 0.2s ease;"
                             :style="searchFocused || searchQuery ? 'border-color: #0878E5; background: #ffffff; box-shadow: 0 0 0 3px rgba(8, 120, 229, 0.12);' : ''"
                         >
-                            <svg style="width: 14px; height: 14px; color: #64748B; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <svg style="width: 15px; height: 15px; color: #0878E5; flex-shrink: 0; display: block;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                             <input 
                                 type="text" 
                                 x-model="searchQuery" 
                                 @focus="searchFocused = true"
                                 @click.outside="searchFocused = false"
                                 @keydown.escape="searchFocused = false"
-                                placeholder="🔍 Cari Tiang, ODP, Kabel, ODC, ONT..." 
-                                style="border: none; background: transparent; outline: none; font-size: 0.76rem; font-weight: 700; width: 100%; color: #0F172A; padding: 2px 0;"
+                                placeholder="Cari Tiang, ODP, Kabel, ODC, ONT..." 
+                                style="border: none !important; background: transparent !important; outline: none !important; box-shadow: none !important; font-size: 0.76rem !important; font-weight: 700 !important; width: 100% !important; height: 100% !important; color: #0F172A !important; padding: 0 !important; margin: 0 !important;"
                             >
                             <button 
                                 type="button" 
                                 x-show="searchQuery" 
                                 @click="searchQuery = ''" 
-                                style="border: none; background: transparent; color: #94A3B8; cursor: pointer; font-size: 13px; font-weight: 900; padding: 0 2px;"
+                                style="border: none; background: transparent; color: #94A3B8; cursor: pointer; font-size: 13px; font-weight: 900; padding: 0 2px; line-height: 1; flex-shrink: 0;"
                                 title="Hapus pencarian"
                             >✕</button>
                         </div>
