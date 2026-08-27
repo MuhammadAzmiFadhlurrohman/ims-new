@@ -192,6 +192,11 @@
                 padding: 0 !important;
                 box-shadow: none !important;
             }
+            .ims-ftth-line-hitbox,
+            .ims-ftth-visible-line {
+                cursor: pointer !important;
+                pointer-events: auto !important;
+            }
             .ims-map-container-wrap {
                 position: relative !important;
                 width: 100% !important;
@@ -3006,15 +3011,7 @@
                                 const lineColor = el.color || (el.element_type === 'feeder' ? '#EF4444' : (el.element_type === 'distribution' ? '#0878E5' : '#F59E0B'));
                                 const isDash = el.element_type === 'dropcore';
 
-                                const polyline = L.polyline(el.path_coordinates, {
-                                    color: lineColor,
-                                    weight: 4.5,
-                                    dashArray: isDash ? '10, 7' : undefined,
-                                    opacity: 0.9,
-                                    smoothFactor: 0
-                                });
-
-                                polyline.bindPopup(`
+                                const popupHtml = `
                                     <div style='font-family: inherit; padding: 4px; min-width: 200px;'>
                                         <div style='font-size: 10px; font-weight: 800; color: ${lineColor}; text-transform: uppercase;'>〰️ JALUR KABEL ${el.element_type}</div>
                                         <div style='font-size: 13px; font-weight: 900; color: #0B1F33; margin: 2px 0;'>${el.name}</div>
@@ -3025,8 +3022,39 @@
                                             <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name}')" style='border: none; background: #FEE2E2; color: #DC2626; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>🗑️ Hapus</button>
                                         </div>
                                     </div>
-                                `);
+                                `;
 
+                                // Visible styled cable line
+                                const polyline = L.polyline(el.path_coordinates, {
+                                    color: lineColor,
+                                    weight: 4.5,
+                                    dashArray: isDash ? '10, 7' : undefined,
+                                    opacity: 0.9,
+                                    smoothFactor: 0,
+                                    className: 'ims-ftth-visible-line'
+                                });
+                                polyline.bindPopup(popupHtml);
+
+                                // 24px wide invisible hitbox buffer for instant and effortless clicks (even on dashed gaps)
+                                const hitbox = L.polyline(el.path_coordinates, {
+                                    color: '#000000',
+                                    weight: 24,
+                                    opacity: 0.0001,
+                                    smoothFactor: 0,
+                                    interactive: true,
+                                    className: 'ims-ftth-line-hitbox'
+                                });
+                                hitbox.bindPopup(popupHtml);
+
+                                // Visual hover feedback: brighten and thicken visible line when hovering near it
+                                const onHover = () => { polyline.setStyle({ weight: 6.5, opacity: 1 }); };
+                                const onLeave = () => { polyline.setStyle({ weight: 4.5, opacity: 0.9 }); };
+                                hitbox.on('mouseover', onHover);
+                                hitbox.on('mouseout', onLeave);
+                                polyline.on('mouseover', onHover);
+                                polyline.on('mouseout', onLeave);
+
+                                this.customLayerGroup.addLayer(hitbox);
                                 this.customLayerGroup.addLayer(polyline);
                             }
                         });
