@@ -4091,49 +4091,21 @@
                         ctx.imageSmoothingQuality = 'high';
 
                         // Fill base background color
-                        ctx.fillStyle = this.mapMode === 'hybrid' ? '#0F172A' : '#E2E8F0';
+                        ctx.fillStyle = this.mapMode === 'hybrid' ? '#0F172A' : '#ffffff';
                         ctx.fillRect(0, 0, croppedCanvas.width, croppedCanvas.height);
 
-                        const mapRect = mapCanvasEl.getBoundingClientRect();
+                        let captured = false;
 
-                        // ── LAYER 1: DIRECT HIGH-FIDELITY TILE COMPOSITE (ZERO SEAMS/GAPS) ──
-                        const tiles = mapCanvasEl.querySelectorAll('.leaflet-tile-pane img.leaflet-tile');
-                        tiles.forEach(tileImg => {
-                            if (!tileImg.complete || tileImg.naturalWidth === 0) return;
-                            const tRect = tileImg.getBoundingClientRect();
-                            const destX = (tRect.left - mapRect.left - crop.left) * scale;
-                            const destY = (tRect.top - mapRect.top - crop.top) * scale;
-                            const destW = tRect.width * scale;
-                            const destH = tRect.height * scale;
-                            try {
-                                ctx.drawImage(tileImg, destX, destY, destW, destH);
-                            } catch(e) {}
-                        });
-
-                        // ── LAYER 2: DIRECT VECTOR CANVAS (CABLES & POLYLINES) ──
-                        const vectorCanvases = mapCanvasEl.querySelectorAll('.leaflet-overlay-pane canvas');
-                        vectorCanvases.forEach(vCanvas => {
-                            const cRect = vCanvas.getBoundingClientRect();
-                            const destX = (cRect.left - mapRect.left - crop.left) * scale;
-                            const destY = (cRect.top - mapRect.top - crop.top) * scale;
-                            const destW = cRect.width * scale;
-                            const destH = cRect.height * scale;
-                            try {
-                                ctx.drawImage(vCanvas, destX, destY, destW, destH);
-                            } catch(e){}
-                        });
-
-                        // ── LAYER 3: MARKER & LABELS OVERLAY VIA HTML2CANVAS ──
                         if (typeof html2canvas !== 'undefined') {
                             try {
                                 const rendered = await html2canvas(mapCanvasEl, {
                                     useCORS: true,
-                                    allowTaint: true,
+                                    allowTaint: false,
                                     foreignObjectRendering: false,
                                     logging: false,
                                     scale: scale,
-                                    backgroundColor: null,
-                                    ignoreElements: (el) => el.id === 'ims-screenshot-overlay' || el.classList.contains('ims-tool-btn') || el.classList.contains('leaflet-tile-pane')
+                                    backgroundColor: this.mapMode === 'hybrid' ? '#0F172A' : '#ffffff',
+                                    ignoreElements: (el) => el.id === 'ims-screenshot-overlay' || el.classList.contains('ims-tool-btn')
                                 });
 
                                 ctx.drawImage(
@@ -4147,8 +4119,27 @@
                                     croppedCanvas.width,
                                     croppedCanvas.height
                                 );
+                                captured = true;
                             } catch (corsErr) {
-                                console.warn('html2canvas overlay fallback:', corsErr);
+                                console.warn('html2canvas full render error, falling back:', corsErr);
+                            }
+                        }
+
+                        // Method B: Direct Leaflet Vector Layer & Markers Canvas capture fallback
+                        if (!captured) {
+                            try {
+                                const mapRect = mapCanvasEl.getBoundingClientRect();
+                                const vectorCanvases = mapCanvasEl.querySelectorAll('.leaflet-overlay-pane canvas');
+                                vectorCanvases.forEach(vCanvas => {
+                                    const cRect = vCanvas.getBoundingClientRect();
+                                    const destX = (cRect.left - mapRect.left - crop.left) * scale;
+                                    const destY = (cRect.top - mapRect.top - crop.top) * scale;
+                                    const destW = cRect.width * scale;
+                                    const destH = cRect.height * scale;
+                                    ctx.drawImage(vCanvas, destX, destY, destW, destH);
+                                });
+                            } catch (err2) {
+                                console.error('Direct canvas crop error:', err2);
                             }
                         }
 
