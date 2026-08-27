@@ -190,7 +190,6 @@
                 background: transparent !important;
                 border: none !important;
                 padding: 0 !important;
-                margin: 0 !important;
                 box-shadow: none !important;
             }
             .ims-map-container-wrap {
@@ -394,24 +393,10 @@
                 padding: 0 !important;
                 line-height: 1 !important;
             }
-            /* Leaflet Pane & Marker Anti-Shift Fix across Zoom In / Zoom Out */
-            .ims-map-canvas .leaflet-pane,
-            .ims-map-canvas .leaflet-tile,
-            .ims-map-canvas .leaflet-marker-icon,
-            .ims-map-canvas .leaflet-marker-shadow,
-            .ims-map-canvas .leaflet-tile-container,
-            .ims-map-canvas .leaflet-pane > svg,
-            .ims-map-canvas .leaflet-pane > canvas {
-                box-sizing: content-box !important;
-            }
-            .ims-map-canvas .leaflet-marker-icon {
-                transform-origin: 0 0 !important;
-            }
             .odp-pin, .custom-ftth-node, .ims-drag-edit-marker {
                 background: transparent !important;
                 border: none !important;
                 padding: 0 !important;
-                margin: 0 !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
