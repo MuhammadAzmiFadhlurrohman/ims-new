@@ -527,9 +527,9 @@
             style="overflow: visible !important; position: relative; z-index: 50;"
         >
             
-            {{-- Toolbar Top Header: 100% Single Row (No Staggering / Sejajar) --}}
-            <div style="padding: 0.55rem 0.85rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow-x: auto; overflow-y: visible !important; scrollbar-width: none;">
-                <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-width: max-content;">
+            {{-- Toolbar Top Header: 100% Single Row & Unclipped Overflows (No Staggering / Sejajar) --}}
+            <div style="padding: 0.55rem 0.85rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow: visible !important;">
+                <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; width: 100%;">
                     
                     {{-- 1. Project Selector --}}
                     <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
@@ -813,7 +813,7 @@
                             <div 
                                 x-show="openMarkerMenu" 
                                 @click.outside="openMarkerMenu = false"
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 99999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 270px; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 270px; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
                             >
                                 <button type="button" @click="startAddMarker('pole')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #F1F5F9; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #334155;">
@@ -881,7 +881,7 @@
                             <div 
                                 x-show="openLineMenu" 
                                 @click.outside="openLineMenu = false"
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 99999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 270px; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 270px; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
                             >
                                 <button type="button" @click="startDrawLine('feeder')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF2F2; border: 1px solid #FECACA; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #DC2626;">
