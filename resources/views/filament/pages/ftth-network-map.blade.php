@@ -914,17 +914,6 @@
                                 </button>
                             </div>
                         </div>
-
-                        {{-- Tabel Data Button (Spreadsheet Bulk View) --}}
-                        <button 
-                            type="button" 
-                            @click="openDataTableModal = true" 
-                            class="ims-tool-btn"
-                            title="Buka Tabel Spreadsheet Seluruh Aset Jaringan"
-                        >
-                            <svg style="width: 14px; height: 14px; color: #0878E5;" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-                            <span>Tabel Data</span>
-                        </button>
                     </div>
 
                     {{-- 3. Live Universal GIS Search Bar with Geocoding --}}
@@ -995,50 +984,9 @@
                     {{-- Vertical Divider --}}
                     <div style="width: 1px; height: 24px; background: #E2E8F0; flex-shrink: 0;"></div>
 
-                    {{-- 4. Right Tool Group: Map Switcher, KMZ/KML Export, GeoJSON, Fullscreen --}}
+                    {{-- 4. Right Tool Group: Unified Menu (Tabel Data, Mode Peta, Import KMZ, Export KML) --}}
                     <div style="display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; flex-shrink: 0;">
                         
-                        {{-- Google Maps View Type Dropdown (Roadmap / Satelit) --}}
-                        <div style="position: relative;">
-                            <button 
-                                type="button" 
-                                @click="openMapTypeMenu = !openMapTypeMenu; openProjectMenu = false; openMarkerMenu = false; openLineMenu = false;" 
-                                class="ims-tool-btn"
-                                title="Ganti Tampilan Peta (Roadmap / Satelit)"
-                            >
-                                <span x-text="mapMode === 'roadmap' ? '🗺️ Roadmap ▾' : '🛰️ Satelit ▾'"></span>
-                            </button>
-                            <div 
-                                x-show="openMapTypeMenu" 
-                                @click.outside="openMapTypeMenu = false"
-                                x-cloak
-                                style="position: absolute; top: calc(100% + 6px); right: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 16px 36px rgba(15,23,42,0.22); min-width: 175px; padding: 5px; display: flex; flex-direction: column; gap: 3px;"
-                            >
-                                <button 
-                                    type="button" 
-                                    @click="setMapMode('roadmap'); openMapTypeMenu = false;"
-                                    style="text-align: left; padding: 7px 10px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.76rem; font-weight: 800; transition: all 0.15s ease;"
-                                    :style="mapMode === 'roadmap' ? 'background: #EFF6FF; color: #0878E5;' : 'background: transparent; color: #334155;'"
-                                    onmouseover="this.style.background='#F1F5F9'" 
-                                    onmouseout="if (this.style.color !== 'rgb(8, 120, 229)') this.style.background='transparent'"
-                                >
-                                    <span style="font-size: 14px;">🗺️</span>
-                                    <span>Google Roadmap</span>
-                                </button>
-                                <button 
-                                    type="button" 
-                                    @click="setMapMode('hybrid'); openMapTypeMenu = false;"
-                                    style="text-align: left; padding: 7px 10px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.76rem; font-weight: 800; transition: all 0.15s ease;"
-                                    :style="mapMode === 'hybrid' ? 'background: #EFF6FF; color: #0878E5;' : 'background: transparent; color: #334155;'"
-                                    onmouseover="this.style.background='#F1F5F9'" 
-                                    onmouseout="if (this.style.color !== 'rgb(8, 120, 229)') this.style.background='transparent'"
-                                >
-                                    <span style="font-size: 14px;">🛰️</span>
-                                    <span>Google Satelit</span>
-                                </button>
-                            </div>
-                        </div>
-
                         {{-- Hidden KMZ/KML File Input --}}
                         <input 
                             type="file" 
@@ -1056,28 +1004,114 @@
                             "
                         >
 
-                        <button 
-                            type="button" 
-                            onclick="document.getElementById('ims-kmz-file-input').click()" 
-                            class="ims-tool-btn"
-                            style="background: #ECFDF5; border-color: #A7F3D0; color: #059669;"
-                            title="Import peta jaringan dari Google My Maps / Google Earth (.kmz / .kml)"
-                        >
-                            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                            <span>Import KMZ</span>
-                        </button>
+                        {{-- Unified GIS Tools & Data Menu Dropdown --}}
+                        <div style="position: relative;" @click.outside="openExtraMenu = false">
+                            <button 
+                                type="button" 
+                                @click="openExtraMenu = !openExtraMenu; openProjectMenu = false; openMarkerMenu = false; openLineMenu = false;" 
+                                :class="openExtraMenu ? 'active' : ''"
+                                class="ims-tool-btn"
+                                style="background: #F8FAFC; border-color: #CBD5E1; color: #1E293B; font-weight: 800;"
+                                title="Menu Alat, Tampilan Peta, Tabel Data, dan Impor / Ekspor"
+                            >
+                                <svg style="width: 14px; height: 14px; color: #475569;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="4" y1="6" x2="20" y2="6"/>
+                                    <line x1="4" y1="12" x2="20" y2="12"/>
+                                    <line x1="4" y1="18" x2="20" y2="18"/>
+                                </svg>
+                                <span>Menu & Alat ▾</span>
+                            </button>
 
-                        {{-- Export KML (Google Earth / Google My Maps) --}}
-                        <button 
-                            type="button" 
-                            @click="exportKml()" 
-                            class="ims-tool-btn"
-                            style="background: #FEF3C7; border-color: #FDE68A; color: #92400E;"
-                            title="Export Peta Jaringan ke format Google Earth / Google My Maps (.kml)"
-                        >
-                            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                            <span>Export KML</span>
-                        </button>
+                            <div 
+                                x-show="openExtraMenu" 
+                                x-cloak
+                                style="position: absolute; top: calc(100% + 6px); right: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 20px 48px rgba(15,23,42,0.22); min-width: 290px; padding: 8px; display: flex; flex-direction: column; gap: 4px;"
+                            >
+                                {{-- Section 1: Data Table --}}
+                                <div style="padding: 4px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Data & Spreadsheet</div>
+                                
+                                <button 
+                                    type="button" 
+                                    @click="openDataTableModal = true; openExtraMenu = false;"
+                                    style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
+                                    onmouseover="this.style.background='#EFF6FF'" 
+                                    onmouseout="this.style.background='transparent'"
+                                >
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
+                                        <svg style="width: 17px; height: 17px;" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E40AF;">Tabel Data Jaringan</div>
+                                        <div style="font-size: 0.68rem; color: #2563EB; font-weight: 500;">Lihat seluruh aset & edit cepat</div>
+                                    </div>
+                                </button>
+
+                                {{-- Divider --}}
+                                <div style="height: 1px; background: #F1F5F9; margin: 4px 0;"></div>
+
+                                {{-- Section 2: Map Mode (Roadmap / Satellite) --}}
+                                <div style="padding: 4px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Tampilan Lapisan Peta</div>
+
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 2px 4px;">
+                                    <button 
+                                        type="button" 
+                                        @click="setMapMode('roadmap'); openExtraMenu = false;"
+                                        style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.76rem; font-weight: 800; transition: all 0.15s ease;"
+                                        :style="mapMode === 'roadmap' ? 'background: #EFF6FF; border-color: #0878E5; color: #0878E5;' : 'background: #F8FAFC; border-color: #E2E8F0; color: #475569;'"
+                                    >
+                                        <span>🗺️</span>
+                                        <span>Roadmap</span>
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        @click="setMapMode('hybrid'); openExtraMenu = false;"
+                                        style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.76rem; font-weight: 800; transition: all 0.15s ease;"
+                                        :style="mapMode === 'hybrid' ? 'background: #EFF6FF; border-color: #0878E5; color: #0878E5;' : 'background: #F8FAFC; border-color: #E2E8F0; color: #475569;'"
+                                    >
+                                        <span>🛰️</span>
+                                        <span>Satelit</span>
+                                    </button>
+                                </div>
+
+                                {{-- Divider --}}
+                                <div style="height: 1px; background: #F1F5F9; margin: 4px 0;"></div>
+
+                                {{-- Section 3: File Import / Export --}}
+                                <div style="padding: 4px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Impor & Ekspor GIS</div>
+
+                                <button 
+                                    type="button" 
+                                    @click="openExtraMenu = false; document.getElementById('ims-kmz-file-input').click();"
+                                    style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
+                                    onmouseover="this.style.background='#ECFDF5'" 
+                                    onmouseout="this.style.background='transparent'"
+                                >
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669;">
+                                        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #065F46;">Import File KMZ / KML</div>
+                                        <div style="font-size: 0.68rem; color: #059669; font-weight: 500;">Google My Maps / Earth</div>
+                                    </div>
+                                </button>
+
+                                <button 
+                                    type="button" 
+                                    @click="openExtraMenu = false; exportKml();"
+                                    style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
+                                    onmouseover="this.style.background='#FEF3C7'" 
+                                    onmouseout="this.style.background='transparent'"
+                                >
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF3C7; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #92400E;">
+                                        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #92400E;">Export File KML</div>
+                                        <div style="font-size: 0.68rem; color: #B45309; font-weight: 500;">Kompatibel Google Earth</div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -2195,6 +2229,7 @@
                     openNewProjectModal: false,
                     newProjectName: '',
                     newProjectDescription: '',
+                    openExtraMenu: false,
                     openMapTypeMenu: false,
                     mapInstance: null,
                     mapMode: 'roadmap',
