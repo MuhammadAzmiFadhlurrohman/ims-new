@@ -4582,9 +4582,6 @@
                         }
                         this.renderCustomElements();
                         this.openStyleModal = false;
-                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                            IMS.toast('🎨 Gaya "' + this.stylingElement.name + '" berhasil disimpan!', 'success');
-                        }
                     },
 
                     renderCustomElements() {
@@ -5578,10 +5575,6 @@
 
                         this.renderCustomElements();
                         this.openDetailModal = false;
-
-                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                            IMS.toast('💾 Spesifikasi & data "' + updatePayload.name + '" berhasil disimpan!', 'success');
-                        }
                     },
 
                     handlePhotoSelect(event) {
