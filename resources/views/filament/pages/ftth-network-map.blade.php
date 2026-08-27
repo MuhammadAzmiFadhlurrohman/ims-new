@@ -42,6 +42,18 @@
             .ims-mode-menu-dropdown.is-open {
                 display: flex !important;
             }
+
+            /* ── PRO WINDOWS SNIPPING TOOL OVERLAY & DRAG BOX ── */
+            .ims-snipping-box {
+                position: absolute !important;
+                border: 2.5px solid #0878E5 !important;
+                outline: 1.5px dashed #ffffff !important;
+                background: rgba(8, 120, 229, 0.08) !important;
+                box-shadow: 0 0 0 99999px rgba(15, 23, 42, 0.65), 0 0 20px rgba(8, 120, 229, 0.6) !important;
+                pointer-events: none !important;
+                box-sizing: border-box !important;
+                z-index: 50 !important;
+            }
             .ims-mode-menu-item {
                 width: 100% !important;
                 min-width: 100% !important;
@@ -2297,17 +2309,17 @@
                     <div 
                         x-show="isSelectingScreenshot"
                         id="ims-screenshot-box"
+                        class="ims-snipping-box"
                         :style="getScreenshotBoxStyle()"
-                        style="position: absolute; border: 2px solid #0878E5; outline: 1.5px dashed #ffffff; background: rgba(8, 120, 229, 0.05); box-shadow: 0 0 0 99999px rgba(15, 23, 42, 0.65), 0 0 16px rgba(8, 120, 229, 0.5); pointer-events: none; box-sizing: border-box;"
                     >
                         {{-- Dimension Pill Badge --}}
-                        <div style="position: absolute; bottom: -28px; right: 0; background: #0878E5; color: #ffffff; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 5px; font-family: monospace; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.3);" x-text="getScreenshotDimensions()"></div>
+                        <div id="ims-screenshot-dim-badge" style="position: absolute; bottom: -28px; right: 0; background: #0878E5; color: #ffffff; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 5px; font-family: monospace; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.3);" x-text="getScreenshotDimensions()"></div>
 
                         {{-- 4 Corner Handles --}}
-                        <div style="position: absolute; top: -4px; left: -4px; width: 8px; height: 8px; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 2px;"></div>
-                        <div style="position: absolute; top: -4px; right: -4px; width: 8px; height: 8px; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 2px;"></div>
-                        <div style="position: absolute; bottom: -4px; left: -4px; width: 8px; height: 8px; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 2px;"></div>
-                        <div style="position: absolute; bottom: -4px; right: -4px; width: 8px; height: 8px; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 2px;"></div>
+                        <div style="position: absolute; top: -5px; left: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px;"></div>
+                        <div style="position: absolute; top: -5px; right: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px;"></div>
+                        <div style="position: absolute; bottom: -5px; left: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px;"></div>
+                        <div style="position: absolute; bottom: -5px; right: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px;"></div>
                     </div>
                 </div>
             </div>
@@ -3986,10 +3998,6 @@
                                 } else if (mode === 'screenshot') {
                                     if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
                                         IMS.toast('📸 Tarik kotak seleksi pada peta untuk mengambil screenshot.', 'info', 2500);
-                                    }
-                                }
-                            } else {
-                                canvasEl.style.cursor = '';
                                 if (mode === 'view_only') {
                                     if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
                                         IMS.toast('🔒 Peta terkunci (View-Only / Mode Presentasi).', 'info', 2000);
@@ -4011,6 +4019,15 @@
                         this.screenshotCurrentY = this.screenshotStartY;
                         this.screenshotRect = { left: this.screenshotStartX, top: this.screenshotStartY, width: 0, height: 0 };
                         this.isSelectingScreenshot = true;
+
+                        const box = document.getElementById('ims-screenshot-box');
+                        if (box) {
+                            box.style.display = 'block';
+                            box.style.left = this.screenshotStartX + 'px';
+                            box.style.top = this.screenshotStartY + 'px';
+                            box.style.width = '0px';
+                            box.style.height = '0px';
+                        }
                     },
 
                     updateScreenshotSelection(e) {
@@ -4027,6 +4044,19 @@
                         const height = Math.abs(this.screenshotCurrentY - this.screenshotStartY);
 
                         this.screenshotRect = { left, top, width, height };
+
+                        const box = document.getElementById('ims-screenshot-box');
+                        if (box) {
+                            box.style.display = 'block';
+                            box.style.left = left + 'px';
+                            box.style.top = top + 'px';
+                            box.style.width = width + 'px';
+                            box.style.height = height + 'px';
+                        }
+                        const badge = document.getElementById('ims-screenshot-dim-badge');
+                        if (badge) {
+                            badge.textContent = `${Math.round(width)} × ${Math.round(height)} px`;
+                        }
                     },
 
                     async finishScreenshotSelection(e) {
@@ -4054,23 +4084,52 @@
                         croppedCanvas.height = Math.round(crop.height * scale);
                         const ctx = croppedCanvas.getContext('2d');
                         ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
 
                         // Fill base background color
-                        ctx.fillStyle = this.mapMode === 'hybrid' ? '#0F172A' : '#F8FAFC';
+                        ctx.fillStyle = this.mapMode === 'hybrid' ? '#0F172A' : '#E2E8F0';
                         ctx.fillRect(0, 0, croppedCanvas.width, croppedCanvas.height);
 
-                        let captured = false;
+                        const mapRect = mapCanvasEl.getBoundingClientRect();
 
-                        // Method A: html2canvas with full error protection
+                        // ── LAYER 1: DIRECT HIGH-FIDELITY TILE COMPOSITE (ZERO SEAMS/GAPS) ──
+                        const tiles = mapCanvasEl.querySelectorAll('.leaflet-tile-pane img.leaflet-tile');
+                        tiles.forEach(tileImg => {
+                            if (!tileImg.complete || tileImg.naturalWidth === 0) return;
+                            const tRect = tileImg.getBoundingClientRect();
+                            const destX = (tRect.left - mapRect.left - crop.left) * scale;
+                            const destY = (tRect.top - mapRect.top - crop.top) * scale;
+                            const destW = tRect.width * scale;
+                            const destH = tRect.height * scale;
+                            try {
+                                ctx.drawImage(tileImg, destX, destY, destW, destH);
+                            } catch(e) {}
+                        });
+
+                        // ── LAYER 2: DIRECT VECTOR CANVAS (CABLES & POLYLINES) ──
+                        const vectorCanvases = mapCanvasEl.querySelectorAll('.leaflet-overlay-pane canvas');
+                        vectorCanvases.forEach(vCanvas => {
+                            const cRect = vCanvas.getBoundingClientRect();
+                            const destX = (cRect.left - mapRect.left - crop.left) * scale;
+                            const destY = (cRect.top - mapRect.top - crop.top) * scale;
+                            const destW = cRect.width * scale;
+                            const destH = cRect.height * scale;
+                            try {
+                                ctx.drawImage(vCanvas, destX, destY, destW, destH);
+                            } catch(e){}
+                        });
+
+                        // ── LAYER 3: MARKER & LABELS OVERLAY VIA HTML2CANVAS ──
                         if (typeof html2canvas !== 'undefined') {
                             try {
                                 const rendered = await html2canvas(mapCanvasEl, {
                                     useCORS: true,
-                                    allowTaint: false,
+                                    allowTaint: true,
                                     foreignObjectRendering: false,
                                     logging: false,
                                     scale: scale,
-                                    ignoreElements: (el) => el.id === 'ims-screenshot-overlay' || el.classList.contains('ims-tool-btn')
+                                    backgroundColor: null,
+                                    ignoreElements: (el) => el.id === 'ims-screenshot-overlay' || el.classList.contains('ims-tool-btn') || el.classList.contains('leaflet-tile-pane')
                                 });
 
                                 ctx.drawImage(
@@ -4084,48 +4143,15 @@
                                     croppedCanvas.width,
                                     croppedCanvas.height
                                 );
-                                captured = true;
                             } catch (corsErr) {
-                                console.warn('html2canvas CORS fallback to vector canvas:', corsErr);
-                            }
-                        }
-
-                        // Method B: Direct Leaflet Vector Layer & Markers Canvas capture
-                        if (!captured) {
-                            try {
-                                const leafletCanvas = mapCanvasEl.querySelector('canvas.leaflet-zoom-animated') || mapCanvasEl.querySelector('canvas');
-                                if (leafletCanvas) {
-                                    const mapRect = mapCanvasEl.getBoundingClientRect();
-                                    const canRect = leafletCanvas.getBoundingClientRect();
-                                    const factorX = leafletCanvas.width / canRect.width;
-                                    const factorY = leafletCanvas.height / canRect.height;
-                                    const offsetX = (crop.left - (canRect.left - mapRect.left)) * factorX;
-                                    const offsetY = (crop.top - (canRect.top - mapRect.top)) * factorY;
-                                    const cropW = crop.width * factorX;
-                                    const cropH = crop.height * factorY;
-
-                                    ctx.drawImage(
-                                        leafletCanvas,
-                                        offsetX,
-                                        offsetY,
-                                        cropW,
-                                        cropH,
-                                        0,
-                                        0,
-                                        croppedCanvas.width,
-                                        croppedCanvas.height
-                                    );
-                                    captured = true;
-                                }
-                            } catch (err2) {
-                                console.error('Direct canvas crop error:', err2);
+                                console.warn('html2canvas overlay fallback:', corsErr);
                             }
                         }
 
                         // Add FTTH Project Title Watermark on bottom-left
                         const projectName = this.currentProject?.name || 'FTTH Network Map';
-                        ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
-                        ctx.fillRect(10 * scale, croppedCanvas.height - (32 * scale), (projectName.length * 8 + 30) * scale, 24 * scale);
+                        ctx.fillStyle = 'rgba(15, 23, 42, 0.82)';
+                        ctx.fillRect(10 * scale, croppedCanvas.height - (32 * scale), (projectName.length * 8 + 32) * scale, 24 * scale);
                         ctx.fillStyle = '#ffffff';
                         ctx.font = `bold ${11 * scale}px 'Plus Jakarta Sans', sans-serif`;
                         ctx.fillText('📡 ' + projectName, 16 * scale, croppedCanvas.height - (16 * scale));
@@ -4148,12 +4174,14 @@
                                     html: `
                                         <div style="font-size: 13px; color: #475569; margin-bottom: 12px;">Gambar area pilihan telah otomatis diunduh: <b>${filename}</b></div>
                                         <div style="border-radius: 12px; overflow: hidden; border: 1.5px solid #CBD5E1; box-shadow: 0 6px 20px rgba(0,0,0,0.15); max-height: 280px; display: flex; justify-content: center; background: #0F172A; padding: 4px;">
-                                            <img src="${dataUrl}" style="max-width: 100%; max-height: 270px; object-fit: contain; border-radius: 8px;">
+                                            <img src="${dataUrl}" style="max-height: 270px; width: auto; max-width: 100%; border-radius: 8px; object-fit: contain;" />
                                         </div>
                                     `,
                                     confirmButtonText: '✓ Selesai',
-                                    confirmButtonColor: '#0878E5',
-                                    showCloseButton: true
+                                    customClass: {
+                                        popup: 'ims-swal-popup',
+                                        confirmButton: 'ims-swal-confirm'
+                                    }
                                 });
                             } else if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
                                 IMS.toast('📸 Cuplikan peta berhasil diunduh!', 'success', 3000);
