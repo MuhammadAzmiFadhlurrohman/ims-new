@@ -4014,11 +4014,12 @@
                     // ── SCREENSHOT SNIP METHODS ──
                     startScreenshotSelection(e) {
                         if (this.currentMode !== 'screenshot') return;
+                        if (e) e.preventDefault();
                         const overlay = document.getElementById('ims-screenshot-overlay');
                         if (!overlay) return;
                         const rect = overlay.getBoundingClientRect();
-                        this.screenshotStartX = e.clientX - rect.left;
-                        this.screenshotStartY = e.clientY - rect.top;
+                        this.screenshotStartX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+                        this.screenshotStartY = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
                         this.screenshotCurrentX = this.screenshotStartX;
                         this.screenshotCurrentY = this.screenshotStartY;
                         this.screenshotRect = { left: this.screenshotStartX, top: this.screenshotStartY, width: 0, height: 0 };
@@ -4036,6 +4037,7 @@
 
                     updateScreenshotSelection(e) {
                         if (!this.isSelectingScreenshot || this.currentMode !== 'screenshot') return;
+                        if (e) e.preventDefault();
                         const overlay = document.getElementById('ims-screenshot-overlay');
                         if (!overlay) return;
                         const rect = overlay.getBoundingClientRect();
@@ -4065,6 +4067,7 @@
 
                     async finishScreenshotSelection(e) {
                         if (!this.isSelectingScreenshot || this.currentMode !== 'screenshot') return;
+                        if (e) e.preventDefault();
                         this.isSelectingScreenshot = false;
                         const crop = { ...this.screenshotRect };
 
@@ -4105,7 +4108,37 @@
                                     logging: false,
                                     scale: scale,
                                     backgroundColor: this.mapMode === 'hybrid' ? '#0F172A' : '#ffffff',
-                                    ignoreElements: (el) => el.id === 'ims-screenshot-overlay' || el.classList.contains('ims-tool-btn')
+                                    ignoreElements: (el) => el.id === 'ims-screenshot-overlay' || el.classList.contains('ims-tool-btn'),
+                                    onclone: (clonedDoc) => {
+                                        const clonedMap = clonedDoc.getElementById('ims-ftth-builder-canvas');
+                                        if (!clonedMap) return;
+
+                                        // 1. Remove 3D transform on tile containers
+                                        const tileContainers = clonedMap.querySelectorAll('.leaflet-tile-container');
+                                        tileContainers.forEach(tc => {
+                                            tc.style.transform = 'none';
+                                        });
+
+                                        // 2. Compute exact absolute pixel positions for each tile image relative to map canvas
+                                        const origMapRect = mapCanvasEl.getBoundingClientRect();
+                                        const origTiles = mapCanvasEl.querySelectorAll('.leaflet-tile-pane img.leaflet-tile');
+                                        const clonedTiles = clonedMap.querySelectorAll('.leaflet-tile-pane img.leaflet-tile');
+
+                                        origTiles.forEach((origTile, i) => {
+                                            const clonedTile = clonedTiles[i];
+                                            if (origTile && clonedTile) {
+                                                const rect = origTile.getBoundingClientRect();
+                                                clonedTile.style.position = 'absolute';
+                                                clonedTile.style.left = Math.floor(rect.left - origMapRect.left) + 'px';
+                                                clonedTile.style.top = Math.floor(rect.top - origMapRect.top) + 'px';
+                                                clonedTile.style.width = Math.ceil(rect.width + 1.5) + 'px';
+                                                clonedTile.style.height = Math.ceil(rect.height + 1.5) + 'px';
+                                                clonedTile.style.transform = 'none';
+                                                clonedTile.style.margin = '0';
+                                                clonedTile.style.padding = '0';
+                                            }
+                                        });
+                                    }
                                 });
 
                                 ctx.drawImage(
