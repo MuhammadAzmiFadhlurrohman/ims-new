@@ -18,17 +18,18 @@
             }
             .ims-sidebar-scroll-list {
                 display: block !important;
-                flex: 1 1 0% !important;
+                flex: 1 1 0px !important;
                 min-height: 0 !important;
-                overflow-y: auto !important;
+                height: 0 !important;
+                overflow-y: scroll !important;
                 overflow-x: hidden !important;
                 overscroll-behavior: contain !important;
                 -webkit-overflow-scrolling: touch !important;
                 pointer-events: auto !important;
-                padding: 10px 14px 40px 14px !important;
+                padding: 10px 14px 50px 14px !important;
             }
             .ims-sidebar-scroll-list::-webkit-scrollbar {
-                width: 7px !important;
+                width: 8px !important;
                 display: block !important;
             }
             .ims-sidebar-scroll-list::-webkit-scrollbar-track {
@@ -1205,7 +1206,7 @@
                     </div>
 
                     {{-- ── TAB 1: DAFTAR OBJEK JARINGAN ── --}}
-                    <div x-show="sidebarTab === 'objects'" style="flex: 1 1 0% !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important;">
+                    <div x-show="sidebarTab === 'objects'" style="flex: 1 1 0px !important; min-height: 0 !important; height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important;">
                         {{-- Search and Category Filter --}}
                         <div style="padding: 6px 14px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex: 0 0 auto !important;">
                             <div style="position: relative; width: 100%;">
@@ -1260,7 +1261,7 @@
                         </div>
 
                         {{-- Scrollable List of Objects --}}
-                        <div class="ims-sidebar-scroll-list">
+                        <div class="ims-sidebar-scroll-list" style="flex: 1 1 0px !important; min-height: 0 !important; height: 0 !important; overflow-y: scroll !important; overflow-x: hidden !important; -webkit-overflow-scrolling: touch !important; padding: 10px 14px 50px 14px !important;">
                             <template x-if="filteredSidebarElements.length === 0">
                                 <div style="padding: 40px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
                                     <div style="width: 52px; height: 52px; border-radius: 14px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8;">
@@ -1332,7 +1333,7 @@
                     </div>
 
                     {{-- ── TAB 2: FILTER LAYER (SHOW / HIDE) ── --}}
-                    <div x-show="sidebarTab === 'layers'" class="ims-sidebar-scroll-list">
+                    <div x-show="sidebarTab === 'layers'" class="ims-sidebar-scroll-list" style="flex: 1 1 0px !important; min-height: 0 !important; height: 0 !important; overflow-y: scroll !important; overflow-x: hidden !important; -webkit-overflow-scrolling: touch !important; padding: 12px 14px 50px 14px !important;">
                         <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1.5px solid #F1F5F9;">
                             <span style="font-size: 0.74rem; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px;">Visibilitas Layer</span>
                             <div style="display: flex; gap: 8px; font-size: 0.68rem; font-weight: 800;">
@@ -1625,18 +1626,6 @@
 
                     init() {
                         this.loadLeafletAndInit();
-
-                        this.$watch('openSidebarDrawer', (val) => {
-                            if (val) {
-                                this.$nextTick(() => {
-                                    const drawerEl = document.getElementById('ims-ftth-sidebar-drawer');
-                                    if (drawerEl && typeof L !== 'undefined' && L.DomEvent) {
-                                        L.DomEvent.disableScrollPropagation(drawerEl);
-                                        L.DomEvent.disableClickPropagation(drawerEl);
-                                    }
-                                });
-                            }
-                        });
 
                         // Listeners from Livewire
                         this.$wire.on('element-saved', (event) => {
@@ -1936,12 +1925,6 @@
                         this.mapInstance.on('mousemove', (e) => {
                             this.handleMapMouseMove(e);
                         });
-
-                        const drawerEl = document.getElementById('ims-ftth-sidebar-drawer');
-                        if (drawerEl && typeof L !== 'undefined' && L.DomEvent) {
-                            L.DomEvent.disableScrollPropagation(drawerEl);
-                            L.DomEvent.disableClickPropagation(drawerEl);
-                        }
                     },
 
                     setMapMode(mode) {
