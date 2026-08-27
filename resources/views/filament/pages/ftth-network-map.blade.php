@@ -995,17 +995,6 @@
                             </svg>
                             <span>Jelajah</span>
                         </button>
-
-                        <button 
-                            type="button" 
-                            @click="startMeasure()" 
-                            :class="currentMode === 'measure' ? 'active' : ''"
-                            class="ims-tool-btn"
-                            title="Ukur estimasi jarak kabel secara bebas di peta"
-                        >
-                            <svg style="width: 14px; height: 14px; color: #7C3AED; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3l-6.6 6.6c-.4.4-1 .4-1.4 0l-11-11c-.4-.4-.4-1 0-1.4l6.6-6.6c.4-.4 1-.4 1.4 0l11 11c.4.4.4 1 0 1.4z"/><line x1="7.5" y1="10.5" x2="6.5" y2="9.5"/><line x1="10.5" y1="13.5" x2="8.5" y2="11.5"/><line x1="13.5" y1="16.5" x2="12.5" y2="15.5"/><line x1="16.5" y1="19.5" x2="14.5" y2="17.5"/></svg>
-                            <span>Ukur Jarak</span>
-                        </button>
                         
                         {{-- Dropdown Add Marker --}}
                         <div style="position: relative;">
@@ -1245,9 +1234,25 @@
                                 x-cloak
                                 style="position: absolute; top: calc(100% + 6px); right: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 16px; box-shadow: 0 20px 48px rgba(15,23,42,0.22); min-width: 300px; width: 300px; padding: 10px; display: flex; flex-direction: column; gap: 6px; box-sizing: border-box;"
                             >
-                                {{-- Section 1: Data Table --}}
-                                <div style="padding: 4px 8px 2px 8px; font-size: 0.7rem; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px;">Data & Spreadsheet</div>
+                                {{-- Section 1: Tools & Data --}}
+                                <div style="padding: 4px 8px 2px 8px; font-size: 0.7rem; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px;">Alat GIS & Data</div>
                                 
+                                <button 
+                                    type="button" 
+                                    @click="openExtraMenu = false; startMeasure();"
+                                    style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 9px 12px; border-radius: 12px; border: 1.5px solid transparent; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.15s ease;" 
+                                    onmouseover="this.style.background='#F5F3FF'; this.style.borderColor='#DDD6FE'" 
+                                    onmouseout="this.style.background='transparent'; this.style.borderColor='transparent'"
+                                >
+                                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #F5F3FF; border: 1px solid #DDD6FE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #7C3AED;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3l-6.6 6.6c-.4.4-1 .4-1.4 0l-11-11c-.4-.4-.4-1 0-1.4l6.6-6.6c.4-.4 1-.4 1.4 0l11 11c.4.4.4 1 0 1.4z"/><line x1="7.5" y1="10.5" x2="6.5" y2="9.5"/><line x1="10.5" y1="13.5" x2="8.5" y2="11.5"/><line x1="13.5" y1="16.5" x2="12.5" y2="15.5"/><line x1="16.5" y1="19.5" x2="14.5" y2="17.5"/></svg>
+                                    </div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="font-size: 0.82rem; font-weight: 800; color: #5B21B6;">Ukur Jarak & Jalur Kabel</div>
+                                        <div style="font-size: 0.7rem; color: #7C3AED; font-weight: 500; margin-top: 1px;">Penggaris ukur kabel bebas di peta</div>
+                                    </div>
+                                </button>
+
                                 <button 
                                     type="button" 
                                     @click="openDataTableModal = true; openExtraMenu = false;"
