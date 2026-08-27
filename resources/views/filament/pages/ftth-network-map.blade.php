@@ -2153,6 +2153,10 @@
                         this.currentMode = 'edit_element';
                         this.editingElement = el;
 
+                        if (this.mapInstance) {
+                            this.mapInstance.closePopup();
+                        }
+
                         if (this.editLayerGroup) {
                             this.editLayerGroup.clearLayers();
                         }
@@ -2164,10 +2168,13 @@
                             this.editingDistance = el.length_meters || 0;
                             this.renderEditingVertexHandles();
 
-                            // Fly to line bounds
+                            // Maintain current zoom level, only pan if out of view
                             if (this.editingPoints.length >= 2 && this.mapInstance) {
                                 const poly = L.polyline(this.editingPoints);
-                                this.mapInstance.fitBounds(poly.getBounds().pad(0.2));
+                                const bounds = poly.getBounds();
+                                if (!this.mapInstance.getBounds().intersects(bounds)) {
+                                    this.mapInstance.panTo(bounds.getCenter(), { animate: true });
+                                }
                             }
                         } else if (el.category === 'marker') {
                             this.editingMarkerLat = el.latitude;
@@ -2215,7 +2222,8 @@
                             this.editLayerGroup.addLayer(this.editingMarkerHandle);
 
                             if (this.mapInstance) {
-                                this.mapInstance.flyTo([el.latitude, el.longitude], 19);
+                                // Pan to marker while keeping EXACT current zoom level (never zoom out)
+                                this.mapInstance.panTo([el.latitude, el.longitude], { animate: true });
                             }
                         }
 
