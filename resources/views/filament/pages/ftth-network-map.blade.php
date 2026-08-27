@@ -19,9 +19,9 @@
             .ims-sidebar-flyout {
                 z-index: 99999999 !important;
             }
-            /* ── MODE INTERAKSI DROPDOWN MENU (STRICT 1-COLUMN FULL-WIDTH) ── */
+            /* ── MODE INTERAKSI DROPDOWN MENU (STANDALONE CSS & JS) ── */
             .ims-mode-menu-dropdown {
-                display: flex !important;
+                display: none;
                 flex-direction: column !important;
                 flex-wrap: nowrap !important;
                 width: 300px !important;
@@ -34,6 +34,13 @@
                 border-radius: 16px !important;
                 box-shadow: 0 20px 45px -10px rgba(15,23,42,0.22), 0 0 0 1px rgba(0,0,0,0.05) !important;
                 box-sizing: border-box !important;
+                position: absolute !important;
+                top: calc(100% + 6px) !important;
+                left: 0 !important;
+                z-index: 999999 !important;
+            }
+            .ims-mode-menu-dropdown.is-open {
+                display: flex !important;
             }
             .ims-mode-menu-item {
                 width: 100% !important;
@@ -1084,12 +1091,13 @@
                             </button>
                         </div>
 
-                        {{-- Dropdown Mode Interaksi / Kursor --}}
-                        <div style="position: relative;">
+                        {{-- Dropdown Mode Interaksi / Kursor (100% STANDALONE JS & CSS) --}}
+                        <div id="ims-mode-dropdown-wrapper" style="position: relative;">
                             <button 
+                                id="ims-mode-dropdown-btn"
                                 type="button" 
-                                @click="openModeMenu = !openModeMenu; openMarkerMenu = false; openLineMenu = false; openProjectMenu = false; openExtraMenu = false; openMapTypeMenu = false;" 
-                                :class="['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode) || openModeMenu ? 'active' : ''"
+                                onclick="imsToggleModeDropdown(event)"
+                                :class="['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode) ? 'active' : ''"
                                 class="ims-tool-btn"
                                 title="Pilih Mode Interaksi Kursor Peta"
                             >
@@ -1134,16 +1142,14 @@
                             </button>
 
                             <div 
-                                x-show="openModeMenu" 
-                                @click.outside="openModeMenu = false"
-                                x-cloak
+                                id="ims-mode-dropdown-menu"
                                 class="ims-mode-menu-dropdown"
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999;"
                             >
                                 {{-- Item 1: Jelajah & Pilih --}}
                                 <button 
                                     type="button" 
-                                    @click="setMode('select'); openModeMenu = false;" 
+                                    onclick="imsSelectMode('select')"
+                                    @click="setMode('select')" 
                                     class="ims-mode-menu-item"
                                     :class="currentMode === 'select' ? 'is-mode-select' : ''"
                                 >
@@ -1163,7 +1169,8 @@
                                 {{-- Item 2: Screenshot Area (Snip) --}}
                                 <button 
                                     type="button" 
-                                    @click="setMode('screenshot'); openModeMenu = false;" 
+                                    onclick="imsSelectMode('screenshot')"
+                                    @click="setMode('screenshot')" 
                                     class="ims-mode-menu-item"
                                     :class="currentMode === 'screenshot' ? 'is-mode-screenshot' : ''"
                                 >
@@ -1183,7 +1190,8 @@
                                 {{-- Item 3: Inspektur Koordinat --}}
                                 <button 
                                     type="button" 
-                                    @click="setMode('inspect_coords'); openModeMenu = false;" 
+                                    onclick="imsSelectMode('inspect_coords')"
+                                    @click="setMode('inspect_coords')" 
                                     class="ims-mode-menu-item"
                                     :class="currentMode === 'inspect_coords' ? 'is-mode-inspect' : ''"
                                 >
@@ -1206,7 +1214,8 @@
                                 {{-- Item 4: Kunci Peta --}}
                                 <button 
                                     type="button" 
-                                    @click="setMode('view_only'); openModeMenu = false;" 
+                                    onclick="imsSelectMode('view_only')"
+                                    @click="setMode('view_only')" 
                                     class="ims-mode-menu-item"
                                     :class="currentMode === 'view_only' ? 'is-mode-locked' : ''"
                                 >
@@ -3393,6 +3402,43 @@
 
         @script
         <script>
+            // ── 100% STANDALONE JS & CSS MODE DROPDOWN CONTROLLER ──
+            window.imsToggleModeDropdown = function(e) {
+                if (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+                const menu = document.getElementById('ims-mode-dropdown-menu');
+                if (!menu) return;
+                menu.classList.toggle('is-open');
+            };
+
+            window.imsCloseModeDropdown = function() {
+                const menu = document.getElementById('ims-mode-dropdown-menu');
+                if (menu) {
+                    menu.classList.remove('is-open');
+                }
+            };
+
+            window.imsSelectMode = function(mode) {
+                window.imsCloseModeDropdown();
+            };
+
+            // Global event capture to guarantee dropdown closes when clicking anywhere else (even map/canvas)
+            document.addEventListener('click', function(e) {
+                const wrapper = document.getElementById('ims-mode-dropdown-wrapper');
+                if (wrapper && !wrapper.contains(e.target)) {
+                    window.imsCloseModeDropdown();
+                }
+            }, true);
+
+            document.addEventListener('mousedown', function(e) {
+                const wrapper = document.getElementById('ims-mode-dropdown-wrapper');
+                if (wrapper && !wrapper.contains(e.target)) {
+                    window.imsCloseModeDropdown();
+                }
+            }, true);
+
             window.imsFtthNetworkMapComponent = function() {
                 return {
                     allOdps: {!! json_encode($this->allOdps) !!},
@@ -3922,6 +3968,7 @@
                         this.openMarkerMenu = false;
                         this.openLineMenu = false;
                         this.openModeMenu = false;
+                        if (typeof window.imsCloseModeDropdown === 'function') window.imsCloseModeDropdown();
                         if (this.currentMode === 'measure') this.clearMeasure();
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
                         if (this.currentMode === 'screenshot') this.isSelectingScreenshot = false;
