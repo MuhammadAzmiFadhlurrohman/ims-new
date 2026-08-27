@@ -19,6 +19,85 @@
             .ims-sidebar-flyout {
                 z-index: 99999999 !important;
             }
+            /* ── MODE INTERAKSI DROPDOWN MENU (STRICT 1-COLUMN FULL-WIDTH) ── */
+            .ims-mode-menu-dropdown {
+                display: flex !important;
+                flex-direction: column !important;
+                flex-wrap: nowrap !important;
+                width: 290px !important;
+                min-width: 290px !important;
+                max-width: 290px !important;
+                padding: 6px !important;
+                gap: 4px !important;
+                background: #ffffff !important;
+                border: 1px solid #cbd5e1 !important;
+                border-radius: 14px !important;
+                box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05) !important;
+                box-sizing: border-box !important;
+            }
+            .ims-mode-menu-item {
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                gap: 10px !important;
+                box-sizing: border-box !important;
+                text-align: left !important;
+                padding: 8px 10px !important;
+                border-radius: 10px !important;
+                border: none !important;
+                margin: 0 !important;
+                background: transparent;
+                cursor: pointer !important;
+                transition: all 0.15s ease !important;
+                float: none !important;
+                clear: both !important;
+            }
+            .ims-mode-icon-box {
+                width: 32px !important;
+                height: 32px !important;
+                min-width: 32px !important;
+                max-width: 32px !important;
+                border-radius: 8px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                flex-shrink: 0 !important;
+                margin: 0 !important;
+            }
+            .ims-mode-text-box {
+                flex: 1 1 auto !important;
+                min-width: 0 !important;
+                text-align: left !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                margin: 0 !important;
+            }
+            .ims-mode-text-title {
+                font-size: 0.8rem !important;
+                font-weight: 800 !important;
+                line-height: 1.2 !important;
+                white-space: nowrap !important;
+                margin: 0 !important;
+            }
+            .ims-mode-text-sub {
+                font-size: 0.68rem !important;
+                font-weight: 500 !important;
+                line-height: 1.2 !important;
+                white-space: nowrap !important;
+                margin-top: 2px !important;
+            }
+            .ims-mode-check {
+                margin-left: auto !important;
+                font-size: 0.8rem !important;
+                font-weight: 900 !important;
+                flex-shrink: 0 !important;
+            }
             .ims-map-card {
                 background: #ffffff;
                 border: 1px solid #dbeafe;
@@ -1047,62 +1126,63 @@
                             <div 
                                 x-show="openModeMenu" 
                                 x-cloak
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 300px; width: 300px; padding: 6px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box;"
+                                class="ims-mode-menu-dropdown"
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999;"
                             >
                                 {{-- Item 1: Jelajah & Pilih --}}
                                 <button 
                                     type="button" 
                                     @click="setMode('select'); openModeMenu = false;" 
-                                    style="width: 100% !important; min-width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 10px; transition: all 0.15s ease;" 
+                                    class="ims-mode-menu-item"
                                     :style="currentMode === 'select' ? 'background: #EFF6FF !important;' : 'background: transparent;'"
                                     onmouseover="this.style.background='#EFF6FF'" 
                                     onmouseout="this.style.background=currentMode === 'select' ? '#EFF6FF' : 'transparent'"
                                 >
-                                    <div style="width: 32px; height: 32px; min-width: 32px; max-width: 32px; border-radius: 8px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
+                                    <div class="ims-mode-icon-box" style="background: #EFF6FF; border: 1px solid #BFDBFE; color: #0878E5;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
                                             <path d="m13 13 6 6"/>
                                         </svg>
                                     </div>
-                                    <div style="flex: 1 1 auto; min-width: 0; text-align: left;">
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E40AF; white-space: nowrap;">Jelajah & Navigasi</div>
-                                        <div style="font-size: 0.68rem; color: #2563EB; font-weight: 500; white-space: nowrap;">Geser peta & klik detail objek</div>
+                                    <div class="ims-mode-text-box">
+                                        <div class="ims-mode-text-title" style="color: #1E40AF;">Jelajah & Navigasi</div>
+                                        <div class="ims-mode-text-sub" style="color: #2563EB;">Geser peta & klik detail objek</div>
                                     </div>
-                                    <span x-show="currentMode === 'select'" style="margin-left: auto; font-size: 0.8rem; color: #0878E5; font-weight: 900; flex-shrink: 0;">✓</span>
+                                    <span x-show="currentMode === 'select'" class="ims-mode-check" style="color: #0878E5;">✓</span>
                                 </button>
 
                                 {{-- Item 2: Screenshot Area (Snip) --}}
                                 <button 
                                     type="button" 
                                     @click="setMode('screenshot'); openModeMenu = false;" 
-                                    style="width: 100% !important; min-width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 10px; transition: all 0.15s ease;" 
+                                    class="ims-mode-menu-item"
                                     :style="currentMode === 'screenshot' ? 'background: #FEF3C7 !important;' : 'background: transparent;'"
                                     onmouseover="this.style.background='#FEF3C7'" 
                                     onmouseout="this.style.background=currentMode === 'screenshot' ? '#FEF3C7' : 'transparent'"
                                 >
-                                    <div style="width: 32px; height: 32px; min-width: 32px; max-width: 32px; border-radius: 8px; background: #FEF3C7; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #D97706;">
+                                    <div class="ims-mode-icon-box" style="background: #FEF3C7; border: 1px solid #FDE68A; color: #D97706;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                                             <circle cx="12" cy="13" r="4"/>
                                         </svg>
                                     </div>
-                                    <div style="flex: 1 1 auto; min-width: 0; text-align: left;">
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #92400E; white-space: nowrap;">Screenshot Area (Snip)</div>
-                                        <div style="font-size: 0.68rem; color: #B45309; font-weight: 500; white-space: nowrap;">Tarik kotak untuk foto peta</div>
+                                    <div class="ims-mode-text-box">
+                                        <div class="ims-mode-text-title" style="color: #92400E;">Screenshot Area (Snip)</div>
+                                        <div class="ims-mode-text-sub" style="color: #B45309;">Tarik kotak untuk foto peta</div>
                                     </div>
-                                    <span x-show="currentMode === 'screenshot'" style="margin-left: auto; font-size: 0.8rem; color: #D97706; font-weight: 900; flex-shrink: 0;">✓</span>
+                                    <span x-show="currentMode === 'screenshot'" class="ims-mode-check" style="color: #D97706;">✓</span>
                                 </button>
 
                                 {{-- Item 3: Inspektur Koordinat --}}
                                 <button 
                                     type="button" 
                                     @click="setMode('inspect_coords'); openModeMenu = false;" 
-                                    style="width: 100% !important; min-width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 10px; transition: all 0.15s ease;" 
+                                    class="ims-mode-menu-item"
                                     :style="currentMode === 'inspect_coords' ? 'background: #ECFDF5 !important;' : 'background: transparent;'"
                                     onmouseover="this.style.background='#ECFDF5'" 
                                     onmouseout="this.style.background=currentMode === 'inspect_coords' ? '#ECFDF5' : 'transparent'"
                                 >
-                                    <div style="width: 32px; height: 32px; min-width: 32px; max-width: 32px; border-radius: 8px; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669;">
+                                    <div class="ims-mode-icon-box" style="background: #ECFDF5; border: 1px solid #A7F3D0; color: #059669;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                             <circle cx="12" cy="12" r="10"/>
                                             <line x1="22" y1="12" x2="18" y2="12"/>
@@ -1111,33 +1191,33 @@
                                             <line x1="12" y1="22" x2="12" y2="18"/>
                                         </svg>
                                     </div>
-                                    <div style="flex: 1 1 auto; min-width: 0; text-align: left;">
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #065F46; white-space: nowrap;">Inspektur Koordinat GPS</div>
-                                        <div style="font-size: 0.68rem; color: #059669; font-weight: 500; white-space: nowrap;">Klik titik untuk salin Lat-Long</div>
+                                    <div class="ims-mode-text-box">
+                                        <div class="ims-mode-text-title" style="color: #065F46;">Inspektur Koordinat GPS</div>
+                                        <div class="ims-mode-text-sub" style="color: #059669;">Klik titik untuk salin Lat-Long</div>
                                     </div>
-                                    <span x-show="currentMode === 'inspect_coords'" style="margin-left: auto; font-size: 0.8rem; color: #059669; font-weight: 900; flex-shrink: 0;">✓</span>
+                                    <span x-show="currentMode === 'inspect_coords'" class="ims-mode-check" style="color: #059669;">✓</span>
                                 </button>
 
                                 {{-- Item 4: Kunci Peta --}}
                                 <button 
                                     type="button" 
                                     @click="setMode('view_only'); openModeMenu = false;" 
-                                    style="width: 100% !important; min-width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 10px; transition: all 0.15s ease;" 
+                                    class="ims-mode-menu-item"
                                     :style="currentMode === 'view_only' ? 'background: #F1F5F9 !important;' : 'background: transparent;'"
                                     onmouseover="this.style.background='#F1F5F9'" 
                                     onmouseout="this.style.background=currentMode === 'view_only' ? '#F1F5F9' : 'transparent'"
                                 >
-                                    <div style="width: 32px; height: 32px; min-width: 32px; max-width: 32px; border-radius: 8px; background: #F1F5F9; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #475569;">
+                                    <div class="ims-mode-icon-box" style="background: #F1F5F9; border: 1px solid #CBD5E1; color: #475569;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                                             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                                         </svg>
                                     </div>
-                                    <div style="flex: 1 1 auto; min-width: 0; text-align: left;">
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E293B; white-space: nowrap;">Kunci Peta (View-Only)</div>
-                                        <div style="font-size: 0.68rem; color: #64748B; font-weight: 500; white-space: nowrap;">Mode aman presentasi tanpa edit</div>
+                                    <div class="ims-mode-text-box">
+                                        <div class="ims-mode-text-title" style="color: #1E293B;">Kunci Peta (View-Only)</div>
+                                        <div class="ims-mode-text-sub" style="color: #64748B;">Mode aman presentasi tanpa edit</div>
                                     </div>
-                                    <span x-show="currentMode === 'view_only'" style="margin-left: auto; font-size: 0.8rem; color: #334155; font-weight: 900; flex-shrink: 0;">✓</span>
+                                    <span x-show="currentMode === 'view_only'" class="ims-mode-check" style="color: #334155;">✓</span>
                                 </button>
                             </div>
                         </div>
@@ -3747,7 +3827,8 @@
                             maxZoom: 22,
                             maxNativeZoom: 20,
                             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                            tileSize: 256
+                            tileSize: 256,
+                            crossOrigin: true
                         }).addTo(this.mapInstance);
 
                         // Hybrid satellite
@@ -3755,7 +3836,8 @@
                             maxZoom: 22,
                             maxNativeZoom: 20,
                             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                            tileSize: 256
+                            tileSize: 256,
+                            crossOrigin: true
                         });
 
                         this.odpLayerGroup = L.layerGroup().addTo(this.mapInstance);
@@ -3878,50 +3960,97 @@
                             IMS.toast('📸 Mengambil gambar cuplikan area peta...', 'info', 2000);
                         }
 
-                        // Ensure html2canvas is ready
-                        if (typeof html2canvas === 'undefined') {
-                            await new Promise((resolve) => {
-                                const script = document.createElement('script');
-                                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-                                script.onload = resolve;
-                                document.head.appendChild(script);
-                            });
-                        }
+                        const mapCanvasEl = document.getElementById('ims-ftth-builder-canvas');
+                        if (!mapCanvasEl) return;
 
                         const overlay = document.getElementById('ims-screenshot-overlay');
                         if (overlay) overlay.style.display = 'none';
 
+                        const scale = window.devicePixelRatio || 2;
+                        const croppedCanvas = document.createElement('canvas');
+                        croppedCanvas.width = Math.round(crop.width * scale);
+                        croppedCanvas.height = Math.round(crop.height * scale);
+                        const ctx = croppedCanvas.getContext('2d');
+                        ctx.imageSmoothingEnabled = true;
+
+                        // Fill base background color
+                        ctx.fillStyle = this.mapMode === 'hybrid' ? '#0F172A' : '#F8FAFC';
+                        ctx.fillRect(0, 0, croppedCanvas.width, croppedCanvas.height);
+
+                        let captured = false;
+
+                        // Method A: html2canvas with full error protection
+                        if (typeof html2canvas !== 'undefined') {
+                            try {
+                                const rendered = await html2canvas(mapCanvasEl, {
+                                    useCORS: true,
+                                    allowTaint: false,
+                                    foreignObjectRendering: false,
+                                    logging: false,
+                                    scale: scale,
+                                    ignoreElements: (el) => el.id === 'ims-screenshot-overlay' || el.classList.contains('ims-tool-btn')
+                                });
+
+                                ctx.drawImage(
+                                    rendered,
+                                    crop.left * scale,
+                                    crop.top * scale,
+                                    crop.width * scale,
+                                    crop.height * scale,
+                                    0,
+                                    0,
+                                    croppedCanvas.width,
+                                    croppedCanvas.height
+                                );
+                                captured = true;
+                            } catch (corsErr) {
+                                console.warn('html2canvas CORS fallback to vector canvas:', corsErr);
+                            }
+                        }
+
+                        // Method B: Direct Leaflet Vector Layer & Markers Canvas capture
+                        if (!captured) {
+                            try {
+                                const leafletCanvas = mapCanvasEl.querySelector('canvas.leaflet-zoom-animated') || mapCanvasEl.querySelector('canvas');
+                                if (leafletCanvas) {
+                                    const mapRect = mapCanvasEl.getBoundingClientRect();
+                                    const canRect = leafletCanvas.getBoundingClientRect();
+                                    const factorX = leafletCanvas.width / canRect.width;
+                                    const factorY = leafletCanvas.height / canRect.height;
+                                    const offsetX = (crop.left - (canRect.left - mapRect.left)) * factorX;
+                                    const offsetY = (crop.top - (canRect.top - mapRect.top)) * factorY;
+                                    const cropW = crop.width * factorX;
+                                    const cropH = crop.height * factorY;
+
+                                    ctx.drawImage(
+                                        leafletCanvas,
+                                        offsetX,
+                                        offsetY,
+                                        cropW,
+                                        cropH,
+                                        0,
+                                        0,
+                                        croppedCanvas.width,
+                                        croppedCanvas.height
+                                    );
+                                    captured = true;
+                                }
+                            } catch (err2) {
+                                console.error('Direct canvas crop error:', err2);
+                            }
+                        }
+
+                        // Add FTTH Project Title Watermark on bottom-left
+                        const projectName = this.currentProject?.name || 'FTTH Network Map';
+                        ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
+                        ctx.fillRect(10 * scale, croppedCanvas.height - (32 * scale), (projectName.length * 8 + 30) * scale, 24 * scale);
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = `bold ${11 * scale}px 'Plus Jakarta Sans', sans-serif`;
+                        ctx.fillText('📡 ' + projectName, 16 * scale, croppedCanvas.height - (16 * scale));
+
                         try {
-                            const mapCanvasEl = document.getElementById('ims-ftth-builder-canvas');
-                            if (!mapCanvasEl) return;
-
-                            const canvas = await html2canvas(mapCanvasEl, {
-                                useCORS: true,
-                                allowTaint: true,
-                                logging: false,
-                                scale: window.devicePixelRatio || 2
-                            });
-
-                            const scale = window.devicePixelRatio || 2;
-                            const croppedCanvas = document.createElement('canvas');
-                            croppedCanvas.width = crop.width * scale;
-                            croppedCanvas.height = crop.height * scale;
-                            const ctx = croppedCanvas.getContext('2d');
-
-                            ctx.drawImage(
-                                canvas,
-                                crop.left * scale,
-                                crop.top * scale,
-                                crop.width * scale,
-                                crop.height * scale,
-                                0,
-                                0,
-                                crop.width * scale,
-                                crop.height * scale
-                            );
-
                             const dataUrl = croppedCanvas.toDataURL('image/png');
-                            const filename = `FTTH-Peta-${this.currentProject?.name ? this.currentProject.name.replace(/[^a-zA-Z0-9]/g, '_') : 'Area'}-${Date.now().toString().slice(-6)}.png`;
+                            const filename = `FTTH-Peta-${projectName.replace(/[^a-zA-Z0-9]/g, '_')}-${Date.now().toString().slice(-6)}.png`;
 
                             // Trigger instant automatic download
                             const a = document.createElement('a');
@@ -3936,8 +4065,8 @@
                                     title: '📸 Cuplikan Peta Berhasil!',
                                     html: `
                                         <div style="font-size: 13px; color: #475569; margin-bottom: 12px;">Gambar area pilihan telah otomatis diunduh: <b>${filename}</b></div>
-                                        <div style="border-radius: 10px; overflow: hidden; border: 1.5px solid #CBD5E1; box-shadow: 0 4px 14px rgba(0,0,0,0.15); max-height: 260px; display: flex; justify-content: center; background: #0F172A;">
-                                            <img src="${dataUrl}" style="max-width: 100%; max-height: 260px; object-fit: contain;">
+                                        <div style="border-radius: 12px; overflow: hidden; border: 1.5px solid #CBD5E1; box-shadow: 0 6px 20px rgba(0,0,0,0.15); max-height: 280px; display: flex; justify-content: center; background: #0F172A; padding: 4px;">
+                                            <img src="${dataUrl}" style="max-width: 100%; max-height: 270px; object-fit: contain; border-radius: 8px;">
                                         </div>
                                     `,
                                     confirmButtonText: '✓ Selesai',
@@ -3947,11 +4076,10 @@
                             } else if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
                                 IMS.toast('📸 Cuplikan peta berhasil diunduh!', 'success', 3000);
                             }
-
                         } catch (err) {
-                            console.error('Screenshot error:', err);
+                            console.error('Final screenshot export error:', err);
                             if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                                IMS.toast('Gagal mengambil screenshot: ' + err.message, 'error', 3000);
+                                IMS.toast('Gagal mengekspor gambar screenshot: ' + err.message, 'error', 3000);
                             }
                         } finally {
                             if (overlay) overlay.style.display = '';
