@@ -475,6 +475,10 @@
                 pointer-events: none !important;
             }
 
+            [x-cloak] {
+                display: none !important;
+            }
+
             /* ── BULLETPROOF FULLSCREEN MODAL OVERLAYS & CENTERING ── */
             @keyframes imsModalFadeZoom {
                 0% { opacity: 0; transform: scale(0.96) translateY(8px); }
@@ -486,21 +490,22 @@
                 left: 0 !important;
                 right: 0 !important;
                 bottom: 0 !important;
-                width: 100vw !important;
-                height: 100vh !important;
-                max-width: 100vw !important;
-                max-height: 100vh !important;
+                width: 100% !important;
+                height: 100% !important;
                 background: rgba(15, 23, 42, 0.78) !important;
                 backdrop-filter: blur(10px) !important;
                 -webkit-backdrop-filter: blur(10px) !important;
                 z-index: 999999999 !important;
-                display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 padding: 20px !important;
                 box-sizing: border-box !important;
                 overflow-y: auto !important;
                 margin: 0 !important;
+            }
+            .ims-modal-overlay-root.is-hidden,
+            .ims-modal-overlay-root[style*="display: none"] {
+                display: none !important;
             }
             .ims-modal-card-dialog {
                 position: relative !important;
@@ -1896,8 +1901,10 @@
         <template x-teleport="body">
             <div 
                 x-show="openNewProjectModal" 
+                :class="!openNewProjectModal && 'is-hidden'"
                 x-cloak
                 class="ims-modal-overlay-root"
+                style="display: flex;"
                 @keydown.escape.window="openNewProjectModal = false"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0"
@@ -1961,8 +1968,10 @@
         <template x-teleport="body">
             <div 
                 x-show="openStyleModal" 
+                :class="!openStyleModal && 'is-hidden'"
                 x-cloak
                 class="ims-modal-overlay-root"
+                style="display: flex;"
                 @keydown.escape.window="openStyleModal = false"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0"
@@ -2118,8 +2127,10 @@
         <template x-teleport="body">
             <div 
                 x-show="openDetailModal" 
+                :class="!openDetailModal && 'is-hidden'"
                 x-cloak
                 class="ims-modal-overlay-root"
+                style="display: flex;"
                 @keydown.escape.window="openDetailModal = false"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0"
@@ -2656,8 +2667,10 @@
         <template x-teleport="body">
             <div 
                 x-show="previewPhotoModal" 
+                :class="!previewPhotoModal && 'is-hidden'"
                 x-cloak
-                style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 999999999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;"
+                class="ims-modal-overlay-root"
+                style="display: flex; background: rgba(0,0,0,0.92) !important;"
                 @keydown.escape.window="previewPhotoModal = null"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0"
@@ -2701,8 +2714,10 @@
         <template x-teleport="body">
             <div 
                 x-show="openDataTableModal" 
+                :class="!openDataTableModal && 'is-hidden'"
                 x-cloak
                 class="ims-modal-overlay-root"
+                style="display: flex;"
                 @keydown.escape.window="openDataTableModal = false"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0"
