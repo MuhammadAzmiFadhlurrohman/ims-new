@@ -1,4 +1,7 @@
 <x-filament-panels::page>
+    {{-- html2canvas for instant map snip / screenshot --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <div 
         x-data="imsFtthNetworkMapComponent()"
         class="ims-ftth-map-root"
@@ -987,7 +990,7 @@
                             <button 
                                 type="button" 
                                 @click="openModeMenu = !openModeMenu; openMarkerMenu = false; openLineMenu = false; openProjectMenu = false; openExtraMenu = false;" 
-                                :class="['select', 'inspect_coords', 'view_only', openModeMenu].includes(currentMode) || openModeMenu ? 'active' : ''"
+                                :class="['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode) || openModeMenu ? 'active' : ''"
                                 class="ims-tool-btn"
                                 title="Pilih Mode Interaksi Kursor Peta"
                             >
@@ -998,6 +1001,15 @@
                                             <path d="m13 13 6 6"/>
                                         </svg>
                                         <span>Jelajah ▾</span>
+                                    </div>
+                                </template>
+                                <template x-if="currentMode === 'screenshot'">
+                                    <div style="display: inline-flex; align-items: center; gap: 5px; color: #D97706;">
+                                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                            <circle cx="12" cy="13" r="4"/>
+                                        </svg>
+                                        <span>Screenshot ▾</span>
                                     </div>
                                 </template>
                                 <template x-if="currentMode === 'inspect_coords'">
@@ -1021,7 +1033,7 @@
                                         <span>Terkunci ▾</span>
                                     </div>
                                 </template>
-                                <template x-if="!['select', 'inspect_coords', 'view_only'].includes(currentMode)">
+                                <template x-if="!['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode)">
                                     <div style="display: inline-flex; align-items: center; gap: 5px;">
                                         <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
@@ -1035,42 +1047,62 @@
                             <div 
                                 x-show="openModeMenu" 
                                 x-cloak
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 290px; width: 290px; padding: 6px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box;"
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 300px; width: 300px; padding: 6px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box;"
                             >
                                 {{-- Item 1: Jelajah & Pilih --}}
                                 <button 
                                     type="button" 
                                     @click="setMode('select'); openModeMenu = false;" 
-                                    style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
+                                    style="width: 100% !important; min-width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 10px; transition: all 0.15s ease;" 
                                     :style="currentMode === 'select' ? 'background: #EFF6FF !important;' : 'background: transparent;'"
                                     onmouseover="this.style.background='#EFF6FF'" 
                                     onmouseout="this.style.background=currentMode === 'select' ? '#EFF6FF' : 'transparent'"
                                 >
-                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
+                                    <div style="width: 32px; height: 32px; min-width: 32px; max-width: 32px; border-radius: 8px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
                                             <path d="m13 13 6 6"/>
                                         </svg>
                                     </div>
-                                    <div style="flex: 1; min-width: 0;">
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E40AF;">Jelajah & Navigasi</div>
-                                        <div style="font-size: 0.68rem; color: #2563EB; font-weight: 500;">Geser peta & klik detail objek</div>
+                                    <div style="flex: 1 1 auto; min-width: 0; text-align: left;">
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E40AF; white-space: nowrap;">Jelajah & Navigasi</div>
+                                        <div style="font-size: 0.68rem; color: #2563EB; font-weight: 500; white-space: nowrap;">Geser peta & klik detail objek</div>
                                     </div>
-                                    <template x-if="currentMode === 'select'">
-                                        <span style="font-size: 0.75rem; color: #0878E5; font-weight: 900;">✓</span>
-                                    </template>
+                                    <span x-show="currentMode === 'select'" style="margin-left: auto; font-size: 0.8rem; color: #0878E5; font-weight: 900; flex-shrink: 0;">✓</span>
                                 </button>
 
-                                {{-- Item 2: Inspektur Koordinat --}}
+                                {{-- Item 2: Screenshot Area (Snip) --}}
+                                <button 
+                                    type="button" 
+                                    @click="setMode('screenshot'); openModeMenu = false;" 
+                                    style="width: 100% !important; min-width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 10px; transition: all 0.15s ease;" 
+                                    :style="currentMode === 'screenshot' ? 'background: #FEF3C7 !important;' : 'background: transparent;'"
+                                    onmouseover="this.style.background='#FEF3C7'" 
+                                    onmouseout="this.style.background=currentMode === 'screenshot' ? '#FEF3C7' : 'transparent'"
+                                >
+                                    <div style="width: 32px; height: 32px; min-width: 32px; max-width: 32px; border-radius: 8px; background: #FEF3C7; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #D97706;">
+                                        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                            <circle cx="12" cy="13" r="4"/>
+                                        </svg>
+                                    </div>
+                                    <div style="flex: 1 1 auto; min-width: 0; text-align: left;">
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #92400E; white-space: nowrap;">Screenshot Area (Snip)</div>
+                                        <div style="font-size: 0.68rem; color: #B45309; font-weight: 500; white-space: nowrap;">Tarik kotak untuk foto peta</div>
+                                    </div>
+                                    <span x-show="currentMode === 'screenshot'" style="margin-left: auto; font-size: 0.8rem; color: #D97706; font-weight: 900; flex-shrink: 0;">✓</span>
+                                </button>
+
+                                {{-- Item 3: Inspektur Koordinat --}}
                                 <button 
                                     type="button" 
                                     @click="setMode('inspect_coords'); openModeMenu = false;" 
-                                    style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
+                                    style="width: 100% !important; min-width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 10px; transition: all 0.15s ease;" 
                                     :style="currentMode === 'inspect_coords' ? 'background: #ECFDF5 !important;' : 'background: transparent;'"
                                     onmouseover="this.style.background='#ECFDF5'" 
                                     onmouseout="this.style.background=currentMode === 'inspect_coords' ? '#ECFDF5' : 'transparent'"
                                 >
-                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669;">
+                                    <div style="width: 32px; height: 32px; min-width: 32px; max-width: 32px; border-radius: 8px; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                             <circle cx="12" cy="12" r="10"/>
                                             <line x1="22" y1="12" x2="18" y2="12"/>
@@ -1079,37 +1111,33 @@
                                             <line x1="12" y1="22" x2="12" y2="18"/>
                                         </svg>
                                     </div>
-                                    <div style="flex: 1; min-width: 0;">
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #065F46;">Inspektur Koordinat GPS</div>
-                                        <div style="font-size: 0.68rem; color: #059669; font-weight: 500;">Klik titik untuk salin Lat-Long instan</div>
+                                    <div style="flex: 1 1 auto; min-width: 0; text-align: left;">
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #065F46; white-space: nowrap;">Inspektur Koordinat GPS</div>
+                                        <div style="font-size: 0.68rem; color: #059669; font-weight: 500; white-space: nowrap;">Klik titik untuk salin Lat-Long</div>
                                     </div>
-                                    <template x-if="currentMode === 'inspect_coords'">
-                                        <span style="font-size: 0.75rem; color: #059669; font-weight: 900;">✓</span>
-                                    </template>
+                                    <span x-show="currentMode === 'inspect_coords'" style="margin-left: auto; font-size: 0.8rem; color: #059669; font-weight: 900; flex-shrink: 0;">✓</span>
                                 </button>
 
-                                {{-- Item 3: Kunci Peta --}}
+                                {{-- Item 4: Kunci Peta --}}
                                 <button 
                                     type="button" 
                                     @click="setMode('view_only'); openModeMenu = false;" 
-                                    style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
+                                    style="width: 100% !important; min-width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 10px; transition: all 0.15s ease;" 
                                     :style="currentMode === 'view_only' ? 'background: #F1F5F9 !important;' : 'background: transparent;'"
                                     onmouseover="this.style.background='#F1F5F9'" 
                                     onmouseout="this.style.background=currentMode === 'view_only' ? '#F1F5F9' : 'transparent'"
                                 >
-                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #F1F5F9; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #475569;">
+                                    <div style="width: 32px; height: 32px; min-width: 32px; max-width: 32px; border-radius: 8px; background: #F1F5F9; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #475569;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                                             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                                         </svg>
                                     </div>
-                                    <div style="flex: 1; min-width: 0;">
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E293B;">Kunci Peta (View-Only)</div>
-                                        <div style="font-size: 0.68rem; color: #64748B; font-weight: 500;">Mode aman presentasi tanpa edit</div>
+                                    <div style="flex: 1 1 auto; min-width: 0; text-align: left;">
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E293B; white-space: nowrap;">Kunci Peta (View-Only)</div>
+                                        <div style="font-size: 0.68rem; color: #64748B; font-weight: 500; white-space: nowrap;">Mode aman presentasi tanpa edit</div>
                                     </div>
-                                    <template x-if="currentMode === 'view_only'">
-                                        <span style="font-size: 0.75rem; color: #334155; font-weight: 900;">✓</span>
-                                    </template>
+                                    <span x-show="currentMode === 'view_only'" style="margin-left: auto; font-size: 0.8rem; color: #334155; font-weight: 900; flex-shrink: 0;">✓</span>
                                 </button>
                             </div>
                         </div>
@@ -1572,6 +1600,25 @@
                         style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer;"
                     >
                         ✕ Tutup Inspektur
+                    </button>
+                </div>
+
+                {{-- Dynamic Sub-Bar: Screenshot Area Mode --}}
+                <div 
+                    x-show="currentMode === 'screenshot'" 
+                    x-cloak
+                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #FEF3C7; border: 1.5px dashed #F59E0B; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #92400E;"
+                >
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-weight: 800;">📸 Mode Cuplikan Area (Snip):</span>
+                        <span>Klik & geser (drag) mouse di atas peta untuk membuat kotak wilayah. Lepaskan mouse untuk memotret seketika!</span>
+                    </div>
+                    <button 
+                        type="button" 
+                        @click="setMode('select')" 
+                        style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #D97706; color: #ffffff; border: none; cursor: pointer;"
+                    >
+                        ✕ Batalkan Screenshot
                     </button>
                 </div>
 
@@ -2134,6 +2181,27 @@
                     wire:ignore 
                     style="position: relative; z-index: 1;"
                 ></div>
+
+                {{-- ── 2.2 SCREENSHOT AREA SELECTION OVERLAY (SNIP TOOL) ── --}}
+                <div 
+                    x-show="currentMode === 'screenshot'"
+                    x-cloak
+                    id="ims-screenshot-overlay"
+                    @mousedown="startScreenshotSelection($event)"
+                    @mousemove="updateScreenshotSelection($event)"
+                    @mouseup="finishScreenshotSelection($event)"
+                    style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 600; cursor: crosshair; user-select: none; overflow: hidden;"
+                >
+                    {{-- Dragged selection box --}}
+                    <div 
+                        x-show="isSelectingScreenshot"
+                        id="ims-screenshot-box"
+                        :style="screenshotBoxStyle"
+                        style="position: absolute; border: 2px dashed #0878E5; background: rgba(8, 120, 229, 0.15); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.48); pointer-events: none; border-radius: 4px; box-sizing: border-box;"
+                    >
+                        <div style="position: absolute; bottom: -24px; right: 0; background: #0878E5; color: #ffffff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px; font-family: monospace; white-space: nowrap;" x-text="screenshotDimensions"></div>
+                    </div>
+                </div>
             </div>
 
             {{-- Legend Footer --}}
@@ -3241,7 +3309,7 @@
                     mapInstance: null,
                     mapMode: 'roadmap',
                     tileLayers: {},
-                    currentMode: 'select', // 'select', 'inspect_coords', 'view_only', 'add_marker', 'draw_line', 'measure', 'edit_element'
+                    currentMode: 'select', // 'select', 'screenshot', 'inspect_coords', 'view_only', 'add_marker', 'draw_line', 'measure', 'edit_element'
                     openModeMenu: false,
                     openMarkerMenu: false,
                     openLineMenu: false,
@@ -3250,6 +3318,22 @@
                     isFullscreen: false,
                     autoSnapRoad: false,
                     activeElementType: 'pole',
+
+                    // Area Snip / Screenshot State
+                    isSelectingScreenshot: false,
+                    screenshotStartX: 0,
+                    screenshotStartY: 0,
+                    screenshotCurrentX: 0,
+                    screenshotCurrentY: 0,
+                    screenshotRect: { left: 0, top: 0, width: 0, height: 0 },
+
+                    get screenshotBoxStyle() {
+                        return `left: ${this.screenshotRect.left}px; top: ${this.screenshotRect.top}px; width: ${this.screenshotRect.width}px; height: ${this.screenshotRect.height}px;`;
+                    },
+
+                    get screenshotDimensions() {
+                        return `${Math.round(this.screenshotRect.width)} × ${Math.round(this.screenshotRect.height)} px`;
+                    },
 
                     // Style & Color Customizer Modal State
                     openStyleModal: false,
@@ -3723,15 +3807,22 @@
                         this.openModeMenu = false;
                         if (this.currentMode === 'measure') this.clearMeasure();
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
+                        if (this.currentMode === 'screenshot') this.isSelectingScreenshot = false;
                         this.currentMode = mode;
                         this.cancelDrawing();
 
                         const canvasEl = document.getElementById('ims-ftth-builder-canvas');
                         if (canvasEl) {
-                            if (mode === 'inspect_coords') {
+                            if (mode === 'inspect_coords' || mode === 'screenshot') {
                                 canvasEl.style.cursor = 'crosshair';
-                                if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                                    IMS.toast('🎯 Mode Inspektur aktif. Klik titik di peta untuk menyalin koordinat GPS.', 'info', 2500);
+                                if (mode === 'inspect_coords') {
+                                    if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                        IMS.toast('🎯 Mode Inspektur aktif. Klik titik di peta untuk menyalin koordinat GPS.', 'info', 2500);
+                                    }
+                                } else if (mode === 'screenshot') {
+                                    if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                        IMS.toast('📸 Tarik kotak seleksi pada peta untuk mengambil screenshot.', 'info', 2500);
+                                    }
                                 }
                             } else {
                                 canvasEl.style.cursor = '';
@@ -3741,6 +3832,130 @@
                                     }
                                 }
                             }
+                        }
+                    },
+
+                    // ── SCREENSHOT SNIP METHODS ──
+                    startScreenshotSelection(e) {
+                        if (this.currentMode !== 'screenshot') return;
+                        const overlay = document.getElementById('ims-screenshot-overlay');
+                        if (!overlay) return;
+                        const rect = overlay.getBoundingClientRect();
+                        this.screenshotStartX = e.clientX - rect.left;
+                        this.screenshotStartY = e.clientY - rect.top;
+                        this.screenshotCurrentX = this.screenshotStartX;
+                        this.screenshotCurrentY = this.screenshotStartY;
+                        this.screenshotRect = { left: this.screenshotStartX, top: this.screenshotStartY, width: 0, height: 0 };
+                        this.isSelectingScreenshot = true;
+                    },
+
+                    updateScreenshotSelection(e) {
+                        if (!this.isSelectingScreenshot || this.currentMode !== 'screenshot') return;
+                        const overlay = document.getElementById('ims-screenshot-overlay');
+                        if (!overlay) return;
+                        const rect = overlay.getBoundingClientRect();
+                        this.screenshotCurrentX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+                        this.screenshotCurrentY = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+
+                        const left = Math.min(this.screenshotStartX, this.screenshotCurrentX);
+                        const top = Math.min(this.screenshotStartY, this.screenshotCurrentY);
+                        const width = Math.abs(this.screenshotCurrentX - this.screenshotStartX);
+                        const height = Math.abs(this.screenshotCurrentY - this.screenshotStartY);
+
+                        this.screenshotRect = { left, top, width, height };
+                    },
+
+                    async finishScreenshotSelection(e) {
+                        if (!this.isSelectingScreenshot || this.currentMode !== 'screenshot') return;
+                        this.isSelectingScreenshot = false;
+                        const crop = { ...this.screenshotRect };
+
+                        if (crop.width < 25 || crop.height < 25) {
+                            return;
+                        }
+
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('📸 Mengambil gambar cuplikan area peta...', 'info', 2000);
+                        }
+
+                        // Ensure html2canvas is ready
+                        if (typeof html2canvas === 'undefined') {
+                            await new Promise((resolve) => {
+                                const script = document.createElement('script');
+                                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                                script.onload = resolve;
+                                document.head.appendChild(script);
+                            });
+                        }
+
+                        const overlay = document.getElementById('ims-screenshot-overlay');
+                        if (overlay) overlay.style.display = 'none';
+
+                        try {
+                            const mapCanvasEl = document.getElementById('ims-ftth-builder-canvas');
+                            if (!mapCanvasEl) return;
+
+                            const canvas = await html2canvas(mapCanvasEl, {
+                                useCORS: true,
+                                allowTaint: true,
+                                logging: false,
+                                scale: window.devicePixelRatio || 2
+                            });
+
+                            const scale = window.devicePixelRatio || 2;
+                            const croppedCanvas = document.createElement('canvas');
+                            croppedCanvas.width = crop.width * scale;
+                            croppedCanvas.height = crop.height * scale;
+                            const ctx = croppedCanvas.getContext('2d');
+
+                            ctx.drawImage(
+                                canvas,
+                                crop.left * scale,
+                                crop.top * scale,
+                                crop.width * scale,
+                                crop.height * scale,
+                                0,
+                                0,
+                                crop.width * scale,
+                                crop.height * scale
+                            );
+
+                            const dataUrl = croppedCanvas.toDataURL('image/png');
+                            const filename = `FTTH-Peta-${this.currentProject?.name ? this.currentProject.name.replace(/[^a-zA-Z0-9]/g, '_') : 'Area'}-${Date.now().toString().slice(-6)}.png`;
+
+                            // Trigger instant automatic download
+                            const a = document.createElement('a');
+                            a.href = dataUrl;
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({
+                                    title: '📸 Cuplikan Peta Berhasil!',
+                                    html: `
+                                        <div style="font-size: 13px; color: #475569; margin-bottom: 12px;">Gambar area pilihan telah otomatis diunduh: <b>${filename}</b></div>
+                                        <div style="border-radius: 10px; overflow: hidden; border: 1.5px solid #CBD5E1; box-shadow: 0 4px 14px rgba(0,0,0,0.15); max-height: 260px; display: flex; justify-content: center; background: #0F172A;">
+                                            <img src="${dataUrl}" style="max-width: 100%; max-height: 260px; object-fit: contain;">
+                                        </div>
+                                    `,
+                                    confirmButtonText: '✓ Selesai',
+                                    confirmButtonColor: '#0878E5',
+                                    showCloseButton: true
+                                });
+                            } else if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('📸 Cuplikan peta berhasil diunduh!', 'success', 3000);
+                            }
+
+                        } catch (err) {
+                            console.error('Screenshot error:', err);
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('Gagal mengambil screenshot: ' + err.message, 'error', 3000);
+                            }
+                        } finally {
+                            if (overlay) overlay.style.display = '';
+                            this.setMode('select');
                         }
                     },
 
