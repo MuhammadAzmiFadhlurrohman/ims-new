@@ -4195,7 +4195,6 @@
                                 this.currentLinePoints.push([lat, lng]);
                                 newPointsAdded.push([lat, lng]);
                             }
-                            }
 
                             // Add visual anchor pin planted firmly at this spot
                             const anchorMarker = L.circleMarker([lat, lng], {
