@@ -1078,19 +1078,6 @@
                             <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                             <span>Export KML</span>
                         </button>
-
-                        {{-- Fullscreen Icon-Only Button --}}
-                        <button 
-                            type="button" 
-                            @click="toggleFullscreen()" 
-                            :class="isFullscreen ? 'active' : ''"
-                            class="ims-tool-btn"
-                            style="padding: 7px 9px;"
-                            :title="isFullscreen ? 'Keluar Layar Penuh (Esc)' : 'Mode Layar Penuh'"
-                        >
-                            <svg x-show="!isFullscreen" style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
-                            <svg x-show="isFullscreen" style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/></svg>
-                        </button>
                     </div>
                 </div>
 
@@ -1685,6 +1672,23 @@
                     >
                         <svg width="22" height="22" style="width: 22px !important; height: 22px !important; min-width: 22px !important; max-width: 22px !important; flex-shrink: 0 !important; display: block !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M4 6h16M4 12h16M4 18h7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                {{-- ── FLOATING TOGGLE BUTTON: FULLSCREEN (TOP-RIGHT CORNER OF MAP) ── --}}
+                <div style="position: absolute; top: 12px; right: 12px; z-index: 500; pointer-events: auto;">
+                    <button 
+                        type="button" 
+                        @click="toggleFullscreen()" 
+                        :class="isFullscreen ? 'ims-floating-layer-btn-active' : 'ims-floating-layer-btn'"
+                        :title="isFullscreen ? 'Keluar Layar Penuh (Esc)' : 'Mode Layar Penuh'"
+                    >
+                        <svg x-show="!isFullscreen" width="20" height="20" style="width: 20px !important; height: 20px !important; min-width: 20px !important; max-width: 20px !important; flex-shrink: 0 !important; display: block !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>
+                        </svg>
+                        <svg x-show="isFullscreen" width="20" height="20" style="width: 20px !important; height: 20px !important; min-width: 20px !important; max-width: 20px !important; flex-shrink: 0 !important; display: block !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/>
                         </svg>
                     </button>
                 </div>
