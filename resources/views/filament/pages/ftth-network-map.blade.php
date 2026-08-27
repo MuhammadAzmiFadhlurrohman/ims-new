@@ -1365,47 +1365,47 @@
                                         </div>
                                     </div>
 
-                                    {{-- Quick Action Buttons on Item Card --}}
-                                    <div style="display: flex; align-items: center; gap: 5px; padding-top: 6px; border-top: 1px solid #F1F5F9;">
+                                    {{-- Quick Action Buttons on Item Card (Large, Clean Icon Buttons) --}}
+                                    <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px; padding-top: 8px; border-top: 1px solid #F1F5F9;">
                                         <button 
                                             type="button" 
                                             @click="flyToCustomElement(item)" 
-                                            style="flex: 1; padding: 4px 6px; border-radius: 7px; font-size: 0.68rem; font-weight: 800; background: #EFF6FF; color: #0878E5; border: 1px solid #BFDBFE; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.12s ease;"
-                                            onmouseover="this.style.background='#0878E5'; this.style.color='#ffffff'"
-                                            onmouseout="this.style.background='#EFF6FF'; this.style.color='#0878E5'"
-                                            title="Menuju ke lokasi objek di peta"
+                                            style="width: 32px; height: 32px; border-radius: 8px; font-size: 14px; background: #EFF6FF; color: #0878E5; border: 1px solid #BFDBFE; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s ease;"
+                                            onmouseover="this.style.background='#0878E5'; this.style.color='#ffffff'; this.style.transform='translateY(-1px)'"
+                                            onmouseout="this.style.background='#EFF6FF'; this.style.color='#0878E5'; this.style.transform='none'"
+                                            title="Fokus ke lokasi objek di peta"
                                         >
-                                            <span>🎯 Fokus</span>
+                                            🎯
                                         </button>
                                         <button 
                                             type="button" 
                                             @click="openStylePicker(item.id)" 
-                                            style="padding: 4px 7px; border-radius: 7px; font-size: 0.68rem; font-weight: 800; background: #F8FAFC; color: #475569; border: 1px solid #CBD5E1; cursor: pointer; display: flex; align-items: center; gap: 3px; transition: all 0.12s ease;"
-                                            onmouseover="this.style.background='#0878E5'; this.style.color='#ffffff'; this.style.borderColor='#0878E5'"
-                                            onmouseout="this.style.background='#F8FAFC'; this.style.color='#475569'; this.style.borderColor='#CBD5E1'"
-                                            title="Ubah warna & ikon (Gaya)"
+                                            style="width: 32px; height: 32px; border-radius: 8px; font-size: 14px; background: #F8FAFC; color: #475569; border: 1px solid #CBD5E1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s ease;"
+                                            onmouseover="this.style.background='#0878E5'; this.style.color='#ffffff'; this.style.borderColor='#0878E5'; this.style.transform='translateY(-1px)'"
+                                            onmouseout="this.style.background='#F8FAFC'; this.style.color='#475569'; this.style.borderColor='#CBD5E1'; this.style.transform='none'"
+                                            title="Ubah Gaya & Warna (Palet & Ikon)"
                                         >
-                                            <span>🎨 Gaya</span>
+                                            🎨
                                         </button>
                                         <button 
                                             type="button" 
                                             @click="startEditElement(item.id)" 
-                                            style="padding: 4px 8px; border-radius: 7px; font-size: 0.68rem; font-weight: 800; background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; cursor: pointer; display: flex; align-items: center; gap: 2px; transition: all 0.12s ease;"
-                                            onmouseover="this.style.background='#F59E0B'; this.style.color='#ffffff'"
-                                            onmouseout="this.style.background='#FEF3C7'; this.style.color='#92400E'"
+                                            style="width: 32px; height: 32px; border-radius: 8px; font-size: 14px; background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s ease;"
+                                            onmouseover="this.style.background='#F59E0B'; this.style.color='#ffffff'; this.style.transform='translateY(-1px)'"
+                                            onmouseout="this.style.background='#FEF3C7'; this.style.color='#92400E'; this.style.transform='none'"
                                             title="Edit rute garis / geser posisi titik"
                                         >
-                                            <span>✏️ Edit</span>
+                                            ✏️
                                         </button>
                                         <button 
                                             type="button" 
                                             @click="deleteCustomElementDirect(item.id, item.name)" 
-                                            style="padding: 4px 6px; border-radius: 7px; font-size: 0.68rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; display: flex; align-items: center; transition: all 0.12s ease;"
-                                            onmouseover="this.style.background='#EF4444'; this.style.color='#ffffff'"
-                                            onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'"
+                                            style="width: 32px; height: 32px; border-radius: 8px; font-size: 14px; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s ease;"
+                                            onmouseover="this.style.background='#EF4444'; this.style.color='#ffffff'; this.style.transform='translateY(-1px)'"
+                                            onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'; this.style.transform='none'"
                                             title="Hapus elemen ini"
                                         >
-                                            <span>🗑️</span>
+                                            🗑️
                                         </button>
                                     </div>
                                 </div>
@@ -3219,15 +3219,32 @@
 
                                 const marker = L.marker([el.latitude, el.longitude], { icon: customIcon });
                                 marker.bindPopup(`
-                                    <div style='font-family: inherit; padding: 4px; min-width: 210px;'>
-                                        <div style='font-size: 10px; font-weight: 800; color: ${el.color || '#0878E5'}; text-transform: uppercase;'>📍 ${el.element_type.replace('_', ' ')}</div>
-                                        <div style='font-size: 13px; font-weight: 900; color: #0B1F33; margin: 2px 0;'>${el.name}</div>
-                                        ${el.notes ? `<div style='font-size: 11px; color: #475569; margin: 3px 0;'>${el.notes}</div>` : ''}
-                                        <div style='font-size: 10px; color: #94A3B8; margin-top: 4px;'>GPS: ${el.latitude.toFixed(6)}, ${el.longitude.toFixed(6)}</div>
-                                        <div style='margin-top: 8px; padding-top: 6px; border-top: 1px solid #E2E8F0; display: flex; gap: 4px;'>
-                                            <button onclick="window.imsStyleFtthElement(${el.id})" style='border: 1px solid #CBD5E1; background: #F8FAFC; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;' title='Ubah Warna & Ikon'>🎨 Gaya</button>
-                                            <button onclick="window.imsEditFtthElement(${el.id})" style='flex: 1; border: none; background: #EFF6FF; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>✏️ Geser</button>
-                                            <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name}')" style='border: none; background: #FEE2E2; color: #DC2626; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>🗑️ Hapus</button>
+                                    <div style='font-family: inherit; padding: 12px 14px; min-width: 270px; max-width: 320px; box-sizing: border-box;'>
+                                        <div style='display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;'>
+                                            <div style='display: flex; align-items: center; gap: 6px;'>
+                                                <div style='width: 20px; height: 20px; border-radius: 6px; background: ${el.color || '#0878E5'}; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.15);'>
+                                                    ${this.getIconSvg(customIconKey)}
+                                                </div>
+                                                <span style='font-size: 11px; font-weight: 900; color: ${el.color || '#0878E5'}; text-transform: uppercase; letter-spacing: 0.5px;'>${el.element_type.replace('_', ' ')}</span>
+                                            </div>
+                                            <span style='font-size: 10px; font-weight: 700; color: #94A3B8; background: #F1F5F9; padding: 2px 6px; border-radius: 4px;'>ID: #${el.id}</span>
+                                        </div>
+
+                                        <div style='font-size: 15px; font-weight: 900; color: #0F172A; line-height: 1.35; margin: 4px 0 6px 0; word-break: break-word;'>
+                                            ${el.name}
+                                        </div>
+
+                                        ${el.notes ? `<div style='font-size: 12px; color: #475569; background: #F8FAFC; padding: 6px 8px; border-radius: 6px; border-left: 3px solid #CBD5E1; margin: 6px 0; line-height: 1.4;'>${el.notes}</div>` : ''}
+
+                                        <div style='display: flex; align-items: center; gap: 6px; font-size: 11px; color: #64748B; margin-top: 6px;'>
+                                            <svg style='width: 13px; height: 13px; flex-shrink: 0; color: #94A3B8;' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'/><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'/></svg>
+                                            <span style='font-family: monospace; font-weight: 600;'>GPS: ${el.latitude.toFixed(6)}, ${el.longitude.toFixed(6)}</span>
+                                        </div>
+
+                                        <div style='margin-top: 12px; padding-top: 10px; border-top: 1.5px solid #F1F5F9; display: flex; align-items: center; justify-content: flex-end; gap: 8px;'>
+                                            <button onclick="window.imsStyleFtthElement(${el.id})" style='width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid #E2E8F0; background: #F8FAFC; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04);' onmouseover="this.style.background='#EFF6FF'; this.style.borderColor='#93C5FD'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#F8FAFC'; this.style.borderColor='#E2E8F0'; this.style.transform='none'" title='Ubah Gaya & Warna'>🎨</button>
+                                            <button onclick="window.imsEditFtthElement(${el.id})" style='width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid #FEF08A; background: #FEF9C3; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04);' onmouseover="this.style.background='#FEF08A'; this.style.borderColor='#FDE047'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#FEF9C3'; this.style.borderColor='#FEF08A'; this.style.transform='none'" title='Geser Posisi Titik'>✏️</button>
+                                            <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name.replace(/'/g, "\\'")}')" style='width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid #FECACA; background: #FEE2E2; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04);' onmouseover="this.style.background='#FCA5A5'; this.style.borderColor='#F87171'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#FEE2E2'; this.style.borderColor='#FECACA'; this.style.transform='none'" title='Hapus Objek Ini'>🗑️</button>
                                         </div>
                                     </div>
                                 `);
@@ -3240,15 +3257,29 @@
                                 const dashArray = lineDash === 'dashed' ? '10, 7' : undefined;
 
                                 const popupHtml = `
-                                    <div style='font-family: inherit; padding: 4px; min-width: 210px;'>
-                                        <div style='font-size: 10px; font-weight: 800; color: ${lineColor}; text-transform: uppercase;'>〰️ JALUR KABEL ${el.element_type}</div>
-                                        <div style='font-size: 13px; font-weight: 900; color: #0B1F33; margin: 2px 0;'>${el.name}</div>
-                                        <div style='font-size: 11.5px; font-weight: 800; color: #0878E5; margin: 3px 0;'>Panjang: ~${el.length_meters || 0} meter</div>
-                                        ${el.notes ? `<div style='font-size: 11px; color: #475569;'>${el.notes}</div>` : ''}
-                                        <div style='margin-top: 8px; padding-top: 6px; border-top: 1px solid #E2E8F0; display: flex; gap: 4px;'>
-                                            <button onclick="window.imsStyleFtthElement(${el.id})" style='border: 1px solid #CBD5E1; background: #F8FAFC; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;' title='Ubah Warna & Ketebalan'>🎨 Gaya</button>
-                                            <button onclick="window.imsEditFtthElement(${el.id})" style='flex: 1; border: none; background: #EFF6FF; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>✏️ Edit Rute</button>
-                                            <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name}')" style='border: none; background: #FEE2E2; color: #DC2626; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>🗑️ Hapus</button>
+                                    <div style='font-family: inherit; padding: 12px 14px; min-width: 270px; max-width: 320px; box-sizing: border-box;'>
+                                        <div style='display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;'>
+                                            <div style='display: flex; align-items: center; gap: 6px;'>
+                                                <div style='width: 22px; height: 6px; border-radius: 3px; background: ${lineColor};'></div>
+                                                <span style='font-size: 11px; font-weight: 900; color: ${lineColor}; text-transform: uppercase; letter-spacing: 0.5px;'>JALUR KABEL ${el.element_type}</span>
+                                            </div>
+                                            <span style='font-size: 10px; font-weight: 700; color: #94A3B8; background: #F1F5F9; padding: 2px 6px; border-radius: 4px;'>ID: #${el.id}</span>
+                                        </div>
+
+                                        <div style='font-size: 15px; font-weight: 900; color: #0F172A; line-height: 1.35; margin: 4px 0 6px 0; word-break: break-word;'>
+                                            ${el.name}
+                                        </div>
+
+                                        <div style='display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 6px; background: #EFF6FF; border: 1px solid #DBEAFE; margin: 2px 0 6px 0;'>
+                                            <span style='font-size: 12px; font-weight: 900; color: #0878E5;'>📏 ~${el.length_meters || 0} meter</span>
+                                        </div>
+
+                                        ${el.notes ? `<div style='font-size: 12px; color: #475569; background: #F8FAFC; padding: 6px 8px; border-radius: 6px; border-left: 3px solid #CBD5E1; margin: 6px 0; line-height: 1.4;'>${el.notes}</div>` : ''}
+
+                                        <div style='margin-top: 12px; padding-top: 10px; border-top: 1.5px solid #F1F5F9; display: flex; align-items: center; justify-content: flex-end; gap: 8px;'>
+                                            <button onclick="window.imsStyleFtthElement(${el.id})" style='width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid #E2E8F0; background: #F8FAFC; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04);' onmouseover="this.style.background='#EFF6FF'; this.style.borderColor='#93C5FD'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#F8FAFC'; this.style.borderColor='#E2E8F0'; this.style.transform='none'" title='Ubah Gaya & Warna'>🎨</button>
+                                            <button onclick="window.imsEditFtthElement(${el.id})" style='width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid #FEF08A; background: #FEF9C3; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04);' onmouseover="this.style.background='#FEF08A'; this.style.borderColor='#FDE047'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#FEF9C3'; this.style.borderColor='#FEF08A'; this.style.transform='none'" title='Edit Rute Jalur Kabel'>✏️</button>
+                                            <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name.replace(/'/g, "\\'")}')" style='width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid #FECACA; background: #FEE2E2; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04);' onmouseover="this.style.background='#FCA5A5'; this.style.borderColor='#F87171'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#FEE2E2'; this.style.borderColor='#FECACA'; this.style.transform='none'" title='Hapus Jalur Kabel Ini'>🗑️</button>
                                         </div>
                                     </div>
                                 `;
