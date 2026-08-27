@@ -3998,7 +3998,16 @@
                         if (typeof window.imsCloseModeDropdown === 'function') window.imsCloseModeDropdown();
                         if (this.currentMode === 'measure') this.clearMeasure();
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
-                        if (this.currentMode === 'screenshot') this.isSelectingScreenshot = false;
+                        
+                        this.isSelectingScreenshot = false;
+                        this.screenshotStartX = 0;
+                        this.screenshotStartY = 0;
+                        this.screenshotCurrentX = 0;
+                        this.screenshotCurrentY = 0;
+                        this.screenshotRect = { left: 0, top: 0, width: 0, height: 0 };
+                        const box = document.getElementById('ims-screenshot-box');
+                        if (box) box.style.display = 'none';
+
                         this.clearTempDrawing();
                         this.currentMode = mode;
 
@@ -4032,8 +4041,8 @@
                         const overlay = document.getElementById('ims-screenshot-overlay');
                         if (!overlay) return;
                         const rect = overlay.getBoundingClientRect();
-                        const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
-                        const y = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+                        const x = Math.round(e.clientX - rect.left);
+                        const y = Math.round(e.clientY - rect.top);
 
                         const ch = document.getElementById('ims-crosshair-h');
                         const cv = document.getElementById('ims-crosshair-v');
@@ -4054,8 +4063,8 @@
                         const overlay = document.getElementById('ims-screenshot-overlay');
                         if (!overlay) return;
                         const rect = overlay.getBoundingClientRect();
-                        this.screenshotStartX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
-                        this.screenshotStartY = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+                        this.screenshotStartX = Math.round(Math.max(0, Math.min(rect.width, e.clientX - rect.left)));
+                        this.screenshotStartY = Math.round(Math.max(0, Math.min(rect.height, e.clientY - rect.top)));
                         this.screenshotCurrentX = this.screenshotStartX;
                         this.screenshotCurrentY = this.screenshotStartY;
                         this.screenshotRect = { left: this.screenshotStartX, top: this.screenshotStartY, width: 0, height: 0 };
@@ -4106,8 +4115,8 @@
                         const overlay = document.getElementById('ims-screenshot-overlay');
                         if (!overlay) return;
                         const rect = overlay.getBoundingClientRect();
-                        this.screenshotCurrentX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
-                        this.screenshotCurrentY = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+                        this.screenshotCurrentX = Math.round(Math.max(0, Math.min(rect.width, e.clientX - rect.left)));
+                        this.screenshotCurrentY = Math.round(Math.max(0, Math.min(rect.height, e.clientY - rect.top)));
 
                         const left = Math.min(this.screenshotStartX, this.screenshotCurrentX);
                         const top = Math.min(this.screenshotStartY, this.screenshotCurrentY);
@@ -4126,7 +4135,7 @@
                         }
                         const badge = document.getElementById('ims-screenshot-dim-badge');
                         if (badge) {
-                            badge.textContent = `${Math.round(width)} × ${Math.round(height)} px`;
+                            badge.textContent = `${width} × ${height} px`;
                         }
 
                         const ch = document.getElementById('ims-crosshair-h');
