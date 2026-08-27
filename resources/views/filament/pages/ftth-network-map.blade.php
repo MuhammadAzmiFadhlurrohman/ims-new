@@ -1088,54 +1088,44 @@
                                 class="ims-tool-btn"
                                 title="Pilih Mode Interaksi Kursor Peta"
                             >
-                                <template x-if="currentMode === 'select'">
-                                    <div style="display: inline-flex; align-items: center; gap: 5px;">
-                                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
-                                            <path d="m13 13 6 6"/>
-                                        </svg>
-                                        <span>Jelajah ▾</span>
-                                    </div>
-                                </template>
-                                <template x-if="currentMode === 'screenshot'">
-                                    <div style="display: inline-flex; align-items: center; gap: 5px; color: #D97706;">
-                                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                                            <circle cx="12" cy="13" r="4"/>
-                                        </svg>
-                                        <span>Screenshot ▾</span>
-                                    </div>
-                                </template>
-                                <template x-if="currentMode === 'inspect_coords'">
-                                    <div style="display: inline-flex; align-items: center; gap: 5px; color: #059669;">
-                                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <line x1="22" y1="12" x2="18" y2="12"/>
-                                            <line x1="6" y1="12" x2="2" y2="12"/>
-                                            <line x1="12" y1="6" x2="12" y2="2"/>
-                                            <line x1="12" y1="22" x2="12" y2="18"/>
-                                        </svg>
-                                        <span>Inspektur ▾</span>
-                                    </div>
-                                </template>
-                                <template x-if="currentMode === 'view_only'">
-                                    <div style="display: inline-flex; align-items: center; gap: 5px; color: #475569;">
-                                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                                        </svg>
-                                        <span>Terkunci ▾</span>
-                                    </div>
-                                </template>
-                                <template x-if="!['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode)">
-                                    <div style="display: inline-flex; align-items: center; gap: 5px;">
-                                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
-                                            <path d="m13 13 6 6"/>
-                                        </svg>
-                                        <span>Mode ▾</span>
-                                    </div>
-                                </template>
+                                <span x-show="currentMode === 'select'" style="display: inline-flex; align-items: center; gap: 5px;">
+                                    <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+                                        <path d="m13 13 6 6"/>
+                                    </svg>
+                                    <span>Jelajah ▾</span>
+                                </span>
+                                <span x-show="currentMode === 'screenshot'" style="display: inline-flex; align-items: center; gap: 5px; color: #D97706;">
+                                    <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                        <circle cx="12" cy="13" r="4"/>
+                                    </svg>
+                                    <span>Screenshot ▾</span>
+                                </span>
+                                <span x-show="currentMode === 'inspect_coords'" style="display: inline-flex; align-items: center; gap: 5px; color: #059669;">
+                                    <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="22" y1="12" x2="18" y2="12"/>
+                                        <line x1="6" y1="12" x2="2" y2="12"/>
+                                        <line x1="12" y1="6" x2="12" y2="2"/>
+                                        <line x1="12" y1="22" x2="12" y2="18"/>
+                                    </svg>
+                                    <span>Inspektur ▾</span>
+                                </span>
+                                <span x-show="currentMode === 'view_only'" style="display: inline-flex; align-items: center; gap: 5px; color: #475569;">
+                                    <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    </svg>
+                                    <span>Terkunci ▾</span>
+                                </span>
+                                <span x-show="!['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode)" style="display: inline-flex; align-items: center; gap: 5px;">
+                                    <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+                                        <path d="m13 13 6 6"/>
+                                    </svg>
+                                    <span>Mode ▾</span>
+                                </span>
                             </button>
 
                             <div 
@@ -3876,6 +3866,7 @@
                             this.openMarkerMenu = false;
                             this.openLineMenu = false;
                             this.openMapTypeMenu = false;
+                            this.openModeMenu = false;
                             this.handleMapClick(e.latlng.lat, e.latlng.lng);
                         });
 
@@ -3899,8 +3890,8 @@
                         if (this.currentMode === 'measure') this.clearMeasure();
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
                         if (this.currentMode === 'screenshot') this.isSelectingScreenshot = false;
+                        this.clearTempDrawing();
                         this.currentMode = mode;
-                        this.cancelDrawing();
 
                         const canvasEl = document.getElementById('ims-ftth-builder-canvas');
                         if (canvasEl) {
@@ -4610,8 +4601,9 @@
                     cancelDrawing() {
                         this.openMarkerMenu = false;
                         this.openLineMenu = false;
+                        this.openModeMenu = false;
                         this.clearTempDrawing();
-                        if (this.currentMode !== 'select' && this.currentMode !== 'measure' && this.currentMode !== 'edit_element') {
+                        if (['add_marker', 'draw_line'].includes(this.currentMode)) {
                             this.currentMode = 'select';
                         }
                     },
