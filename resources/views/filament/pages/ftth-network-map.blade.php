@@ -8,6 +8,14 @@
             .ims-ftth-map-root * {
                 box-sizing: border-box;
             }
+            aside.fi-sidebar,
+            .fi-sidebar {
+                z-index: 99999 !important;
+            }
+            .ims-flyout-menu,
+            .ims-sidebar-flyout {
+                z-index: 99999999 !important;
+            }
             .ims-map-card {
                 background: #ffffff;
                 border: 1px solid #dbeafe;
@@ -677,7 +685,7 @@
             id="ims-ftth-map-card-root"
             class="ims-map-card" 
             :class="isFullscreen ? 'is-fullscreen' : ''"
-            style="overflow: visible !important; position: relative; z-index: 50;"
+            style="overflow: visible !important; position: relative; z-index: 1;"
         >
             
             {{-- Toolbar Top Header: 100% Single Row & Unclipped Overflows (No Staggering / Sejajar) --}}

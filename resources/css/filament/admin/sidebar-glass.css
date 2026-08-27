@@ -41,7 +41,7 @@ html.dark .fi-sidebar {
         bottom: 0 !important;
         align-self: stretch !important;
         flex-shrink: 0 !important;
-        z-index: 30 !important;
+        z-index: 99999 !important;
     }
 
     .fi-sidebar.fi-sidebar-open {
