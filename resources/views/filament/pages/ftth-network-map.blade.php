@@ -1323,7 +1323,6 @@
                             </div>
                         </div>
                     </div>
-                    </div>
                 </div>
 
                 {{-- Dynamic Sub-Bar: Active Drawing Status Notification --}}
