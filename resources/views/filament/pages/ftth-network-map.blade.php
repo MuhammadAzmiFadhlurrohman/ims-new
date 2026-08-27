@@ -753,8 +753,32 @@
                     {{-- Vertical Divider --}}
                     <div style="width: 1px; height: 24px; background: #E2E8F0; flex-shrink: 0;"></div>
 
-                    {{-- 2. Creation & Mode Tools (Jelajah, Ukur, Tambah Node, Tarik Kabel) --}}
+                    {{-- 2. Creation & Mode Tools (Undo/Redo, Jelajah, Ukur, Tambah Node, Tarik Kabel, Tabel Data) --}}
                     <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
+                        {{-- Undo & Redo Buttons --}}
+                        <div style="display: flex; align-items: center; gap: 2px;">
+                            <button 
+                                type="button" 
+                                @click="undo()" 
+                                :disabled="historyIndex < 0"
+                                class="ims-tool-btn"
+                                :style="historyIndex < 0 ? 'opacity: 0.4; cursor: not-allowed;' : ''"
+                                title="Batalkan aksi terakhir (Ctrl+Z)"
+                            >
+                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/></svg>
+                            </button>
+                            <button 
+                                type="button" 
+                                @click="redo()" 
+                                :disabled="historyIndex >= historyStack.length - 1"
+                                class="ims-tool-btn"
+                                :style="historyIndex >= historyStack.length - 1 ? 'opacity: 0.4; cursor: not-allowed;' : ''"
+                                title="Ulangi aksi (Ctrl+Y)"
+                            >
+                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 019-9 9 9 0 016 2.3L21 13"/></svg>
+                            </button>
+                        </div>
+
                         <button 
                             type="button" 
                             @click="setMode('select')" 
@@ -803,41 +827,41 @@
 
                                 <button type="button" @click="startAddMarker('joint_box')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#ECFDF5'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669;">
-                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>
                                     </div>
                                     <div>
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #065F46;">Kotak Sambung (*Joint Closure*)</div>
-                                        <div style="font-size: 0.68rem; color: #047857; font-weight: 500;">FOSC Splice Tray 24/48 Core</div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #065F46;">Joint Box / Closure</div>
+                                        <div style="font-size: 0.68rem; color: #059669; font-weight: 500;">Sambungan Splicing Kabel FO</div>
                                     </div>
                                 </button>
 
                                 <button type="button" @click="startAddMarker('odc')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #FFFBEB; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #D97706;">
-                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="16" cy="8" r="1" fill="currentColor"/><circle cx="16" cy="12" r="1" fill="currentColor"/></svg>
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></svg>
                                     </div>
                                     <div>
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #92400E;">ODC / FDT Cabinet</div>
-                                        <div style="font-size: 0.68rem; color: #B45309; font-weight: 500;">Sentral Distribusi 96/144 Core</div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #92400E;">ODC / FDT Kabinet</div>
+                                        <div style="font-size: 0.68rem; color: #B45309; font-weight: 500;">Optical Distribution Cabinet</div>
                                     </div>
                                 </button>
 
                                 <button type="button" @click="startAddMarker('olt')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F5F3FF'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #F5F3FF; border: 1px solid #DDD6FE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #7C3AED;">
-                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.5" fill="currentColor"/><circle cx="9" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6" cy="16.5" r="1.5" fill="currentColor"/><circle cx="9" cy="16.5" r="1.5" fill="currentColor"/></svg>
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.5" fill="currentColor"/><circle cx="9" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6" cy="16.5" r="1.5" fill="currentColor"/><circle cx="9" cy="16.5" r="1.5" fill="currentColor"/></svg>
                                     </div>
                                     <div>
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #5B21B6;">Server Core / OLT Chassis</div>
-                                        <div style="font-size: 0.68rem; color: #6D28D9; font-weight: 500;">Headend Core PON Uplink</div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #5B21B6;">Server OLT / POP</div>
+                                        <div style="font-size: 0.68rem; color: #7C3AED; font-weight: 500;">Pusat Distribusi Utama GPON</div>
                                     </div>
                                 </button>
 
                                 <button type="button" @click="startAddMarker('customer')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FDF2F8'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #FDF2F8; border: 1px solid #FBCFE8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #DB2777;">
-                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>
                                     </div>
                                     <div>
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #9D174D;">Rumah Pelanggan ONT</div>
-                                        <div style="font-size: 0.68rem; color: #BE185D; font-weight: 500;">Modem Fiberhome / ZTE Premise</div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #9D174D;">Rumah Pelanggan</div>
+                                        <div style="font-size: 0.68rem; color: #DB2777; font-weight: 500;">Titik Lokasi ONT / Rumah</div>
                                     </div>
                                 </button>
                             </div>
@@ -851,7 +875,7 @@
                                 :class="(currentMode === 'draw_line' || openLineMenu) ? 'active' : ''"
                                 class="ims-tool-btn"
                             >
-                                <svg style="width: 14px; height: 14px; color: #0878E5; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                <svg style="width: 14px; height: 14px; color: #0878E5; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 19L20 5M4 19h6m-6 0v-6"/></svg>
                                 <span>Tarik Jalur Kabel ▾</span>
                             </button>
                             <div 
@@ -860,12 +884,12 @@
                                 style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 99999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 270px; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
                             >
                                 <button type="button" @click="startDrawLine('feeder')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF2F2; border: 1px solid #FECACA; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #EF4444;">
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF2F2; border: 1px solid #FECACA; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #DC2626;">
                                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>
                                     </div>
                                     <div>
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #991B1B;">Kabel Feeder (Backbone)</div>
-                                        <div style="font-size: 0.68rem; color: #DC2626; font-weight: 500;">ADSS 24 / 48 / 96 Core</div>
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #991B1B;">Kabel Feeder Utama</div>
+                                        <div style="font-size: 0.68rem; color: #DC2626; font-weight: 500;">Kabel Backbone 48 / 96 / 144 Core</div>
                                     </div>
                                 </button>
 
@@ -890,28 +914,45 @@
                                 </button>
                             </div>
                         </div>
+
+                        {{-- Tabel Data Button (Spreadsheet Bulk View) --}}
+                        <button 
+                            type="button" 
+                            @click="openDataTableModal = true" 
+                            class="ims-tool-btn"
+                            title="Buka Tabel Spreadsheet Seluruh Aset Jaringan"
+                        >
+                            <svg style="width: 14px; height: 14px; color: #0878E5;" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                            <span>Tabel Data</span>
+                        </button>
                     </div>
 
-                    {{-- 3. Live Universal GIS Search Bar --}}
+                    {{-- 3. Live Universal GIS Search Bar with Geocoding --}}
                     <div style="position: relative; flex: 1 1 180px; min-width: 140px; max-width: 280px; flex-shrink: 1;">
                         <div class="ims-search-box-container">
                             <div class="ims-search-box-icon">
-                                <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                <template x-if="!isGeocodingLoading">
+                                    <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                </template>
+                                <template x-if="isGeocodingLoading">
+                                    <svg class="animate-spin" style="width: 14px; height: 14px; color: #0878E5;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                </template>
                             </div>
                             <input 
                                 type="text" 
                                 class="ims-search-box-input"
                                 x-model="searchQuery" 
+                                @input="performGeocoding(searchQuery)"
                                 @focus="searchFocused = true"
                                 @click.outside="searchFocused = false"
                                 @keydown.escape="searchFocused = false"
-                                placeholder="Cari Tiang, ODP, Kabel..." 
+                                placeholder="Cari Tiang, ODP, atau Nama Jalan..." 
                             >
                             <button 
                                 type="button" 
                                 class="ims-search-box-clear"
                                 x-show="searchQuery" 
-                                @click="searchQuery = ''" 
+                                @click="searchQuery = ''; geocodingResults = [];" 
                                 title="Hapus pencarian"
                             >✕</button>
                         </div>
@@ -954,7 +995,7 @@
                     {{-- Vertical Divider --}}
                     <div style="width: 1px; height: 24px; background: #E2E8F0; flex-shrink: 0;"></div>
 
-                    {{-- 4. Right Tool Group: Map Switcher, KMZ, GeoJSON, Fullscreen --}}
+                    {{-- 4. Right Tool Group: Map Switcher, KMZ/KML Export, GeoJSON, Fullscreen --}}
                     <div style="display: flex; flex-wrap: nowrap; align-items: center; gap: 5px; flex-shrink: 0;">
                         
                         {{-- Google Maps View Type Dropdown (Roadmap / Satelit) --}}
@@ -1024,6 +1065,18 @@
                         >
                             <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                             <span>Import KMZ</span>
+                        </button>
+
+                        {{-- Export KML (Google Earth / Google My Maps) --}}
+                        <button 
+                            type="button" 
+                            @click="exportKml()" 
+                            class="ims-tool-btn"
+                            style="background: #FEF3C7; border-color: #FDE68A; color: #92400E;"
+                            title="Export Peta Jaringan ke format Google Earth / Google My Maps (.kml)"
+                        >
+                            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                            <span>Export KML</span>
                         </button>
 
                         <button 
@@ -1241,7 +1294,7 @@
                                 class="ims-sidebar-tab-btn"
                                 :style="sidebarTab === 'objects' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
                             >
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="8" y1="6" x2="21" y2="6"></line>
                                     <line x1="8" y1="12" x2="21" y2="12"></line>
                                     <line x1="8" y1="18" x2="21" y2="18"></line>
@@ -1249,9 +1302,9 @@
                                     <circle cx="3.5" cy="12" r="1.5" fill="currentColor"></circle>
                                     <circle cx="3.5" cy="18" r="1.5" fill="currentColor"></circle>
                                 </svg>
-                                <span>Daftar Objek</span>
+                                <span>Objek</span>
                                 <span 
-                                    style="font-size: 0.65rem; padding: 1.5px 7px; border-radius: 9999px; font-weight: 900; line-height: 1; transition: all 0.15s ease; display: inline-block;"
+                                    style="font-size: 0.65rem; padding: 1px 6px; border-radius: 9999px; font-weight: 900; line-height: 1; transition: all 0.15s ease; display: inline-block;"
                                     :style="sidebarTab === 'objects' ? 'background: #EFF6FF; color: #0878E5; border: 1px solid #BFDBFE;' : 'background: #E2E8F0; color: #64748B;'"
                                     x-text="customElements.length"
                                 ></span>
@@ -1262,12 +1315,25 @@
                                 class="ims-sidebar-tab-btn"
                                 :style="sidebarTab === 'layers' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
                             >
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                     <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                                     <polyline points="2 17 12 22 22 17"></polyline>
                                     <polyline points="2 12 12 17 22 12"></polyline>
                                 </svg>
-                                <span>Filter Layer</span>
+                                <span>Layer</span>
+                            </button>
+                            <button 
+                                type="button" 
+                                @click="sidebarTab = 'metrics'" 
+                                class="ims-sidebar-tab-btn"
+                                :style="sidebarTab === 'metrics' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                            >
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                </svg>
+                                <span>Ringkasan</span>
                             </button>
                         </div>
                     </div>
@@ -1509,6 +1575,112 @@
                             </div>
                             <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 9999px; background: #FFFBEB; color: #D97706;" x-text="customElements.filter(e => e.element_type === 'dropcore').length"></span>
                         </label>
+                    </div>
+
+                    {{-- ── TAB 3: RINGKASAN & STATISTIK JARINGAN ── --}}
+                    <div 
+                        x-show="sidebarTab === 'metrics'" 
+                        x-cloak
+                        class="ims-drawer-layer-scroll"
+                        style="display: flex; flex-direction: column; gap: 10px;"
+                    >
+                        <div style="padding-bottom: 6px; border-bottom: 1.5px solid #F1F5F9; display: flex; align-items: center; justify-content: space-between;">
+                            <span style="font-size: 0.74rem; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px;">Statistik Jaringan Aktif</span>
+                            <span style="font-size: 0.65rem; font-weight: 800; color: #16A34A; background: #DCFCE7; padding: 2px 6px; border-radius: 6px;">Live Metrik</span>
+                        </div>
+
+                        {{-- Total Cable Length Banner --}}
+                        <div style="background: linear-gradient(135deg, #0878E5, #02509D); border-radius: 12px; padding: 12px; color: #ffffff; box-shadow: 0 4px 14px rgba(8,120,229,0.25);">
+                            <div style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.85;">Total Panjang Kabel Fiber</div>
+                            <div style="display: flex; align-items: baseline; gap: 6px; margin-top: 2px;">
+                                <span style="font-size: 1.5rem; font-weight: 900;" x-text="networkMetrics.totalCableKm"></span>
+                                <span style="font-size: 0.82rem; font-weight: 800; opacity: 0.9;">km</span>
+                                <span style="font-size: 0.72rem; opacity: 0.75; margin-left: auto;" x-text="'(' + networkMetrics.totalCableMeters.toLocaleString() + ' m)'"></span>
+                            </div>
+                            <div style="font-size: 0.68rem; opacity: 0.8; margin-top: 4px;" x-text="networkMetrics.totalCableCount + ' segmen rute kabel aktif'"></div>
+                        </div>
+
+                        {{-- Cable Segments Breakdown --}}
+                        <div style="font-size: 0.72rem; font-weight: 800; color: #475569; margin-top: 4px;">Rincian Jalur Kabel</div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 6px;">
+                            {{-- Feeder --}}
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #FEF2F2; border: 1.5px solid #FECACA;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="width: 12px; height: 4px; border-radius: 2px; background: #EF4444;"></span>
+                                    <span style="font-size: 0.78rem; font-weight: 800; color: #991B1B;">Kabel Feeder Utama</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="font-size: 0.82rem; font-weight: 900; color: #DC2626;" x-text="networkMetrics.feederKm + ' km'"></span>
+                                    <div style="font-size: 0.62rem; color: #EF4444;" x-text="networkMetrics.feederCount + ' segmen'"></div>
+                                </div>
+                            </div>
+
+                            {{-- Distribution --}}
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #EFF6FF; border: 1.5px solid #BFDBFE;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="width: 12px; height: 4px; border-radius: 2px; background: #0878E5;"></span>
+                                    <span style="font-size: 0.78rem; font-weight: 800; color: #1E40AF;">Kabel Distribusi PON</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="font-size: 0.82rem; font-weight: 900; color: #0878E5;" x-text="networkMetrics.distributionKm + ' km'"></span>
+                                    <div style="font-size: 0.62rem; color: #2563EB;" x-text="networkMetrics.distributionCount + ' segmen'"></div>
+                                </div>
+                            </div>
+
+                            {{-- Dropcore --}}
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #FFFBEB; border: 1.5px solid #FDE68A;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="width: 12px; height: 4px; border-radius: 2px; background: #F59E0B; border-bottom: 2px dashed #D97706;"></span>
+                                    <span style="font-size: 0.78rem; font-weight: 800; color: #92400E;">Kabel Dropcore ONT</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="font-size: 0.82rem; font-weight: 900; color: #D97706;" x-text="networkMetrics.dropcoreKm + ' km'"></span>
+                                    <div style="font-size: 0.62rem; color: #B45309;" x-text="networkMetrics.dropcoreCount + ' segmen'"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Node Assets Breakdown --}}
+                        <div style="font-size: 0.72rem; font-weight: 800; color: #475569; margin-top: 6px;">Total Perangkat & Titik Node</div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                            {{-- Tiang --}}
+                            <div style="padding: 10px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; display: flex; flex-direction: column; gap: 2px;">
+                                <div style="font-size: 0.68rem; color: #64748B; font-weight: 700;">🗼 Tiang Fiber</div>
+                                <div style="font-size: 1.15rem; font-weight: 900; color: #1E293B;" x-text="networkMetrics.poleCount + ' Unit'"></div>
+                            </div>
+
+                            {{-- Joint Box --}}
+                            <div style="padding: 10px; border-radius: 10px; background: #ECFDF5; border: 1.5px solid #A7F3D0; display: flex; flex-direction: column; gap: 2px;">
+                                <div style="font-size: 0.68rem; color: #059669; font-weight: 700;">📦 Joint Box</div>
+                                <div style="font-size: 1.15rem; font-weight: 900; color: #065F46;" x-text="networkMetrics.jointBoxCount + ' Unit'"></div>
+                            </div>
+
+                            {{-- ODC --}}
+                            <div style="padding: 10px; border-radius: 10px; background: #FFFBEB; border: 1.5px solid #FDE68A; display: flex; flex-direction: column; gap: 2px;">
+                                <div style="font-size: 0.68rem; color: #D97706; font-weight: 700;">🗄️ ODC / FDT</div>
+                                <div style="font-size: 1.15rem; font-weight: 900; color: #92400E;" x-text="networkMetrics.odcCount + ' Unit'"></div>
+                            </div>
+
+                            {{-- OLT --}}
+                            <div style="padding: 10px; border-radius: 10px; background: #F5F3FF; border: 1.5px solid #DDD6FE; display: flex; flex-direction: column; gap: 2px;">
+                                <div style="font-size: 0.68rem; color: #7C3AED; font-weight: 700;">🖥️ Server OLT</div>
+                                <div style="font-size: 1.15rem; font-weight: 900; color: #5B21B6;" x-text="networkMetrics.oltCount + ' Unit'"></div>
+                            </div>
+
+                            {{-- Pelanggan --}}
+                            <div style="padding: 10px; border-radius: 10px; background: #FDF2F8; border: 1.5px solid #FBCFE8; display: flex; flex-direction: column; gap: 2px;">
+                                <div style="font-size: 0.68rem; color: #DB2777; font-weight: 700;">🏠 Pelanggan</div>
+                                <div style="font-size: 1.15rem; font-weight: 900; color: #9D174D;" x-text="networkMetrics.customerCount + ' Unit'"></div>
+                            </div>
+
+                            {{-- ODP Database --}}
+                            <div style="padding: 10px; border-radius: 10px; background: #EFF6FF; border: 1.5px solid #BFDBFE; display: flex; flex-direction: column; gap: 2px;">
+                                <div style="font-size: 0.68rem; color: #0878E5; font-weight: 700;">📍 ODP Terpasang</div>
+                                <div style="font-size: 1.15rem; font-weight: 900; color: #1E40AF;" x-text="networkMetrics.odpCount + ' Unit'"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1784,6 +1956,238 @@
             </div>
         </div>
 
+        {{-- ── 2.4 SPREADSHEET DATA TABLE MODAL (OPEN DATA TABLE) ── --}}
+        <div 
+            x-show="openDataTableModal" 
+            x-cloak
+            style="position: fixed; inset: 0; z-index: 999999; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 20px;"
+            @keydown.escape.window="openDataTableModal = false"
+        >
+            <div 
+                @click.outside="openDataTableModal = false"
+                style="background: #ffffff; width: 100%; max-width: 1100px; height: 85vh; border-radius: 16px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #CBD5E1;"
+            >
+                {{-- Modal Header --}}
+                <div style="padding: 14px 20px; border-bottom: 1.5px solid #F1F5F9; display: flex; align-items: center; justify-content: space-between; background: #0F172A; color: #ffffff;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 32px; height: 32px; border-radius: 8px; background: #0878E5; display: flex; align-items: center; justify-content: center;">
+                            <svg style="width: 17px; height: 17px; color: #ffffff;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.95rem; font-weight: 900; line-height: 1.2;">Tabel Data Jaringan FTTH</div>
+                            <div style="font-size: 0.7rem; color: #94A3B8; font-weight: 500;">Edit nama, panjang, dan catatan seluruh elemen jaringan dalam satu tabel terpusat</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <button 
+                            type="button" 
+                            @click="exportTableCsv()" 
+                            style="border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: #ffffff; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.15s ease;"
+                            onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                            onmouseout="this.style.background='rgba(255,255,255,0.1)'"
+                            title="Unduh tabel ini dalam format file CSV"
+                        >
+                            <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            <span>Unduh CSV</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="openDataTableModal = false" 
+                            style="border: none; background: transparent; color: #94A3B8; cursor: pointer; padding: 6px; border-radius: 8px; display: flex; align-items: center; justify-content: center;"
+                            onmouseover="this.style.color='#ffffff'; this.style.background='rgba(255,255,255,0.1)'"
+                            onmouseout="this.style.color='#94A3B8'; this.style.background='transparent'"
+                        >
+                            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Toolbar & Filters Inside Table --}}
+                <div style="padding: 10px 20px; background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+                    {{-- Category Tabs --}}
+                    <div style="display: flex; gap: 4px; overflow-x: auto;">
+                        <button 
+                            type="button" 
+                            @click="dataTableTab = 'all'" 
+                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
+                            :style="dataTableTab === 'all' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
+                        >
+                            Semua (<span x-text="customElements.length"></span>)
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="dataTableTab = 'line'" 
+                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
+                            :style="dataTableTab === 'line' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
+                        >
+                            Kabel (<span x-text="customElements.filter(e => e.category === 'line').length"></span>)
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="dataTableTab = 'pole'" 
+                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
+                            :style="dataTableTab === 'pole' ? 'background: #334155; color: #ffffff; border-color: #334155;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
+                        >
+                            Tiang (<span x-text="customElements.filter(e => e.element_type === 'pole').length"></span>)
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="dataTableTab = 'joint_box'" 
+                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
+                            :style="dataTableTab === 'joint_box' ? 'background: #059669; color: #ffffff; border-color: #059669;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
+                        >
+                            Joint Box (<span x-text="customElements.filter(e => e.element_type === 'joint_box').length"></span>)
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="dataTableTab = 'odc'" 
+                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
+                            :style="dataTableTab === 'odc' ? 'background: #D97706; color: #ffffff; border-color: #D97706;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
+                        >
+                            ODC (<span x-text="customElements.filter(e => e.element_type === 'odc').length"></span>)
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="dataTableTab = 'olt'" 
+                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
+                            :style="dataTableTab === 'olt' ? 'background: #7C3AED; color: #ffffff; border-color: #7C3AED;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
+                        >
+                            OLT (<span x-text="customElements.filter(e => e.element_type === 'olt').length"></span>)
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="dataTableTab = 'customer'" 
+                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
+                            :style="dataTableTab === 'customer' ? 'background: #DB2777; color: #ffffff; border-color: #DB2777;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
+                        >
+                            Pelanggan (<span x-text="customElements.filter(e => e.element_type === 'customer').length"></span>)
+                        </button>
+                    </div>
+
+                    {{-- Search Input in Table --}}
+                    <div style="position: relative; width: 220px;">
+                        <input 
+                            type="text" 
+                            x-model="dataTableSearch" 
+                            placeholder="Cari dalam tabel..." 
+                            style="width: 100%; height: 32px; font-size: 0.74rem; font-weight: 600; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 24px 0 10px; box-sizing: border-box; background: #ffffff; outline: none;"
+                        >
+                        <button 
+                            type="button" 
+                            x-show="dataTableSearch" 
+                            @click="dataTableSearch = ''" 
+                            style="position: absolute; right: 6px; top: 7px; border: none; background: transparent; color: #94A3B8; font-size: 11px; cursor: pointer;"
+                        >✕</button>
+                    </div>
+                </div>
+
+                {{-- Table Scroll Container --}}
+                <div style="flex: 1; overflow: auto; background: #ffffff;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left;">
+                        <thead style="position: sticky; top: 0; background: #F1F5F9; z-index: 10; border-bottom: 2px solid #CBD5E1;">
+                            <tr>
+                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 45px;">No</th>
+                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 70px;">Gaya</th>
+                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 240px;">Nama Objek</th>
+                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 140px;">Tipe & Kategori</th>
+                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 150px;">Metrik / Lokasi</th>
+                                <th style="padding: 10px 12px; font-weight: 900; color: #334155;">Catatan Teknis</th>
+                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 130px; text-align: right;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(el, idx) in dataTableElements" :key="el.id">
+                                <tr style="border-bottom: 1px solid #E2E8F0; transition: background 0.1s ease;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background='#ffffff'">
+                                    <td style="padding: 10px 12px; color: #64748B; font-weight: 700;" x-text="idx + 1"></td>
+                                    <td style="padding: 10px 12px;">
+                                        <div 
+                                            @click="openStylePicker(el.id)"
+                                            style="width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
+                                            :style="'background:' + getElementBadge(el).bg + '; color:' + getElementBadge(el).color + '; border: 1.5px solid ' + getElementBadge(el).border"
+                                            x-html="getElementBadge(el).iconHtml"
+                                            title="Klik untuk ubah gaya & warna"
+                                        ></div>
+                                    </td>
+                                    <td style="padding: 8px 12px;">
+                                        <input 
+                                            type="text" 
+                                            :value="el.name" 
+                                            @change="$wire.updateElement(el.id, { name: $event.target.value }); el.name = $event.target.value; renderCustomElements();"
+                                            style="width: 100%; height: 30px; border-radius: 6px; border: 1px solid transparent; padding: 0 8px; font-weight: 800; font-size: 0.76rem; color: #0F172A; background: transparent; transition: all 0.15s ease;"
+                                            onfocus="this.style.borderColor='#0878E5'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 2px rgba(8,120,229,0.1)'"
+                                            onblur="this.style.borderColor='transparent'; this.style.background='transparent'; this.style.boxShadow='none'"
+                                        >
+                                    </td>
+                                    <td style="padding: 10px 12px;">
+                                        <span style="font-size: 0.65rem; font-weight: 900; padding: 2px 7px; border-radius: 6px; text-transform: uppercase;" :style="'background:' + getElementBadge(el).bg + '; color:' + getElementBadge(el).border" x-text="el.element_type"></span>
+                                    </td>
+                                    <td style="padding: 10px 12px; font-weight: 700; color: #334155;">
+                                        <template x-if="el.category === 'line'">
+                                            <span style="color: #0878E5; font-weight: 800;" x-text="'~' + (el.length_meters || 0) + ' m'"></span>
+                                        </template>
+                                        <template x-if="el.category === 'marker'">
+                                            <span style="font-family: monospace; font-size: 0.68rem; color: #64748B;" x-text="el.latitude ? (el.latitude.toFixed(5) + ', ' + el.longitude.toFixed(5)) : '-'"></span>
+                                        </template>
+                                    </td>
+                                    <td style="padding: 8px 12px;">
+                                        <input 
+                                            type="text" 
+                                            :value="el.notes || ''" 
+                                            @change="$wire.updateElement(el.id, { notes: $event.target.value }); el.notes = $event.target.value; renderCustomElements();"
+                                            placeholder="Tambah catatan..."
+                                            style="width: 100%; height: 30px; border-radius: 6px; border: 1px solid transparent; padding: 0 8px; font-size: 0.74rem; color: #475569; background: transparent; transition: all 0.15s ease;"
+                                            onfocus="this.style.borderColor='#0878E5'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 2px rgba(8,120,229,0.1)'"
+                                            onblur="this.style.borderColor='transparent'; this.style.background='transparent'; this.style.boxShadow='none'"
+                                        >
+                                    </td>
+                                    <td style="padding: 10px 12px; text-align: right;">
+                                        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 5px;">
+                                            <button 
+                                                type="button" 
+                                                @click="openDataTableModal = false; flyToCustomElement(el);" 
+                                                style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #BFDBFE; background: #EFF6FF; color: #0878E5; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                                                title="Fokus di peta"
+                                            >
+                                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                @click="openStylePicker(el.id)" 
+                                                style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #CBD5E1; background: #F8FAFC; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                                                title="Ubah Gaya & Warna"
+                                            >
+                                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                @click="deleteCustomElementDirect(el.id, el.name)" 
+                                                style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #FECACA; background: #FEF2F2; color: #DC2626; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                                                title="Hapus elemen ini"
+                                            >
+                                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Table Footer --}}
+                <div style="padding: 10px 20px; background: #F8FAFC; border-top: 1.5px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between; font-size: 0.74rem; font-weight: 700; color: #64748B;">
+                    <div>
+                        Menampilkan <span style="font-weight: 900; color: #0F172A;" x-text="dataTableElements.length"></span> dari <span style="font-weight: 900; color: #0F172A;" x-text="customElements.length"></span> elemen
+                    </div>
+                    <button 
+                        type="button" 
+                        @click="openDataTableModal = false" 
+                        style="padding: 6px 16px; border-radius: 8px; border: none; background: #0F172A; color: #ffffff; font-weight: 800; cursor: pointer;"
+                    >Tutup</button>
+                </div>
+            </div>
+        </div>
+
         @script
         <script>
             window.imsFtthNetworkMapComponent = function() {
@@ -1837,9 +2241,25 @@
                         { id: 'square', name: 'Titik Kotak', svg: '<svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>' }
                     ],
 
+                    // Spreadsheet Data Table Modal State
+                    openDataTableModal: false,
+                    dataTableTab: 'all',
+                    dataTableSearch: '',
+
+                    // Geocoding State
+                    geocodingResults: [],
+                    isGeocodingLoading: false,
+                    searchDebounceTimer: null,
+                    tempSearchMarker: null,
+
+                    // Undo / Redo Action History Stack
+                    historyStack: [],
+                    historyIndex: -1,
+                    maxHistory: 30,
+
                     // Sidebar Drawer & Layer Visibility State
                     openSidebarDrawer: false,
-                    sidebarTab: 'objects', // 'objects', 'layers'
+                    sidebarTab: 'objects', // 'objects', 'layers', 'metrics'
                     sidebarSearch: '',
                     sidebarCategoryFilter: 'all', // 'all', 'line', 'marker'
                     layerVisibility: {
@@ -2078,6 +2498,21 @@
                             setTimeout(() => {
                                 if (this.mapInstance) this.mapInstance.invalidateSize();
                             }, 200);
+                        });
+
+                        // Keyboard shortcuts for Undo (Ctrl+Z) and Redo (Ctrl+Y / Ctrl+Shift+Z)
+                        window.addEventListener('keydown', (e) => {
+                            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+                                if (!['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+                                    e.preventDefault();
+                                    this.undo();
+                                }
+                            } else if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === 'y' || (e.key.toLowerCase() === 'z' && e.shiftKey))) {
+                                if (!['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+                                    e.preventDefault();
+                                    this.redo();
+                                }
+                            }
                         });
                     },
 
@@ -2561,12 +2996,38 @@
 
                         if (this.editingElement.category === 'line') {
                             if (this.editingPoints.length < 2) return;
+                            // Push to history for Undo
+                            this.pushHistory({
+                                type: 'line_edit',
+                                id: this.editingElement.id,
+                                oldPoints: JSON.parse(JSON.stringify(this.editingElement.path_coordinates || [])),
+                                newPoints: JSON.parse(JSON.stringify(this.editingPoints)),
+                                oldDist: this.editingElement.length_meters,
+                                newDist: this.editingDistance
+                            });
+
+                            this.editingElement.path_coordinates = this.editingPoints;
+                            this.editingElement.length_meters = this.editingDistance;
+
                             this.$wire.updateElement(this.editingElement.id, {
                                 path_coordinates: this.editingPoints,
                                 length_meters: this.editingDistance
                             });
                         } else if (this.editingElement.category === 'marker') {
                             if (this.editingMarkerLat === null || this.editingMarkerLng === null) return;
+                            // Push to history for Undo
+                            this.pushHistory({
+                                type: 'marker_move',
+                                id: this.editingElement.id,
+                                oldLat: this.editingElement.latitude,
+                                oldLng: this.editingElement.longitude,
+                                newLat: this.editingMarkerLat,
+                                newLng: this.editingMarkerLng
+                            });
+
+                            this.editingElement.latitude = this.editingMarkerLat;
+                            this.editingElement.longitude = this.editingMarkerLng;
+
                             this.$wire.updateElement(this.editingElement.id, {
                                 latitude: this.editingMarkerLat,
                                 longitude: this.editingMarkerLng
@@ -3164,12 +3625,24 @@
                         let meta = (typeof this.stylingElement.metadata === 'string') ? JSON.parse(this.stylingElement.metadata || '{}') : (this.stylingElement.metadata || {});
                         if (!meta) meta = {};
 
+                        const oldMeta = JSON.parse(JSON.stringify(meta));
+                        const oldColor = this.stylingElement.color;
+
                         if (this.stylingElement.category === 'marker') {
                             meta.custom_icon = this.selectedIcon;
                         } else if (this.stylingElement.category === 'line') {
                             meta.line_weight = parseFloat(this.selectedLineWidth) || 4.5;
                             meta.line_dash = this.selectedLineDash || 'solid';
                         }
+
+                        this.pushHistory({
+                            type: 'style_change',
+                            id: this.stylingElement.id,
+                            oldColor: oldColor,
+                            newColor: this.selectedColor,
+                            oldMeta: oldMeta,
+                            newMeta: meta
+                        });
 
                         this.$wire.updateElement(this.stylingElement.id, {
                             color: this.selectedColor,
@@ -3369,6 +3842,42 @@
                         };
                     },
 
+                    performGeocoding(query) {
+                        if (!query || query.trim().length < 3) {
+                            this.geocodingResults = [];
+                            this.isGeocodingLoading = false;
+                            return;
+                        }
+                        this.isGeocodingLoading = true;
+                        clearTimeout(this.searchDebounceTimer);
+                        this.searchDebounceTimer = setTimeout(async () => {
+                            try {
+                                const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query.trim())}&countrycodes=id&limit=4&addressdetails=1`;
+                                const resp = await fetch(url, { headers: { 'Accept-Language': 'id' } });
+                                if (resp.ok) {
+                                    const data = await resp.json();
+                                    this.geocodingResults = data.map(item => ({
+                                        uniqueId: 'geo_' + item.place_id,
+                                        category: 'geocoding',
+                                        title: item.display_name.split(',')[0],
+                                        subtitle: item.display_name.split(',').slice(1, 4).join(','),
+                                        lat: parseFloat(item.lat),
+                                        lng: parseFloat(item.lon),
+                                        badgeLabel: 'LOKASI / JALAN',
+                                        badgeBg: '#FDF2F8',
+                                        badgeBorder: '#FBCFE8',
+                                        badgeColor: '#DB2777',
+                                        iconHtml: `<svg style="width:13px;height:13px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`
+                                    }));
+                                }
+                            } catch (e) {
+                                console.error('Geocoding error:', e);
+                            } finally {
+                                this.isGeocodingLoading = false;
+                            }
+                        }, 350);
+                    },
+
                     get searchResults() {
                         if (!this.searchQuery || this.searchQuery.trim().length < 1) return [];
                         const q = this.searchQuery.toLowerCase().trim();
@@ -3433,6 +3942,11 @@
                             }
                         });
 
+                        // 3. Include Geocoding Place Results
+                        if (this.geocodingResults && this.geocodingResults.length > 0) {
+                            results.push(...this.geocodingResults);
+                        }
+
                         return results.slice(0, 30);
                     },
 
@@ -3464,6 +3978,38 @@
                     flyToItem(item) {
                         this.searchFocused = false;
                         if (!this.mapInstance) return;
+
+                        if (item.category === 'geocoding') {
+                            this.mapInstance.flyTo([item.lat, item.lng], 18, { animate: true, duration: 1.2 });
+
+                            if (this.tempSearchMarker) {
+                                this.mapInstance.removeLayer(this.tempSearchMarker);
+                            }
+
+                            const searchPinIcon = L.divIcon({
+                                className: 'ims-search-pin',
+                                html: `
+                                    <div style="width: 32px; height: 32px; border-radius: 50%; background: #DB2777; border: 2.5px solid #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; color: #ffffff;">
+                                        <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                    </div>
+                                `,
+                                iconSize: [32, 32],
+                                iconAnchor: [16, 16]
+                            });
+
+                            this.tempSearchMarker = L.marker([item.lat, item.lng], { icon: searchPinIcon }).addTo(this.mapInstance);
+                            this.tempSearchMarker.bindPopup(`
+                                <div style="font-family: inherit; padding: 8px 10px; min-width: 230px;">
+                                    <div style="font-size: 10px; font-weight: 800; color: #DB2777; text-transform: uppercase;">📍 LOKASI PENCARIAN</div>
+                                    <div style="font-size: 13px; font-weight: 900; color: #0F172A; margin: 3px 0;">${item.title}</div>
+                                    <div style="font-size: 11px; color: #64748B; margin-bottom: 8px;">${item.subtitle}</div>
+                                    <div style="display: flex; gap: 4px;">
+                                        <button onclick="window.imsQuickAddNodeAt(${item.lat}, ${item.lng})" style="flex: 1; border: none; background: #EFF6FF; color: #0878E5; padding: 6px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer;">+ Tambah Tiang di Sini</button>
+                                    </div>
+                                </div>
+                            `).openPopup();
+                            return;
+                        }
 
                         if (item.bounds && item.bounds.length >= 2) {
                             const poly = L.polyline(item.bounds);
@@ -3604,6 +4150,260 @@
                         return (totalMeters / 1000).toFixed(2);
                     },
 
+                    // ── NETWORK METRICS COMPUTED GETTER ──
+                    get networkMetrics() {
+                        let feederMeters = 0;
+                        let distributionMeters = 0;
+                        let dropcoreMeters = 0;
+                        let feederCount = 0;
+                        let distributionCount = 0;
+                        let dropcoreCount = 0;
+                        let poleCount = 0;
+                        let jointBoxCount = 0;
+                        let odcCount = 0;
+                        let oltCount = 0;
+                        let customerCount = 0;
+
+                        (this.customElements || []).forEach(el => {
+                            if (el.category === 'line') {
+                                const len = parseInt(el.length_meters) || 0;
+                                if (el.element_type === 'feeder') {
+                                    feederMeters += len;
+                                    feederCount++;
+                                } else if (el.element_type === 'distribution') {
+                                    distributionMeters += len;
+                                    distributionCount++;
+                                } else {
+                                    dropcoreMeters += len;
+                                    dropcoreCount++;
+                                }
+                            } else if (el.category === 'marker') {
+                                if (el.element_type === 'pole') poleCount++;
+                                else if (el.element_type === 'joint_box') jointBoxCount++;
+                                else if (el.element_type === 'odc') odcCount++;
+                                else if (el.element_type === 'olt') oltCount++;
+                                else if (el.element_type === 'customer') customerCount++;
+                            }
+                        });
+
+                        const totalCableMeters = feederMeters + distributionMeters + dropcoreMeters;
+
+                        return {
+                            feederMeters,
+                            feederKm: (feederMeters / 1000).toFixed(2),
+                            feederCount,
+                            distributionMeters,
+                            distributionKm: (distributionMeters / 1000).toFixed(2),
+                            distributionCount,
+                            dropcoreMeters,
+                            dropcoreKm: (dropcoreMeters / 1000).toFixed(2),
+                            dropcoreCount,
+                            totalCableMeters,
+                            totalCableKm: (totalCableMeters / 1000).toFixed(2),
+                            totalCableCount: feederCount + distributionCount + dropcoreCount,
+                            poleCount,
+                            jointBoxCount,
+                            odcCount,
+                            oltCount,
+                            customerCount,
+                            odpCount: this.allOdps ? this.allOdps.length : 0
+                        };
+                    },
+
+                    // ── SPREADSHEET DATA TABLE COMPUTED & EXPORT ──
+                    get dataTableElements() {
+                        let list = this.customElements || [];
+                        if (this.dataTableTab !== 'all') {
+                            if (this.dataTableTab === 'line') {
+                                list = list.filter(e => e.category === 'line');
+                            } else {
+                                list = list.filter(e => e.element_type === this.dataTableTab);
+                            }
+                        }
+                        if (this.dataTableSearch && this.dataTableSearch.trim().length > 0) {
+                            const q = this.dataTableSearch.toLowerCase().trim();
+                            list = list.filter(e => (e.name && e.name.toLowerCase().includes(q)) || (e.notes && e.notes.toLowerCase().includes(q)) || (e.element_type && e.element_type.toLowerCase().includes(q)));
+                        }
+                        return list;
+                    },
+
+                    exportTableCsv() {
+                        const items = this.dataTableElements;
+                        if (!items || items.length === 0) {
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('Tidak ada data untuk diekspor!', 'warning');
+                            }
+                            return;
+                        }
+
+                        let csv = 'No,Nama Objek,Kategori,Tipe,Panjang (m),Latitude,Longitude,Catatan\n';
+                        items.forEach((el, idx) => {
+                            const name = `"${(el.name || '').replace(/"/g, '""')}"`;
+                            const notes = `"${(el.notes || '').replace(/"/g, '""')}"`;
+                            const len = el.length_meters || 0;
+                            const lat = el.latitude || '';
+                            const lng = el.longitude || '';
+                            csv += `${idx + 1},${name},${el.category},${el.element_type},${len},${lat},${lng},${notes}\n`;
+                        });
+
+                        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'ims-tabel-jaringan-' + (this.currentProject ? this.currentProject.name.toLowerCase().replace(/[^a-z0-9]/g, '-') : 'ftth') + '.csv';
+                        a.click();
+                        URL.revokeObjectURL(url);
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('📊 Berhasil mengunduh data CSV!', 'success');
+                        }
+                    },
+
+                    // ── UNDO / REDO MECHANISM ──
+                    pushHistory(action) {
+                        if (this.historyIndex < this.historyStack.length - 1) {
+                            this.historyStack = this.historyStack.slice(0, this.historyIndex + 1);
+                        }
+                        this.historyStack.push(action);
+                        if (this.historyStack.length > this.maxHistory) {
+                            this.historyStack.shift();
+                        } else {
+                            this.historyIndex++;
+                        }
+                    },
+
+                    async undo() {
+                        if (this.historyIndex < 0) return;
+                        const action = this.historyStack[this.historyIndex];
+                        this.historyIndex--;
+
+                        if (action.type === 'marker_move') {
+                            const el = this.customElements.find(e => e.id === action.id);
+                            if (el) {
+                                el.latitude = action.oldLat;
+                                el.longitude = action.oldLng;
+                                this.$wire.updateElement(action.id, { latitude: action.oldLat, longitude: action.oldLng });
+                                this.renderCustomElements();
+                                if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                    IMS.toast('↶ Undo: Posisi ' + el.name + ' dikembalikan.', 'info', 1500);
+                                }
+                            }
+                        } else if (action.type === 'line_edit') {
+                            const el = this.customElements.find(e => e.id === action.id);
+                            if (el) {
+                                el.path_coordinates = action.oldPoints;
+                                el.length_meters = action.oldDist;
+                                this.$wire.updateElement(action.id, { path_coordinates: action.oldPoints, length_meters: action.oldDist });
+                                this.renderCustomElements();
+                                if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                    IMS.toast('↶ Undo: Rute ' + el.name + ' dikembalikan.', 'info', 1500);
+                                }
+                            }
+                        } else if (action.type === 'style_change') {
+                            const el = this.customElements.find(e => e.id === action.id);
+                            if (el) {
+                                el.color = action.oldColor;
+                                el.metadata = action.oldMeta;
+                                this.$wire.updateElement(action.id, { color: action.oldColor, metadata: action.oldMeta });
+                                this.renderCustomElements();
+                                if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                    IMS.toast('↶ Undo: Gaya ' + el.name + ' dikembalikan.', 'info', 1500);
+                                }
+                            }
+                        }
+                    },
+
+                    async redo() {
+                        if (this.historyIndex >= this.historyStack.length - 1) return;
+                        this.historyIndex++;
+                        const action = this.historyStack[this.historyIndex];
+
+                        if (action.type === 'marker_move') {
+                            const el = this.customElements.find(e => e.id === action.id);
+                            if (el) {
+                                el.latitude = action.newLat;
+                                el.longitude = action.newLng;
+                                this.$wire.updateElement(action.id, { latitude: action.newLat, longitude: action.newLng });
+                                this.renderCustomElements();
+                                if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                    IMS.toast('↷ Redo: Posisi ' + el.name + ' dipulihkan.', 'info', 1500);
+                                }
+                            }
+                        } else if (action.type === 'line_edit') {
+                            const el = this.customElements.find(e => e.id === action.id);
+                            if (el) {
+                                el.path_coordinates = action.newPoints;
+                                el.length_meters = action.newDist;
+                                this.$wire.updateElement(action.id, { path_coordinates: action.newPoints, length_meters: action.newDist });
+                                this.renderCustomElements();
+                                if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                    IMS.toast('↷ Redo: Rute ' + el.name + ' dipulihkan.', 'info', 1500);
+                                }
+                            }
+                        } else if (action.type === 'style_change') {
+                            const el = this.customElements.find(e => e.id === action.id);
+                            if (el) {
+                                el.color = action.newColor;
+                                el.metadata = action.newMeta;
+                                this.$wire.updateElement(action.id, { color: action.newColor, metadata: action.newMeta });
+                                this.renderCustomElements();
+                                if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                    IMS.toast('↷ Redo: Gaya ' + el.name + ' dipulihkan.', 'info', 1500);
+                                }
+                            }
+                        }
+                    },
+
+                    // ── KML EXPORT (GOOGLE EARTH & MY MAPS COMPATIBLE) ──
+                    exportKml() {
+                        let kml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+                        kml += `<kml xmlns="http://www.opengis.net/kml/2.2">\n`;
+                        kml += `  <Document>\n`;
+                        kml += `    <name>${(this.currentProject ? this.currentProject.name : 'IMS FTTH Network')}</name>\n`;
+                        kml += `    <description>IMS FTTH Network Export - ${new Date().toLocaleDateString('id-ID')}</description>\n`;
+
+                        // Folder Markers
+                        kml += `    <Folder>\n      <name>Titik & Node Jaringan</name>\n`;
+                        this.customElements.filter(e => e.category === 'marker' && e.latitude && e.longitude).forEach(el => {
+                            kml += `      <Placemark>\n`;
+                            kml += `        <name><![CDATA[${el.name}]]></name>\n`;
+                            kml += `        <description><![CDATA[Tipe: ${el.element_type}\nCatatan: ${el.notes || '-'}\nGPS: ${el.latitude}, ${el.longitude}]]></description>\n`;
+                            kml += `        <Point>\n`;
+                            kml += `          <coordinates>${el.longitude},${el.latitude},0</coordinates>\n`;
+                            kml += `        </Point>\n`;
+                            kml += `      </Placemark>\n`;
+                        });
+                        kml += `    </Folder>\n`;
+
+                        // Folder Lines
+                        kml += `    <Folder>\n      <name>Jalur Kabel Fiber Optic</name>\n`;
+                        this.customElements.filter(e => e.category === 'line' && e.path_coordinates && e.path_coordinates.length >= 2).forEach(el => {
+                            const coordsStr = el.path_coordinates.map(pt => `${pt[1]},${pt[0]},0`).join(' ');
+                            kml += `      <Placemark>\n`;
+                            kml += `        <name><![CDATA[${el.name}]]></name>\n`;
+                            kml += `        <description><![CDATA[Tipe Kabel: ${el.element_type}\nPanjang: ~${el.length_meters || 0} meter\nCatatan: ${el.notes || '-'}]]></description>\n`;
+                            kml += `        <LineString>\n`;
+                            kml += `          <tessellate>1</tessellate>\n`;
+                            kml += `          <coordinates>${coordsStr}</coordinates>\n`;
+                            kml += `        </LineString>\n`;
+                            kml += `      </Placemark>\n`;
+                        });
+                        kml += `    </Folder>\n`;
+
+                        kml += `  </Document>\n`;
+                        kml += `</kml>`;
+
+                        const blob = new Blob([kml], { type: 'application/vnd.google-earth.kml+xml' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = (this.currentProject ? this.currentProject.name.toLowerCase().replace(/[^a-z0-9]/g, '-') : 'ims-ftth-network') + '-' + new Date().toISOString().slice(0, 10) + '.kml';
+                        a.click();
+                        URL.revokeObjectURL(url);
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('🌍 Berhasil mengekspor file KML untuk Google Earth / My Maps!', 'success');
+                        }
+                    },
+
                     exportGeoJson() {
                         const features = [];
 
@@ -3725,6 +4525,18 @@
                             const wire = window.Livewire.find(componentEl.closest('[wire\\:id]').getAttribute('wire:id'));
                             if (wire) wire.deleteElement(id);
                         }
+                    }
+                }
+            };
+
+            // Global quick-add node helper from search result
+            window.imsQuickAddNodeAt = function(lat, lng) {
+                const componentEl = document.querySelector('[x-data*="imsFtthNetworkMapComponent"]');
+                if (componentEl && window.Alpine) {
+                    const alpineData = window.Alpine.$data(componentEl);
+                    if (alpineData && typeof alpineData.promptSaveMarker === 'function') {
+                        alpineData.activeElementType = 'pole';
+                        alpineData.promptSaveMarker(lat, lng);
                     }
                 }
             };
