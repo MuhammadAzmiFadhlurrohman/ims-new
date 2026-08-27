@@ -405,7 +405,7 @@
                 box-sizing: content-box !important;
             }
             .ims-map-canvas .leaflet-marker-icon {
-                transform-origin: center center !important;
+                transform-origin: 0 0 !important;
             }
             .odp-pin, .custom-ftth-node, .ims-drag-edit-marker {
                 background: transparent !important;
