@@ -17,26 +17,33 @@
                 position: relative;
             }
             .ims-sidebar-scroll-list {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
                 flex: 1 1 0% !important;
-                overflow-y: auto !important;
                 min-height: 0 !important;
+                height: 100% !important;
                 max-height: 100% !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
                 overscroll-behavior: contain !important;
                 -webkit-overflow-scrolling: touch !important;
+                pointer-events: auto !important;
             }
             .ims-sidebar-scroll-list::-webkit-scrollbar {
-                width: 6px !important;
+                width: 7px !important;
+                display: block !important;
             }
             .ims-sidebar-scroll-list::-webkit-scrollbar-track {
                 background: #F1F5F9 !important;
                 border-radius: 4px !important;
             }
             .ims-sidebar-scroll-list::-webkit-scrollbar-thumb {
-                background: #CBD5E1 !important;
+                background: #94A3B8 !important;
                 border-radius: 4px !important;
             }
             .ims-sidebar-scroll-list::-webkit-scrollbar-thumb:hover {
-                background: #94A3B8 !important;
+                background: #64748B !important;
             }
             .ims-sidebar-tab-btn {
                 display: flex !important;
@@ -1126,6 +1133,7 @@
 
                 {{-- ── 2.1 GOOGLE MY MAPS STYLE FLOATING SIDEBAR DRAWER ── --}}
                 <div 
+                    id="ims-ftth-sidebar-drawer"
                     x-show="openSidebarDrawer" 
                     x-transition:enter="transition ease-out duration-250"
                     x-transition:enter-start="transform -translate-x-full opacity-0"
@@ -1133,16 +1141,15 @@
                     x-transition:leave="transition ease-in duration-200"
                     x-transition:leave-start="transform translate-x-0 opacity-100"
                     x-transition:leave-end="transform -translate-x-full opacity-0"
-                    x-init="if (window.L && L.DomEvent) { L.DomEvent.disableScrollPropagation($el); L.DomEvent.disableClickPropagation($el); }"
                     @wheel.stop
                     @mousewheel.stop
                     @DOMMouseScroll.stop
                     @touchmove.stop
                     x-cloak
-                    style="position: absolute; top: 0; left: 0; bottom: 0; width: 350px; max-width: 90vw; z-index: 1000; background: #ffffff; border-right: 1.5px solid #CBD5E1; box-shadow: 10px 0 32px rgba(15,23,42,0.16); display: flex; flex-direction: column; box-sizing: border-box; border-radius: 0 16px 16px 0; overflow: hidden;"
+                    style="position: absolute; top: 0; left: 0; bottom: 0; height: 100% !important; max-height: 100% !important; width: 350px; max-width: 90vw; z-index: 1000; background: #ffffff; border-right: 1.5px solid #CBD5E1; box-shadow: 10px 0 32px rgba(15,23,42,0.16); display: flex; flex-direction: column; box-sizing: border-box; border-radius: 0 16px 16px 0; overflow: hidden; pointer-events: auto;"
                 >
                     {{-- Sidebar Header --}}
-                    <div style="padding: 14px 16px; background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: #ffffff; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; flex-shrink: 0;">
+                    <div style="padding: 14px 16px; background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: #ffffff; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; flex: 0 0 auto !important;">
                         <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
                             <div style="width: 32px; height: 32px; border-radius: 10px; background: #0878E5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(8,120,229,0.4);">
                                 <svg style="width: 17px; height: 17px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M4 6h16M4 12h16M4 18h7"/></svg>
@@ -1165,7 +1172,7 @@
                     </div>
 
                     {{-- Segmented Tab Control (Pill Switch) --}}
-                    <div style="padding: 12px 14px 8px 14px; background: #ffffff; flex-shrink: 0;">
+                    <div style="padding: 12px 14px 8px 14px; background: #ffffff; flex: 0 0 auto !important;">
                         <div style="display: flex; background: #F1F5F9; padding: 3px; border-radius: 10px; border: 1px solid #E2E8F0; gap: 4px;">
                             <button 
                                 type="button" 
@@ -1205,9 +1212,9 @@
                     </div>
 
                     {{-- ── TAB 1: DAFTAR OBJEK JARINGAN ── --}}
-                    <div x-show="sidebarTab === 'objects'" style="flex: 1 1 0%; display: flex; flex-direction: column; overflow: hidden; min-height: 0;">
+                    <div x-show="sidebarTab === 'objects'" style="flex: 1 1 0% !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important;">
                         {{-- Search and Category Filter --}}
-                        <div style="padding: 6px 14px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex-shrink: 0;">
+                        <div style="padding: 6px 14px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex: 0 0 auto !important;">
                             <div style="position: relative; width: 100%;">
                                 <div style="position: absolute; left: 11px; top: 10px; color: #94A3B8; pointer-events: none;">
                                     <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -1260,7 +1267,7 @@
                         </div>
 
                         {{-- Scrollable List of Objects --}}
-                        <div class="ims-sidebar-scroll-list" style="padding: 10px 14px; display: flex; flex-direction: column; gap: 8px;">
+                        <div class="ims-sidebar-scroll-list" style="padding: 10px 14px 20px 14px;">
                             <template x-if="filteredSidebarElements.length === 0">
                                 <div style="padding: 40px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
                                     <div style="width: 52px; height: 52px; border-radius: 14px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8;">
@@ -1275,7 +1282,7 @@
 
                             <template x-for="item in filteredSidebarElements" :key="item.id">
                                 <div 
-                                    style="padding: 10px 12px; border-radius: 12px; background: #ffffff; border: 1.5px solid #E2E8F0; display: flex; flex-direction: column; gap: 8px; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.03);"
+                                    style="padding: 10px 12px; border-radius: 12px; background: #ffffff; border: 1.5px solid #E2E8F0; display: flex; flex-direction: column; gap: 8px; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.03); flex-shrink: 0;"
                                     onmouseover="this.style.borderColor='#0878E5'; this.style.boxShadow='0 4px 12px rgba(8,120,229,0.1)'"
                                     onmouseout="this.style.borderColor='#E2E8F0'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.03)'"
                                 >
@@ -1332,8 +1339,8 @@
                     </div>
 
                     {{-- ── TAB 2: FILTER LAYER (SHOW / HIDE) ── --}}
-                    <div x-show="sidebarTab === 'layers'" class="ims-sidebar-scroll-list" style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px;">
-                        <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; border-bottom: 1.5px solid #F1F5F9;">
+                    <div x-show="sidebarTab === 'layers'" class="ims-sidebar-scroll-list" style="padding: 12px 14px 20px 14px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; border-bottom: 1.5px solid #F1F5F9; flex-shrink: 0;">
                             <span style="font-size: 0.74rem; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px;">Visibilitas Layer</span>
                             <div style="display: flex; gap: 8px; font-size: 0.68rem; font-weight: 800;">
                                 <button type="button" @click="setAllLayers(true)" style="color: #0878E5; background: none; border: none; cursor: pointer; text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Semua</button>
@@ -1343,7 +1350,7 @@
                         </div>
 
                         {{-- Category Checkbox Rows --}}
-                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease; flex-shrink: 0;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="checkbox" :checked="layerVisibility.odp" @change="toggleLayer('odp')" style="border-radius: 5px; color: #0878E5; width: 16px; height: 16px; cursor: pointer;">
                                 <span style="width: 10px; height: 10px; border-radius: 50%; background: #0878E5; display: inline-block; box-shadow: 0 0 0 2px rgba(8,120,229,0.2);"></span>
@@ -1352,7 +1359,7 @@
                             <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 9999px; background: #EFF6FF; color: #0878E5;" x-text="allOdps.length"></span>
                         </label>
 
-                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease; flex-shrink: 0;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="checkbox" :checked="layerVisibility.pole" @change="toggleLayer('pole')" style="border-radius: 5px; color: #334155; width: 16px; height: 16px; cursor: pointer;">
                                 <span style="width: 10px; height: 10px; border-radius: 50%; background: #334155; display: inline-block; box-shadow: 0 0 0 2px rgba(51,65,85,0.2);"></span>
@@ -1361,7 +1368,7 @@
                             <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 9999px; background: #F1F5F9; color: #475569;" x-text="customElements.filter(e => e.element_type === 'pole').length"></span>
                         </label>
 
-                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease; flex-shrink: 0;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="checkbox" :checked="layerVisibility.joint_box" @change="toggleLayer('joint_box')" style="border-radius: 5px; color: #059669; width: 16px; height: 16px; cursor: pointer;">
                                 <span style="width: 10px; height: 10px; border-radius: 50%; background: #059669; display: inline-block; box-shadow: 0 0 0 2px rgba(5,150,105,0.2);"></span>
@@ -1370,7 +1377,7 @@
                             <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 9999px; background: #ECFDF5; color: #059669;" x-text="customElements.filter(e => e.element_type === 'joint_box').length"></span>
                         </label>
 
-                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease; flex-shrink: 0;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="checkbox" :checked="layerVisibility.odc" @change="toggleLayer('odc')" style="border-radius: 5px; color: #D97706; width: 16px; height: 16px; cursor: pointer;">
                                 <span style="width: 10px; height: 10px; border-radius: 50%; background: #D97706; display: inline-block; box-shadow: 0 0 0 2px rgba(217,119,6,0.2);"></span>
@@ -1379,7 +1386,7 @@
                             <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 9999px; background: #FFFBEB; color: #D97706;" x-text="customElements.filter(e => e.element_type === 'odc').length"></span>
                         </label>
 
-                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease; flex-shrink: 0;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="checkbox" :checked="layerVisibility.olt" @change="toggleLayer('olt')" style="border-radius: 5px; color: #7C3AED; width: 16px; height: 16px; cursor: pointer;">
                                 <span style="width: 10px; height: 10px; border-radius: 50%; background: #7C3AED; display: inline-block; box-shadow: 0 0 0 2px rgba(124,58,237,0.2);"></span>
@@ -1388,7 +1395,7 @@
                             <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 9999px; background: #F5F3FF; color: #7C3AED;" x-text="customElements.filter(e => e.element_type === 'olt').length"></span>
                         </label>
 
-                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease; flex-shrink: 0;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="checkbox" :checked="layerVisibility.customer" @change="toggleLayer('customer')" style="border-radius: 5px; color: #DB2777; width: 16px; height: 16px; cursor: pointer;">
                                 <span style="width: 10px; height: 10px; border-radius: 50%; background: #DB2777; display: inline-block; box-shadow: 0 0 0 2px rgba(219,39,119,0.2);"></span>
@@ -1397,7 +1404,7 @@
                             <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 9999px; background: #FDF2F8; color: #DB2777;" x-text="customElements.filter(e => e.element_type === 'customer').length"></span>
                         </label>
 
-                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease; flex-shrink: 0;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="checkbox" :checked="layerVisibility.feeder" @change="toggleLayer('feeder')" style="border-radius: 5px; color: #EF4444; width: 16px; height: 16px; cursor: pointer;">
                                 <span style="width: 14px; height: 4px; border-radius: 2px; background: #EF4444; display: inline-block;"></span>
@@ -1406,7 +1413,7 @@
                             <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 9999px; background: #FEF2F2; color: #EF4444;" x-text="customElements.filter(e => e.element_type === 'feeder').length"></span>
                         </label>
 
-                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease; flex-shrink: 0;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="checkbox" :checked="layerVisibility.distribution" @change="toggleLayer('distribution')" style="border-radius: 5px; color: #0878E5; width: 16px; height: 16px; cursor: pointer;">
                                 <span style="width: 14px; height: 4px; border-radius: 2px; background: #0878E5; display: inline-block;"></span>
@@ -1415,7 +1422,7 @@
                             <span style="font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 9999px; background: #EFF6FF; color: #0878E5;" x-text="customElements.filter(e => e.element_type === 'distribution').length"></span>
                         </label>
 
-                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 10px; background: #F8FAFC; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.15s ease; flex-shrink: 0;" onmouseover="this.style.borderColor='#CBD5E1'; this.style.background='#FFFFFF'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC'">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="checkbox" :checked="layerVisibility.dropcore" @change="toggleLayer('dropcore')" style="border-radius: 5px; color: #F59E0B; width: 16px; height: 16px; cursor: pointer;">
                                 <span style="width: 14px; height: 4px; border-radius: 2px; background: #F59E0B; display: inline-block; border-bottom: 2px dashed #D97706;"></span>
@@ -1625,6 +1632,18 @@
 
                     init() {
                         this.loadLeafletAndInit();
+
+                        this.$watch('openSidebarDrawer', (val) => {
+                            if (val) {
+                                this.$nextTick(() => {
+                                    const drawerEl = document.getElementById('ims-ftth-sidebar-drawer');
+                                    if (drawerEl && typeof L !== 'undefined' && L.DomEvent) {
+                                        L.DomEvent.disableScrollPropagation(drawerEl);
+                                        L.DomEvent.disableClickPropagation(drawerEl);
+                                    }
+                                });
+                            }
+                        });
 
                         // Listeners from Livewire
                         this.$wire.on('element-saved', (event) => {
@@ -1924,6 +1943,12 @@
                         this.mapInstance.on('mousemove', (e) => {
                             this.handleMapMouseMove(e);
                         });
+
+                        const drawerEl = document.getElementById('ims-ftth-sidebar-drawer');
+                        if (drawerEl && typeof L !== 'undefined' && L.DomEvent) {
+                            L.DomEvent.disableScrollPropagation(drawerEl);
+                            L.DomEvent.disableClickPropagation(drawerEl);
+                        }
                     },
 
                     setMapMode(mode) {
