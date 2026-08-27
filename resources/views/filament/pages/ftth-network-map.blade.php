@@ -1088,7 +1088,7 @@
                         <div style="position: relative;">
                             <button 
                                 type="button" 
-                                @click.stop="openModeMenu = !openModeMenu; openMarkerMenu = false; openLineMenu = false; openProjectMenu = false; openExtraMenu = false; openMapTypeMenu = false;" 
+                                @click="openModeMenu = !openModeMenu; openMarkerMenu = false; openLineMenu = false; openProjectMenu = false; openExtraMenu = false; openMapTypeMenu = false;" 
                                 :class="['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode) || openModeMenu ? 'active' : ''"
                                 class="ims-tool-btn"
                                 title="Pilih Mode Interaksi Kursor Peta"
@@ -1100,14 +1100,14 @@
                                     </svg>
                                     <span>Jelajah ▾</span>
                                 </span>
-                                <span x-show="currentMode === 'screenshot'" style="display: inline-flex; align-items: center; gap: 5px; color: #D97706;">
+                                <span x-show="currentMode === 'screenshot'" style="display: inline-flex; align-items: center; gap: 5px;">
                                     <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                                         <circle cx="12" cy="13" r="4"/>
                                     </svg>
                                     <span>Screenshot ▾</span>
                                 </span>
-                                <span x-show="currentMode === 'inspect_coords'" style="display: inline-flex; align-items: center; gap: 5px; color: #059669;">
+                                <span x-show="currentMode === 'inspect_coords'" style="display: inline-flex; align-items: center; gap: 5px;">
                                     <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="12" r="10"/>
                                         <line x1="22" y1="12" x2="18" y2="12"/>
@@ -1117,7 +1117,7 @@
                                     </svg>
                                     <span>Inspektur ▾</span>
                                 </span>
-                                <span x-show="currentMode === 'view_only'" style="display: inline-flex; align-items: center; gap: 5px; color: #475569;">
+                                <span x-show="currentMode === 'view_only'" style="display: inline-flex; align-items: center; gap: 5px;">
                                     <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                                         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -3896,6 +3896,19 @@
                         this.mapInstance.on('mousemove', (e) => {
                             this.handleMapMouseMove(e);
                         });
+
+                        // Canvas click/mousedown handler to guarantee all dropdowns close upon map interaction
+                        const mapCanvasEl = document.getElementById('ims-ftth-builder-canvas');
+                        if (mapCanvasEl) {
+                            mapCanvasEl.addEventListener('mousedown', () => {
+                                this.openModeMenu = false;
+                                this.openMarkerMenu = false;
+                                this.openLineMenu = false;
+                                this.openProjectMenu = false;
+                                this.openExtraMenu = false;
+                                this.openMapTypeMenu = false;
+                            });
+                        }
                     },
 
                     setMapMode(mode) {
