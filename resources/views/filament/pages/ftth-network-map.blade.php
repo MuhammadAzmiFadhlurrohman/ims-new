@@ -57,6 +57,21 @@
                 float: none !important;
                 clear: both !important;
             }
+            .ims-mode-menu-item:hover {
+                background: #F1F5F9 !important;
+            }
+            .ims-mode-menu-item.is-mode-select {
+                background: #EFF6FF !important;
+            }
+            .ims-mode-menu-item.is-mode-screenshot {
+                background: #FEF3C7 !important;
+            }
+            .ims-mode-menu-item.is-mode-inspect {
+                background: #ECFDF5 !important;
+            }
+            .ims-mode-menu-item.is-mode-locked {
+                background: #F1F5F9 !important;
+            }
             .ims-mode-icon-box {
                 width: 32px !important;
                 height: 32px !important;
@@ -1134,9 +1149,7 @@
                                     type="button" 
                                     @click="setMode('select'); openModeMenu = false;" 
                                     class="ims-mode-menu-item"
-                                    :style="currentMode === 'select' ? 'background: #EFF6FF !important;' : 'background: transparent;'"
-                                    onmouseover="this.style.background='#EFF6FF'" 
-                                    onmouseout="this.style.background=currentMode === 'select' ? '#EFF6FF' : 'transparent'"
+                                    :class="currentMode === 'select' ? 'is-mode-select' : ''"
                                 >
                                     <div class="ims-mode-icon-box" style="background: #EFF6FF; border: 1px solid #BFDBFE; color: #0878E5;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
@@ -1156,9 +1169,7 @@
                                     type="button" 
                                     @click="setMode('screenshot'); openModeMenu = false;" 
                                     class="ims-mode-menu-item"
-                                    :style="currentMode === 'screenshot' ? 'background: #FEF3C7 !important;' : 'background: transparent;'"
-                                    onmouseover="this.style.background='#FEF3C7'" 
-                                    onmouseout="this.style.background=currentMode === 'screenshot' ? '#FEF3C7' : 'transparent'"
+                                    :class="currentMode === 'screenshot' ? 'is-mode-screenshot' : ''"
                                 >
                                     <div class="ims-mode-icon-box" style="background: #FEF3C7; border: 1px solid #FDE68A; color: #D97706;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
@@ -1178,9 +1189,7 @@
                                     type="button" 
                                     @click="setMode('inspect_coords'); openModeMenu = false;" 
                                     class="ims-mode-menu-item"
-                                    :style="currentMode === 'inspect_coords' ? 'background: #ECFDF5 !important;' : 'background: transparent;'"
-                                    onmouseover="this.style.background='#ECFDF5'" 
-                                    onmouseout="this.style.background=currentMode === 'inspect_coords' ? '#ECFDF5' : 'transparent'"
+                                    :class="currentMode === 'inspect_coords' ? 'is-mode-inspect' : ''"
                                 >
                                     <div class="ims-mode-icon-box" style="background: #ECFDF5; border: 1px solid #A7F3D0; color: #059669;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
@@ -1203,9 +1212,7 @@
                                     type="button" 
                                     @click="setMode('view_only'); openModeMenu = false;" 
                                     class="ims-mode-menu-item"
-                                    :style="currentMode === 'view_only' ? 'background: #F1F5F9 !important;' : 'background: transparent;'"
-                                    onmouseover="this.style.background='#F1F5F9'" 
-                                    onmouseout="this.style.background=currentMode === 'view_only' ? '#F1F5F9' : 'transparent'"
+                                    :class="currentMode === 'view_only' ? 'is-mode-locked' : ''"
                                 >
                                     <div class="ims-mode-icon-box" style="background: #F1F5F9; border: 1px solid #CBD5E1; color: #475569;">
                                         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
@@ -2276,10 +2283,10 @@
                     <div 
                         x-show="isSelectingScreenshot"
                         id="ims-screenshot-box"
-                        :style="screenshotBoxStyle"
+                        :style="getScreenshotBoxStyle()"
                         style="position: absolute; border: 2px dashed #0878E5; background: rgba(8, 120, 229, 0.15); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.48); pointer-events: none; border-radius: 4px; box-sizing: border-box;"
                     >
-                        <div style="position: absolute; bottom: -24px; right: 0; background: #0878E5; color: #ffffff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px; font-family: monospace; white-space: nowrap;" x-text="screenshotDimensions"></div>
+                        <div style="position: absolute; bottom: -24px; right: 0; background: #0878E5; color: #ffffff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px; font-family: monospace; white-space: nowrap;" x-text="getScreenshotDimensions()"></div>
                     </div>
                 </div>
             </div>
@@ -3407,12 +3414,14 @@
                     screenshotCurrentY: 0,
                     screenshotRect: { left: 0, top: 0, width: 0, height: 0 },
 
-                    get screenshotBoxStyle() {
-                        return `left: ${this.screenshotRect.left}px; top: ${this.screenshotRect.top}px; width: ${this.screenshotRect.width}px; height: ${this.screenshotRect.height}px;`;
+                    getScreenshotBoxStyle() {
+                        const r = this.screenshotRect || { left: 0, top: 0, width: 0, height: 0 };
+                        return `left: ${r.left}px; top: ${r.top}px; width: ${r.width}px; height: ${r.height}px;`;
                     },
 
-                    get screenshotDimensions() {
-                        return `${Math.round(this.screenshotRect.width)} × ${Math.round(this.screenshotRect.height)} px`;
+                    getScreenshotDimensions() {
+                        const r = this.screenshotRect || { width: 0, height: 0 };
+                        return `${Math.round(r.width)} × ${Math.round(r.height)} px`;
                     },
 
                     // Style & Color Customizer Modal State
