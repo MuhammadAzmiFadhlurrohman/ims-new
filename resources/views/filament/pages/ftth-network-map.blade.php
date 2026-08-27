@@ -2256,7 +2256,8 @@
                         this.editingPolyline = L.polyline(this.editingPoints, {
                             color: lineColor,
                             weight: 5,
-                            opacity: 0.95
+                            opacity: 0.95,
+                            smoothFactor: 0
                         });
                         this.editLayerGroup.addLayer(this.editingPolyline);
 
@@ -2813,7 +2814,8 @@
                                 color: lineColor,
                                 weight: 4.5,
                                 dashArray: isDash ? '8, 6' : undefined,
-                                opacity: 0.9
+                                opacity: 0.9,
+                                smoothFactor: 0
                             }).addTo(this.mapInstance);
                         } else {
                             this.tempPolyline.setLatLngs(this.currentLinePoints);
@@ -3023,7 +3025,8 @@
                                     color: lineColor,
                                     weight: 4.5,
                                     dashArray: isDash ? '10, 7' : undefined,
-                                    opacity: 0.9
+                                    opacity: 0.9,
+                                    smoothFactor: 0
                                 });
 
                                 polyline.bindPopup(`
