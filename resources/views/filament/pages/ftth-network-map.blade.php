@@ -982,19 +982,137 @@
                             </button>
                         </div>
 
-                        <button 
-                            type="button" 
-                            @click="setMode('select')" 
-                            :class="currentMode === 'select' ? 'active' : ''"
-                            class="ims-tool-btn"
-                            title="Mode Jelajah (Navigasi & pilih elemen)"
-                        >
-                            <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
-                                <path d="m13 13 6 6"/>
-                            </svg>
-                            <span>Jelajah</span>
-                        </button>
+                        {{-- Dropdown Mode Interaksi / Kursor --}}
+                        <div style="position: relative;" @click.outside="openModeMenu = false">
+                            <button 
+                                type="button" 
+                                @click="openModeMenu = !openModeMenu; openMarkerMenu = false; openLineMenu = false; openProjectMenu = false; openExtraMenu = false;" 
+                                :class="['select', 'inspect_coords', 'view_only', openModeMenu].includes(currentMode) || openModeMenu ? 'active' : ''"
+                                class="ims-tool-btn"
+                                title="Pilih Mode Interaksi Kursor Peta"
+                            >
+                                <template x-if="currentMode === 'select'">
+                                    <div style="display: inline-flex; align-items: center; gap: 5px;">
+                                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+                                            <path d="m13 13 6 6"/>
+                                        </svg>
+                                        <span>Jelajah ▾</span>
+                                    </div>
+                                </template>
+                                <template x-if="currentMode === 'inspect_coords'">
+                                    <div style="display: inline-flex; align-items: center; gap: 5px; color: #059669;">
+                                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="22" y1="12" x2="18" y2="12"/>
+                                            <line x1="6" y1="12" x2="2" y2="12"/>
+                                            <line x1="12" y1="6" x2="12" y2="2"/>
+                                            <line x1="12" y1="22" x2="12" y2="18"/>
+                                        </svg>
+                                        <span>Inspektur ▾</span>
+                                    </div>
+                                </template>
+                                <template x-if="currentMode === 'view_only'">
+                                    <div style="display: inline-flex; align-items: center; gap: 5px; color: #475569;">
+                                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                        </svg>
+                                        <span>Terkunci ▾</span>
+                                    </div>
+                                </template>
+                                <template x-if="!['select', 'inspect_coords', 'view_only'].includes(currentMode)">
+                                    <div style="display: inline-flex; align-items: center; gap: 5px;">
+                                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+                                            <path d="m13 13 6 6"/>
+                                        </svg>
+                                        <span>Mode ▾</span>
+                                    </div>
+                                </template>
+                            </button>
+
+                            <div 
+                                x-show="openModeMenu" 
+                                x-cloak
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 290px; width: 290px; padding: 6px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box;"
+                            >
+                                {{-- Item 1: Jelajah & Pilih --}}
+                                <button 
+                                    type="button" 
+                                    @click="setMode('select'); openModeMenu = false;" 
+                                    style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
+                                    :style="currentMode === 'select' ? 'background: #EFF6FF !important;' : 'background: transparent;'"
+                                    onmouseover="this.style.background='#EFF6FF'" 
+                                    onmouseout="this.style.background=currentMode === 'select' ? '#EFF6FF' : 'transparent'"
+                                >
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
+                                        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+                                            <path d="m13 13 6 6"/>
+                                        </svg>
+                                    </div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E40AF;">Jelajah & Navigasi</div>
+                                        <div style="font-size: 0.68rem; color: #2563EB; font-weight: 500;">Geser peta & klik detail objek</div>
+                                    </div>
+                                    <template x-if="currentMode === 'select'">
+                                        <span style="font-size: 0.75rem; color: #0878E5; font-weight: 900;">✓</span>
+                                    </template>
+                                </button>
+
+                                {{-- Item 2: Inspektur Koordinat --}}
+                                <button 
+                                    type="button" 
+                                    @click="setMode('inspect_coords'); openModeMenu = false;" 
+                                    style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
+                                    :style="currentMode === 'inspect_coords' ? 'background: #ECFDF5 !important;' : 'background: transparent;'"
+                                    onmouseover="this.style.background='#ECFDF5'" 
+                                    onmouseout="this.style.background=currentMode === 'inspect_coords' ? '#ECFDF5' : 'transparent'"
+                                >
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669;">
+                                        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="22" y1="12" x2="18" y2="12"/>
+                                            <line x1="6" y1="12" x2="2" y2="12"/>
+                                            <line x1="12" y1="6" x2="12" y2="2"/>
+                                            <line x1="12" y1="22" x2="12" y2="18"/>
+                                        </svg>
+                                    </div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #065F46;">Inspektur Koordinat GPS</div>
+                                        <div style="font-size: 0.68rem; color: #059669; font-weight: 500;">Klik titik untuk salin Lat-Long instan</div>
+                                    </div>
+                                    <template x-if="currentMode === 'inspect_coords'">
+                                        <span style="font-size: 0.75rem; color: #059669; font-weight: 900;">✓</span>
+                                    </template>
+                                </button>
+
+                                {{-- Item 3: Kunci Peta --}}
+                                <button 
+                                    type="button" 
+                                    @click="setMode('view_only'); openModeMenu = false;" 
+                                    style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
+                                    :style="currentMode === 'view_only' ? 'background: #F1F5F9 !important;' : 'background: transparent;'"
+                                    onmouseover="this.style.background='#F1F5F9'" 
+                                    onmouseout="this.style.background=currentMode === 'view_only' ? '#F1F5F9' : 'transparent'"
+                                >
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #F1F5F9; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #475569;">
+                                        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                        </svg>
+                                    </div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E293B;">Kunci Peta (View-Only)</div>
+                                        <div style="font-size: 0.68rem; color: #64748B; font-weight: 500;">Mode aman presentasi tanpa edit</div>
+                                    </div>
+                                    <template x-if="currentMode === 'view_only'">
+                                        <span style="font-size: 0.75rem; color: #334155; font-weight: 900;">✓</span>
+                                    </template>
+                                </button>
+                            </div>
+                        </div>
                         
                         {{-- Dropdown Add Marker --}}
                         <div style="position: relative;">
@@ -1436,6 +1554,44 @@
                             ✕ Tutup Penggaris
                         </button>
                     </div>
+                </div>
+
+                {{-- Dynamic Sub-Bar: Coordinate Inspector Mode --}}
+                <div 
+                    x-show="currentMode === 'inspect_coords'" 
+                    x-cloak
+                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #ECFDF5; border: 1.5px dashed #059669; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #065F46;"
+                >
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-weight: 800;">🎯 Mode Inspektur Koordinat GPS:</span>
+                        <span>Klik di mana saja pada peta untuk menyalin titik koordinat Lat-Long secara instan ke clipboard.</span>
+                    </div>
+                    <button 
+                        type="button" 
+                        @click="setMode('select')" 
+                        style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer;"
+                    >
+                        ✕ Tutup Inspektur
+                    </button>
+                </div>
+
+                {{-- Dynamic Sub-Bar: View-Only Presentation Mode --}}
+                <div 
+                    x-show="currentMode === 'view_only'" 
+                    x-cloak
+                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #F1F5F9; border: 1.5px dashed #475569; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #334155;"
+                >
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-weight: 800;">🔒 Mode Kunci Peta (View-Only / Presentasi):</span>
+                        <span>Peta terkunci aman untuk dilihat/dipresentasikan. Seluruh penambahan dan penggeseran objek dinonaktifkan.</span>
+                    </div>
+                    <button 
+                        type="button" 
+                        @click="setMode('select')" 
+                        style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #1E293B; color: #ffffff; border: none; cursor: pointer;"
+                    >
+                        🔓 Buka Kunci Peta
+                    </button>
                 </div>
 
                 {{-- Dynamic Sub-Bar: Edit Draggable Vertex / Element Mode --}}
@@ -3085,7 +3241,8 @@
                     mapInstance: null,
                     mapMode: 'roadmap',
                     tileLayers: {},
-                    currentMode: 'select', // 'select', 'add_marker', 'draw_line', 'measure', 'edit_element'
+                    currentMode: 'select', // 'select', 'inspect_coords', 'view_only', 'add_marker', 'draw_line', 'measure', 'edit_element'
+                    openModeMenu: false,
                     openMarkerMenu: false,
                     openLineMenu: false,
                     searchQuery: '',
@@ -3563,10 +3720,28 @@
                     setMode(mode) {
                         this.openMarkerMenu = false;
                         this.openLineMenu = false;
+                        this.openModeMenu = false;
                         if (this.currentMode === 'measure') this.clearMeasure();
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
                         this.currentMode = mode;
                         this.cancelDrawing();
+
+                        const canvasEl = document.getElementById('ims-ftth-builder-canvas');
+                        if (canvasEl) {
+                            if (mode === 'inspect_coords') {
+                                canvasEl.style.cursor = 'crosshair';
+                                if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                    IMS.toast('🎯 Mode Inspektur aktif. Klik titik di peta untuk menyalin koordinat GPS.', 'info', 2500);
+                                }
+                            } else {
+                                canvasEl.style.cursor = '';
+                                if (mode === 'view_only') {
+                                    if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                        IMS.toast('🔒 Peta terkunci (View-Only / Mode Presentasi).', 'info', 2000);
+                                    }
+                                }
+                            }
+                        }
                     },
 
                     // ── LAYER VISIBILITY METHODS ──
@@ -4041,8 +4216,15 @@
                     },
 
                     startAddMarker(type) {
+                        if (this.currentMode === 'view_only') {
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('🔒 Peta sedang dikunci (View-Only). Buka kunci untuk menambah objek.', 'warning', 2500);
+                            }
+                            return;
+                        }
                         this.openMarkerMenu = false;
                         this.openLineMenu = false;
+                        this.openModeMenu = false;
                         if (this.currentMode === 'measure') this.clearMeasure();
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
                         this.currentMode = 'add_marker';
@@ -4053,8 +4235,15 @@
                     },
 
                     startDrawLine(type) {
+                        if (this.currentMode === 'view_only') {
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('🔒 Peta sedang dikunci (View-Only). Buka kunci untuk menarik kabel.', 'warning', 2500);
+                            }
+                            return;
+                        }
                         this.openMarkerMenu = false;
                         this.openLineMenu = false;
+                        this.openModeMenu = false;
                         if (this.currentMode === 'measure') this.clearMeasure();
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
                         this.currentMode = 'draw_line';
@@ -4242,6 +4431,46 @@
                     },
 
                     handleMapClick(lat, lng) {
+                        if (this.currentMode === 'inspect_coords') {
+                            const coordStr = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                            if (navigator.clipboard && window.isSecureContext) {
+                                navigator.clipboard.writeText(coordStr);
+                            } else {
+                                const tempInput = document.createElement('input');
+                                tempInput.value = coordStr;
+                                document.body.appendChild(tempInput);
+                                tempInput.select();
+                                document.execCommand('copy');
+                                document.body.removeChild(tempInput);
+                            }
+
+                            // Add subtle green ping ripple marker on clicked spot
+                            if (this.mapInstance) {
+                                const pingMarker = L.circleMarker([lat, lng], {
+                                    radius: 12,
+                                    color: '#059669',
+                                    fillColor: '#34D399',
+                                    fillOpacity: 0.5,
+                                    weight: 2.5
+                                }).addTo(this.mapInstance);
+
+                                setTimeout(() => {
+                                    if (this.mapInstance && pingMarker) {
+                                        this.mapInstance.removeLayer(pingMarker);
+                                    }
+                                }, 1200);
+                            }
+
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('🎯 Koordinat disalin: ' + coordStr, 'success', 2500);
+                            }
+                            return;
+                        }
+
+                        if (this.currentMode === 'view_only') {
+                            return;
+                        }
+
                         if (this.currentMode === 'measure') {
                             this.handleMeasureClick(lat, lng);
                             return;
