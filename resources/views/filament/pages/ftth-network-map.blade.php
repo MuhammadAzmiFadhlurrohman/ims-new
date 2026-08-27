@@ -1366,11 +1366,11 @@
                                     </div>
 
                                     {{-- Quick Action Buttons on Item Card --}}
-                                    <div style="display: flex; align-items: center; gap: 6px; padding-top: 6px; border-top: 1px solid #F1F5F9;">
+                                    <div style="display: flex; align-items: center; gap: 5px; padding-top: 6px; border-top: 1px solid #F1F5F9;">
                                         <button 
                                             type="button" 
                                             @click="flyToCustomElement(item)" 
-                                            style="flex: 1; padding: 4px 8px; border-radius: 7px; font-size: 0.7rem; font-weight: 800; background: #EFF6FF; color: #0878E5; border: 1px solid #BFDBFE; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.12s ease;"
+                                            style="flex: 1; padding: 4px 6px; border-radius: 7px; font-size: 0.68rem; font-weight: 800; background: #EFF6FF; color: #0878E5; border: 1px solid #BFDBFE; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.12s ease;"
                                             onmouseover="this.style.background='#0878E5'; this.style.color='#ffffff'"
                                             onmouseout="this.style.background='#EFF6FF'; this.style.color='#0878E5'"
                                             title="Menuju ke lokasi objek di peta"
@@ -1379,8 +1379,18 @@
                                         </button>
                                         <button 
                                             type="button" 
+                                            @click="openStylePicker(item.id)" 
+                                            style="padding: 4px 7px; border-radius: 7px; font-size: 0.68rem; font-weight: 800; background: #F8FAFC; color: #475569; border: 1px solid #CBD5E1; cursor: pointer; display: flex; align-items: center; gap: 3px; transition: all 0.12s ease;"
+                                            onmouseover="this.style.background='#0878E5'; this.style.color='#ffffff'; this.style.borderColor='#0878E5'"
+                                            onmouseout="this.style.background='#F8FAFC'; this.style.color='#475569'; this.style.borderColor='#CBD5E1'"
+                                            title="Ubah warna & ikon (Gaya)"
+                                        >
+                                            <span>🎨 Gaya</span>
+                                        </button>
+                                        <button 
+                                            type="button" 
                                             @click="startEditElement(item.id)" 
-                                            style="padding: 4px 10px; border-radius: 7px; font-size: 0.7rem; font-weight: 800; background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; cursor: pointer; display: flex; align-items: center; gap: 3px; transition: all 0.12s ease;"
+                                            style="padding: 4px 8px; border-radius: 7px; font-size: 0.68rem; font-weight: 800; background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; cursor: pointer; display: flex; align-items: center; gap: 2px; transition: all 0.12s ease;"
                                             onmouseover="this.style.background='#F59E0B'; this.style.color='#ffffff'"
                                             onmouseout="this.style.background='#FEF3C7'; this.style.color='#92400E'"
                                             title="Edit rute garis / geser posisi titik"
@@ -1390,7 +1400,7 @@
                                         <button 
                                             type="button" 
                                             @click="deleteCustomElementDirect(item.id, item.name)" 
-                                            style="padding: 4px 8px; border-radius: 7px; font-size: 0.7rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; display: flex; align-items: center; transition: all 0.12s ease;"
+                                            style="padding: 4px 6px; border-radius: 7px; font-size: 0.68rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; display: flex; align-items: center; transition: all 0.12s ease;"
                                             onmouseover="this.style.background='#EF4444'; this.style.color='#ffffff'"
                                             onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'"
                                             title="Hapus elemen ini"
@@ -1627,6 +1637,153 @@
             </div>
         </div>
 
+        {{-- ── 4. MODAL KUSTOMISASI WARNA & IKON (GOOGLE MY MAPS STYLE) ── --}}
+        <div 
+            x-show="openStyleModal" 
+            x-cloak
+            style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); z-index: 99999999; display: flex; align-items: center; justify-content: center; padding: 1rem;"
+        >
+            <div 
+                @click.outside="openStyleModal = false"
+                style="background: #ffffff; border-radius: 18px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); width: 100%; max-width: 460px; padding: 1.5rem; position: relative; border: 1px solid #E2E8F0;"
+            >
+                {{-- Header --}}
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid #F1F5F9;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 36px; height: 36px; border-radius: 10px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                            🎨
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1rem; font-weight: 900; color: #0F172A; margin: 0;">Gaya & Warna Objek</h3>
+                            <p style="font-size: 0.72rem; color: #64748B; margin: 2px 0 0 0;" x-text="stylingElement ? stylingElement.name : 'Kustomisasi Tampilan'"></p>
+                        </div>
+                    </div>
+                    <button 
+                        type="button" 
+                        @click="openStyleModal = false" 
+                        style="background: #F1F5F9; border: none; color: #64748B; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900;"
+                    >✕</button>
+                </div>
+
+                {{-- Live Preview Box --}}
+                <div style="margin-bottom: 14px; padding: 12px 14px; border-radius: 12px; background: #F8FAFC; border: 1.5px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-size: 0.76rem; font-weight: 800; color: #475569;">Pratinjau Tampilan:</span>
+                    <template x-if="stylingElement && stylingElement.category === 'marker'">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div 
+                                style="width: 34px; height: 34px; border-radius: 50%; border: 2.5px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; transition: all 0.15s ease;"
+                                :style="'background:' + selectedColor"
+                                x-html="getIconSvg(selectedIcon)"
+                            ></div>
+                            <span style="font-size: 0.76rem; font-weight: 800; color: #0F172A;" x-text="selectedColor"></span>
+                        </div>
+                    </template>
+                    <template x-if="stylingElement && stylingElement.category === 'line'">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div 
+                                style="width: 70px; height: 8px; border-radius: 4px; transition: all 0.15s ease;"
+                                :style="'background:' + selectedColor + '; height:' + Math.min(10, Math.max(3, selectedLineWidth)) + 'px; ' + (selectedLineDash === 'dashed' ? 'border-top: 3px dashed ' + selectedColor + '; background: transparent;' : '')"
+                            ></div>
+                            <span style="font-size: 0.76rem; font-weight: 800; color: #0F172A;" x-text="selectedColor"></span>
+                        </div>
+                    </template>
+                </div>
+
+                {{-- Color Palette Swatches --}}
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Pilihan Warna</label>
+                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;">
+                        <template x-for="c in paletteColors" :key="c">
+                            <button 
+                                type="button" 
+                                @click="selectedColor = c" 
+                                style="height: 34px; border-radius: 9px; cursor: pointer; border: 2px solid transparent; transition: all 0.12s ease; display: flex; align-items: center; justify-content: center;"
+                                :style="'background:' + c + ';' + (selectedColor === c ? 'border-color: #0F172A; transform: scale(1.08); box-shadow: 0 0 0 2px #ffffff, 0 4px 10px rgba(0,0,0,0.3);' : 'box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);')"
+                            >
+                                <svg x-show="selectedColor === c" style="width: 16px; height: 16px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            </button>
+                        </template>
+                    </div>
+                    <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
+                        <label style="font-size: 0.72rem; font-weight: 700; color: #64748B;">Warna Kustom:</label>
+                        <input type="color" x-model="selectedColor" style="width: 32px; height: 28px; padding: 0; border: 1px solid #CBD5E1; border-radius: 6px; cursor: pointer;">
+                        <input type="text" x-model="selectedColor" style="height: 28px; width: 85px; font-size: 0.74rem; font-weight: 800; border: 1px solid #CBD5E1; border-radius: 6px; padding: 0 6px; text-transform: uppercase;">
+                    </div>
+                </div>
+
+                {{-- Marker Icon Selector (Only for category === 'marker') --}}
+                <template x-if="stylingElement && stylingElement.category === 'marker'">
+                    <div style="margin-bottom: 18px;">
+                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Bentuk Ikon Marker</label>
+                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; max-height: 140px; overflow-y: auto; padding: 4px;">
+                            <template x-for="icon in availableIcons" :key="icon.id">
+                                <button 
+                                    type="button" 
+                                    @click="selectedIcon = icon.id" 
+                                    style="height: 38px; border-radius: 9px; cursor: pointer; border: 1.5px solid #E2E8F0; background: #F8FAFC; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.12s ease;"
+                                    :style="selectedIcon === icon.id ? 'border-color: #0878E5; background: #EFF6FF; color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.25);' : 'color: #475569;'"
+                                    :title="icon.name"
+                                >
+                                    <div style="width: 18px; height: 18px;" x-html="icon.svg"></div>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                {{-- Line Options (Only for category === 'line') --}}
+                <template x-if="stylingElement && stylingElement.category === 'line'">
+                    <div style="margin-bottom: 18px;">
+                        <div style="margin-bottom: 10px;">
+                            <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Ketebalan Garis</label>
+                            <div style="display: flex; gap: 6px;">
+                                <template x-for="w in [3, 4.5, 6.5, 9]" :key="w">
+                                    <button 
+                                        type="button" 
+                                        @click="selectedLineWidth = w" 
+                                        style="flex: 1; padding: 6px 0; border-radius: 8px; font-size: 0.72rem; font-weight: 800; border: 1.5px solid #E2E8F0; cursor: pointer;"
+                                        :style="selectedLineWidth == w ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #F8FAFC; color: #475569;'"
+                                        x-text="w + ' px'"
+                                    ></button>
+                                </template>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Gaya Garis</label>
+                            <div style="display: flex; gap: 6px;">
+                                <button 
+                                    type="button" 
+                                    @click="selectedLineDash = 'solid'" 
+                                    style="flex: 1; padding: 6px 0; border-radius: 8px; font-size: 0.72rem; font-weight: 800; border: 1.5px solid #E2E8F0; cursor: pointer;"
+                                    :style="selectedLineDash === 'solid' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #F8FAFC; color: #475569;'"
+                                >Solid (Lurus)</button>
+                                <button 
+                                    type="button" 
+                                    @click="selectedLineDash = 'dashed'" 
+                                    style="flex: 1; padding: 6px 0; border-radius: 8px; font-size: 0.72rem; font-weight: 800; border: 1.5px solid #E2E8F0; cursor: pointer;"
+                                    :style="selectedLineDash === 'dashed' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #F8FAFC; color: #475569;'"
+                                >Putus-Putus</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                {{-- Action Buttons --}}
+                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                    <button 
+                        type="button" 
+                        @click="openStyleModal = false"
+                        style="padding: 8px 14px; border: 1px solid #CBD5E1; background: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; color: #64748B; cursor: pointer;"
+                    >Batal</button>
+                    <button 
+                        type="button" 
+                        @click="saveElementStyle()"
+                        style="padding: 8px 18px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(8, 120, 229, 0.25);"
+                    >Terapkan Gaya</button>
+                </div>
+            </div>
+        </div>
+
         @script
         <script>
             window.imsFtthNetworkMapComponent = function() {
@@ -1651,6 +1808,34 @@
                     isFullscreen: false,
                     autoSnapRoad: false,
                     activeElementType: 'pole',
+
+                    // Style & Color Customizer Modal State
+                    openStyleModal: false,
+                    stylingElement: null,
+                    selectedColor: '#0878E5',
+                    selectedIcon: 'pole',
+                    selectedLineWidth: 4.5,
+                    selectedLineDash: 'solid',
+                    paletteColors: [
+                        '#EF4444', '#F97316', '#F59E0B', '#10B981', '#059669', '#0878E5',
+                        '#2563EB', '#7C3AED', '#DB2777', '#78350F', '#334155', '#000000'
+                    ],
+                    availableIcons: [
+                        { id: 'pole', name: 'Tiang Fiber', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="6" x2="19" y2="6"/><line x1="8" y1="11" x2="16" y2="11"/><circle cx="5" cy="6" r="1.5" fill="currentColor"/><circle cx="19" cy="6" r="1.5" fill="currentColor"/></svg>' },
+                        { id: 'joint_box', name: 'Joint Box', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>' },
+                        { id: 'odc', name: 'ODC / FDT', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></svg>' },
+                        { id: 'olt', name: 'Server OLT', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.5" fill="currentColor"/><circle cx="9" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6" cy="16.5" r="1.5" fill="currentColor"/><circle cx="9" cy="16.5" r="1.5" fill="currentColor"/></svg>' },
+                        { id: 'customer', name: 'Rumah Pelanggan', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>' },
+                        { id: 'pin', name: 'Pushpin Standar', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="currentColor"/></svg>' },
+                        { id: 'warning', name: 'Titik Peringatan', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' },
+                        { id: 'wifi', name: 'WiFi / AP', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>' },
+                        { id: 'star', name: 'Bintang / VIP', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' },
+                        { id: 'building', name: 'Gedung / Kantor', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><path d="M10 22v-4h4v4"/></svg>' },
+                        { id: 'cctv', name: 'CCTV Kamera', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14.5 4h-5L7 7H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>' },
+                        { id: 'power', name: 'Gardu / Listrik', svg: '<svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>' },
+                        { id: 'circle', name: 'Titik Bulat', svg: '<svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>' },
+                        { id: 'square', name: 'Titik Kotak', svg: '<svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>' }
+                    ],
 
                     // Sidebar Drawer & Layer Visibility State
                     openSidebarDrawer: false,
@@ -2178,7 +2363,9 @@
                             this.editingMarkerLng = parseFloat(el.longitude);
 
                             // Create animated draggable marker handle with EXACT matching anchor & dimensions
-                            const iconConfig = this.getMarkerIconHtml(el.element_type, el.color);
+                            const meta = (typeof el.metadata === 'string') ? JSON.parse(el.metadata || '{}') : (el.metadata || {});
+                            const customIconKey = meta.custom_icon || el.element_type;
+                            const iconConfig = this.getMarkerIconHtml(el.element_type, el.color, customIconKey);
                             const dragIcon = L.divIcon({
                                 className: 'ims-drag-edit-marker custom-ftth-node',
                                 html: `
@@ -2420,57 +2607,27 @@
                     },
 
                     getElementBadge(item) {
+                        const meta = (typeof item.metadata === 'string') ? JSON.parse(item.metadata || '{}') : (item.metadata || {});
+                        const customColor = item.color;
+
                         if (item.category === 'line') {
-                            if (item.element_type === 'feeder') {
-                                return {
-                                    iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>`,
-                                    bg: '#FEF2F2', border: '#FECACA', color: '#DC2626'
-                                };
-                            }
-                            if (item.element_type === 'distribution') {
-                                return {
-                                    iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>`,
-                                    bg: '#EFF6FF', border: '#BFDBFE', color: '#2563EB'
-                                };
-                            }
+                            const lineColor = customColor || (item.element_type === 'feeder' ? '#DC2626' : (item.element_type === 'distribution' ? '#2563EB' : '#D97706'));
                             return {
-                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="3 3"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>`,
-                                bg: '#FFFBEB', border: '#FDE68A', color: '#D97706'
+                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>`,
+                                bg: '#F8FAFC',
+                                border: lineColor,
+                                color: lineColor
                             };
                         }
-                        if (item.element_type === 'pole') {
-                            return {
-                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="6" x2="19" y2="6"/><line x1="8" y1="11" x2="16" y2="11"/><circle cx="5" cy="6" r="1.5" fill="currentColor"/><circle cx="19" cy="6" r="1.5" fill="currentColor"/></svg>`,
-                                bg: '#F1F5F9', border: '#CBD5E1', color: '#334155'
-                            };
-                        }
-                        if (item.element_type === 'joint_box') {
-                            return {
-                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>`,
-                                bg: '#ECFDF5', border: '#A7F3D0', color: '#059669'
-                            };
-                        }
-                        if (item.element_type === 'odc') {
-                            return {
-                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></svg>`,
-                                bg: '#FFFBEB', border: '#FDE68A', color: '#D97706'
-                            };
-                        }
-                        if (item.element_type === 'olt') {
-                            return {
-                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.5" fill="currentColor"/><circle cx="9" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6" cy="16.5" r="1.5" fill="currentColor"/><circle cx="9" cy="16.5" r="1.5" fill="currentColor"/></svg>`,
-                                bg: '#F5F3FF', border: '#DDD6FE', color: '#7C3AED'
-                            };
-                        }
-                        if (item.element_type === 'customer') {
-                            return {
-                                iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>`,
-                                bg: '#FDF2F8', border: '#FBCFE8', color: '#DB2777'
-                            };
-                        }
+
+                        const iconId = meta.custom_icon || item.element_type || 'pin';
+                        const nodeColor = customColor || (item.element_type === 'pole' ? '#334155' : (item.element_type === 'joint_box' ? '#059669' : (item.element_type === 'odc' ? '#D97706' : (item.element_type === 'olt' ? '#7C3AED' : (item.element_type === 'customer' ? '#DB2777' : '#0878E5')))));
+
                         return {
-                            iconHtml: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>`,
-                            bg: '#EFF6FF', border: '#BFDBFE', color: '#0878E5'
+                            iconHtml: this.getIconSvg(iconId),
+                            bg: nodeColor,
+                            border: nodeColor,
+                            color: '#ffffff'
                         };
                     },
 
@@ -2969,6 +3126,71 @@
                         });
                     },
 
+                    getIconSvg(iconId) {
+                        const map = {
+                            pole: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="6" x2="19" y2="6"/><line x1="8" y1="11" x2="16" y2="11"/><circle cx="5" cy="6" r="1.5" fill="currentColor"/><circle cx="19" cy="6" r="1.5" fill="currentColor"/></svg>`,
+                            joint_box: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>`,
+                            odc: `<svg style="width: 16px; height: 16px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></svg>`,
+                            olt: `<svg style="width: 17px; height: 17px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.5" fill="currentColor"/><circle cx="9" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6" cy="16.5" r="1.5" fill="currentColor"/><circle cx="9" cy="16.5" r="1.5" fill="currentColor"/></svg>`,
+                            customer: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>`,
+                            home: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>`,
+                            pin: `<svg style="width: 16px; height: 16px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="currentColor"/></svg>`,
+                            warning: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+                            wifi: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`,
+                            star: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+                            building: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><path d="M10 22v-4h4v4"/></svg>`,
+                            cctv: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14.5 4h-5L7 7H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>`,
+                            power: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+                            circle: `<svg style="width: 14px; height: 14px; color: #ffffff;" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>`,
+                            square: `<svg style="width: 14px; height: 14px; color: #ffffff;" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>`
+                        };
+                        return map[iconId] || map.pin;
+                    },
+
+                    openStylePicker(elementId) {
+                        const el = this.customElements.find(e => e.id === elementId);
+                        if (!el) return;
+                        this.stylingElement = el;
+                        this.selectedColor = el.color || '#0878E5';
+                        const meta = (typeof el.metadata === 'string') ? JSON.parse(el.metadata || '{}') : (el.metadata || {});
+                        this.selectedIcon = meta.custom_icon || el.element_type || 'pole';
+                        this.selectedLineWidth = meta.line_weight || 4.5;
+                        this.selectedLineDash = meta.line_dash || (el.element_type === 'dropcore' ? 'dashed' : 'solid');
+                        this.openStyleModal = true;
+                    },
+
+                    saveElementStyle() {
+                        if (!this.stylingElement) return;
+                        let meta = (typeof this.stylingElement.metadata === 'string') ? JSON.parse(this.stylingElement.metadata || '{}') : (this.stylingElement.metadata || {});
+                        if (!meta) meta = {};
+
+                        if (this.stylingElement.category === 'marker') {
+                            meta.custom_icon = this.selectedIcon;
+                        } else if (this.stylingElement.category === 'line') {
+                            meta.line_weight = parseFloat(this.selectedLineWidth) || 4.5;
+                            meta.line_dash = this.selectedLineDash || 'solid';
+                        }
+
+                        this.$wire.updateElement(this.stylingElement.id, {
+                            color: this.selectedColor,
+                            metadata: meta
+                        });
+
+                        // Immediate local state update
+                        this.stylingElement.color = this.selectedColor;
+                        this.stylingElement.metadata = meta;
+                        const idx = this.customElements.findIndex(e => e.id === this.stylingElement.id);
+                        if (idx >= 0) {
+                            this.customElements[idx].color = this.selectedColor;
+                            this.customElements[idx].metadata = meta;
+                        }
+                        this.renderCustomElements();
+                        this.openStyleModal = false;
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('🎨 Gaya "' + this.stylingElement.name + '" berhasil disimpan!', 'success');
+                        }
+                    },
+
                     renderCustomElements() {
                         if (!this.customLayerGroup || typeof L === 'undefined') return;
                         this.customLayerGroup.clearLayers();
@@ -2982,8 +3204,11 @@
                             // Check layer visibility filter
                             if (!this.layerVisibility[el.element_type]) return;
 
+                            const meta = (typeof el.metadata === 'string') ? JSON.parse(el.metadata || '{}') : (el.metadata || {});
+
                             if (el.category === 'marker' && el.latitude && el.longitude) {
-                                const iconConfig = this.getMarkerIconHtml(el.element_type, el.color);
+                                const customIconKey = meta.custom_icon || el.element_type;
+                                const iconConfig = this.getMarkerIconHtml(el.element_type, el.color, customIconKey);
                                 const customIcon = L.divIcon({
                                     className: 'custom-ftth-node',
                                     html: iconConfig.html,
@@ -2994,13 +3219,14 @@
 
                                 const marker = L.marker([el.latitude, el.longitude], { icon: customIcon });
                                 marker.bindPopup(`
-                                    <div style='font-family: inherit; padding: 4px; min-width: 200px;'>
+                                    <div style='font-family: inherit; padding: 4px; min-width: 210px;'>
                                         <div style='font-size: 10px; font-weight: 800; color: ${el.color || '#0878E5'}; text-transform: uppercase;'>📍 ${el.element_type.replace('_', ' ')}</div>
                                         <div style='font-size: 13px; font-weight: 900; color: #0B1F33; margin: 2px 0;'>${el.name}</div>
                                         ${el.notes ? `<div style='font-size: 11px; color: #475569; margin: 3px 0;'>${el.notes}</div>` : ''}
                                         <div style='font-size: 10px; color: #94A3B8; margin-top: 4px;'>GPS: ${el.latitude.toFixed(6)}, ${el.longitude.toFixed(6)}</div>
                                         <div style='margin-top: 8px; padding-top: 6px; border-top: 1px solid #E2E8F0; display: flex; gap: 4px;'>
-                                            <button onclick="window.imsEditFtthElement(${el.id})" style='flex: 1; border: none; background: #EFF6FF; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>✏️ Geser Posisi</button>
+                                            <button onclick="window.imsStyleFtthElement(${el.id})" style='border: 1px solid #CBD5E1; background: #F8FAFC; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;' title='Ubah Warna & Ikon'>🎨 Gaya</button>
+                                            <button onclick="window.imsEditFtthElement(${el.id})" style='flex: 1; border: none; background: #EFF6FF; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>✏️ Geser</button>
                                             <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name}')" style='border: none; background: #FEE2E2; color: #DC2626; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>🗑️ Hapus</button>
                                         </div>
                                     </div>
@@ -3009,16 +3235,19 @@
 
                             } else if (el.category === 'line' && el.path_coordinates && el.path_coordinates.length >= 2) {
                                 const lineColor = el.color || (el.element_type === 'feeder' ? '#EF4444' : (el.element_type === 'distribution' ? '#0878E5' : '#F59E0B'));
-                                const isDash = el.element_type === 'dropcore';
+                                const lineWeight = meta.line_weight ? parseFloat(meta.line_weight) : 4.5;
+                                const lineDash = meta.line_dash || (el.element_type === 'dropcore' ? 'dashed' : 'solid');
+                                const dashArray = lineDash === 'dashed' ? '10, 7' : undefined;
 
                                 const popupHtml = `
-                                    <div style='font-family: inherit; padding: 4px; min-width: 200px;'>
+                                    <div style='font-family: inherit; padding: 4px; min-width: 210px;'>
                                         <div style='font-size: 10px; font-weight: 800; color: ${lineColor}; text-transform: uppercase;'>〰️ JALUR KABEL ${el.element_type}</div>
                                         <div style='font-size: 13px; font-weight: 900; color: #0B1F33; margin: 2px 0;'>${el.name}</div>
                                         <div style='font-size: 11.5px; font-weight: 800; color: #0878E5; margin: 3px 0;'>Panjang: ~${el.length_meters || 0} meter</div>
                                         ${el.notes ? `<div style='font-size: 11px; color: #475569;'>${el.notes}</div>` : ''}
                                         <div style='margin-top: 8px; padding-top: 6px; border-top: 1px solid #E2E8F0; display: flex; gap: 4px;'>
-                                            <button onclick="window.imsEditFtthElement(${el.id})" style='flex: 1; border: none; background: #EFF6FF; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>✏️ Edit Rute Jalur</button>
+                                            <button onclick="window.imsStyleFtthElement(${el.id})" style='border: 1px solid #CBD5E1; background: #F8FAFC; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;' title='Ubah Warna & Ketebalan'>🎨 Gaya</button>
+                                            <button onclick="window.imsEditFtthElement(${el.id})" style='flex: 1; border: none; background: #EFF6FF; color: #0878E5; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>✏️ Edit Rute</button>
                                             <button onclick="window.imsDeleteFtthElement(${el.id}, '${el.name}')" style='border: none; background: #FEE2E2; color: #DC2626; padding: 4px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; cursor: pointer;'>🗑️ Hapus</button>
                                         </div>
                                     </div>
@@ -3027,8 +3256,8 @@
                                 // Visible styled cable line
                                 const polyline = L.polyline(el.path_coordinates, {
                                     color: lineColor,
-                                    weight: 4.5,
-                                    dashArray: isDash ? '10, 7' : undefined,
+                                    weight: lineWeight,
+                                    dashArray: dashArray,
                                     opacity: 0.9,
                                     smoothFactor: 0,
                                     className: 'ims-ftth-visible-line'
@@ -3047,8 +3276,8 @@
                                 hitbox.bindPopup(popupHtml);
 
                                 // Visual hover feedback: brighten and thicken visible line when hovering near it
-                                const onHover = () => { polyline.setStyle({ weight: 6.5, opacity: 1 }); };
-                                const onLeave = () => { polyline.setStyle({ weight: 4.5, opacity: 0.9 }); };
+                                const onHover = () => { polyline.setStyle({ weight: lineWeight + 2, opacity: 1 }); };
+                                const onLeave = () => { polyline.setStyle({ weight: lineWeight, opacity: 0.9 }); };
                                 hitbox.on('mouseover', onHover);
                                 hitbox.on('mouseout', onLeave);
                                 polyline.on('mouseover', onHover);
@@ -3060,36 +3289,32 @@
                         });
                     },
 
-                    getMarkerIconHtml(type, color) {
+                    getMarkerIconHtml(type, color, customIconKey = null) {
                         let bg = color;
                         let size = 28;
-                        let svgContent = '';
+                        const iconId = customIconKey || type || 'pin';
 
                         if (type === 'pole') {
                             bg = bg || '#334155';
                             size = 26;
-                            svgContent = `<svg style="width: 14px; height: 14px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="6" x2="19" y2="6"/><line x1="8" y1="11" x2="16" y2="11"/><circle cx="5" cy="6" r="1.5" fill="currentColor"/><circle cx="19" cy="6" r="1.5" fill="currentColor"/></svg>`;
                         } else if (type === 'joint_box') {
                             bg = bg || '#059669';
                             size = 28;
-                            svgContent = `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>`;
                         } else if (type === 'odc') {
                             bg = bg || '#D97706';
                             size = 30;
-                            svgContent = `<svg style="width: 16px; height: 16px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></svg>`;
                         } else if (type === 'olt') {
                             bg = bg || '#7C3AED';
                             size = 32;
-                            svgContent = `<svg style="width: 18px; height: 18px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.2" fill="currentColor"/><circle cx="9" cy="7.5" r="1.2" fill="currentColor"/><circle cx="6" cy="16.5" r="1.2" fill="currentColor"/><circle cx="9" cy="16.5" r="1.2" fill="currentColor"/></svg>`;
                         } else if (type === 'customer') {
                             bg = bg || '#DB2777';
                             size = 28;
-                            svgContent = `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>`;
                         } else {
                             bg = bg || '#0878E5';
                             size = 28;
-                            svgContent = `<svg style="width: 14px; height: 14px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>`;
                         }
+
+                        const svgContent = this.getIconSvg(iconId);
 
                         return {
                             size: size,
@@ -3403,6 +3628,17 @@
                         URL.revokeObjectURL(url);
                     }
                 };
+            };
+
+            // Global style helper
+            window.imsStyleFtthElement = function(id) {
+                const componentEl = document.querySelector('[x-data*="imsFtthNetworkMapComponent"]');
+                if (componentEl && window.Alpine) {
+                    const alpineData = window.Alpine.$data(componentEl);
+                    if (alpineData && typeof alpineData.openStylePicker === 'function') {
+                        alpineData.openStylePicker(id);
+                    }
+                }
             };
 
             // Global edit helper

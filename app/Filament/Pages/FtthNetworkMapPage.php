@@ -301,6 +301,7 @@ class FtthNetworkMapPage extends Page
         if (array_key_exists('length_meters', $data)) $updateData['length_meters'] = (int) $data['length_meters'];
         if (array_key_exists('notes', $data)) $updateData['notes'] = $data['notes'];
         if (isset($data['color'])) $updateData['color'] = $data['color'];
+        if (array_key_exists('metadata', $data)) $updateData['metadata'] = $data['metadata'];
 
         $element->update($updateData);
 
