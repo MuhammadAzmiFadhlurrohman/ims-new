@@ -16,28 +16,105 @@
                 overflow: visible !important;
                 position: relative;
             }
-            .ims-sidebar-scroll-list {
-                overflow-y: auto !important;
+            /* ── 100% STANDALONE SIDEBAR DRAWER STYLES ── */
+            .ims-drawer-root {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                bottom: 0 !important;
+                width: 360px !important;
+                max-width: 90vw !important;
+                height: 100% !important;
+                background: #ffffff !important;
+                z-index: 1000 !important;
+                border-right: 1.5px solid #CBD5E1 !important;
+                box-shadow: 10px 0 32px rgba(15,23,42,0.18) !important;
+                border-radius: 0 16px 16px 0 !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                pointer-events: auto !important;
+            }
+            .ims-drawer-header {
+                height: 58px !important;
+                background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
+                color: #ffffff !important;
+                padding: 0 16px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                box-sizing: border-box !important;
+                border-bottom: 1px solid #334155 !important;
+                flex-shrink: 0 !important;
+            }
+            .ims-drawer-tabs-row {
+                height: 50px !important;
+                padding: 8px 14px !important;
+                background: #ffffff !important;
+                box-sizing: border-box !important;
+                border-bottom: 1px solid #F1F5F9 !important;
+                flex-shrink: 0 !important;
+            }
+            .ims-drawer-tab-objects {
+                height: calc(100% - 108px) !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+            }
+            .ims-drawer-search-row {
+                height: 94px !important;
+                padding: 8px 14px 6px 14px !important;
+                background: #ffffff !important;
+                border-bottom: 1px solid #F1F5F9 !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+                flex-shrink: 0 !important;
+            }
+            .ims-drawer-object-scroll {
+                height: calc(100% - 94px) !important;
+                width: 100% !important;
+                overflow-y: scroll !important;
                 overflow-x: hidden !important;
-                overscroll-behavior: contain;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: thin;
-                scrollbar-color: #94A3B8 #F1F5F9;
+                box-sizing: border-box !important;
+                padding: 10px 14px 40px 14px !important;
+                -webkit-overflow-scrolling: touch !important;
+                overscroll-behavior: contain !important;
+                scrollbar-width: thin !important;
+                scrollbar-color: #94A3B8 #F1F5F9 !important;
             }
-            .ims-sidebar-scroll-list::-webkit-scrollbar {
-                width: 6px;
-                display: block;
+            .ims-drawer-layer-scroll {
+                height: calc(100% - 108px) !important;
+                width: 100% !important;
+                overflow-y: scroll !important;
+                overflow-x: hidden !important;
+                box-sizing: border-box !important;
+                padding: 12px 14px 40px 14px !important;
+                -webkit-overflow-scrolling: touch !important;
+                overscroll-behavior: contain !important;
+                scrollbar-width: thin !important;
+                scrollbar-color: #94A3B8 #F1F5F9 !important;
             }
-            .ims-sidebar-scroll-list::-webkit-scrollbar-track {
-                background: #F1F5F9;
-                border-radius: 4px;
+            .ims-drawer-object-scroll::-webkit-scrollbar,
+            .ims-drawer-layer-scroll::-webkit-scrollbar {
+                width: 8px !important;
+                display: block !important;
+                background: #F1F5F9 !important;
             }
-            .ims-sidebar-scroll-list::-webkit-scrollbar-thumb {
-                background: #94A3B8;
-                border-radius: 4px;
+            .ims-drawer-object-scroll::-webkit-scrollbar-track,
+            .ims-drawer-layer-scroll::-webkit-scrollbar-track {
+                background: #F1F5F9 !important;
+                border-radius: 4px !important;
             }
-            .ims-sidebar-scroll-list::-webkit-scrollbar-thumb:hover {
-                background: #64748B;
+            .ims-drawer-object-scroll::-webkit-scrollbar-thumb,
+            .ims-drawer-layer-scroll::-webkit-scrollbar-thumb {
+                background: #94A3B8 !important;
+                border-radius: 4px !important;
+                border: 2px solid #F1F5F9 !important;
+            }
+            .ims-drawer-object-scroll::-webkit-scrollbar-thumb:hover,
+            .ims-drawer-layer-scroll::-webkit-scrollbar-thumb:hover {
+                background: #64748B !important;
             }
             .ims-sidebar-tab-btn {
                 display: flex !important;
@@ -1136,10 +1213,10 @@
                     x-transition:leave-start="transform translate-x-0 opacity-100"
                     x-transition:leave-end="transform -translate-x-full opacity-0"
                     x-cloak
-                    style="position: absolute; top: 0; left: 0; bottom: 0; height: 100% !important; max-height: 100% !important; width: 350px; max-width: 90vw; z-index: 1000; background: #ffffff; border-right: 1.5px solid #CBD5E1; box-shadow: 10px 0 32px rgba(15,23,42,0.16); display: flex; flex-direction: column; box-sizing: border-box; border-radius: 0 16px 16px 0; overflow: hidden; pointer-events: auto;"
+                    class="ims-drawer-root"
                 >
                     {{-- Sidebar Header --}}
-                    <div style="padding: 14px 16px; background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: #ffffff; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; flex: 0 0 auto !important;">
+                    <div class="ims-drawer-header">
                         <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
                             <div style="width: 32px; height: 32px; border-radius: 10px; background: #0878E5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(8,120,229,0.4);">
                                 <svg style="width: 17px; height: 17px; color: #ffffff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M4 6h16M4 12h16M4 18h7"/></svg>
@@ -1162,8 +1239,8 @@
                     </div>
 
                     {{-- Segmented Tab Control (Pill Switch) --}}
-                    <div style="padding: 12px 14px 8px 14px; background: #ffffff; flex: 0 0 auto !important;">
-                        <div style="display: flex; background: #F1F5F9; padding: 3px; border-radius: 10px; border: 1px solid #E2E8F0; gap: 4px;">
+                    <div class="ims-drawer-tabs-row">
+                        <div style="display: flex; background: #F1F5F9; padding: 3px; border-radius: 10px; border: 1px solid #E2E8F0; gap: 4px; height: 100%; box-sizing: border-box; align-items: center;">
                             <button 
                                 type="button" 
                                 @click="sidebarTab = 'objects'" 
@@ -1205,10 +1282,10 @@
                     <div 
                         x-show="sidebarTab === 'objects'" 
                         x-cloak
-                        style="flex: 1 1 0%; min-height: 0; display: flex; flex-direction: column; overflow: hidden;"
+                        class="ims-drawer-tab-objects"
                     >
                         {{-- Search and Category Filter --}}
-                        <div style="padding: 6px 14px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex: 0 0 auto !important;">
+                        <div class="ims-drawer-search-row">
                             <div style="position: relative; width: 100%;">
                                 <div style="position: absolute; left: 11px; top: 10px; color: #94A3B8; pointer-events: none;">
                                     <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -1261,7 +1338,7 @@
                         </div>
 
                         {{-- Scrollable List of Objects --}}
-                        <div class="ims-sidebar-scroll-list" style="flex: 1 1 0%; min-height: 0; overflow-y: auto !important; overflow-x: hidden !important; padding: 10px 14px 40px 14px;">
+                        <div class="ims-drawer-object-scroll">
                             <template x-if="filteredSidebarElements.length === 0">
                                 <div style="padding: 40px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
                                     <div style="width: 52px; height: 52px; border-radius: 14px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8;">
@@ -1336,8 +1413,7 @@
                     <div 
                         x-show="sidebarTab === 'layers'" 
                         x-cloak
-                        class="ims-sidebar-scroll-list" 
-                        style="flex: 1 1 0%; min-height: 0; overflow-y: auto !important; overflow-x: hidden !important; padding: 12px 14px 40px 14px;"
+                        class="ims-drawer-layer-scroll"
                     >
                         <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1.5px solid #F1F5F9;">
                             <span style="font-size: 0.74rem; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px;">Visibilitas Layer</span>
