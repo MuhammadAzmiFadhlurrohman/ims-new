@@ -381,30 +381,33 @@
                 width: 100% !important;
             }
             .ims-tool-btn {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                padding: 7px 12px;
-                border-radius: 10px;
-                font-size: 11.5px;
-                font-weight: 800;
-                cursor: pointer;
-                border: 1px solid #cbd5e1;
-                background: #ffffff;
-                color: #334155;
-                transition: all 0.15s ease;
-                white-space: nowrap;
+                display: inline-flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 6px !important;
+                padding: 7px 13px !important;
+                border-radius: 10px !important;
+                font-size: 11.5px !important;
+                font-weight: 800 !important;
+                cursor: pointer !important;
+                border: 1px solid #cbd5e1 !important;
+                background: #ffffff !important;
+                color: #334155 !important;
+                transition: all 0.15s ease !important;
+                white-space: nowrap !important;
+                line-height: 1 !important;
             }
             .ims-tool-btn:hover {
-                background: #F4FAFF;
-                border-color: #0878E5;
-                color: #0878E5;
+                background: #F4FAFF !important;
+                border-color: #0878E5 !important;
+                color: #0878E5 !important;
             }
             .ims-tool-btn.active {
                 background: #0878E5 !important;
                 color: #ffffff !important;
                 border-color: #0878E5 !important;
-                box-shadow: 0 2px 8px rgba(8,120,229,0.35);
+                box-shadow: 0 2px 8px rgba(8,120,229,0.35) !important;
             }
             .ims-floating-layer-btn {
                 display: inline-flex !important;
@@ -1111,23 +1114,24 @@
                                 onclick="imsToggleModeDropdown(event)"
                                 :class="['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode) ? 'active' : ''"
                                 class="ims-tool-btn"
+                                style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;"
                                 title="Pilih Mode Interaksi Kursor Peta"
                             >
-                                <span x-show="currentMode === 'select'" style="display: inline-flex; align-items: center; gap: 5px;">
+                                <span x-show="currentMode === 'select'" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;">
                                     <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
                                         <path d="m13 13 6 6"/>
                                     </svg>
-                                    <span>Jelajah ▾</span>
+                                    <span style="font-weight: 800;">Jelajah ▾</span>
                                 </span>
-                                <span x-show="currentMode === 'screenshot'" style="display: inline-flex; align-items: center; gap: 5px;">
+                                <span x-show="currentMode === 'screenshot'" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;">
                                     <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                                         <circle cx="12" cy="13" r="4"/>
                                     </svg>
-                                    <span>Screenshot ▾</span>
+                                    <span style="font-weight: 800;">Screenshot ▾</span>
                                 </span>
-                                <span x-show="currentMode === 'inspect_coords'" style="display: inline-flex; align-items: center; gap: 5px;">
+                                <span x-show="currentMode === 'inspect_coords'" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;">
                                     <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="12" r="10"/>
                                         <line x1="22" y1="12" x2="18" y2="12"/>
@@ -1135,21 +1139,21 @@
                                         <line x1="12" y1="6" x2="12" y2="2"/>
                                         <line x1="12" y1="22" x2="12" y2="18"/>
                                     </svg>
-                                    <span>Inspektur ▾</span>
+                                    <span style="font-weight: 800;">Inspektur ▾</span>
                                 </span>
-                                <span x-show="currentMode === 'view_only'" style="display: inline-flex; align-items: center; gap: 5px;">
+                                <span x-show="currentMode === 'view_only'" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;">
                                     <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                                         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                                     </svg>
-                                    <span>Terkunci ▾</span>
+                                    <span style="font-weight: 800;">Terkunci ▾</span>
                                 </span>
-                                <span x-show="!['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode)" style="display: inline-flex; align-items: center; gap: 5px;">
+                                <span x-show="!['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode)" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;">
                                     <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
                                         <path d="m13 13 6 6"/>
                                     </svg>
-                                    <span>Mode ▾</span>
+                                    <span style="font-weight: 800;">Mode ▾</span>
                                 </span>
                             </button>
 
@@ -1157,6 +1161,11 @@
                                 id="ims-mode-dropdown-menu"
                                 class="ims-mode-menu-dropdown"
                             >
+                                {{-- Dropdown Title Header --}}
+                                <div style="padding: 4px 8px 8px 8px; font-size: 0.68rem; font-weight: 900; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1.5px solid #F1F5F9; margin-bottom: 3px; display: flex; align-items: center; justify-content: space-between;">
+                                    <span>Mode Interaksi Kursor</span>
+                                    <span style="font-size: 0.65rem; background: #F1F5F9; color: #64748B; padding: 2px 6px; border-radius: 6px; font-weight: 800;">4 Pilihan</span>
+                                </div>
                                 {{-- Item 1: Jelajah & Pilih --}}
                                 <button 
                                     type="button" 
@@ -2292,8 +2301,6 @@
                     x-cloak
                     id="ims-screenshot-overlay"
                     @mousedown="startScreenshotSelection($event)"
-                    @mousemove="updateScreenshotSelection($event)"
-                    @mouseup="finishScreenshotSelection($event)"
                     style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 600; cursor: crosshair; user-select: none; overflow: hidden; background: rgba(15, 23, 42, 0.35);"
                 >
                     {{-- Floating Guidance Banner --}}
@@ -2310,16 +2317,16 @@
                         x-show="isSelectingScreenshot"
                         id="ims-screenshot-box"
                         class="ims-snipping-box"
-                        :style="getScreenshotBoxStyle()"
+                        style="pointer-events: none !important;"
                     >
                         {{-- Dimension Pill Badge --}}
-                        <div id="ims-screenshot-dim-badge" style="position: absolute; bottom: -28px; right: 0; background: #0878E5; color: #ffffff; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 5px; font-family: monospace; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.3);" x-text="getScreenshotDimensions()"></div>
+                        <div id="ims-screenshot-dim-badge" style="position: absolute; bottom: -28px; right: 0; background: #0878E5; color: #ffffff; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 5px; font-family: monospace; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.3); pointer-events: none !important;">0 × 0 px</div>
 
                         {{-- 4 Corner Handles --}}
-                        <div style="position: absolute; top: -5px; left: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px;"></div>
-                        <div style="position: absolute; top: -5px; right: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px;"></div>
-                        <div style="position: absolute; bottom: -5px; left: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px;"></div>
-                        <div style="position: absolute; bottom: -5px; right: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px;"></div>
+                        <div style="position: absolute; top: -5px; left: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px; pointer-events: none !important;"></div>
+                        <div style="position: absolute; top: -5px; right: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px; pointer-events: none !important;"></div>
+                        <div style="position: absolute; bottom: -5px; left: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px; pointer-events: none !important;"></div>
+                        <div style="position: absolute; bottom: -5px; right: -5px; width: 10px; height: 10px; background: #ffffff; border: 2px solid #0878E5; border-radius: 2px; pointer-events: none !important;"></div>
                     </div>
                 </div>
             </div>
@@ -4014,7 +4021,10 @@
                     // ── SCREENSHOT SNIP METHODS ──
                     startScreenshotSelection(e) {
                         if (this.currentMode !== 'screenshot') return;
-                        if (e) e.preventDefault();
+                        if (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }
                         const overlay = document.getElementById('ims-screenshot-overlay');
                         if (!overlay) return;
                         const rect = overlay.getBoundingClientRect();
@@ -4033,6 +4043,22 @@
                             box.style.width = '0px';
                             box.style.height = '0px';
                         }
+                        const badge = document.getElementById('ims-screenshot-dim-badge');
+                        if (badge) badge.textContent = '0 × 0 px';
+
+                        // Attach global window listeners so cursor tracks 100% reliably even when dragging fast
+                        const onWindowMouseMove = (moveEvent) => {
+                            this.updateScreenshotSelection(moveEvent);
+                        };
+
+                        const onWindowMouseUp = (upEvent) => {
+                            window.removeEventListener('mousemove', onWindowMouseMove, true);
+                            window.removeEventListener('mouseup', onWindowMouseUp, true);
+                            this.finishScreenshotSelection(upEvent);
+                        };
+
+                        window.addEventListener('mousemove', onWindowMouseMove, true);
+                        window.addEventListener('mouseup', onWindowMouseUp, true);
                     },
 
                     updateScreenshotSelection(e) {
