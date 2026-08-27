@@ -1514,55 +1514,37 @@
                                 {{-- Section 2: Map Mode (Roadmap / Satellite) --}}
                                 <div style="padding: 4px 8px 6px 8px; font-size: 0.68rem; font-weight: 900; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px;">Tampilan Lapisan Peta</div>
 
-                                <div style="display: flex; flex-direction: column; gap: 4px; width: 100%; box-sizing: border-box;">
-                                    {{-- Item 1: Roadmap --}}
+                                <div style="display: flex !important; flex-direction: row !important; gap: 8px !important; width: 100% !important; box-sizing: border-box !important; padding: 2px 0 !important;">
+                                    {{-- Roadmap Button --}}
                                     <button 
                                         type="button" 
                                         @click="setMapMode('roadmap'); openExtraMenu = false;"
-                                        style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: 1.5px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;"
-                                        :style="mapMode === 'roadmap' ? 'background: #EFF6FF !important; border-color: #BFDBFE !important;' : 'background: transparent !important; border-color: transparent !important;'"
-                                        onmouseover="if(!this.classList.contains('ims-active-mode')) { this.style.background='#F8FAFC'; this.style.borderColor='#E2E8F0'; }"
-                                        onmouseout="if(!this.classList.contains('ims-active-mode')) { this.style.background='transparent'; this.style.borderColor='transparent'; }"
-                                        :class="mapMode === 'roadmap' ? 'ims-active-mode' : ''"
+                                        style="flex: 1 1 0% !important; height: 38px !important; min-height: 38px !important; max-height: 38px !important; padding: 0 10px !important; border-radius: 10px !important; border: 1.5px solid !important; cursor: pointer !important; display: inline-flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 7px !important; box-sizing: border-box !important; text-align: center !important; text-decoration: none !important; transition: all 0.15s ease !important;"
+                                        :style="mapMode === 'roadmap' ? 'background: #EFF6FF !important; border-color: #0878E5 !important; color: #0878E5 !important; font-weight: 800 !important; box-shadow: 0 2px 8px rgba(8,120,229,0.2) !important;' : 'background: #F8FAFC !important; border-color: #CBD5E1 !important; color: #475569 !important; font-weight: 700 !important;'"
                                     >
-                                        <div style="width: 32px; height: 32px; border-radius: 8px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
-                                            <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
-                                                <line x1="8" y1="2" x2="8" y2="18"/>
-                                                <line x1="16" y1="6" x2="16" y2="22"/>
-                                            </svg>
-                                        </div>
-                                        <div style="flex: 1; min-width: 0;">
-                                            <div style="font-size: 0.8rem; font-weight: 800; color: #1E40AF;">Peta Jalan (Roadmap)</div>
-                                            <div style="font-size: 0.68rem; color: #2563EB; font-weight: 500;">Tampilan standar vektor jalan & nama tempat</div>
-                                        </div>
-                                        <span x-show="mapMode === 'roadmap'" style="font-weight: 900; color: #0878E5; font-size: 0.95rem; margin-right: 4px;">✓</span>
+                                        <svg style="width: 16px !important; height: 16px !important; min-width: 16px !important; max-width: 16px !important; flex-shrink: 0 !important; display: inline-block !important; vertical-align: middle !important;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+                                            <line x1="8" y1="2" x2="8" y2="18"/>
+                                            <line x1="16" y1="6" x2="16" y2="22"/>
+                                        </svg>
+                                        <span style="font-size: 0.8rem !important; line-height: 1 !important; white-space: nowrap !important; display: inline-block !important; vertical-align: middle !important;">Roadmap</span>
                                     </button>
 
-                                    {{-- Item 2: Satellite --}}
+                                    {{-- Satellite Button --}}
                                     <button 
                                         type="button" 
                                         @click="setMapMode('hybrid'); openExtraMenu = false;"
-                                        style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: 1.5px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;"
-                                        :style="mapMode === 'hybrid' ? 'background: #EFF6FF !important; border-color: #BFDBFE !important;' : 'background: transparent !important; border-color: transparent !important;'"
-                                        onmouseover="if(!this.classList.contains('ims-active-mode')) { this.style.background='#F8FAFC'; this.style.borderColor='#E2E8F0'; }"
-                                        onmouseout="if(!this.classList.contains('ims-active-mode')) { this.style.background='transparent'; this.style.borderColor='transparent'; }"
-                                        :class="mapMode === 'hybrid' ? 'ims-active-mode' : ''"
+                                        style="flex: 1 1 0% !important; height: 38px !important; min-height: 38px !important; max-height: 38px !important; padding: 0 10px !important; border-radius: 10px !important; border: 1.5px solid !important; cursor: pointer !important; display: inline-flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 7px !important; box-sizing: border-box !important; text-align: center !important; text-decoration: none !important; transition: all 0.15s ease !important;"
+                                        :style="mapMode === 'hybrid' ? 'background: #EFF6FF !important; border-color: #0878E5 !important; color: #0878E5 !important; font-weight: 800 !important; box-shadow: 0 2px 8px rgba(8,120,229,0.2) !important;' : 'background: #F8FAFC !important; border-color: #CBD5E1 !important; color: #475569 !important; font-weight: 700 !important;'"
                                     >
-                                        <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF3C7; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #D97706;">
-                                            <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M13 7 9 3 5 7l4 4"/>
-                                                <path d="m17 11 4 4-4 4-4-4"/>
-                                                <path d="m8 12 4 4 6-6-4-4Z"/>
-                                                <path d="m16 8 3-3"/>
-                                                <path d="M9 21a6 6 0 0 0-6-6"/>
-                                            </svg>
-                                        </div>
-                                        <div style="flex: 1; min-width: 0;">
-                                            <div style="font-size: 0.8rem; font-weight: 800; color: #92400E;">Citra Satelit (Hybrid)</div>
-                                            <div style="font-size: 0.68rem; color: #B45309; font-weight: 500;">Foto satelit realistik dengan label jalan</div>
-                                        </div>
-                                        <span x-show="mapMode === 'hybrid'" style="font-weight: 900; color: #D97706; font-size: 0.95rem; margin-right: 4px;">✓</span>
+                                        <svg style="width: 16px !important; height: 16px !important; min-width: 16px !important; max-width: 16px !important; flex-shrink: 0 !important; display: inline-block !important; vertical-align: middle !important;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M13 7 9 3 5 7l4 4"/>
+                                            <path d="m17 11 4 4-4 4-4-4"/>
+                                            <path d="m8 12 4 4 6-6-4-4Z"/>
+                                            <path d="m16 8 3-3"/>
+                                            <path d="M9 21a6 6 0 0 0-6-6"/>
+                                        </svg>
+                                        <span style="font-size: 0.8rem !important; line-height: 1 !important; white-space: nowrap !important; display: inline-block !important; vertical-align: middle !important;">Satelit</span>
                                     </button>
                                 </div>
 
