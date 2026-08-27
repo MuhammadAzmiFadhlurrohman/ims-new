@@ -3998,6 +3998,10 @@
                                 } else if (mode === 'screenshot') {
                                     if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
                                         IMS.toast('📸 Tarik kotak seleksi pada peta untuk mengambil screenshot.', 'info', 2500);
+                                    }
+                                }
+                            } else {
+                                canvasEl.style.cursor = '';
                                 if (mode === 'view_only') {
                                     if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
                                         IMS.toast('🔒 Peta terkunci (View-Only / Mode Presentasi).', 'info', 2000);
