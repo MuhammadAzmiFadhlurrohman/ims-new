@@ -474,6 +474,48 @@
                 border: none !important;
                 pointer-events: none !important;
             }
+
+            /* ── BULLETPROOF FULLSCREEN MODAL OVERLAYS & CENTERING ── */
+            @keyframes imsModalFadeZoom {
+                0% { opacity: 0; transform: scale(0.96) translateY(8px); }
+                100% { opacity: 1; transform: scale(1) translateY(0); }
+            }
+            .ims-modal-overlay-root {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                background: rgba(15, 23, 42, 0.78) !important;
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
+                z-index: 999999999 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 20px !important;
+                box-sizing: border-box !important;
+                overflow-y: auto !important;
+                margin: 0 !important;
+            }
+            .ims-modal-card-dialog {
+                position: relative !important;
+                margin: auto !important;
+                width: 100% !important;
+                max-width: 660px !important;
+                max-height: 90vh !important;
+                background: #ffffff !important;
+                border-radius: 20px !important;
+                box-shadow: 0 30px 80px -15px rgba(15, 23, 42, 0.5), 0 0 0 1px rgba(226, 232, 240, 0.9) !important;
+                display: flex !important;
+                flex-direction: column !important;
+                overflow: hidden !important;
+                animation: imsModalFadeZoom 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            }
         </style>
 
         {{-- ── 1. HEADER BANNER & TELEMETRY STATS ── --}}
@@ -1855,7 +1897,7 @@
             <div 
                 x-show="openNewProjectModal" 
                 x-cloak
-                style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;"
+                class="ims-modal-overlay-root"
                 @keydown.escape.window="openNewProjectModal = false"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0"
@@ -1866,7 +1908,8 @@
             >
                 <div 
                     @click.outside="openNewProjectModal = false"
-                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 25px 60px -12px rgba(0,0,0,0.35); width: 100%; max-width: 440px; padding: 1.5rem; position: relative; margin: auto;"
+                    class="ims-modal-card-dialog"
+                    style="max-width: 440px; padding: 1.5rem;"
                 >
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
                         <div style="width: 38px; height: 38px; border-radius: 10px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; color: #0878E5;">
@@ -1919,7 +1962,7 @@
             <div 
                 x-show="openStyleModal" 
                 x-cloak
-                style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;"
+                class="ims-modal-overlay-root"
                 @keydown.escape.window="openStyleModal = false"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0"
@@ -1930,7 +1973,8 @@
             >
                 <div 
                     @click.outside="openStyleModal = false"
-                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.35); width: 100%; max-width: 480px; padding: 1.5rem; position: relative; border: 1px solid #E2E8F0; margin: auto;"
+                    class="ims-modal-card-dialog"
+                    style="max-width: 480px; padding: 1.5rem;"
                 >
                     {{-- Header --}}
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid #F1F5F9;">
@@ -2075,7 +2119,7 @@
             <div 
                 x-show="openDetailModal" 
                 x-cloak
-                style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;"
+                class="ims-modal-overlay-root"
                 @keydown.escape.window="openDetailModal = false"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0"
@@ -2086,31 +2130,31 @@
             >
                 <div 
                     @click.outside="openDetailModal = false"
-                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 30px 80px -15px rgba(15, 23, 42, 0.45), 0 0 0 1px rgba(226, 232, 240, 0.8); width: 100%; max-width: 680px; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; position: relative; margin: auto; animation: imsModalZoom 0.2s cubic-bezier(0.16, 1, 0.3, 1);"
+                    class="ims-modal-card-dialog"
                 >
                     {{-- Modal Header --}}
                     <div style="padding: 16px 22px; border-bottom: 1.5px solid #1E293B; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: #ffffff; flex-shrink: 0;">
                         <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
                             <div 
-                                style="width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.2);"
+                                style="width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,0.35); border: 2px solid rgba(255,255,255,0.25);"
                                 :style="'background:' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5')"
                                 x-html="detailElement ? getIconSvg((detailElement.metadata && detailElement.metadata.custom_icon) || detailElement.element_type) : ''"
                             ></div>
                             <div style="min-width: 0;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <div style="font-size: 1.05rem; font-weight: 900; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ffffff;" x-text="detailElement ? (detailForm.name || detailElement.name) : 'Detail Elemen'"></div>
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <div style="font-size: 1.05rem; font-weight: 800; line-height: 1.2; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px;" x-text="detailElement ? (detailForm.name || detailElement.name) : 'Detail Elemen'"></div>
                                     <span 
-                                        style="font-size: 0.65rem; font-weight: 800; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;"
+                                        style="font-size: 0.65rem; font-weight: 800; padding: 2px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;"
                                         :style="'background:' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5') + '33; color: #ffffff; border: 1.5px solid ' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5')"
                                         x-text="detailElement ? detailElement.element_type.replace('_', ' ') : ''"
                                     ></span>
                                 </div>
                                 <div style="font-size: 0.72rem; color: #94A3B8; margin-top: 3px; font-family: monospace; display: flex; align-items: center; gap: 6px;">
                                     <template x-if="detailElement && detailElement.category === 'marker'">
-                                        <span>📍 GPS: <span x-text="detailElement.latitude ? (detailElement.latitude.toFixed(6) + ', ' + detailElement.longitude.toFixed(6)) : '-'"></span></span>
+                                        <span>📍 GPS: <span style="color: #E2E8F0;" x-text="detailElement.latitude ? (detailElement.latitude.toFixed(6) + ', ' + detailElement.longitude.toFixed(6)) : '-'"></span></span>
                                     </template>
                                     <template x-if="detailElement && detailElement.category === 'line'">
-                                        <span>📏 Jalur Kabel • Panjang: ~<span x-text="detailElement.length_meters || 0"></span> meter</span>
+                                        <span>📏 Jalur Kabel • Panjang: ~<span style="color: #E2E8F0;" x-text="detailElement.length_meters || 0"></span> meter</span>
                                     </template>
                                 </div>
                             </div>
@@ -2118,63 +2162,65 @@
                         <button 
                             type="button" 
                             @click="openDetailModal = false" 
-                            style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); color: #ffffff; width: 32px; height: 32px; border-radius: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; transition: all 0.15s ease; flex-shrink: 0;"
+                            style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); color: #ffffff; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 900; transition: all 0.15s ease; flex-shrink: 0;"
                             onmouseover="this.style.background='rgba(239,68,68,0.85)'; this.style.borderColor='transparent'"
                             onmouseout="this.style.background='rgba(255,255,255,0.12)'; this.style.borderColor='rgba(255,255,255,0.18)'"
                             title="Tutup Modal (Esc)"
                         >✕</button>
                     </div>
 
-                    {{-- Modal Tab Navigation (Modern iOS Segmented Pills) --}}
-                    <div style="padding: 10px 22px; background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; display: flex; gap: 8px; flex-shrink: 0;">
-                        <button 
-                            type="button" 
-                            @click="detailTab = 'specs'" 
-                            style="flex: 1; padding: 8px 12px; font-size: 0.76rem; font-weight: 800; border-radius: 10px; border: 1.5px solid transparent; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
-                            :style="detailTab === 'specs' ? 'background: #ffffff; color: #0878E5; border-color: #BFDBFE; box-shadow: 0 2px 8px rgba(8,120,229,0.12); font-weight: 900;' : 'background: transparent; color: #64748B;'"
-                        >
-                            <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                            <span>Spesifikasi Teknis</span>
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="detailTab = 'photos'" 
-                            style="flex: 1; padding: 8px 12px; font-size: 0.76rem; font-weight: 800; border-radius: 10px; border: 1.5px solid transparent; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
-                            :style="detailTab === 'photos' ? 'background: #ffffff; color: #0878E5; border-color: #BFDBFE; box-shadow: 0 2px 8px rgba(8,120,229,0.12); font-weight: 900;' : 'background: transparent; color: #64748B;'"
-                        >
-                            <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                            <span>Foto Lapangan</span>
-                            <span 
-                                style="padding: 1px 7px; border-radius: 10px; font-size: 0.65rem; font-weight: 900;"
-                                :style="detailTab === 'photos' ? 'background: #0878E5; color: #ffffff;' : 'background: #E2E8F0; color: #475569;'"
-                                x-text="(detailElement && detailElement.metadata && detailElement.metadata.photos ? detailElement.metadata.photos.length : 0)"
-                            ></span>
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="detailTab = 'notes'" 
-                            style="flex: 1; padding: 8px 12px; font-size: 0.76rem; font-weight: 800; border-radius: 10px; border: 1.5px solid transparent; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
-                            :style="detailTab === 'notes' ? 'background: #ffffff; color: #0878E5; border-color: #BFDBFE; box-shadow: 0 2px 8px rgba(8,120,229,0.12); font-weight: 900;' : 'background: transparent; color: #64748B;'"
-                        >
-                            <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                            <span>Riwayat & Log</span>
-                        </button>
+                    {{-- Modal Tab Navigation (Segmented Pill Switcher) --}}
+                    <div style="padding: 12px 22px 0 22px; background: #ffffff; flex-shrink: 0;">
+                        <div style="background: #F1F5F9; border-radius: 12px; padding: 4px; display: flex; gap: 4px;">
+                            <button 
+                                type="button" 
+                                @click="detailTab = 'specs'" 
+                                style="flex: 1; padding: 8px 12px; font-size: 0.78rem; font-weight: 800; border-radius: 9px; border: none; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
+                                :style="detailTab === 'specs' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                            >
+                                <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                <span>Spesifikasi Teknis</span>
+                            </button>
+                            <button 
+                                type="button" 
+                                @click="detailTab = 'photos'" 
+                                style="flex: 1; padding: 8px 12px; font-size: 0.78rem; font-weight: 800; border-radius: 9px; border: none; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
+                                :style="detailTab === 'photos' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                            >
+                                <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <span>Foto Lapangan</span>
+                                <span 
+                                    style="padding: 1px 7px; border-radius: 10px; font-size: 0.65rem; font-weight: 900; margin-left: 2px;"
+                                    :style="detailTab === 'photos' ? 'background: #0878E5; color: #ffffff;' : 'background: #E2E8F0; color: #475569;'"
+                                    x-text="(detailElement && detailElement.metadata && detailElement.metadata.photos ? detailElement.metadata.photos.length : 0)"
+                                ></span>
+                            </button>
+                            <button 
+                                type="button" 
+                                @click="detailTab = 'notes'" 
+                                style="flex: 1; padding: 8px 12px; font-size: 0.78rem; font-weight: 800; border-radius: 9px; border: none; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
+                                :style="detailTab === 'notes' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                            >
+                                <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                <span>Riwayat & Log</span>
+                            </button>
+                        </div>
                     </div>
 
-                    {{-- Modal Body (Scrollable with modern styling) --}}
-                    <div style="padding: 22px; overflow-y: auto; flex: 1; background: #ffffff;">
+                    {{-- Modal Body (Scrollable) --}}
+                    <div style="padding: 18px 22px 22px 22px; overflow-y: auto; flex: 1; background: #ffffff;">
                         {{-- TAB 1: SPESIFIKASI TEKNIS --}}
                         <div x-show="detailTab === 'specs'" style="display: flex; flex-direction: column; gap: 16px;">
                             {{-- Common Name Field --}}
-                            <div>
-                                <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.4px;">Nama / Identitas Elemen</label>
+                            <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px;">
+                                <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Nama / Identitas Elemen</label>
                                 <input 
                                     type="text" 
                                     x-model="detailForm.name" 
                                     :disabled="detailElement && detailElement.isOdp"
-                                    style="width: 100%; height: 40px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 0 14px; font-size: 0.84rem; font-weight: 800; color: #0F172A; background: #F8FAFC; box-sizing: border-box; transition: all 0.15s ease;"
-                                    onfocus="this.style.background='#ffffff'; this.style.borderColor='#0878E5'; this.style.boxShadow='0 0 0 3px rgba(8,120,229,0.12)'"
-                                    onblur="this.style.background='#F8FAFC'; this.style.borderColor='#CBD5E1'; this.style.boxShadow='none'"
+                                    style="width: 100%; height: 40px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 0 14px; font-size: 0.85rem; font-weight: 800; color: #0F172A; background: #ffffff; box-sizing: border-box; transition: all 0.15s ease;"
+                                    onfocus="this.style.borderColor='#0878E5'; this.style.boxShadow='0 0 0 3px rgba(8,120,229,0.12)'"
+                                    onblur="this.style.borderColor='#CBD5E1'; this.style.boxShadow='none'"
                                 >
                             </div>
 
@@ -2418,7 +2464,7 @@
                         <div x-show="detailTab === 'photos'" style="display: flex; flex-direction: column; gap: 16px;">
                             {{-- Photo Upload Box (Only for editable custom elements) --}}
                             <template x-if="detailElement && !detailElement.isOdp">
-                                <div style="border: 2px dashed #94A3B8; border-radius: 14px; padding: 18px; background: #F8FAFC; text-align: center; transition: all 0.15s ease;">
+                                <div>
                                     <input 
                                         type="file" 
                                         id="ims-detail-photo-input" 
@@ -2431,21 +2477,23 @@
                                     <template x-if="!tempPhotoData">
                                         <div 
                                             @click="document.getElementById('ims-detail-photo-input').click()" 
-                                            style="cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px;"
+                                            style="border: 2px dashed #94A3B8; border-radius: 16px; padding: 22px 16px; background: #F8FAFC; text-align: center; cursor: pointer; transition: all 0.15s ease; display: flex; flex-direction: column; align-items: center; gap: 10px;"
+                                            onmouseover="this.style.borderColor='#0878E5'; this.style.background='#EFF6FF'"
+                                            onmouseout="this.style.borderColor='#94A3B8'; this.style.background='#F8FAFC'"
                                         >
-                                            <div style="width: 50px; height: 50px; border-radius: 14px; background: #EFF6FF; border: 1.5px solid #BFDBFE; display: flex; align-items: center; justify-content: center; color: #0878E5; box-shadow: 0 4px 12px rgba(8,120,229,0.15);">
+                                            <div style="width: 48px; height: 48px; border-radius: 14px; background: #EFF6FF; border: 1.5px solid #BFDBFE; display: flex; align-items: center; justify-content: center; color: #0878E5; box-shadow: 0 4px 12px rgba(8,120,229,0.15);">
                                                 <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                                             </div>
                                             <div>
-                                                <div style="font-size: 0.86rem; font-weight: 800; color: #0F172A;">Ambil / Unggah Foto Lapangan</div>
+                                                <div style="font-size: 0.88rem; font-weight: 800; color: #0F172A;">Ambil / Unggah Foto Lapangan</div>
                                                 <div style="font-size: 0.72rem; color: #64748B; margin-top: 2px;">Gunakan kamera HP langsung atau pilih file foto (JPG, PNG, WebP)</div>
                                             </div>
                                         </div>
                                     </template>
 
                                     <template x-if="tempPhotoData">
-                                        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
-                                            <div style="position: relative; max-width: 280px; max-height: 180px; border-radius: 12px; overflow: hidden; border: 2px solid #0878E5; box-shadow: 0 6px 18px rgba(0,0,0,0.15);">
+                                        <div style="background: #F8FAFC; border: 1.5px solid #BFDBFE; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                                            <div style="position: relative; max-width: 300px; max-height: 190px; border-radius: 12px; overflow: hidden; border: 2px solid #0878E5; box-shadow: 0 6px 18px rgba(0,0,0,0.15);">
                                                 <img :src="tempPhotoData" style="width: 100%; height: auto; display: block; object-fit: cover;">
                                                 <button 
                                                     type="button" 
@@ -2454,18 +2502,18 @@
                                                     title="Batal pilih foto"
                                                 >✕</button>
                                             </div>
-                                            <div style="width: 100%; max-width: 420px; display: flex; gap: 8px;">
+                                            <div style="width: 100%; max-width: 440px; display: flex; gap: 8px;">
                                                 <input 
                                                     type="text" 
                                                     x-model="tempPhotoCaption" 
                                                     placeholder="Keterangan foto (misal: Sisi tiang menghadap jalan)..." 
-                                                    style="flex: 1; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.78rem; background: #ffffff; box-sizing: border-box;"
+                                                    style="flex: 1; height: 40px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #ffffff; box-sizing: border-box;"
                                                 >
                                                 <button 
                                                     type="button" 
                                                     @click="submitUploadPhoto()" 
                                                     :disabled="isUploadingPhoto"
-                                                    style="padding: 0 16px; border: none; background: #059669; color: #ffffff; border-radius: 9px; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 3px 10px rgba(5,150,105,0.25); white-space: nowrap;"
+                                                    style="padding: 0 18px; border: none; background: #059669; color: #ffffff; border-radius: 10px; font-size: 0.8rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 3px 10px rgba(5,150,105,0.25); white-space: nowrap;"
                                                 >
                                                     <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                                                     <span>Simpan Foto</span>
@@ -2485,8 +2533,8 @@
                                 <template x-if="!detailElement || !detailElement.metadata || !detailElement.metadata.photos || detailElement.metadata.photos.length === 0">
                                     <div style="padding: 36px 16px; text-align: center; background: #F8FAFC; border-radius: 14px; border: 1.5px solid #E2E8F0; display: flex; flex-direction: column; align-items: center; gap: 8px;">
                                         <div style="font-size: 28px;">📷</div>
-                                        <div style="font-size: 0.82rem; font-weight: 800; color: #475569;">Belum ada foto dokumentasi lapangan.</div>
-                                        <div style="font-size: 0.72rem; color: #94A3B8;">Foto yang diunggah akan otomatis tampil di sini.</div>
+                                        <div style="font-size: 0.84rem; font-weight: 800; color: #475569;">Belum ada foto dokumentasi lapangan.</div>
+                                        <div style="font-size: 0.74rem; color: #94A3B8;">Foto yang diunggah akan otomatis tersimpan di sini.</div>
                                     </div>
                                 </template>
 
@@ -2654,7 +2702,7 @@
             <div 
                 x-show="openDataTableModal" 
                 x-cloak
-                style="position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 99999999; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;"
+                class="ims-modal-overlay-root"
                 @keydown.escape.window="openDataTableModal = false"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0"
@@ -2665,7 +2713,8 @@
             >
                 <div 
                     @click.outside="openDataTableModal = false"
-                    style="background: #ffffff; width: 100%; max-width: 1100px; height: 85vh; border-radius: 20px; box-shadow: 0 30px 80px -15px rgba(15, 23, 42, 0.45); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #CBD5E1; margin: auto;"
+                    class="ims-modal-card-dialog"
+                    style="max-width: 1100px; height: 85vh; border-radius: 20px;"
                 >
                     {{-- Modal Header --}}
                     <div style="padding: 16px 22px; border-bottom: 1.5px solid #1E293B; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: #ffffff;">
