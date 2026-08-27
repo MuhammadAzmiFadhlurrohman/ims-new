@@ -1712,44 +1712,53 @@
                 <div 
                     x-show="currentMode === 'draw_line'" 
                     x-cloak
-                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #FEF3C7; border: 1.5px dashed #F59E0B; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #92400E;"
+                    style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #FFFBEB; border: 1px solid #FDE68A; box-shadow: 0 2px 8px rgba(217,119,6,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <span style="font-weight: 800;">⚡ Sedang Menarik Jalur:</span>
-                        <span style="font-weight: 900; text-transform: uppercase;" x-text="activeElementType"></span>
-                        <span>•</span>
-                        <span x-text="currentLinePoints.length === 0 ? 'Klik titik awal di peta untuk menanam pangkal kabel.' : 'Kabel terpasang! Gerakkan mouse lalu klik titik berikutnya untuk menanam.'"></span>
-                        <span style="background: #ffffff; padding: 2px 8px; border-radius: 6px; font-weight: 900; color: #0878E5; font-family: monospace;">
-                            Titik Tertanam: <span x-text="tempVertexMarkers.length"></span> | Panjang: ~<span x-text="currentLineDistance"></span> meter
-                        </span>
+                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: #D97706; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(217,119,6,0.3);">
+                            <span>⚡ TARIK KABEL</span>
+                            <span style="opacity: 0.85;">•</span>
+                            <span style="text-transform: uppercase;" x-text="activeElementType"></span>
+                        </div>
+                        <div style="font-size: 0.78rem; color: #92400E; font-weight: 600;">
+                            <span x-text="currentLinePoints.length === 0 ? 'Klik titik awal pada peta untuk mulai menanam kabel.' : 'Gerakkan mouse & klik titik-titik belokan.'"></span>
+                        </div>
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 800; color: #0878E5; border: 1px solid #E2E8F0; font-family: monospace;">
+                            <span>Titik: <strong x-text="tempVertexMarkers.length"></strong></span>
+                            <span>|</span>
+                            <span>Panjang: ~<strong x-text="currentLineDistance"></strong> m</span>
+                        </div>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <label style="display: inline-flex; align-items: center; gap: 4px; background: #ffffff; padding: 3px 8px; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer; font-size: 0.72rem; font-weight: 800; color: #1E293B;">
+                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                        <label style="display: inline-flex; align-items: center; gap: 5px; background: #ffffff; padding: 4px 8px; border-radius: 8px; border: 1px solid #CBD5E1; cursor: pointer; font-size: 0.72rem; font-weight: 800; color: #1E293B;">
                             <input type="checkbox" x-model="autoSnapRoad" style="border-radius: 4px; color: #0878E5;">
-                            <span>🛣️ Auto-Snap Ikuti Jalan</span>
+                            <span>🛣️ Snap Jalan</span>
                         </label>
                         <button 
                             type="button" 
                             @click="undoLastPoint()" 
                             :disabled="currentLinePoints.length === 0"
-                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #475569; border: 1px solid #cbd5e1; cursor: pointer;"
+                            style="height: 30px; padding: 0 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #475569; border: 1px solid #CBD5E1; cursor: pointer; transition: all 0.15s ease;"
                             title="Batalkan titik terakhir"
                         >
-                            ↩️ Undo Titik
+                            ↩️ Undo
                         </button>
                         <button 
                             type="button" 
                             @click="finishDrawLine()" 
                             :disabled="currentLinePoints.length < 2"
-                            style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer;"
+                            style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 6px rgba(5,150,105,0.3); transition: all 0.15s ease;"
                         >
-                            ✓ Selesai & Simpan Jalur
+                            <span>✓</span>
+                            <span>Simpan Jalur</span>
                         </button>
                         <button 
                             type="button" 
                             @click="cancelDrawing()" 
-                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #DC2626; cursor: pointer;"
+                            style="height: 30px; padding: 0 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; transition: all 0.15s ease;"
+                            onmouseover="this.style.background='#DC2626'; this.style.color='#ffffff'; this.style.borderColor='#DC2626';"
+                            onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'; this.style.borderColor='#FECACA';"
                         >
                             ✕ Batal
                         </button>
@@ -1760,40 +1769,45 @@
                 <div 
                     x-show="currentMode === 'measure'" 
                     x-cloak
-                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #F5F3FF; border: 1.5px dashed #7C3AED; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #5B21B6;"
+                    style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #F5F3FF; border: 1px solid #DDD6FE; box-shadow: 0 2px 8px rgba(124,58,237,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-weight: 800;">📏 Mode Penggaris Jarak:</span>
-                        <span>Klik beberapa titik pada peta untuk mengukur estimasi jalur kabel.</span>
-                        <span style="background: #ffffff; padding: 2px 10px; border-radius: 6px; font-weight: 900; color: #7C3AED; font-family: monospace; border: 1px solid #DDD6FE;">
-                            Total Jarak: <span x-text="measureDistance"></span> m (<span x-text="(measureDistance / 1000).toFixed(2)"></span> Km)
-                        </span>
-                        <span style="font-size: 0.7rem; color: #6D28D9;">• Titik: <strong x-text="measurePoints.length"></strong></span>
+                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: #7C3AED; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(124,58,237,0.3);">
+                            <span>📏 UKUR JARAK KABEL</span>
+                        </div>
+                        <div style="font-size: 0.78rem; color: #5B21B6; font-weight: 600;">
+                            Klik titik-titik pada peta untuk mengukur estimasi panjang rute.
+                        </div>
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 800; color: #7C3AED; border: 1px solid #DDD6FE; font-family: monospace;">
+                            <span>Total: <strong x-text="measureDistance"></strong> m (<strong x-text="(measureDistance / 1000).toFixed(2)"></strong> Km)</span>
+                            <span>•</span>
+                            <span>Titik: <strong x-text="measurePoints.length"></strong></span>
+                        </div>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                         <button 
                             type="button" 
                             @click="undoMeasurePoint()" 
                             :disabled="measurePoints.length === 0"
-                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #475569; border: 1px solid #cbd5e1; cursor: pointer;"
-                            title="Hapus titik pengukuran terakhir"
+                            style="height: 30px; padding: 0 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #475569; border: 1px solid #CBD5E1; cursor: pointer;"
+                            title="Hapus titik terakhir"
                         >
-                            ↩️ Undo Titik
+                            ↩️ Undo
                         </button>
                         <button 
                             type="button" 
                             @click="clearMeasure()" 
-                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #FECACA; cursor: pointer;"
+                            style="height: 30px; padding: 0 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #FECACA; cursor: pointer;"
                         >
-                            🗑️ Reset Ukuran
+                            🗑️ Reset
                         </button>
                         <button 
                             type="button" 
                             @click="setMode('select')" 
-                            style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #7C3AED; color: #ffffff; border: none; cursor: pointer;"
+                            style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #7C3AED; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(124,58,237,0.3);"
                         >
-                            ✕ Tutup Penggaris
+                            ✕ Tutup
                         </button>
                     </div>
                 </div>
@@ -1802,51 +1816,68 @@
                 <div 
                     x-show="currentMode === 'edit_element'" 
                     x-cloak
-                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #EFF6FF; border: 1.5px dashed #0878E5; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #1E40AF;"
+                    style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #EFF6FF; border: 1px solid #BFDBFE; box-shadow: 0 2px 8px rgba(8,120,229,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-weight: 800;">✏️ Mode Edit Rute / Titik:</span>
-                        <strong style="color: #0F172A;" x-text="editingElement ? editingElement.name : ''"></strong>
-                        <span>• Geser titik putih untuk mengubah posisi. Klik titik [+] untuk menambah sudut.</span>
+                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: #0878E5; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(8,120,229,0.3);">
+                            <span>✏️ EDIT RUTE / TITIK</span>
+                        </div>
+                        <div style="font-size: 0.78rem; color: #1E40AF; font-weight: 700;">
+                            <span style="color: #0F172A; font-weight: 800;" x-text="editingElement ? editingElement.name : ''"></span>
+                            <span style="font-weight: 500; color: #475569;">— Geser pin putih untuk mengatur posisi titik.</span>
+                        </div>
                         <template x-if="editingElement && editingElement.category === 'line'">
-                            <span style="background: #ffffff; padding: 2px 8px; border-radius: 6px; font-weight: 900; color: #0878E5; font-family: monospace; border: 1px solid #BFDBFE;">
-                                Panjang Baru: ~<span x-text="editingDistance"></span> m
+                            <span style="background: #ffffff; padding: 3px 8px; border-radius: 6px; font-weight: 900; color: #0878E5; font-family: monospace; border: 1px solid #BFDBFE; font-size: 0.72rem;">
+                                Panjang: ~<span x-text="editingDistance"></span> m
                             </span>
                         </template>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                         <button 
                             type="button" 
                             @click="saveEditElement()" 
-                            style="padding: 4px 14px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(5,150,105,0.3);"
+                            style="height: 30px; padding: 0 14px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(5,150,105,0.3); display: inline-flex; align-items: center; gap: 5px;"
                         >
-                            💾 Simpan Perubahan
+                            <span>💾</span>
+                            <span>Simpan</span>
                         </button>
                         <button 
                             type="button" 
                             @click="cancelEditElement()" 
-                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #DC2626; cursor: pointer;"
+                            style="height: 30px; padding: 0 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer;"
+                            onmouseover="this.style.background='#DC2626'; this.style.color='#ffffff'; this.style.borderColor='#DC2626';"
+                            onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'; this.style.borderColor='#FECACA';"
                         >
                             ✕ Batal
                         </button>
                     </div>
                 </div>
 
+                {{-- Dynamic Sub-Bar: Add Marker Mode --}}
                 <div 
                     x-show="currentMode === 'add_marker'" 
                     x-cloak
-                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #EAF5FF; border: 1.5px dashed #0878E5; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #0757B8;"
+                    style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #EFF6FF; border: 1px solid #BFDBFE; box-shadow: 0 2px 8px rgba(8,120,229,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div>
-                        <b>📍 Mode Penempatan Marker:</b> Klik di mana saja pada peta untuk menempatkan <b><span x-text="activeElementType"></span></b>.
+                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: #0878E5; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(8,120,229,0.3);">
+                            <svg style="width: 13px; height: 13px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span>PENEMPATAN TITIK</span>
+                        </div>
+                        <div style="font-size: 0.78rem; color: #1E40AF; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            Klik pada peta untuk menaruh: <span style="background: #DBEAFE; color: #1E40AF; padding: 2px 8px; border-radius: 6px; font-weight: 900; text-transform: uppercase; font-size: 0.74rem;" x-text="activeElementType.replace('_', ' ')"></span>
+                        </div>
                     </div>
                     <button 
                         type="button" 
                         @click="cancelDrawing()" 
-                        style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #DC2626; cursor: pointer;"
+                        style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; transition: all 0.15s ease;"
+                        onmouseover="this.style.background='#DC2626'; this.style.color='#ffffff'; this.style.borderColor='#DC2626';"
+                        onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'; this.style.borderColor='#FECACA';"
                     >
-                        ✕ Batal
+                        <span>✕</span>
+                        <span>Batal</span>
                     </button>
                 </div>
 
@@ -1854,18 +1885,22 @@
                 <div 
                     x-show="currentMode === 'inspect_coords'" 
                     x-cloak
-                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #ECFDF5; border: 1.5px dashed #059669; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #065F46;"
+                    style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #ECFDF5; border: 1px solid #A7F3D0; box-shadow: 0 2px 8px rgba(5,150,105,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-weight: 800;">🎯 Mode Inspektur Koordinat GPS:</span>
-                        <span>Klik di mana saja pada peta untuk menyalin titik koordinat Lat-Long secara instan ke clipboard.</span>
+                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: #059669; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(5,150,105,0.3);">
+                            <span>🎯 INSPEKTUR GPS</span>
+                        </div>
+                        <div style="font-size: 0.78rem; color: #065F46; font-weight: 600;">
+                            Klik di mana saja pada peta untuk menyalin titik koordinat Lat-Long secara instan ke clipboard.
+                        </div>
                     </div>
                     <button 
                         type="button" 
                         @click="setMode('select')" 
-                        style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer;"
+                        style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(5,150,105,0.3); flex-shrink: 0;"
                     >
-                        ✕ Tutup Inspektur
+                        ✕ Selesai
                     </button>
                 </div>
 
@@ -1873,18 +1908,24 @@
                 <div 
                     x-show="currentMode === 'screenshot'" 
                     x-cloak
-                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #FEF3C7; border: 1.5px dashed #F59E0B; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #92400E;"
+                    style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #FFFBEB; border: 1px solid #FDE68A; box-shadow: 0 2px 8px rgba(217,119,6,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-weight: 800;">📸 Mode Cuplikan Area (Snip):</span>
-                        <span>Klik & geser (drag) mouse di atas peta untuk membuat kotak wilayah. Lepaskan mouse untuk memotret seketika!</span>
+                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: #D97706; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(217,119,6,0.3);">
+                            <span>📸 CUPLIKAN PETA (SNIP)</span>
+                        </div>
+                        <div style="font-size: 0.78rem; color: #92400E; font-weight: 600;">
+                            Klik & tarik mouse di atas peta untuk membuat area screenshot. Lepaskan mouse untuk memotret.
+                        </div>
                     </div>
                     <button 
                         type="button" 
                         @click="setMode('select')" 
-                        style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #D97706; color: #ffffff; border: none; cursor: pointer;"
+                        style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; flex-shrink: 0;"
+                        onmouseover="this.style.background='#DC2626'; this.style.color='#ffffff'; this.style.borderColor='#DC2626';"
+                        onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'; this.style.borderColor='#FECACA';"
                     >
-                        ✕ Batalkan Screenshot
+                        ✕ Batalkan Snip
                     </button>
                 </div>
             </div>
