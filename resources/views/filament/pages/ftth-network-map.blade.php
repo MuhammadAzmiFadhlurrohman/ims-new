@@ -1205,10 +1205,10 @@
                     <div 
                         x-show="sidebarTab === 'objects'" 
                         x-cloak
-                        style="flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow: hidden;"
+                        style="flex: 1 1 0%; min-height: 0; display: flex; flex-direction: column; overflow: hidden;"
                     >
                         {{-- Search and Category Filter --}}
-                        <div style="padding: 6px 14px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex-shrink: 0;">
+                        <div style="padding: 6px 14px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex: 0 0 auto !important;">
                             <div style="position: relative; width: 100%;">
                                 <div style="position: absolute; left: 11px; top: 10px; color: #94A3B8; pointer-events: none;">
                                     <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -1261,7 +1261,7 @@
                         </div>
 
                         {{-- Scrollable List of Objects --}}
-                        <div class="ims-sidebar-scroll-list" style="flex: 1 1 auto; min-height: 0; padding: 10px 14px 40px 14px;">
+                        <div class="ims-sidebar-scroll-list" style="flex: 1 1 0%; min-height: 0; overflow-y: auto !important; overflow-x: hidden !important; padding: 10px 14px 40px 14px;">
                             <template x-if="filteredSidebarElements.length === 0">
                                 <div style="padding: 40px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
                                     <div style="width: 52px; height: 52px; border-radius: 14px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8;">
@@ -1337,7 +1337,7 @@
                         x-show="sidebarTab === 'layers'" 
                         x-cloak
                         class="ims-sidebar-scroll-list" 
-                        style="flex: 1 1 auto; min-height: 0; padding: 12px 14px 40px 14px;"
+                        style="flex: 1 1 0%; min-height: 0; overflow-y: auto !important; overflow-x: hidden !important; padding: 12px 14px 40px 14px;"
                     >
                         <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1.5px solid #F1F5F9;">
                             <span style="font-size: 0.74rem; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px;">Visibilitas Layer</span>
