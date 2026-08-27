@@ -17,31 +17,27 @@
                 position: relative;
             }
             .ims-sidebar-scroll-list {
-                display: block !important;
-                flex: 1 1 0px !important;
-                min-height: 0 !important;
-                height: 0 !important;
-                overflow-y: scroll !important;
+                overflow-y: auto !important;
                 overflow-x: hidden !important;
-                overscroll-behavior: contain !important;
-                -webkit-overflow-scrolling: touch !important;
-                pointer-events: auto !important;
-                padding: 10px 14px 50px 14px !important;
+                overscroll-behavior: contain;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+                scrollbar-color: #94A3B8 #F1F5F9;
             }
             .ims-sidebar-scroll-list::-webkit-scrollbar {
-                width: 8px !important;
-                display: block !important;
+                width: 6px;
+                display: block;
             }
             .ims-sidebar-scroll-list::-webkit-scrollbar-track {
-                background: #F1F5F9 !important;
-                border-radius: 4px !important;
+                background: #F1F5F9;
+                border-radius: 4px;
             }
             .ims-sidebar-scroll-list::-webkit-scrollbar-thumb {
-                background: #94A3B8 !important;
-                border-radius: 4px !important;
+                background: #94A3B8;
+                border-radius: 4px;
             }
             .ims-sidebar-scroll-list::-webkit-scrollbar-thumb:hover {
-                background: #64748B !important;
+                background: #64748B;
             }
             .ims-sidebar-tab-btn {
                 display: flex !important;
@@ -1206,9 +1202,13 @@
                     </div>
 
                     {{-- ── TAB 1: DAFTAR OBJEK JARINGAN ── --}}
-                    <div x-show="sidebarTab === 'objects'" style="flex: 1 1 0px !important; min-height: 0 !important; height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important;">
+                    <div 
+                        x-show="sidebarTab === 'objects'" 
+                        x-cloak
+                        style="flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow: hidden;"
+                    >
                         {{-- Search and Category Filter --}}
-                        <div style="padding: 6px 14px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex: 0 0 auto !important;">
+                        <div style="padding: 6px 14px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex-shrink: 0;">
                             <div style="position: relative; width: 100%;">
                                 <div style="position: absolute; left: 11px; top: 10px; color: #94A3B8; pointer-events: none;">
                                     <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -1261,7 +1261,7 @@
                         </div>
 
                         {{-- Scrollable List of Objects --}}
-                        <div class="ims-sidebar-scroll-list" style="flex: 1 1 0px !important; min-height: 0 !important; height: 0 !important; overflow-y: scroll !important; overflow-x: hidden !important; -webkit-overflow-scrolling: touch !important; padding: 10px 14px 50px 14px !important;">
+                        <div class="ims-sidebar-scroll-list" style="flex: 1 1 auto; min-height: 0; padding: 10px 14px 40px 14px;">
                             <template x-if="filteredSidebarElements.length === 0">
                                 <div style="padding: 40px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
                                     <div style="width: 52px; height: 52px; border-radius: 14px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8;">
@@ -1333,7 +1333,12 @@
                     </div>
 
                     {{-- ── TAB 2: FILTER LAYER (SHOW / HIDE) ── --}}
-                    <div x-show="sidebarTab === 'layers'" class="ims-sidebar-scroll-list" style="flex: 1 1 0px !important; min-height: 0 !important; height: 0 !important; overflow-y: scroll !important; overflow-x: hidden !important; -webkit-overflow-scrolling: touch !important; padding: 12px 14px 50px 14px !important;">
+                    <div 
+                        x-show="sidebarTab === 'layers'" 
+                        x-cloak
+                        class="ims-sidebar-scroll-list" 
+                        style="flex: 1 1 auto; min-height: 0; padding: 12px 14px 40px 14px;"
+                    >
                         <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1.5px solid #F1F5F9;">
                             <span style="font-size: 0.74rem; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px;">Visibilitas Layer</span>
                             <div style="display: flex; gap: 8px; font-size: 0.68rem; font-weight: 800;">
