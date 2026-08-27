@@ -626,6 +626,9 @@ class FtthNetworkMapPage extends Page
         if (str_contains($text, 'odc') || str_contains($text, 'fdt') || str_contains($text, 'cabinet') || str_contains($text, 'rk ')) {
             return 'odc';
         }
+        if (str_contains($text, 'odp') || str_contains($text, 'fat') || str_contains($text, 'fdb') || str_contains($text, 'distribution point')) {
+            return 'odp';
+        }
         if (str_contains($text, 'hh') || str_contains($text, 'handhole') || str_contains($text, 'joint') || str_contains($text, 'closure') || str_contains($text, 'fosc') || str_contains($text, 'splice')) {
             return 'joint_box';
         }

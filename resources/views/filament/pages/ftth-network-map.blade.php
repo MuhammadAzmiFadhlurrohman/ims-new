@@ -1053,6 +1053,16 @@
                                     </div>
                                 </button>
 
+                                <button type="button" @click="startAddMarker('odp')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    </div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E40AF;">ODP (Distribution Point)</div>
+                                        <div style="font-size: 0.68rem; color: #2563EB; font-weight: 500;">Kotak pembagi 8/16 port pelanggan</div>
+                                    </div>
+                                </button>
+
                                 <button type="button" @click="startAddMarker('olt')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F5F3FF'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #F5F3FF; border: 1px solid #DDD6FE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #7C3AED;">
                                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.5" fill="currentColor"/><circle cx="9" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6" cy="16.5" r="1.5" fill="currentColor"/><circle cx="9" cy="16.5" r="1.5" fill="currentColor"/></svg>
@@ -3998,7 +4008,7 @@
                         }
 
                         const iconId = meta.custom_icon || item.element_type || 'pin';
-                        const nodeColor = customColor || (item.element_type === 'pole' ? '#334155' : (item.element_type === 'joint_box' ? '#059669' : (item.element_type === 'odc' ? '#D97706' : (item.element_type === 'olt' ? '#7C3AED' : (item.element_type === 'customer' ? '#DB2777' : '#0878E5')))));
+                        const nodeColor = customColor || (item.element_type === 'pole' ? '#334155' : (item.element_type === 'joint_box' ? '#059669' : (item.element_type === 'odc' ? '#D97706' : (item.element_type === 'odp' ? '#0878E5' : (item.element_type === 'olt' ? '#7C3AED' : (item.element_type === 'customer' ? '#DB2777' : '#0878E5'))))));
 
                         return {
                             iconHtml: this.getIconSvg(iconId),
@@ -4421,6 +4431,7 @@
                             pole: 'Tiang Fiber (Pole)',
                             joint_box: 'Kotak Sambung (Joint Closure)',
                             odc: 'ODC / FDT',
+                            odp: 'ODP (Distribution Point)',
                             olt: 'Server Core / OLT',
                             customer: 'Rumah Pelanggan ONT'
                         };
@@ -4523,6 +4534,7 @@
                             pole: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="6" x2="19" y2="6"/><line x1="8" y1="11" x2="16" y2="11"/><circle cx="5" cy="6" r="1.5" fill="currentColor"/><circle cx="19" cy="6" r="1.5" fill="currentColor"/></svg>`,
                             joint_box: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>`,
                             odc: `<svg style="width: 16px; height: 16px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></svg>`,
+                            odp: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`,
                             olt: `<svg style="width: 17px; height: 17px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.5" fill="currentColor"/><circle cx="9" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6" cy="16.5" r="1.5" fill="currentColor"/><circle cx="9" cy="16.5" r="1.5" fill="currentColor"/></svg>`,
                             customer: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>`,
                             home: `<svg style="width: 15px; height: 15px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>`,
@@ -4755,6 +4767,9 @@
                         } else if (type === 'odc') {
                             bg = bg || '#D97706';
                             size = 30;
+                        } else if (type === 'odp') {
+                            bg = bg || '#0878E5';
+                            size = 28;
                         } else if (type === 'olt') {
                             bg = bg || '#7C3AED';
                             size = 32;
