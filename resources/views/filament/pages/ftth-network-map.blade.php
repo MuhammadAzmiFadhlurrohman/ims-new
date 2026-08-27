@@ -528,8 +528,8 @@
         >
             
             {{-- Toolbar Top Header: 100% Single Row (No Staggering / Sejajar) --}}
-            <div style="padding: 0.65rem 1rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow: visible !important;">
-                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; width: 100%;">
+            <div style="padding: 0.55rem 0.85rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow-x: auto; overflow-y: visible !important; scrollbar-width: none;">
+                <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-width: max-content;">
                     
                     {{-- 1. Project Selector --}}
                     <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
@@ -796,7 +796,7 @@
                             title="Ukur estimasi jarak kabel secara bebas di peta"
                         >
                             <svg style="width: 14px; height: 14px; color: #7C3AED; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3l-6.6 6.6c-.4.4-1 .4-1.4 0l-11-11c-.4-.4-.4-1 0-1.4l6.6-6.6c.4-.4 1-.4 1.4 0l11 11c.4.4.4 1 0 1.4z"/><line x1="7.5" y1="10.5" x2="6.5" y2="9.5"/><line x1="10.5" y1="13.5" x2="8.5" y2="11.5"/><line x1="13.5" y1="16.5" x2="12.5" y2="15.5"/><line x1="16.5" y1="19.5" x2="14.5" y2="17.5"/></svg>
-                            <span>📏 Ukur Jarak</span>
+                            <span>Ukur Jarak</span>
                         </button>
                         
                         {{-- Dropdown Add Marker --}}
@@ -928,7 +928,7 @@
                     </div>
 
                     {{-- 3. Live Universal GIS Search Bar with Geocoding --}}
-                    <div style="position: relative; flex: 1 1 180px; min-width: 140px; max-width: 280px; flex-shrink: 1;">
+                    <div style="position: relative; flex: 1 1 170px; min-width: 130px; max-width: 240px; flex-shrink: 1;">
                         <div class="ims-search-box-container">
                             <div class="ims-search-box-icon">
                                 <template x-if="!isGeocodingLoading">
@@ -946,7 +946,7 @@
                                 @focus="searchFocused = true"
                                 @click.outside="searchFocused = false"
                                 @keydown.escape="searchFocused = false"
-                                placeholder="Cari Tiang, ODP, atau Nama Jalan..." 
+                                placeholder="Cari Tiang, ODP, atau Alamat..." 
                             >
                             <button 
                                 type="button" 
@@ -1077,15 +1077,6 @@
                         >
                             <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                             <span>Export KML</span>
-                        </button>
-
-                        <button 
-                            type="button" 
-                            @click="exportGeoJson()" 
-                            class="ims-tool-btn"
-                            title="Export Peta ke format GeoJSON"
-                        >
-                            <span>Export GeoJSON</span>
                         </button>
 
                         {{-- Fullscreen Icon-Only Button --}}
