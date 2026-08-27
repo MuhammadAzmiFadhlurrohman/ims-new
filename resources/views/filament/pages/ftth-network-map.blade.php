@@ -2153,19 +2153,19 @@
                             ></div>
                             <div style="min-width: 0;">
                                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                    <div style="font-size: 1.05rem; font-weight: 800; line-height: 1.2; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px;" x-text="detailElement ? (detailForm.name || detailElement.name) : 'Detail Elemen'"></div>
+                                    <div style="font-size: 1.05rem; font-weight: 800; line-height: 1.2; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 340px;" x-text="detailElement ? (detailForm.name || detailElement.name) : 'Detail Elemen'"></div>
                                     <span 
-                                        style="font-size: 0.65rem; font-weight: 800; padding: 2px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;"
-                                        :style="'background:' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5') + '33; color: #ffffff; border: 1.5px solid ' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5')"
+                                        style="font-size: 0.68rem; font-weight: 800; padding: 2px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;"
+                                        :style="'background:' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5') + '40; color: #ffffff; border: 1.5px solid ' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5')"
                                         x-text="detailElement ? detailElement.element_type.replace('_', ' ') : ''"
                                     ></span>
                                 </div>
                                 <div style="font-size: 0.72rem; color: #94A3B8; margin-top: 3px; font-family: monospace; display: flex; align-items: center; gap: 6px;">
                                     <template x-if="detailElement && detailElement.category === 'marker'">
-                                        <span>📍 GPS: <span style="color: #E2E8F0;" x-text="detailElement.latitude ? (detailElement.latitude.toFixed(6) + ', ' + detailElement.longitude.toFixed(6)) : '-'"></span></span>
+                                        <span>📍 GPS: <span style="color: #F1F5F9; font-weight: 700;" x-text="detailElement.latitude ? (detailElement.latitude.toFixed(6) + ', ' + detailElement.longitude.toFixed(6)) : '-'"></span></span>
                                     </template>
                                     <template x-if="detailElement && detailElement.category === 'line'">
-                                        <span>📏 Jalur Kabel • Panjang: ~<span style="color: #E2E8F0;" x-text="detailElement.length_meters || 0"></span> meter</span>
+                                        <span>📏 Jalur Kabel • Panjang: ~<span style="color: #F1F5F9; font-weight: 700;" x-text="detailElement.length_meters || 0"></span> meter</span>
                                     </template>
                                 </div>
                             </div>
@@ -2180,39 +2180,39 @@
                         >✕</button>
                     </div>
 
-                    {{-- Modal Tab Navigation (Segmented Pill Switcher) --}}
-                    <div style="padding: 12px 22px 0 22px; background: #ffffff; flex-shrink: 0;">
-                        <div style="background: #F1F5F9; border-radius: 12px; padding: 4px; display: flex; gap: 4px;">
+                    {{-- Modal Tab Navigation (Solid Segmented Grid Switcher) --}}
+                    <div style="padding: 14px 22px 0 22px; background: #ffffff; flex-shrink: 0;">
+                        <div style="background: #F1F5F9; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
                             <button 
                                 type="button" 
                                 @click="detailTab = 'specs'" 
-                                style="flex: 1; padding: 8px 12px; font-size: 0.78rem; font-weight: 800; border-radius: 9px; border: none; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
-                                :style="detailTab === 'specs' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                                style="height: 38px; border-radius: 9px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid transparent; width: 100%; box-sizing: border-box; text-align: center; line-height: 1; white-space: nowrap;"
+                                :style="detailTab === 'specs' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important; border-color: #0878E5 !important;' : 'background: transparent !important; color: #475569 !important;'"
                             >
-                                <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                                 <span>Spesifikasi Teknis</span>
                             </button>
                             <button 
                                 type="button" 
                                 @click="detailTab = 'photos'" 
-                                style="flex: 1; padding: 8px 12px; font-size: 0.78rem; font-weight: 800; border-radius: 9px; border: none; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
-                                :style="detailTab === 'photos' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                                style="height: 38px; border-radius: 9px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid transparent; width: 100%; box-sizing: border-box; text-align: center; line-height: 1; white-space: nowrap;"
+                                :style="detailTab === 'photos' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important; border-color: #0878E5 !important;' : 'background: transparent !important; color: #475569 !important;'"
                             >
-                                <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                                 <span>Foto Lapangan</span>
                                 <span 
-                                    style="padding: 1px 7px; border-radius: 10px; font-size: 0.65rem; font-weight: 900; margin-left: 2px;"
-                                    :style="detailTab === 'photos' ? 'background: #0878E5; color: #ffffff;' : 'background: #E2E8F0; color: #475569;'"
+                                    style="padding: 2px 7px; border-radius: 10px; font-size: 0.68rem; font-weight: 900; line-height: 1;"
+                                    :style="detailTab === 'photos' ? 'background: #ffffff !important; color: #0878E5 !important;' : 'background: #E2E8F0 !important; color: #475569 !important;'"
                                     x-text="(detailElement && detailElement.metadata && detailElement.metadata.photos ? detailElement.metadata.photos.length : 0)"
                                 ></span>
                             </button>
                             <button 
                                 type="button" 
                                 @click="detailTab = 'notes'" 
-                                style="flex: 1; padding: 8px 12px; font-size: 0.78rem; font-weight: 800; border-radius: 9px; border: none; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
-                                :style="detailTab === 'notes' ? 'background: #ffffff; color: #0878E5; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                                style="height: 38px; border-radius: 9px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid transparent; width: 100%; box-sizing: border-box; text-align: center; line-height: 1; white-space: nowrap;"
+                                :style="detailTab === 'notes' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important; border-color: #0878E5 !important;' : 'background: transparent !important; color: #475569 !important;'"
                             >
-                                <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                                 <span>Riwayat & Log</span>
                             </button>
                         </div>
@@ -2224,12 +2224,13 @@
                         <div x-show="detailTab === 'specs'" style="display: flex; flex-direction: column; gap: 16px;">
                             {{-- Common Name Field --}}
                             <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px;">
-                                <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Nama / Identitas Elemen</label>
+                                <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Nama / Identitas Elemen *</label>
                                 <input 
                                     type="text" 
                                     x-model="detailForm.name" 
                                     :disabled="detailElement && detailElement.isOdp"
-                                    style="width: 100%; height: 40px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 0 14px; font-size: 0.85rem; font-weight: 800; color: #0F172A; background: #ffffff; box-sizing: border-box; transition: all 0.15s ease;"
+                                    placeholder="Masukkan nama elemen..."
+                                    style="width: 100%; height: 42px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 0 14px; font-size: 0.88rem; font-weight: 800; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none; transition: all 0.15s ease;"
                                     onfocus="this.style.borderColor='#0878E5'; this.style.boxShadow='0 0 0 3px rgba(8,120,229,0.12)'"
                                     onblur="this.style.borderColor='#CBD5E1'; this.style.boxShadow='none'"
                                 >
@@ -2239,12 +2240,12 @@
                             <template x-if="detailElement && detailElement.element_type === 'pole'">
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Nomor / Kode Tiang</label>
-                                        <input type="text" x-model="detailForm.pole_code" placeholder="Contoh: TG-PLN-042" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Nomor / Kode Tiang</label>
+                                        <input type="text" x-model="detailForm.pole_code" placeholder="Contoh: TG-PLN-042" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Status Kepemilikan</label>
-                                        <select x-model="detailForm.ownership" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Status Kepemilikan</label>
+                                        <select x-model="detailForm.ownership" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="Tiang Sendiri">Tiang Sendiri (Dedicated ISP)</option>
                                             <option value="Sewa PLN">Sewa Tiang PLN</option>
                                             <option value="Sewa Telkom">Sewa Tiang Telkom</option>
@@ -2252,8 +2253,8 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Tinggi Tiang</label>
-                                        <select x-model="detailForm.pole_height" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Tinggi Tiang</label>
+                                        <select x-model="detailForm.pole_height" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="7 Meter">7 Meter (Standar Distribusi)</option>
                                             <option value="9 Meter">9 Meter (Jalur Feeder / Utama)</option>
                                             <option value="11 Meter">11 Meter (Lintas Jalan Raya)</option>
@@ -2261,8 +2262,8 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Bahan Tiang</label>
-                                        <select x-model="detailForm.pole_material" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Bahan Tiang</label>
+                                        <select x-model="detailForm.pole_material" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="Besi Galvanis">Besi Galvanis</option>
                                             <option value="Beton Bertulang">Beton Bertulang</option>
                                             <option value="Besi Biasa (Cat Hitam)">Besi Biasa (Cat Hitam)</option>
@@ -2270,8 +2271,8 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Kondisi Fisik Tiang</label>
-                                        <select x-model="detailForm.physical_condition" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Kondisi Fisik Tiang</label>
+                                        <select x-model="detailForm.physical_condition" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="Bagus & Tegak">✅ Bagus & Tegak</option>
                                             <option value="Sedikit Miring">⚠️ Sedikit Miring</option>
                                             <option value="Perlu Perbaikan Trekschoring">🔧 Perlu Perbaikan Trekschoring</option>
@@ -2279,8 +2280,8 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Beban / Perangkat Terpasang</label>
-                                        <input type="text" x-model="detailForm.attached_loads" placeholder="Contoh: 1 ODP + 2 Tarikan Dropcore" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Beban / Perangkat Terpasang</label>
+                                        <input type="text" x-model="detailForm.attached_loads" placeholder="Contoh: 1 ODP + 2 Tarikan Dropcore" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                 </div>
                             </template>
@@ -2289,19 +2290,19 @@
                             <template x-if="detailElement && detailElement.element_type === 'joint_box'">
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Kode Sambungan / Closure</label>
-                                        <input type="text" x-model="detailForm.closure_code" placeholder="Contoh: JB-01-FD-04" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Kode Sambungan / Closure</label>
+                                        <input type="text" x-model="detailForm.closure_code" placeholder="Contoh: JB-01-FD-04" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Tipe Box Closure</label>
-                                        <select x-model="detailForm.closure_type" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Tipe Box Closure</label>
+                                        <select x-model="detailForm.closure_type" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="Dome (Tabung)">Dome (Model Tabung Vertikal)</option>
                                             <option value="Inline (Horizontal)">Inline (Model Pipih Horizontal)</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Kapasitas Tray Splicing</label>
-                                        <select x-model="detailForm.core_capacity" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Kapasitas Tray Splicing</label>
+                                        <select x-model="detailForm.core_capacity" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="12 Core">12 Core (1 Tray)</option>
                                             <option value="24 Core">24 Core (2 Tray)</option>
                                             <option value="48 Core">48 Core (4 Tray)</option>
@@ -2310,12 +2311,12 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Nama Teknisi Splicer</label>
-                                        <input type="text" x-model="detailForm.splicer_name" placeholder="Contoh: Rahmat / Dedi" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Nama Teknisi Splicer</label>
+                                        <input type="text" x-model="detailForm.splicer_name" placeholder="Contoh: Rahmat / Dedi" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div style="grid-column: 1 / -1;">
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Catatan Pemetaan Core & Tube (Splicing Matrix)</label>
-                                        <textarea x-model="detailForm.tube_mapping" placeholder="Contoh: Tube 1 (Biru) -> Disambung ke Feeder ODC Port 1-12. Tube 2 (Oranye) -> Cadangan." style="width: 100%; height: 65px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 8px 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;"></textarea>
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Catatan Pemetaan Core & Tube (Splicing Matrix)</label>
+                                        <textarea x-model="detailForm.tube_mapping" placeholder="Contoh: Tube 1 (Biru) -> Disambung ke Feeder ODC Port 1-12. Tube 2 (Oranye) -> Cadangan." style="width: 100%; height: 75px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 10px 12px; font-size: 0.82rem; font-weight: 600; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;"></textarea>
                                     </div>
                                 </div>
                             </template>
@@ -2324,12 +2325,12 @@
                             <template x-if="detailElement && detailElement.element_type === 'odc'">
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Kode ODC</label>
-                                        <input type="text" x-model="detailForm.odc_code" placeholder="Contoh: ODC-BDG-01" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Kode ODC</label>
+                                        <input type="text" x-model="detailForm.odc_code" placeholder="Contoh: ODC-BDG-01" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Total Port Pasif</label>
-                                        <select x-model="detailForm.total_passive_ports" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Total Port Pasif</label>
+                                        <select x-model="detailForm.total_passive_ports" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="24">24 Port</option>
                                             <option value="48">48 Port</option>
                                             <option value="96">96 Port</option>
@@ -2338,8 +2339,8 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Rasio Splitter Primer</label>
-                                        <select x-model="detailForm.splitter_ratio" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Rasio Splitter Primer</label>
+                                        <select x-model="detailForm.splitter_ratio" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="1:4">Splitter 1:4</option>
                                             <option value="1:8">Splitter 1:8</option>
                                             <option value="1:16">Splitter 1:16</option>
@@ -2347,8 +2348,8 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Redaman Inbound dari OLT (dBm)</label>
-                                        <input type="text" x-model="detailForm.inbound_power_dbm" placeholder="Contoh: +3.8 dBm" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Redaman Inbound dari OLT (dBm)</label>
+                                        <input type="text" x-model="detailForm.inbound_power_dbm" placeholder="Contoh: +3.8 dBm" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                 </div>
                             </template>
@@ -2357,20 +2358,20 @@
                             <template x-if="detailElement && detailElement.element_type === 'olt'">
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Merk & Tipe Perangkat OLT</label>
-                                        <input type="text" x-model="detailForm.olt_brand" placeholder="Contoh: ZTE C320 / Huawei MA5608T" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Merk & Tipe Perangkat OLT</label>
+                                        <input type="text" x-model="detailForm.olt_brand" placeholder="Contoh: ZTE C320 / Huawei MA5608T" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">IP Manajemen OLT</label>
-                                        <input type="text" x-model="detailForm.olt_ip" placeholder="Contoh: 10.10.100.2" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">IP Manajemen OLT</label>
+                                        <input type="text" x-model="detailForm.olt_ip" placeholder="Contoh: 10.10.100.2" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Slot PON & Port Info</label>
-                                        <input type="text" x-model="detailForm.pon_slot_info" placeholder="Contoh: Slot 1 - 8 Port GPON C++" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Slot PON & Port Info</label>
+                                        <input type="text" x-model="detailForm.pon_slot_info" placeholder="Contoh: Slot 1 - 8 Port GPON C++" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Catu Daya Cadangan (Power Backup)</label>
-                                        <select x-model="detailForm.backup_power" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Catu Daya Cadangan (Power Backup)</label>
+                                        <select x-model="detailForm.backup_power" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="PLN + UPS Online">PLN + UPS Online 2000VA</option>
                                             <option value="PLN + Genset Auto">PLN + Genset ATS Auto</option>
                                             <option value="Baterai DC 48V">Bank Baterai DC 48V (Rectifier)</option>
@@ -2383,28 +2384,28 @@
                             <template x-if="detailElement && detailElement.element_type === 'customer'">
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">ID Pelanggan / No. Layanan</label>
-                                        <input type="text" x-model="detailForm.customer_id" placeholder="Contoh: CUST-0192" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">ID Pelanggan / No. Layanan</label>
+                                        <input type="text" x-model="detailForm.customer_id" placeholder="Contoh: CUST-0192" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">No. WhatsApp Pelanggan</label>
-                                        <input type="text" x-model="detailForm.customer_phone" placeholder="Contoh: 08123456789" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">No. WhatsApp Pelanggan</label>
+                                        <input type="text" x-model="detailForm.customer_phone" placeholder="Contoh: 08123456789" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Paket Langganan</label>
-                                        <input type="text" x-model="detailForm.service_package" placeholder="Contoh: Home Fiber 50 Mbps" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Paket Langganan</label>
+                                        <input type="text" x-model="detailForm.service_package" placeholder="Contoh: Home Fiber 50 Mbps" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">SN / MAC Modem ONT</label>
-                                        <input type="text" x-model="detailForm.ont_serial" placeholder="Contoh: ZTEGC123456" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">SN / MAC Modem ONT</label>
+                                        <input type="text" x-model="detailForm.ont_serial" placeholder="Contoh: ZTEGC123456" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Redaman Rx ONT (dBm)</label>
-                                        <input type="text" x-model="detailForm.ont_rx_power" placeholder="Contoh: -20.5 dBm" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Redaman Rx ONT (dBm)</label>
+                                        <input type="text" x-model="detailForm.ont_rx_power" placeholder="Contoh: -20.5 dBm" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Port ODP Asal</label>
-                                        <input type="text" x-model="detailForm.connected_odp_port" placeholder="Contoh: ODP-BTR-08 / Port 4" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Port ODP Asal</label>
+                                        <input type="text" x-model="detailForm.connected_odp_port" placeholder="Contoh: ODP-BTR-08 / Port 4" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                 </div>
                             </template>
@@ -2413,12 +2414,12 @@
                             <template x-if="detailElement && detailElement.category === 'line'">
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Kode Segmen Jalur Kabel</label>
-                                        <input type="text" x-model="detailForm.cable_code" placeholder="Contoh: KBL-FDR-01" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Kode Segmen Jalur Kabel</label>
+                                        <input type="text" x-model="detailForm.cable_code" placeholder="Contoh: KBL-FDR-01" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Tipe Konstruksi Kabel</label>
-                                        <select x-model="detailForm.cable_type" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Tipe Konstruksi Kabel</label>
+                                        <select x-model="detailForm.cable_type" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="ADSS Aerial (Udara)">ADSS Aerial (Udara Non-Logam)</option>
                                             <option value="Figure-8 Aerial">Figure-8 Aerial (Dengan Kawat Sling)</option>
                                             <option value="Duct Bawah Tanah">Duct Underground (Bawah Tanah)</option>
@@ -2426,8 +2427,8 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Jumlah Core / Tube</label>
-                                        <select x-model="detailForm.core_count" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Jumlah Core / Tube</label>
+                                        <select x-model="detailForm.core_count" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                             <option value="1-2 Core">1 - 2 Core</option>
                                             <option value="6 Core (1 Tube)">6 Core (1 Tube)</option>
                                             <option value="12 Core (1 Tube)">12 Core (1 Tube)</option>
@@ -2437,16 +2438,16 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Cadangan Slack Loop (Meter)</label>
-                                        <input type="number" x-model="detailForm.slack_length_meters" placeholder="15" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Cadangan Slack Loop (Meter)</label>
+                                        <input type="number" x-model="detailForm.slack_length_meters" placeholder="15" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Titik Pangkal (Asal)</label>
-                                        <input type="text" x-model="detailForm.origin_node" placeholder="Contoh: OLT Server / ODC-01" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Titik Pangkal (Asal)</label>
+                                        <input type="text" x-model="detailForm.origin_node" placeholder="Contoh: OLT Server / ODC-01" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                     <div>
-                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Titik Ujung (Tujuan)</label>
-                                        <input type="text" x-model="detailForm.destination_node" placeholder="Contoh: ODP-BTR-08" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Titik Ujung (Tujuan)</label>
+                                        <input type="text" x-model="detailForm.destination_node" placeholder="Contoh: ODP-BTR-08" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                     </div>
                                 </div>
                             </template>
@@ -2518,7 +2519,7 @@
                                                     type="text" 
                                                     x-model="tempPhotoCaption" 
                                                     placeholder="Keterangan foto (misal: Sisi tiang menghadap jalan)..." 
-                                                    style="flex: 1; height: 40px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #ffffff; box-sizing: border-box;"
+                                                    style="flex: 1; height: 40px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;"
                                                 >
                                                 <button 
                                                     type="button" 
@@ -2537,15 +2538,15 @@
 
                             {{-- Photo Gallery Grid --}}
                             <div>
-                                <div style="font-size: 0.74rem; font-weight: 800; color: #475569; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
+                                <div style="font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
                                     <span>Galeri Foto Dokumentasi</span>
                                 </div>
                                 
                                 <template x-if="!detailElement || !detailElement.metadata || !detailElement.metadata.photos || detailElement.metadata.photos.length === 0">
                                     <div style="padding: 36px 16px; text-align: center; background: #F8FAFC; border-radius: 14px; border: 1.5px solid #E2E8F0; display: flex; flex-direction: column; align-items: center; gap: 8px;">
                                         <div style="font-size: 28px;">📷</div>
-                                        <div style="font-size: 0.84rem; font-weight: 800; color: #475569;">Belum ada foto dokumentasi lapangan.</div>
-                                        <div style="font-size: 0.74rem; color: #94A3B8;">Foto yang diunggah akan otomatis tersimpan di sini.</div>
+                                        <div style="font-size: 0.84rem; font-weight: 800; color: #334155;">Belum ada foto dokumentasi lapangan.</div>
+                                        <div style="font-size: 0.74rem; color: #64748B;">Foto yang diunggah akan otomatis tersimpan di sini.</div>
                                     </div>
                                 </template>
 
@@ -2562,7 +2563,7 @@
                                                 <div style="padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; background: #ffffff;">
                                                     <div style="min-width: 0;">
                                                         <div style="font-size: 0.74rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="p.caption || 'Foto Dokumentasi'"></div>
-                                                        <div style="font-size: 0.64rem; color: #94A3B8;" x-text="p.created_at || '-'"></div>
+                                                        <div style="font-size: 0.64rem; color: #64748B;" x-text="p.created_at || '-'"></div>
                                                     </div>
                                                     <button 
                                                         type="button" 
@@ -2584,54 +2585,54 @@
                         <div x-show="detailTab === 'notes'" style="display: flex; flex-direction: column; gap: 14px;">
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                                 <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Tanggal Instalasi / Tanam</label>
-                                    <input type="date" x-model="detailForm.install_date" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Tanggal Instalasi / Tanam</label>
+                                    <input type="date" x-model="detailForm.install_date" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                 </div>
                                 <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Tanggal Pemeliharaan Terakhir</label>
-                                    <input type="date" x-model="detailForm.last_maintenance_date" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Tanggal Pemeliharaan Terakhir</label>
+                                    <input type="date" x-model="detailForm.last_maintenance_date" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                 </div>
                                 <div style="grid-column: 1 / -1;">
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Teknisi / Tim Penanggung Jawab</label>
-                                    <input type="text" x-model="detailForm.technician_in_charge" placeholder="Contoh: Tim Maintenance Area Bandung Timur" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Teknisi / Tim Penanggung Jawab</label>
+                                    <input type="text" x-model="detailForm.technician_in_charge" placeholder="Contoh: Tim Maintenance Area Bandung Timur" style="width: 100%; height: 40px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.82rem; font-weight: 700; color: #0F172A; background: #ffffff; box-sizing: border-box; outline: none;">
                                 </div>
                             </div>
 
                             <div>
-                                <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Catatan Lapangan Tambahan & Log Kondisi</label>
+                                <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px;">Catatan Lapangan Tambahan & Log Kondisi</label>
                                 <textarea 
                                     x-model="detailForm.notes" 
                                     placeholder="Tuliskan catatan teknis kondisi tiang, letak sambungan closure, atau instruksi khusus untuk teknisi di lapangan..." 
-                                    style="width: 100%; height: 100px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 12px; font-size: 0.82rem; background: #F8FAFC; box-sizing: border-box; resize: vertical;"
+                                    style="width: 100%; height: 100px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 12px; font-size: 0.82rem; font-weight: 600; color: #0F172A; background: #ffffff; box-sizing: border-box; resize: vertical; outline: none;"
                                 ></textarea>
                             </div>
                         </div>
                     </div>
 
                     {{-- Modal Footer Actions --}}
-                    <div style="padding: 14px 22px; border-top: 1.5px solid #F1F5F9; background: #F8FAFC; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+                    <div style="padding: 14px 22px; border-top: 1.5px solid #E2E8F0; background: #F8FAFC; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; gap: 10px;">
                         <div style="display: flex; gap: 8px;">
                             <button 
                                 type="button" 
                                 @click="openDetailModal = false; flyToCustomElement(detailElement);" 
-                                style="padding: 8px 14px; border-radius: 10px; border: 1.5px solid #BFDBFE; background: #EFF6FF; color: #0878E5; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s ease;"
+                                style="height: 38px; padding: 0 15px; border-radius: 10px; border: 1.5px solid #BFDBFE; background: #EFF6FF; color: #0878E5; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s ease;"
                                 onmouseover="this.style.background='#DBEAFE'"
                                 onmouseout="this.style.background='#EFF6FF'"
                                 title="Fokus ke lokasi objek pada peta"
                             >
-                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                                <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                                 <span>Fokus Peta</span>
                             </button>
                             <template x-if="detailElement && !detailElement.isOdp">
                                 <button 
                                     type="button" 
                                     @click="openDetailModal = false; openStylePicker(detailElement.id);" 
-                                    style="padding: 8px 14px; border-radius: 10px; border: 1.5px solid #CBD5E1; background: #ffffff; color: #475569; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s ease;"
+                                    style="height: 38px; padding: 0 15px; border-radius: 10px; border: 1.5px solid #CBD5E1; background: #ffffff; color: #334155; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s ease;"
                                     onmouseover="this.style.background='#F1F5F9'"
                                     onmouseout="this.style.background='#ffffff'"
                                     title="Ubah gaya, warna dan ikon elemen"
                                 >
-                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+                                    <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
                                     <span>Gaya & Warna</span>
                                 </button>
                             </template>
@@ -2641,7 +2642,7 @@
                             <button 
                                 type="button" 
                                 @click="openDetailModal = false" 
-                                style="padding: 8px 16px; border: 1.5px solid #CBD5E1; background: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; color: #64748B; cursor: pointer; transition: all 0.15s ease;"
+                                style="height: 38px; padding: 0 18px; border: 1.5px solid #CBD5E1; background: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; color: #475569; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease;"
                                 onmouseover="this.style.background='#F1F5F9'"
                                 onmouseout="this.style.background='#ffffff'"
                             >Tutup</button>
@@ -2649,11 +2650,11 @@
                                 <button 
                                     type="button" 
                                     @click="saveElementDetails()" 
-                                    style="padding: 8px 20px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 900; cursor: pointer; box-shadow: 0 4px 14px rgba(8, 120, 229, 0.35); display: flex; align-items: center; gap: 6px; transition: all 0.15s ease;"
+                                    style="height: 38px; padding: 0 22px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.8rem; font-weight: 900; cursor: pointer; box-shadow: 0 4px 14px rgba(8, 120, 229, 0.35); display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s ease;"
                                     onmouseover="this.style.background='#0765c2'; this.style.transform='translateY(-1px)'"
                                     onmouseout="this.style.background='#0878E5'; this.style.transform='none'"
                                 >
-                                    <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                    <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                                     <span>Simpan Data</span>
                                 </button>
                             </template>
