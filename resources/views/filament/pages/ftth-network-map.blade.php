@@ -185,9 +185,13 @@
                 transition: none !important;
             }
             .leaflet-marker-icon.custom-ftth-node,
+            .leaflet-marker-icon.ims-drag-edit-marker,
             .leaflet-marker-icon.odp-pin {
                 background: transparent !important;
                 border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
             }
             .ims-map-container-wrap {
                 position: relative !important;
@@ -403,7 +407,7 @@
             .ims-map-canvas .leaflet-marker-icon {
                 transform-origin: center center !important;
             }
-            .odp-pin, .custom-ftth-node {
+            .odp-pin, .custom-ftth-node, .ims-drag-edit-marker {
                 background: transparent !important;
                 border: none !important;
                 padding: 0 !important;
@@ -413,7 +417,7 @@
                 justify-content: center !important;
                 line-height: 0 !important;
             }
-            .odp-pin *, .custom-ftth-node * {
+            .odp-pin *, .custom-ftth-node *, .ims-drag-edit-marker * {
                 box-sizing: border-box !important;
             }
 
@@ -2157,6 +2161,9 @@
                             this.mapInstance.closePopup();
                         }
 
+                        // Re-render custom elements to hide the ghost static marker while editing
+                        this.renderCustomElements();
+
                         if (this.editLayerGroup) {
                             this.editLayerGroup.clearLayers();
                         }
@@ -2177,21 +2184,22 @@
                                 }
                             }
                         } else if (el.category === 'marker') {
-                            this.editingMarkerLat = el.latitude;
-                            this.editingMarkerLng = el.longitude;
+                            this.editingMarkerLat = parseFloat(el.latitude);
+                            this.editingMarkerLng = parseFloat(el.longitude);
 
-                            // Create animated draggable marker handle
+                            // Create animated draggable marker handle with EXACT matching anchor & dimensions
                             const iconConfig = this.getMarkerIconHtml(el.element_type, el.color);
                             const dragIcon = L.divIcon({
-                                className: 'ims-drag-edit-marker',
+                                className: 'ims-drag-edit-marker custom-ftth-node',
                                 html: `
-                                    <div style="position: relative; width: ${iconConfig.size}px; height: ${iconConfig.size}px;">
+                                    <div style="position: relative; width: ${iconConfig.size}px; height: ${iconConfig.size}px; display: flex; align-items: center; justify-content: center; margin: 0; padding: 0;">
                                         ${iconConfig.html}
-                                        <div style="position: absolute; -inset: 6px; top: -6px; left: -6px; right: -6px; bottom: -6px; border: 2.5px dashed #0878E5; border-radius: 50%; animation: spin 4s linear infinite; pointer-events: none;"></div>
+                                        <div style="position: absolute; top: -5px; left: -5px; width: ${iconConfig.size + 10}px; height: ${iconConfig.size + 10}px; border: 2.5px dashed #0878E5; border-radius: 50%; animation: spin 4s linear infinite; pointer-events: none; box-sizing: border-box;"></div>
                                     </div>
                                 `,
                                 iconSize: [iconConfig.size, iconConfig.size],
-                                iconAnchor: [iconConfig.size / 2, iconConfig.size / 2]
+                                iconAnchor: [iconConfig.size / 2, iconConfig.size / 2],
+                                popupAnchor: [0, -(iconConfig.size / 2)]
                             });
 
                             this.editingMarkerHandle = L.marker([el.latitude, el.longitude], {
@@ -2208,7 +2216,8 @@
 
                             this.editingMarkerHandle.on('dragend', (e) => {
                                 const pos = e.target.getLatLng();
-                                const snap = this.findSnapTarget(pos.lat, pos.lng, 22);
+                                // Exclude this element itself from snap target!
+                                const snap = this.findSnapTarget(pos.lat, pos.lng, 20, el.id);
                                 if (snap) {
                                     e.target.setLatLng([snap.lat, snap.lng]);
                                     this.editingMarkerLat = snap.lat;
@@ -2216,6 +2225,9 @@
                                     if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
                                         IMS.toast('🧲 Terkunci ke: ' + snap.name, 'info', 800);
                                     }
+                                } else {
+                                    this.editingMarkerLat = pos.lat;
+                                    this.editingMarkerLng = pos.lng;
                                 }
                             });
 
@@ -2400,6 +2412,7 @@
                         this.editingMarkerLat = null;
                         this.editingMarkerLng = null;
                         this.currentMode = 'select';
+                        this.renderCustomElements();
                     },
 
                     // ── SIDEBAR HELPERS ──
@@ -2539,7 +2552,7 @@
                         this.currentLineDistance = 0;
                     },
 
-                    findSnapTarget(lat, lng, snapPixels = 22) {
+                    findSnapTarget(lat, lng, snapPixels = 22, excludeId = null) {
                         if (!this.mapInstance) return null;
                         const clickPoint = this.mapInstance.latLngToContainerPoint([lat, lng]);
                         let closest = null;
@@ -2547,6 +2560,7 @@
 
                         // 1. Check custom elements markers (poles, joint box, odc, olt, customer)
                         this.customElements.forEach(el => {
+                            if (excludeId && el.id === excludeId) return; // Never snap to the item currently being moved
                             if (el.category === 'marker' && el.latitude && el.longitude) {
                                 const pt = this.mapInstance.latLngToContainerPoint([el.latitude, el.longitude]);
                                 const dist = Math.hypot(pt.x - clickPoint.x, pt.y - clickPoint.y);
@@ -2569,7 +2583,22 @@
                             }
                         });
 
-                        // 3. Check current line points (to snap closed loops or corners)
+                        // 3. Check custom element line endpoints / vertices (to snap nodes onto cable ends)
+                        this.customElements.forEach(el => {
+                            if (excludeId && el.id === excludeId) return;
+                            if (el.category === 'line' && el.path_coordinates && el.path_coordinates.length > 0) {
+                                el.path_coordinates.forEach((p, idx) => {
+                                    const pt = this.mapInstance.latLngToContainerPoint(p);
+                                    const dist = Math.hypot(pt.x - clickPoint.x, pt.y - clickPoint.y);
+                                    if (dist < minDistance) {
+                                        minDistance = dist;
+                                        closest = { lat: p[0], lng: p[1], name: el.name + ' (Titik #' + (idx + 1) + ')', type: 'vertex' };
+                                    }
+                                });
+                            }
+                        });
+
+                        // 4. Check current line points (to snap closed loops or corners)
                         if (this.currentLinePoints && this.currentLinePoints.length > 0) {
                             this.currentLinePoints.forEach((p, idx) => {
                                 const pt = this.mapInstance.latLngToContainerPoint(p);
@@ -2953,6 +2982,11 @@
                         this.customLayerGroup.clearLayers();
 
                         this.customElements.forEach((el) => {
+                            // Hide the element currently being edited to avoid ghost duplicates
+                            if (this.currentMode === 'edit_element' && this.editingElement && el.id === this.editingElement.id) {
+                                return;
+                            }
+
                             // Check layer visibility filter
                             if (!this.layerVisibility[el.element_type]) return;
 
