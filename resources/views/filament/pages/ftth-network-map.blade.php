@@ -5182,7 +5182,8 @@
                         a.download = 'ims-ftth-network-' + new Date().toISOString().slice(0, 10) + '.geojson';
                         a.click();
                         URL.revokeObjectURL(url);
-                    }
+                    },
+
                     // ── ELEMENT DETAIL & PHOTO UPLOAD METHODS ──
                     openDetail(elementOrId) {
                         let el = null;
