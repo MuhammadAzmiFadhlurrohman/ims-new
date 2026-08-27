@@ -1142,7 +1142,7 @@
                                 id="ims-mode-dropdown-btn"
                                 type="button" 
                                 onclick="imsToggleModeDropdown(event)"
-                                :class="['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode) ? 'active' : ''"
+                                :class="['select', 'screenshot', 'inspect_coords'].includes(currentMode) ? 'active' : ''"
                                 class="ims-tool-btn"
                                 style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important;"
                                 title="Pilih Mode Interaksi Kursor Peta"
@@ -1150,14 +1150,12 @@
                                 <svg x-show="currentMode === 'select'" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>
                                 <svg x-show="currentMode === 'screenshot'" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                                 <svg x-show="currentMode === 'inspect_coords'" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
-                                <svg x-show="currentMode === 'view_only'" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                <svg x-show="!['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode)" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>
+                                <svg x-show="!['select', 'screenshot', 'inspect_coords'].includes(currentMode)" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>
                                 
                                 <span x-show="currentMode === 'select'">Jelajah ▾</span>
                                 <span x-show="currentMode === 'screenshot'">Screenshot ▾</span>
                                 <span x-show="currentMode === 'inspect_coords'">Inspektur ▾</span>
-                                <span x-show="currentMode === 'view_only'">Terkunci ▾</span>
-                                <span x-show="!['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode)">Mode ▾</span>
+                                <span x-show="!['select', 'screenshot', 'inspect_coords'].includes(currentMode)">Mode ▾</span>
                             </button>
 
                             <div 
@@ -1167,7 +1165,7 @@
                                 {{-- Dropdown Title Header --}}
                                 <div style="padding: 4px 8px 8px 8px; font-size: 0.68rem; font-weight: 900; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1.5px solid #F1F5F9; margin-bottom: 3px; display: flex; align-items: center; justify-content: space-between;">
                                     <span>Mode Interaksi Kursor</span>
-                                    <span style="font-size: 0.65rem; background: #F1F5F9; color: #64748B; padding: 2px 6px; border-radius: 6px; font-weight: 800;">4 Pilihan</span>
+                                    <span style="font-size: 0.65rem; background: #F1F5F9; color: #64748B; padding: 2px 6px; border-radius: 6px; font-weight: 800;">3 Pilihan</span>
                                 </div>
                                 {{-- Item 1: Jelajah & Pilih --}}
                                 <button 
@@ -1233,27 +1231,6 @@
                                         <div class="ims-mode-text-sub" style="color: #059669;">Klik titik untuk salin Lat-Long</div>
                                     </div>
                                     <span x-show="currentMode === 'inspect_coords'" class="ims-mode-check" style="color: #059669;">✓</span>
-                                </button>
-
-                                {{-- Item 4: Kunci Peta --}}
-                                <button 
-                                    type="button" 
-                                    onclick="imsSelectMode('view_only')"
-                                    @click="setMode('view_only')" 
-                                    class="ims-mode-menu-item"
-                                    :class="currentMode === 'view_only' ? 'is-mode-locked' : ''"
-                                >
-                                    <div class="ims-mode-icon-box" style="background: #F1F5F9; border: 1px solid #CBD5E1; color: #475569;">
-                                        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                                        </svg>
-                                    </div>
-                                    <div class="ims-mode-text-box">
-                                        <div class="ims-mode-text-title" style="color: #1E293B;">Kunci Peta (View-Only)</div>
-                                        <div class="ims-mode-text-sub" style="color: #64748B;">Mode aman presentasi tanpa edit</div>
-                                    </div>
-                                    <span x-show="currentMode === 'view_only'" class="ims-mode-check" style="color: #334155;">✓</span>
                                 </button>
                             </div>
                         </div>
@@ -1787,25 +1764,6 @@
                         style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #D97706; color: #ffffff; border: none; cursor: pointer;"
                     >
                         ✕ Batalkan Screenshot
-                    </button>
-                </div>
-
-                {{-- Dynamic Sub-Bar: View-Only Presentation Mode --}}
-                <div 
-                    x-show="currentMode === 'view_only'" 
-                    x-cloak
-                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #F1F5F9; border: 1.5px dashed #475569; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #334155;"
-                >
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-weight: 800;">🔒 Mode Kunci Peta (View-Only / Presentasi):</span>
-                        <span>Peta terkunci aman untuk dilihat/dipresentasikan. Seluruh penambahan dan penggeseran objek dinonaktifkan.</span>
-                    </div>
-                    <button 
-                        type="button" 
-                        @click="setMode('select')" 
-                        style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #1E293B; color: #ffffff; border: none; cursor: pointer;"
-                    >
-                        🔓 Buka Kunci Peta
                     </button>
                 </div>
             </div>
@@ -4026,11 +3984,6 @@
                                 }
                             } else {
                                 canvasEl.style.cursor = '';
-                                if (mode === 'view_only') {
-                                    if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                                        IMS.toast('🔒 Peta terkunci (View-Only / Mode Presentasi).', 'info', 2000);
-                                    }
-                                }
                             }
                         }
                     },
