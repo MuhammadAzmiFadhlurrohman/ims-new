@@ -1664,6 +1664,58 @@
                     </div>
                 </div>
 
+                {{-- Dynamic Sub-Bar: Edit Draggable Vertex / Element Mode --}}
+                <div 
+                    x-show="currentMode === 'edit_element'" 
+                    x-cloak
+                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #EFF6FF; border: 1.5px dashed #0878E5; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #1E40AF;"
+                >
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-weight: 800;">✏️ Mode Edit Rute / Titik:</span>
+                        <strong style="color: #0F172A;" x-text="editingElement ? editingElement.name : ''"></strong>
+                        <span>• Geser titik putih untuk mengubah posisi. Klik titik [+] untuk menambah sudut.</span>
+                        <template x-if="editingElement && editingElement.category === 'line'">
+                            <span style="background: #ffffff; padding: 2px 8px; border-radius: 6px; font-weight: 900; color: #0878E5; font-family: monospace; border: 1px solid #BFDBFE;">
+                                Panjang Baru: ~<span x-text="editingDistance"></span> m
+                            </span>
+                        </template>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <button 
+                            type="button" 
+                            @click="saveEditElement()" 
+                            style="padding: 4px 14px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(5,150,105,0.3);"
+                        >
+                            💾 Simpan Perubahan
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="cancelEditElement()" 
+                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #DC2626; cursor: pointer;"
+                        >
+                            ✕ Batal
+                        </button>
+                    </div>
+                </div>
+
+                <div 
+                    x-show="currentMode === 'add_marker'" 
+                    x-cloak
+                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #EAF5FF; border: 1.5px dashed #0878E5; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #0757B8;"
+                >
+                    <div>
+                        <b>📍 Mode Penempatan Marker:</b> Klik di mana saja pada peta untuk menempatkan <b><span x-text="activeElementType"></span></b>.
+                    </div>
+                    <button 
+                        type="button" 
+                        @click="cancelDrawing()" 
+                        style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #DC2626; cursor: pointer;"
+                    >
+                        ✕ Batal
+                    </button>
+                </div>
+
                 {{-- Dynamic Sub-Bar: Coordinate Inspector Mode --}}
                 <div 
                     x-show="currentMode === 'inspect_coords'" 
@@ -1718,58 +1770,6 @@
                         style="padding: 4px 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #1E293B; color: #ffffff; border: none; cursor: pointer;"
                     >
                         🔓 Buka Kunci Peta
-                    </button>
-                </div>
-
-                {{-- Dynamic Sub-Bar: Edit Draggable Vertex / Element Mode --}}
-                <div 
-                    x-show="currentMode === 'edit_element'" 
-                    x-cloak
-                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #EFF6FF; border: 1.5px dashed #0878E5; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #1E40AF;"
-                >
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-weight: 800;">✏️ Mode Edit Rute / Titik:</span>
-                        <strong style="color: #0F172A;" x-text="editingElement ? editingElement.name : ''"></strong>
-                        <span>• Geser titik putih untuk mengubah posisi. Klik titik [+] untuk menambah sudut.</span>
-                        <template x-if="editingElement && editingElement.category === 'line'">
-                            <span style="background: #ffffff; padding: 2px 8px; border-radius: 6px; font-weight: 900; color: #0878E5; font-family: monospace; border: 1px solid #BFDBFE;">
-                                Panjang Baru: ~<span x-text="editingDistance"></span> m
-                            </span>
-                        </template>
-                    </div>
-
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <button 
-                            type="button" 
-                            @click="saveEditElement()" 
-                            style="padding: 4px 14px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(5,150,105,0.3);"
-                        >
-                            💾 Simpan Perubahan
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="cancelEditElement()" 
-                            style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #DC2626; cursor: pointer;"
-                        >
-                            ✕ Batal
-                        </button>
-                    </div>
-                </div>
-
-                <div 
-                    x-show="currentMode === 'add_marker'" 
-                    x-cloak
-                    style="margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: #EAF5FF; border: 1.5px dashed #0878E5; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #0757B8;"
-                >
-                    <div>
-                        <b>📍 Mode Penempatan Marker:</b> Klik di mana saja pada peta untuk menempatkan <b><span x-text="activeElementType"></span></b>.
-                    </div>
-                    <button 
-                        type="button" 
-                        @click="cancelDrawing()" 
-                        style="padding: 4px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #ffffff; color: #DC2626; border: 1px solid #DC2626; cursor: pointer;"
-                    >
-                        ✕ Batal
                     </button>
                 </div>
             </div>
@@ -4572,8 +4572,9 @@
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
                         this.currentMode = 'add_marker';
                         this.activeElementType = type;
+                        this.cancelDrawing();
                         if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                            IMS.toast('Klik pada peta untuk menaruh ' + type.toUpperCase(), 'info', 2000);
+                            IMS.toast('📍 Klik pada peta untuk menaruh: ' + type.replace('_', ' ').toUpperCase(), 'info', 2500);
                         }
                     },
 
@@ -4591,9 +4592,9 @@
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
                         this.currentMode = 'draw_line';
                         this.activeElementType = type;
-                        this.clearTempDrawing();
+                        this.cancelDrawing();
                         if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                            IMS.toast('Klik titik awal di peta untuk menanam pangkal kabel ' + type.toUpperCase(), 'info', 3500);
+                            IMS.toast('⚡ Klik titik-titik di jalan/tanah untuk menarik kabel ' + type.toUpperCase(), 'info', 3000);
                         }
                     },
 
