@@ -1114,47 +1114,20 @@
                                 onclick="imsToggleModeDropdown(event)"
                                 :class="['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode) ? 'active' : ''"
                                 class="ims-tool-btn"
-                                style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;"
+                                style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important;"
                                 title="Pilih Mode Interaksi Kursor Peta"
                             >
-                                <span x-show="currentMode === 'select'" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;">
-                                    <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
-                                        <path d="m13 13 6 6"/>
-                                    </svg>
-                                    <span style="font-weight: 800;">Jelajah ▾</span>
-                                </span>
-                                <span x-show="currentMode === 'screenshot'" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;">
-                                    <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                                        <circle cx="12" cy="13" r="4"/>
-                                    </svg>
-                                    <span style="font-weight: 800;">Screenshot ▾</span>
-                                </span>
-                                <span x-show="currentMode === 'inspect_coords'" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;">
-                                    <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <line x1="22" y1="12" x2="18" y2="12"/>
-                                        <line x1="6" y1="12" x2="2" y2="12"/>
-                                        <line x1="12" y1="6" x2="12" y2="2"/>
-                                        <line x1="12" y1="22" x2="12" y2="18"/>
-                                    </svg>
-                                    <span style="font-weight: 800;">Inspektur ▾</span>
-                                </span>
-                                <span x-show="currentMode === 'view_only'" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;">
-                                    <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                                    </svg>
-                                    <span style="font-weight: 800;">Terkunci ▾</span>
-                                </span>
-                                <span x-show="!['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode)" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; white-space: nowrap !important; line-height: 1 !important;">
-                                    <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
-                                        <path d="m13 13 6 6"/>
-                                    </svg>
-                                    <span style="font-weight: 800;">Mode ▾</span>
-                                </span>
+                                <svg x-show="currentMode === 'select'" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>
+                                <svg x-show="currentMode === 'screenshot'" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                <svg x-show="currentMode === 'inspect_coords'" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
+                                <svg x-show="currentMode === 'view_only'" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <svg x-show="!['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode)" style="width: 14px; height: 14px; color: currentColor; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>
+                                
+                                <span x-show="currentMode === 'select'">Jelajah ▾</span>
+                                <span x-show="currentMode === 'screenshot'">Screenshot ▾</span>
+                                <span x-show="currentMode === 'inspect_coords'">Inspektur ▾</span>
+                                <span x-show="currentMode === 'view_only'">Terkunci ▾</span>
+                                <span x-show="!['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode)">Mode ▾</span>
                             </button>
 
                             <div 
@@ -1808,7 +1781,7 @@
             </div>
 
             {{-- Map Container Relative Wrapper (for hosting sidebar drawer overlay) --}}
-            <div class="ims-map-container-wrap">
+            <div class="ims-map-container-wrap" style="position: relative !important; width: 100% !important; overflow: hidden !important; border-radius: 0 0 16px 16px !important;">
 
                 {{-- ── 2.1 GOOGLE MY MAPS STYLE FLOATING SIDEBAR DRAWER ── --}}
                 <div 
