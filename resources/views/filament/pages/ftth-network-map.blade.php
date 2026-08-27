@@ -3468,9 +3468,11 @@
                             zoom: 17,
                             minZoom: 3,
                             maxZoom: 22,
-                            preferCanvas: false,
+                            preferCanvas: true,
                             zoomControl: false,
-                            attributionControl: false
+                            attributionControl: false,
+                            updateWhenIdle: true,
+                            updateWhenZooming: false
                         });
 
                         // Zoom control (+ and -) positioned on the right (bottom-right)
@@ -4067,12 +4069,11 @@
                         this.currentLineDistance = 0;
                     },
 
-                    findSnapTarget(lat, lng, snapPixels = 22, excludeId = null) {
+                    findSnapTarget(lat, lng, snapPixels = 20, excludeId = null) {
                         if (!this.mapInstance) return null;
                         
-                        // Approx geographic degree threshold to skip 99% of far away points before doing latLngToContainerPoint
-                        // At zoom 17-20, 24px is roughly 0.001 degrees
-                        const geoThreshold = 0.0035; 
+                        // Approx geographic degree threshold (~90m) to skip 99.9% of distant elements instantly
+                        const geoThreshold = 0.0012; 
                         const clickPoint = this.mapInstance.latLngToContainerPoint([lat, lng]);
                         let closest = null;
                         let minDistance = snapPixels;
@@ -4217,7 +4218,7 @@
                         });
                     },
 
-                    async handleMapClick(lat, lng) {
+                    handleMapClick(lat, lng) {
                         if (this.currentMode === 'measure') {
                             this.handleMeasureClick(lat, lng);
                             return;
@@ -4241,70 +4242,10 @@
                             this.promptSaveMarker(lat, lng);
                         } else if (this.currentMode === 'draw_line') {
                             const lineColor = this.activeElementType === 'feeder' ? '#EF4444' : (this.activeElementType === 'distribution' ? '#0878E5' : '#F59E0B');
-                            let newPointsAdded = [];
+                            const lastPt = this.currentLinePoints.length > 0 ? this.currentLinePoints[this.currentLinePoints.length - 1] : null;
 
-                            if (this.autoSnapRoad && this.currentLinePoints.length > 0 && !snap) {
-                                const lastPt = this.currentLinePoints[this.currentLinePoints.length - 1];
-                                if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                                    IMS.toast('🛣️ Menyusuri rute jalan...', 'info', 600);
-                                }
-                                let routeFound = false;
-
-                                // 1. Try OSM foot/pedestrian routing with 1.2s timeout
-                                try {
-                                    const controller = new AbortController();
-                                    const timeoutId = setTimeout(() => controller.abort(), 1200);
-                                    const url = `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${lastPt[1]},${lastPt[0]};${lng},${lat}?overview=full&geometries=geojson`;
-                                    const res = await fetch(url, { signal: controller.signal });
-                                    clearTimeout(timeoutId);
-                                    if (res.ok) {
-                                        const data = await res.json();
-                                        if (data.routes && data.routes[0] && data.routes[0].geometry && data.routes[0].geometry.coordinates) {
-                                            const roadCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                                            for (let k = 1; k < roadCoords.length - 1; k++) {
-                                                this.currentLinePoints.push(roadCoords[k]);
-                                                newPointsAdded.push(roadCoords[k]);
-                                            }
-                                            this.currentLinePoints.push([lat, lng]);
-                                            newPointsAdded.push([lat, lng]);
-                                            routeFound = true;
-                                        }
-                                    }
-                                } catch (err) {}
-
-                                // 2. Try OSRM driving fallback with 1.2s timeout
-                                if (!routeFound) {
-                                    try {
-                                        const controller2 = new AbortController();
-                                        const timeoutId2 = setTimeout(() => controller2.abort(), 1200);
-                                        const url2 = `https://router.project-osrm.org/route/v1/driving/${lastPt[1]},${lastPt[0]};${lng},${lat}?overview=full&geometries=geojson`;
-                                        const res2 = await fetch(url2, { signal: controller2.signal });
-                                        clearTimeout(timeoutId2);
-                                        if (res2.ok) {
-                                            const data2 = await res2.json();
-                                            if (data2.routes && data2.routes[0] && data2.routes[0].geometry && data2.routes[0].geometry.coordinates) {
-                                                const roadCoords = data2.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                                                for (let k = 1; k < roadCoords.length - 1; k++) {
-                                                    this.currentLinePoints.push(roadCoords[k]);
-                                                    newPointsAdded.push(roadCoords[k]);
-                                                }
-                                                this.currentLinePoints.push([lat, lng]);
-                                                newPointsAdded.push([lat, lng]);
-                                                routeFound = true;
-                                            }
-                                        }
-                                    } catch (err2) {}
-                                }
-
-                                if (!routeFound) {
-                                    this.currentLinePoints.push([lat, lng]);
-                                    newPointsAdded.push([lat, lng]);
-                                }
-                            } else {
-                                // Direct, exact manual point-to-point drawing
-                                this.currentLinePoints.push([lat, lng]);
-                                newPointsAdded.push([lat, lng]);
-                            }
+                            // 1. Instant Point Placement (0ms latency - completely avoids freezing)
+                            this.currentLinePoints.push([lat, lng]);
 
                             // Add visual anchor pin planted firmly at this spot
                             const anchorMarker = L.circleMarker([lat, lng], {
@@ -4318,7 +4259,7 @@
                             this.tempVertexMarkers.push(anchorMarker);
                             this.tempPointHistory.push({
                                 marker: anchorMarker,
-                                count: newPointsAdded.length
+                                count: 1
                             });
 
                             this.updateTempPolyline();
@@ -4326,6 +4267,37 @@
                             // Reset rubberband line starting point to this newly planted vertex
                             if (this.tempRubberbandLine) {
                                 this.tempRubberbandLine.setLatLngs([[lat, lng], [lat, lng]]);
+                            }
+
+                            // 2. Non-blocking asynchronous road snapping in background (never halts the UI)
+                            if (this.autoSnapRoad && lastPt && !snap) {
+                                const startPt = lastPt;
+                                const endPt = [lat, lng];
+                                const insertIndex = this.currentLinePoints.length - 1;
+
+                                (async () => {
+                                    try {
+                                        const controller = new AbortController();
+                                        const timeoutId = setTimeout(() => controller.abort(), 900);
+                                        const url = `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${startPt[1]},${startPt[0]};${endPt[1]},${endPt[0]}?overview=full&geometries=geojson`;
+                                        const res = await fetch(url, { signal: controller.signal });
+                                        clearTimeout(timeoutId);
+                                        if (res.ok) {
+                                            const data = await res.json();
+                                            if (data.routes && data.routes[0] && data.routes[0].geometry && data.routes[0].geometry.coordinates) {
+                                                const roadCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                                                if (roadCoords.length > 2) {
+                                                    const intermediate = roadCoords.slice(1, -1);
+                                                    this.currentLinePoints.splice(insertIndex, 0, ...intermediate);
+                                                    if (this.tempPointHistory.length > 0) {
+                                                        this.tempPointHistory[this.tempPointHistory.length - 1].count += intermediate.length;
+                                                    }
+                                                    this.updateTempPolyline();
+                                                }
+                                            }
+                                        }
+                                    } catch (e) {}
+                                })();
                             }
                         }
                     },
