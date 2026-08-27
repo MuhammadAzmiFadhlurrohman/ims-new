@@ -2303,13 +2303,18 @@
                     x-show="currentMode === 'screenshot'"
                     x-cloak
                     id="ims-screenshot-overlay"
+                    @mousemove="updateScreenshotHover($event)"
                     @mousedown="startScreenshotSelection($event)"
-                    style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 600; cursor: crosshair; user-select: none; overflow: hidden; background: rgba(15, 23, 42, 0.35);"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 600; cursor: crosshair; user-select: none; overflow: hidden; background: rgba(15, 23, 42, 0.35);"
                 >
+                    {{-- Full-screen Snip Crosshair Guidelines (like Windows Snipping Tool / CAD) --}}
+                    <div id="ims-crosshair-h" style="position: absolute; left: 0; right: 0; height: 1px; background: rgba(255, 255, 255, 0.85); box-shadow: 0 0 4px rgba(0,0,0,0.6); pointer-events: none !important; z-index: 40; display: none;"></div>
+                    <div id="ims-crosshair-v" style="position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255, 255, 255, 0.85); box-shadow: 0 0 4px rgba(0,0,0,0.6); pointer-events: none !important; z-index: 40; display: none;"></div>
+
                     {{-- Floating Guidance Banner --}}
                     <div 
                         x-show="!isSelectingScreenshot" 
-                        style="position: absolute; top: 16px; left: 50%; transform: translateX(-50%); background: #0F172A; color: #ffffff; padding: 8px 18px; border-radius: 30px; font-size: 0.8rem; font-weight: 800; box-shadow: 0 8px 24px rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 8px; pointer-events: none; z-index: 10;"
+                        style="position: absolute; top: 16px; left: 50%; transform: translateX(-50%); background: #0F172A; color: #ffffff; padding: 8px 18px; border-radius: 30px; font-size: 0.8rem; font-weight: 800; box-shadow: 0 8px 24px rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 8px; pointer-events: none !important; z-index: 55;"
                     >
                         <span style="font-size: 1rem;">✂️</span>
                         <span>Klik & tarik mouse untuk membuat area cuplikan peta</span>
@@ -4022,6 +4027,24 @@
                     },
 
                     // ── SCREENSHOT SNIP METHODS ──
+                    updateScreenshotHover(e) {
+                        if (this.currentMode !== 'screenshot' || this.isSelectingScreenshot) return;
+                        const overlay = document.getElementById('ims-screenshot-overlay');
+                        if (!overlay) return;
+                        const rect = overlay.getBoundingClientRect();
+                        const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+                        const y = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+
+                        const ch = document.getElementById('ims-crosshair-h');
+                        const cv = document.getElementById('ims-crosshair-v');
+                        if (ch && cv) {
+                            ch.style.display = 'block';
+                            cv.style.display = 'block';
+                            ch.style.top = y + 'px';
+                            cv.style.left = x + 'px';
+                        }
+                    },
+
                     startScreenshotSelection(e) {
                         if (this.currentMode !== 'screenshot') return;
                         if (e) {
@@ -4049,6 +4072,15 @@
                         const badge = document.getElementById('ims-screenshot-dim-badge');
                         if (badge) badge.textContent = '0 × 0 px';
 
+                        const ch = document.getElementById('ims-crosshair-h');
+                        const cv = document.getElementById('ims-crosshair-v');
+                        if (ch && cv) {
+                            ch.style.display = 'block';
+                            cv.style.display = 'block';
+                            ch.style.top = this.screenshotStartY + 'px';
+                            cv.style.left = this.screenshotStartX + 'px';
+                        }
+
                         // Attach global window listeners so cursor tracks 100% reliably even when dragging fast
                         const onWindowMouseMove = (moveEvent) => {
                             this.updateScreenshotSelection(moveEvent);
@@ -4057,6 +4089,10 @@
                         const onWindowMouseUp = (upEvent) => {
                             window.removeEventListener('mousemove', onWindowMouseMove, true);
                             window.removeEventListener('mouseup', onWindowMouseUp, true);
+                            if (ch && cv) {
+                                ch.style.display = 'none';
+                                cv.style.display = 'none';
+                            }
                             this.finishScreenshotSelection(upEvent);
                         };
 
@@ -4091,6 +4127,13 @@
                         const badge = document.getElementById('ims-screenshot-dim-badge');
                         if (badge) {
                             badge.textContent = `${Math.round(width)} × ${Math.round(height)} px`;
+                        }
+
+                        const ch = document.getElementById('ims-crosshair-h');
+                        const cv = document.getElementById('ims-crosshair-v');
+                        if (ch && cv) {
+                            ch.style.top = this.screenshotCurrentY + 'px';
+                            cv.style.left = this.screenshotCurrentX + 'px';
                         }
                     },
 
