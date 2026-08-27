@@ -1088,7 +1088,7 @@
                         <div style="position: relative;">
                             <button 
                                 type="button" 
-                                @click="openModeMenu = !openModeMenu; openMarkerMenu = false; openLineMenu = false; openProjectMenu = false; openExtraMenu = false; openMapTypeMenu = false;" 
+                                @click.stop="openModeMenu = !openModeMenu; openMarkerMenu = false; openLineMenu = false; openProjectMenu = false; openExtraMenu = false; openMapTypeMenu = false;" 
                                 :class="['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode) || openModeMenu ? 'active' : ''"
                                 class="ims-tool-btn"
                                 title="Pilih Mode Interaksi Kursor Peta"
@@ -4592,9 +4592,9 @@
                         this.openModeMenu = false;
                         if (this.currentMode === 'measure') this.clearMeasure();
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
+                        this.clearTempDrawing();
                         this.currentMode = 'add_marker';
                         this.activeElementType = type;
-                        this.cancelDrawing();
                         if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
                             IMS.toast('📍 Klik pada peta untuk menaruh: ' + type.replace('_', ' ').toUpperCase(), 'info', 2500);
                         }
@@ -4612,9 +4612,9 @@
                         this.openModeMenu = false;
                         if (this.currentMode === 'measure') this.clearMeasure();
                         if (this.currentMode === 'edit_element') this.cancelEditElement();
+                        this.clearTempDrawing();
                         this.currentMode = 'draw_line';
                         this.activeElementType = type;
-                        this.cancelDrawing();
                         if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
                             IMS.toast('⚡ Klik titik-titik di jalan/tanah untuk menarik kabel ' + type.toUpperCase(), 'info', 3000);
                         }
