@@ -5269,6 +5269,49 @@
                         URL.revokeObjectURL(url);
                     },
 
+                    // ── SPREADSHEET DATA TABLE METHODS ──
+                    get dataTableElements() {
+                        let list = this.customElements || [];
+                        if (this.dataTableTab && this.dataTableTab !== 'all') {
+                            if (this.dataTableTab === 'line') {
+                                list = list.filter(e => e.category === 'line');
+                            } else {
+                                list = list.filter(e => e.element_type === this.dataTableTab);
+                            }
+                        }
+                        if (this.dataTableSearch && this.dataTableSearch.trim() !== '') {
+                            const q = this.dataTableSearch.toLowerCase().trim();
+                            list = list.filter(e => (e.name && e.name.toLowerCase().includes(q)) || (e.notes && e.notes.toLowerCase().includes(q)));
+                        }
+                        return list;
+                    },
+
+                    exportTableCsv() {
+                        const list = this.dataTableElements || [];
+                        let csv = "ID,Tipe,Kategori,Nama,Panjang_Meter,Latitude,Longitude,Catatan\n";
+                        list.forEach(el => {
+                            const id = el.id || '';
+                            const type = el.element_type || '';
+                            const cat = el.category || '';
+                            const name = `"${(el.name || '').replace(/"/g, '""')}"`;
+                            const length = el.length_meters || '';
+                            const lat = el.latitude || '';
+                            const lng = el.longitude || '';
+                            const notes = `"${(el.notes || '').replace(/"/g, '""')}"`;
+                            csv += `${id},${type},${cat},${name},${length},${lat},${lng},${notes}\n`;
+                        });
+                        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'ims-ftth-network-data-' + new Date().toISOString().slice(0, 10) + '.csv';
+                        a.click();
+                        URL.revokeObjectURL(url);
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('📊 Berhasil mengunduh data CSV tabel jaringan!', 'success');
+                        }
+                    },
+
                     // ── ELEMENT DETAIL & PHOTO UPLOAD METHODS ──
                     openDetail(elementOrId) {
                         let el = null;
