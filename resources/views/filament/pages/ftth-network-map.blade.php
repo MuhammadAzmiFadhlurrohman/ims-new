@@ -3959,14 +3959,21 @@
 
                     findSnapTarget(lat, lng, snapPixels = 22, excludeId = null) {
                         if (!this.mapInstance) return null;
+                        
+                        // Approx geographic degree threshold to skip 99% of far away points before doing latLngToContainerPoint
+                        // At zoom 17-20, 24px is roughly 0.001 degrees
+                        const geoThreshold = 0.0035; 
                         const clickPoint = this.mapInstance.latLngToContainerPoint([lat, lng]);
                         let closest = null;
                         let minDistance = snapPixels;
 
                         // 1. Check custom elements markers (poles, joint box, odc, olt, customer)
-                        this.customElements.forEach(el => {
-                            if (excludeId && el.id === excludeId) return; // Never snap to the item currently being moved
+                        const elements = this.customElements || [];
+                        for (let i = 0; i < elements.length; i++) {
+                            const el = elements[i];
+                            if (excludeId && el.id === excludeId) continue;
                             if (el.category === 'marker' && el.latitude && el.longitude) {
+                                if (Math.abs(el.latitude - lat) > geoThreshold || Math.abs(el.longitude - lng) > geoThreshold) continue;
                                 const pt = this.mapInstance.latLngToContainerPoint([el.latitude, el.longitude]);
                                 const dist = Math.hypot(pt.x - clickPoint.x, pt.y - clickPoint.y);
                                 if (dist < minDistance) {
@@ -3974,11 +3981,14 @@
                                     closest = { lat: el.latitude, lng: el.longitude, name: el.name, type: el.element_type };
                                 }
                             }
-                        });
+                        }
 
                         // 2. Check ODPs
-                        this.allOdps.forEach(odp => {
+                        const odps = this.allOdps || [];
+                        for (let i = 0; i < odps.length; i++) {
+                            const odp = odps[i];
                             if (odp.lat && odp.lng) {
+                                if (Math.abs(odp.lat - lat) > geoThreshold || Math.abs(odp.lng - lng) > geoThreshold) continue;
                                 const pt = this.mapInstance.latLngToContainerPoint([odp.lat, odp.lng]);
                                 const dist = Math.hypot(pt.x - clickPoint.x, pt.y - clickPoint.y);
                                 if (dist < minDistance) {
@@ -3986,64 +3996,51 @@
                                     closest = { lat: odp.lat, lng: odp.lng, name: odp.name, type: 'odp' };
                                 }
                             }
-                        });
+                        }
 
-                        // 3. Check custom element line endpoints / vertices (to snap nodes onto cable ends)
-                        this.customElements.forEach(el => {
-                            if (excludeId && el.id === excludeId) return;
+                        // 3. Check custom element line endpoints / vertices
+                        for (let i = 0; i < elements.length; i++) {
+                            const el = elements[i];
+                            if (excludeId && el.id === excludeId) continue;
                             if (el.category === 'line' && el.path_coordinates && el.path_coordinates.length > 0) {
-                                el.path_coordinates.forEach((p, idx) => {
+                                const coords = el.path_coordinates;
+                                for (let k = 0; k < coords.length; k++) {
+                                    const p = coords[k];
+                                    if (Math.abs(p[0] - lat) > geoThreshold || Math.abs(p[1] - lng) > geoThreshold) continue;
                                     const pt = this.mapInstance.latLngToContainerPoint(p);
                                     const dist = Math.hypot(pt.x - clickPoint.x, pt.y - clickPoint.y);
                                     if (dist < minDistance) {
                                         minDistance = dist;
-                                        closest = { lat: p[0], lng: p[1], name: el.name + ' (Titik #' + (idx + 1) + ')', type: 'vertex' };
+                                        closest = { lat: p[0], lng: p[1], name: el.name + ' (Titik #' + (k + 1) + ')', type: 'vertex' };
                                     }
-                                });
+                                }
                             }
-                        });
+                        }
 
-                        // 4. Check current line points (to snap closed loops or corners)
+                        // 4. Check current drawing line points
                         if (this.currentLinePoints && this.currentLinePoints.length > 0) {
-                            this.currentLinePoints.forEach((p, idx) => {
+                            for (let idx = 0; idx < this.currentLinePoints.length; idx++) {
+                                const p = this.currentLinePoints[idx];
+                                if (Math.abs(p[0] - lat) > geoThreshold || Math.abs(p[1] - lng) > geoThreshold) continue;
                                 const pt = this.mapInstance.latLngToContainerPoint(p);
                                 const dist = Math.hypot(pt.x - clickPoint.x, pt.y - clickPoint.y);
                                 if (dist < minDistance) {
                                     minDistance = dist;
                                     closest = { lat: p[0], lng: p[1], name: 'Titik Sudut Kabel #' + (idx + 1), type: 'vertex' };
                                 }
-                            });
+                            }
                         }
 
                         return closest;
                     },
 
+                    _mouseMoveThrottled: false,
                     handleMapMouseMove(e) {
-                        if (this.currentMode === 'measure' && this.measurePoints.length > 0 && this.mapInstance) {
-                            const lastPt = this.measurePoints[this.measurePoints.length - 1];
-                            let targetLat = e.latlng.lat;
-                            let targetLng = e.latlng.lng;
-                            const snap = this.findSnapTarget(targetLat, targetLng, 20);
-                            if (snap) {
-                                targetLat = snap.lat;
-                                targetLng = snap.lng;
-                            }
-                            const mouseLatLng = [targetLat, targetLng];
-                            if (!this.tempMeasureRubberband) {
-                                this.tempMeasureRubberband = L.polyline([lastPt, mouseLatLng], {
-                                    color: '#7C3AED',
-                                    weight: 2.5,
-                                    dashArray: '4, 4',
-                                    opacity: 0.8
-                                });
-                                this.measureLayerGroup.addLayer(this.tempMeasureRubberband);
-                            } else {
-                                this.tempMeasureRubberband.setLatLngs([lastPt, mouseLatLng]);
-                            }
-                            return;
-                        }
+                        // Fast exit if not actively drawing or measuring
+                        const isDrawing = (this.currentMode === 'draw_line' && this.currentLinePoints.length > 0);
+                        const isMeasuring = (this.currentMode === 'measure' && this.measurePoints.length > 0);
 
-                        if (this.currentMode !== 'draw_line' || this.currentLinePoints.length === 0 || !this.mapInstance) {
+                        if (!isDrawing && !isMeasuring) {
                             if (this.tempRubberbandLine && this.mapInstance) {
                                 this.mapInstance.removeLayer(this.tempRubberbandLine);
                                 this.tempRubberbandLine = null;
@@ -4051,30 +4048,63 @@
                             return;
                         }
 
-                        const lastPt = this.currentLinePoints[this.currentLinePoints.length - 1];
-                        let targetLat = e.latlng.lat;
-                        let targetLng = e.latlng.lng;
+                        if (this._mouseMoveThrottled) return;
+                        this._mouseMoveThrottled = true;
 
-                        // Check magnetic snap while hovering
-                        const snap = this.findSnapTarget(targetLat, targetLng, 22);
-                        if (snap) {
-                            targetLat = snap.lat;
-                            targetLng = snap.lng;
-                        }
+                        requestAnimationFrame(() => {
+                            this._mouseMoveThrottled = false;
+                            if (!this.mapInstance) return;
 
-                        const mouseLatLng = [targetLat, targetLng];
-                        const lineColor = this.activeElementType === 'feeder' ? '#EF4444' : (this.activeElementType === 'distribution' ? '#0878E5' : '#F59E0B');
+                            if (this.currentMode === 'measure' && this.measurePoints.length > 0) {
+                                const lastPt = this.measurePoints[this.measurePoints.length - 1];
+                                let targetLat = e.latlng.lat;
+                                let targetLng = e.latlng.lng;
+                                const snap = this.findSnapTarget(targetLat, targetLng, 20);
+                                if (snap) {
+                                    targetLat = snap.lat;
+                                    targetLng = snap.lng;
+                                }
+                                const mouseLatLng = [targetLat, targetLng];
+                                if (!this.tempMeasureRubberband) {
+                                    this.tempMeasureRubberband = L.polyline([lastPt, mouseLatLng], {
+                                        color: '#7C3AED',
+                                        weight: 2.5,
+                                        dashArray: '4, 4',
+                                        opacity: 0.8
+                                    });
+                                    this.measureLayerGroup.addLayer(this.tempMeasureRubberband);
+                                } else {
+                                    this.tempMeasureRubberband.setLatLngs([lastPt, mouseLatLng]);
+                                }
+                                return;
+                            }
 
-                        if (!this.tempRubberbandLine) {
-                            this.tempRubberbandLine = L.polyline([lastPt, mouseLatLng], {
-                                color: lineColor,
-                                weight: 3,
-                                dashArray: '6, 6',
-                                opacity: 0.85
-                            }).addTo(this.mapInstance);
-                        } else {
-                            this.tempRubberbandLine.setLatLngs([lastPt, mouseLatLng]);
-                        }
+                            if (this.currentMode === 'draw_line' && this.currentLinePoints.length > 0) {
+                                const lastPt = this.currentLinePoints[this.currentLinePoints.length - 1];
+                                let targetLat = e.latlng.lat;
+                                let targetLng = e.latlng.lng;
+
+                                const snap = this.findSnapTarget(targetLat, targetLng, 22);
+                                if (snap) {
+                                    targetLat = snap.lat;
+                                    targetLng = snap.lng;
+                                }
+
+                                const mouseLatLng = [targetLat, targetLng];
+                                const lineColor = this.activeElementType === 'feeder' ? '#EF4444' : (this.activeElementType === 'distribution' ? '#0878E5' : '#F59E0B');
+
+                                if (!this.tempRubberbandLine) {
+                                    this.tempRubberbandLine = L.polyline([lastPt, mouseLatLng], {
+                                        color: lineColor,
+                                        weight: 3,
+                                        dashArray: '6, 6',
+                                        opacity: 0.85
+                                    }).addTo(this.mapInstance);
+                                } else {
+                                    this.tempRubberbandLine.setLatLngs([lastPt, mouseLatLng]);
+                                }
+                            }
+                        });
                     },
 
                     async handleMapClick(lat, lng) {
@@ -4110,10 +4140,13 @@
                                 }
                                 let routeFound = false;
 
-                                // 1. Try OSM foot/pedestrian routing
+                                // 1. Try OSM foot/pedestrian routing with 1.2s timeout
                                 try {
+                                    const controller = new AbortController();
+                                    const timeoutId = setTimeout(() => controller.abort(), 1200);
                                     const url = `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${lastPt[1]},${lastPt[0]};${lng},${lat}?overview=full&geometries=geojson`;
-                                    const res = await fetch(url);
+                                    const res = await fetch(url, { signal: controller.signal });
+                                    clearTimeout(timeoutId);
                                     if (res.ok) {
                                         const data = await res.json();
                                         if (data.routes && data.routes[0] && data.routes[0].geometry && data.routes[0].geometry.coordinates) {
@@ -4129,11 +4162,14 @@
                                     }
                                 } catch (err) {}
 
-                                // 2. Try OSRM driving fallback
+                                // 2. Try OSRM driving fallback with 1.2s timeout
                                 if (!routeFound) {
                                     try {
+                                        const controller2 = new AbortController();
+                                        const timeoutId2 = setTimeout(() => controller2.abort(), 1200);
                                         const url2 = `https://router.project-osrm.org/route/v1/driving/${lastPt[1]},${lastPt[0]};${lng},${lat}?overview=full&geometries=geojson`;
-                                        const res2 = await fetch(url2);
+                                        const res2 = await fetch(url2, { signal: controller2.signal });
+                                        clearTimeout(timeoutId2);
                                         if (res2.ok) {
                                             const data2 = await res2.json();
                                             if (data2.routes && data2.routes[0] && data2.routes[0].geometry && data2.routes[0].geometry.coordinates) {
@@ -4158,6 +4194,7 @@
                                 // Direct, exact manual point-to-point drawing
                                 this.currentLinePoints.push([lat, lng]);
                                 newPointsAdded.push([lat, lng]);
+                            }
                             }
 
                             // Add visual anchor pin planted firmly at this spot
