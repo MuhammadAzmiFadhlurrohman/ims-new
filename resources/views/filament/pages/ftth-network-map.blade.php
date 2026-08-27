@@ -155,6 +155,53 @@
                 border-color: #94A3B8 !important;
                 color: #1E293B !important;
             }
+
+            /* ── MAP CANVAS CUSTOM CURSORS (ODP, POLE, JB, ODC, OLT, ONT) ── */
+            #ims-ftth-builder-canvas.ims-cursor-odp,
+            #ims-ftth-builder-canvas.ims-cursor-odp *,
+            .leaflet-container.ims-cursor-odp,
+            .leaflet-container.ims-cursor-odp * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230878E5' fill-opacity='0.25' stroke='%230878E5' stroke-width='2' stroke-dasharray='3 2'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%230878E5' stroke='%23ffffff' stroke-width='2'/%3E%3Cpath d='M17 10l-4 6h4l-2 5' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") 16 16, crosshair !important;
+            }
+            #ims-ftth-builder-canvas.ims-cursor-pole,
+            #ims-ftth-builder-canvas.ims-cursor-pole *,
+            .leaflet-container.ims-cursor-pole,
+            .leaflet-container.ims-cursor-pole * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23334155' fill-opacity='0.25' stroke='%23334155' stroke-width='2' stroke-dasharray='3 2'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23334155' stroke='%23ffffff' stroke-width='2'/%3E%3Cline x1='16' y1='10' x2='16' y2='22' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='11' y1='13' x2='21' y2='13' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") 16 16, crosshair !important;
+            }
+            #ims-ftth-builder-canvas.ims-cursor-joint_box,
+            #ims-ftth-builder-canvas.ims-cursor-joint_box *,
+            .leaflet-container.ims-cursor-joint_box,
+            .leaflet-container.ims-cursor-joint_box * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23059669' fill-opacity='0.25' stroke='%23059669' stroke-width='2' stroke-dasharray='3 2'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23059669' stroke='%23ffffff' stroke-width='2'/%3E%3Crect x='12' y='12' width='8' height='8' rx='2' fill='%23ffffff'/%3E%3C/svg%3E") 16 16, crosshair !important;
+            }
+            #ims-ftth-builder-canvas.ims-cursor-odc,
+            #ims-ftth-builder-canvas.ims-cursor-odc *,
+            .leaflet-container.ims-cursor-odc,
+            .leaflet-container.ims-cursor-odc * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23D97706' fill-opacity='0.25' stroke='%23D97706' stroke-width='2' stroke-dasharray='3 2'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23D97706' stroke='%23ffffff' stroke-width='2'/%3E%3Crect x='12' y='11' width='8' height='10' rx='2' fill='%23ffffff'/%3E%3C/svg%3E") 16 16, crosshair !important;
+            }
+            #ims-ftth-builder-canvas.ims-cursor-olt,
+            #ims-ftth-builder-canvas.ims-cursor-olt *,
+            .leaflet-container.ims-cursor-olt,
+            .leaflet-container.ims-cursor-olt * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%237C3AED' fill-opacity='0.25' stroke='%237C3AED' stroke-width='2' stroke-dasharray='3 2'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%237C3AED' stroke='%23ffffff' stroke-width='2'/%3E%3Crect x='11' y='12' width='10' height='3' rx='1' fill='%23ffffff'/%3E%3Crect x='11' y='17' width='10' height='3' rx='1' fill='%23ffffff'/%3E%3C/svg%3E") 16 16, crosshair !important;
+            }
+            #ims-ftth-builder-canvas.ims-cursor-customer,
+            #ims-ftth-builder-canvas.ims-cursor-customer *,
+            .leaflet-container.ims-cursor-customer,
+            .leaflet-container.ims-cursor-customer * {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23DB2777' fill-opacity='0.25' stroke='%23DB2777' stroke-width='2' stroke-dasharray='3 2'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23DB2777' stroke='%23ffffff' stroke-width='2'/%3E%3Cpath d='M12 15l4-3 4 3v5h-8z' fill='%23ffffff'/%3E%3C/svg%3E") 16 16, crosshair !important;
+            }
+            #ims-ftth-builder-canvas.ims-cursor-draw_line,
+            #ims-ftth-builder-canvas.ims-cursor-draw_line *,
+            .leaflet-container.ims-cursor-draw_line,
+            .leaflet-container.ims-cursor-draw_line * {
+                cursor: crosshair !important;
+            }
+            .swal2-container {
+                z-index: 999999999 !important;
+            }
             .ims-mode-menu-item {
                 width: 100% !important;
                 min-width: 100% !important;
@@ -2418,7 +2465,7 @@
         </div>
 
         {{-- ── 3. MODAL TAMBAH PROYEK BARU (CENTERED TELEPORT) ── --}}
-        <template x-teleport="body">
+        <template x-teleport="#ims-ftth-map-card-root">
             <div 
                 x-show="openNewProjectModal" 
                 :class="!openNewProjectModal && 'is-hidden'"
@@ -2485,7 +2532,7 @@
         </template>
 
         {{-- ── 4. MODAL KUSTOMISASI WARNA & IKON (CENTERED TELEPORT) ── --}}
-        <template x-teleport="body">
+        <template x-teleport="#ims-ftth-map-card-root">
             <div 
                 x-show="openStyleModal" 
                 :class="!openStyleModal && 'is-hidden'"
@@ -2644,7 +2691,7 @@
         </template>
 
         {{-- ── 2.5 ELEMENT DETAIL & SPECIFICATIONS MODAL WITH PHOTO UPLOAD (CENTERED TELEPORT) ── --}}
-        <template x-teleport="body">
+        <template x-teleport="#ims-ftth-map-card-root">
             <div 
                 x-show="openDetailModal" 
                 :class="!openDetailModal && 'is-hidden'"
@@ -3188,7 +3235,7 @@
         </template>
 
         {{-- ── 2.6 FULLSCREEN PHOTO ZOOM LIGHTBOX MODAL (CENTERED TELEPORT) ── --}}
-        <template x-teleport="body">
+        <template x-teleport="#ims-ftth-map-card-root">
             <div 
                 x-show="previewPhotoModal" 
                 :class="!previewPhotoModal && 'is-hidden'"
@@ -3235,7 +3282,7 @@
         </template>
 
         {{-- ── 2.4 SPREADSHEET DATA TABLE MODAL (CENTERED TELEPORT) ── --}}
-        <template x-teleport="body">
+        <template x-teleport="#ims-ftth-map-card-root">
             <div 
                 x-show="openDataTableModal" 
                 :class="!openDataTableModal && 'is-hidden'"
@@ -4298,6 +4345,7 @@
 
                             if (typeof Swal !== 'undefined') {
                                 Swal.fire({
+                                    target: document.fullscreenElement || document.getElementById('ims-ftth-map-card-root') || 'body',
                                     title: '📸 Pratinjau Cuplikan Peta',
                                     html: `
                                         <div style="font-size: 13.5px; color: #64748B; margin-bottom: 14px; text-align: center;">
@@ -5224,6 +5272,7 @@
                         let lineName = defaultName;
                         if (typeof Swal !== 'undefined') {
                             const { value: formValues } = await Swal.fire({
+                                target: document.fullscreenElement || document.getElementById('ims-ftth-map-card-root') || 'body',
                                 title: 'Simpan Jalur Kabel ' + typeLabel,
                                 html: `
                                     <div style="display: flex; flex-direction: column; gap: 10px; text-align: left; font-family: inherit; font-size: 13px;">
@@ -5284,6 +5333,7 @@
 
                         if (typeof Swal !== 'undefined') {
                             const { value: formValues } = await Swal.fire({
+                                target: document.fullscreenElement || document.getElementById('ims-ftth-map-card-root') || 'body',
                                 title: 'Tambah ' + label,
                                 html: `
                                     <div style="display: flex; flex-direction: column; gap: 10px; text-align: left; font-family: inherit; font-size: 13px;">
@@ -6567,6 +6617,7 @@
             window.imsDeleteFtthElement = function(id, name) {
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({
+                        target: document.fullscreenElement || document.getElementById('ims-ftth-map-card-root') || 'body',
                         title: 'Hapus Elemen Jaringan?',
                         text: 'Anda yakin ingin menghapus "' + name + '" dari peta?',
                         icon: 'warning',
