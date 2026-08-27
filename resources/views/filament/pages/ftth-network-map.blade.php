@@ -1504,6 +1504,16 @@
                                     <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px; padding-top: 8px; border-top: 1px solid #F1F5F9;">
                                         <button 
                                             type="button" 
+                                            @click="openDetail(item)" 
+                                            style="width: 32px; height: 32px; border-radius: 8px; background: #F0FDF4; color: #16A34A; border: 1px solid #BBF7D0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s ease;"
+                                            onmouseover="this.style.background='#16A34A'; this.style.color='#ffffff'; this.style.transform='translateY(-1px)'"
+                                            onmouseout="this.style.background='#F0FDF4'; this.style.color='#16A34A'; this.style.transform='none'"
+                                            title="Lihat Detail, Spesifikasi & Foto Dokumentasi"
+                                        >
+                                            <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                        </button>
+                                        <button 
+                                            type="button" 
                                             @click="flyToCustomElement(item)" 
                                             style="width: 32px; height: 32px; border-radius: 8px; background: #EFF6FF; color: #0878E5; border: 1px solid #BFDBFE; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s ease;"
                                             onmouseover="this.style.background='#0878E5'; this.style.color='#ffffff'; this.style.transform='translateY(-1px)'"
@@ -2042,6 +2052,549 @@
             </div>
         </div>
 
+        {{-- ── 2.5 ELEMENT DETAIL & SPECIFICATIONS MODAL WITH PHOTO UPLOAD ── --}}
+        <div 
+            x-show="openDetailModal" 
+            x-cloak
+            style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); z-index: 9999999; display: flex; align-items: center; justify-content: center; padding: 1rem;"
+            @keydown.escape.window="openDetailModal = false"
+        >
+            <div 
+                @click.outside="openDetailModal = false"
+                style="background: #ffffff; border-radius: 18px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); width: 100%; max-width: 680px; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #CBD5E1; position: relative;"
+            >
+                {{-- Modal Header --}}
+                <div style="padding: 14px 20px; border-bottom: 1.5px solid #F1F5F9; display: flex; align-items: center; justify-content: space-between; background: #0F172A; color: #ffffff;">
+                    <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+                        <div 
+                            style="width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.2);"
+                            :style="'background:' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5')"
+                            x-html="detailElement ? getIconSvg((detailElement.metadata && detailElement.metadata.custom_icon) || detailElement.element_type) : ''"
+                        ></div>
+                        <div style="min-width: 0;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="font-size: 1rem; font-weight: 900; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="detailElement ? (detailForm.name || detailElement.name) : 'Detail Elemen'"></div>
+                                <span 
+                                    style="font-size: 0.64rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.4px;"
+                                    :style="'background:' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5') + '22; color: #ffffff; border: 1px solid ' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5')"
+                                    x-text="detailElement ? detailElement.element_type.replace('_', ' ') : ''"
+                                ></span>
+                            </div>
+                            <div style="font-size: 0.7rem; color: #94A3B8; margin-top: 2px; font-family: monospace;">
+                                <template x-if="detailElement && detailElement.category === 'marker'">
+                                    <span>GPS: <span x-text="detailElement.latitude ? (detailElement.latitude.toFixed(6) + ', ' + detailElement.longitude.toFixed(6)) : '-'"></span></span>
+                                </template>
+                                <template x-if="detailElement && detailElement.category === 'line'">
+                                    <span>Jalur Kabel • Panjang Terukur: ~<span x-text="detailElement.length_meters || 0"></span> meter</span>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                    <button 
+                        type="button" 
+                        @click="openDetailModal = false" 
+                        style="background: rgba(255,255,255,0.1); border: none; color: #ffffff; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; transition: background 0.15s ease;"
+                        onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                        onmouseout="this.style.background='rgba(255,255,255,0.1)'"
+                    >✕</button>
+                </div>
+
+                {{-- Modal Tab Navigation --}}
+                <div style="padding: 0 20px; background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; display: flex; gap: 8px;">
+                    <button 
+                        type="button" 
+                        @click="detailTab = 'specs'" 
+                        style="padding: 10px 14px; font-size: 0.76rem; font-weight: 800; border: none; background: transparent; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all 0.15s ease; display: flex; align-items: center; gap: 6px;"
+                        :style="detailTab === 'specs' ? 'color: #0878E5; border-bottom-color: #0878E5;' : 'color: #64748B;'"
+                    >
+                        <span>📊 Spesifikasi Teknis</span>
+                    </button>
+                    <button 
+                        type="button" 
+                        @click="detailTab = 'photos'" 
+                        style="padding: 10px 14px; font-size: 0.76rem; font-weight: 800; border: none; background: transparent; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all 0.15s ease; display: flex; align-items: center; gap: 6px;"
+                        :style="detailTab === 'photos' ? 'color: #0878E5; border-bottom-color: #0878E5;' : 'color: #64748B;'"
+                    >
+                        <span>📸 Galeri & Foto Lapangan</span>
+                        <span 
+                            style="padding: 1px 6px; border-radius: 10px; font-size: 0.64rem; font-weight: 900;"
+                            :style="detailTab === 'photos' ? 'background: #0878E5; color: #ffffff;' : 'background: #E2E8F0; color: #475569;'"
+                            x-text="(detailElement && detailElement.metadata && detailElement.metadata.photos ? detailElement.metadata.photos.length : 0)"
+                        ></span>
+                    </button>
+                    <button 
+                        type="button" 
+                        @click="detailTab = 'notes'" 
+                        style="padding: 10px 14px; font-size: 0.76rem; font-weight: 800; border: none; background: transparent; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all 0.15s ease; display: flex; align-items: center; gap: 6px;"
+                        :style="detailTab === 'notes' ? 'color: #0878E5; border-bottom-color: #0878E5;' : 'color: #64748B;'"
+                    >
+                        <span>📝 Riwayat & Log Teknisi</span>
+                    </button>
+                </div>
+
+                {{-- Modal Body (Scrollable) --}}
+                <div style="padding: 20px; overflow-y: auto; flex: 1; background: #ffffff;">
+                    {{-- TAB 1: SPESIFIKASI TEKNIS --}}
+                    <div x-show="detailTab === 'specs'" style="display: flex; flex-direction: column; gap: 14px;">
+                        {{-- Common Name Field --}}
+                        <div>
+                            <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Nama / Identitas Elemen:</label>
+                            <input 
+                                type="text" 
+                                x-model="detailForm.name" 
+                                :disabled="detailElement && detailElement.isOdp"
+                                style="width: 100%; height: 38px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; font-weight: 800; color: #0F172A; box-sizing: border-box;"
+                            >
+                        </div>
+
+                        {{-- DYNAMIC FIELDS FOR POLE (TIANG) --}}
+                        <template x-if="detailElement && detailElement.element_type === 'pole'">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Nomor / Kode Tiang:</label>
+                                    <input type="text" x-model="detailForm.pole_code" placeholder="Contoh: TG-PLN-042" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Status Kepemilikan:</label>
+                                    <select x-model="detailForm.ownership" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="Tiang Sendiri">Tiang Sendiri (Dedicated ISP)</option>
+                                        <option value="Sewa PLN">Sewa Tiang PLN</option>
+                                        <option value="Sewa Telkom">Sewa Tiang Telkom</option>
+                                        <option value="Tiang Swadaya Warga">Tiang Swadaya Warga</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Tinggi Tiang:</label>
+                                    <select x-model="detailForm.pole_height" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="7 Meter">7 Meter (Standar Distribusi)</option>
+                                        <option value="9 Meter">9 Meter (Jalur Feeder / Utama)</option>
+                                        <option value="11 Meter">11 Meter (Lintas Jalan Raya)</option>
+                                        <option value="12 Meter">12 Meter (Menara Khusus)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Bahan Tiang:</label>
+                                    <select x-model="detailForm.pole_material" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="Besi Galvanis">Besi Galvanis</option>
+                                        <option value="Beton Bertulang">Beton Bertulang</option>
+                                        <option value="Besi Biasa (Cat Hitam)">Besi Biasa (Cat Hitam)</option>
+                                        <option value="Kayu / Komposit">Kayu / Komposit</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Kondisi Fisik Tiang:</label>
+                                    <select x-model="detailForm.physical_condition" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="Bagus & Tegak">✅ Bagus & Tegak</option>
+                                        <option value="Sedikit Miring">⚠️ Sedikit Miring</option>
+                                        <option value="Perlu Perbaikan Trekschoring">🔧 Perlu Perbaikan (Tali Trekschoring)</option>
+                                        <option value="Keropos / Kritis">❌ Keropos / Kritis (Ganti Tiang)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Perangkat / Beban Terpasang:</label>
+                                    <input type="text" x-model="detailForm.attached_loads" placeholder="Contoh: 1 ODP + 2 Tarikan Dropcore" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                            </div>
+                        </template>
+
+                        {{-- DYNAMIC FIELDS FOR JOINT BOX / CLOSURE --}}
+                        <template x-if="detailElement && detailElement.element_type === 'joint_box'">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Kode Sambungan / Closure:</label>
+                                    <input type="text" x-model="detailForm.closure_code" placeholder="Contoh: JB-01-FD-04" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Tipe Box Closure:</label>
+                                    <select x-model="detailForm.closure_type" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="Dome (Tabung)">Dome (Model Tabung Vertikal)</option>
+                                        <option value="Inline (Horizontal)">Inline (Model Pipih Horizontal)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Kapasitas Tray Splicing:</label>
+                                    <select x-model="detailForm.core_capacity" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="12 Core">12 Core (1 Tray)</option>
+                                        <option value="24 Core">24 Core (2 Tray)</option>
+                                        <option value="48 Core">48 Core (4 Tray)</option>
+                                        <option value="96 Core">96 Core (8 Tray)</option>
+                                        <option value="144 Core">144 Core (12 Tray)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Nama Teknisi Splicer:</label>
+                                    <input type="text" x-model="detailForm.splicer_name" placeholder="Contoh: Rahmat / Dedi" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div style="grid-column: 1 / -1;">
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Catatan Pemetaan Core & Tube (Splicing Matrix):</label>
+                                    <textarea x-model="detailForm.tube_mapping" placeholder="Contoh: Tube 1 (Biru) -> Disambung ke Feeder ODC Port 1-12. Tube 2 (Oranye) -> Cadangan." style="width: 100%; height: 60px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 8px 10px; font-size: 0.78rem; box-sizing: border-box;"></textarea>
+                                </div>
+                            </div>
+                        </template>
+
+                        {{-- DYNAMIC FIELDS FOR ODC / FDT --}}
+                        <template x-if="detailElement && detailElement.element_type === 'odc'">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Kode ODC:</label>
+                                    <input type="text" x-model="detailForm.odc_code" placeholder="Contoh: ODC-BDG-01" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Total Port Pasif:</label>
+                                    <select x-model="detailForm.total_passive_ports" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="24">24 Port</option>
+                                        <option value="48">48 Port</option>
+                                        <option value="96">96 Port</option>
+                                        <option value="144">144 Port</option>
+                                        <option value="288">288 Port</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Rasio Splitter Primer:</label>
+                                    <select x-model="detailForm.splitter_ratio" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="1:4">Splitter 1:4</option>
+                                        <option value="1:8">Splitter 1:8</option>
+                                        <option value="1:16">Splitter 1:16</option>
+                                        <option value="Direct Pass">Direct Splicing (Pass-through)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Redaman Inbound dari OLT (dBm):</label>
+                                    <input type="text" x-model="detailForm.inbound_power_dbm" placeholder="Contoh: +3.8 dBm" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                            </div>
+                        </template>
+
+                        {{-- DYNAMIC FIELDS FOR OLT / SERVER --}}
+                        <template x-if="detailElement && detailElement.element_type === 'olt'">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Merk & Tipe Perangkat OLT:</label>
+                                    <input type="text" x-model="detailForm.olt_brand" placeholder="Contoh: ZTE C320 / Huawei MA5608T" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">IP Manajemen OLT:</label>
+                                    <input type="text" x-model="detailForm.olt_ip" placeholder="Contoh: 10.10.100.2" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Slot PON & Port Info:</label>
+                                    <input type="text" x-model="detailForm.pon_slot_info" placeholder="Contoh: Slot 1 - 8 Port GPON C++" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Catu Daya Cadangan (Power Backup):</label>
+                                    <select x-model="detailForm.backup_power" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="PLN + UPS Online">PLN + UPS Online 2000VA</option>
+                                        <option value="PLN + Genset Auto">PLN + Genset ATS Auto</option>
+                                        <option value="Baterai DC 48V">Bank Baterai DC 48V (Rectifier)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </template>
+
+                        {{-- DYNAMIC FIELDS FOR CUSTOMER (PELANGGAN) --}}
+                        <template x-if="detailElement && detailElement.element_type === 'customer'">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">ID Pelanggan / No. Layanan:</label>
+                                    <input type="text" x-model="detailForm.customer_id" placeholder="Contoh: CUST-0192" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">No. WhatsApp / HP Pelanggan:</label>
+                                    <input type="text" x-model="detailForm.customer_phone" placeholder="Contoh: 08123456789" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Paket Langganan:</label>
+                                    <input type="text" x-model="detailForm.service_package" placeholder="Contoh: Home Fiber 50 Mbps" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">SN / MAC Modem ONT:</label>
+                                    <input type="text" x-model="detailForm.ont_serial" placeholder="Contoh: ZTEGC123456" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Redaman Rx ONT (dBm):</label>
+                                    <input type="text" x-model="detailForm.ont_rx_power" placeholder="Contoh: -20.5 dBm" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Port ODP Asal:</label>
+                                    <input type="text" x-model="detailForm.connected_odp_port" placeholder="Contoh: ODP-BTR-08 / Port 4" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                            </div>
+                        </template>
+
+                        {{-- DYNAMIC FIELDS FOR CABLE LINES (FEEDER, DISTRIBUSI, DROPCORE) --}}
+                        <template x-if="detailElement && detailElement.category === 'line'">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Kode Segmen Jalur Kabel:</label>
+                                    <input type="text" x-model="detailForm.cable_code" placeholder="Contoh: KBL-FDR-01" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Tipe Konstruksi Kabel:</label>
+                                    <select x-model="detailForm.cable_type" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="ADSS Aerial (Udara)">ADSS Aerial (Udara Non-Logam)</option>
+                                        <option value="Figure-8 Aerial">Figure-8 Aerial (Dengan Kawat Sling)</option>
+                                        <option value="Duct Bawah Tanah">Duct Underground (Bawah Tanah)</option>
+                                        <option value="Drop Cable FTTH (1-2 Core)">Drop Cable FTTH (1-2 Core)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Jumlah Core / Tube:</label>
+                                    <select x-model="detailForm.core_count" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
+                                        <option value="1-2 Core">1 - 2 Core</option>
+                                        <option value="6 Core (1 Tube)">6 Core (1 Tube)</option>
+                                        <option value="12 Core (1 Tube)">12 Core (1 Tube)</option>
+                                        <option value="24 Core (2 Tube)">24 Core (2 Tube @ 12C)</option>
+                                        <option value="48 Core (4 Tube)">48 Core (4 Tube @ 12C)</option>
+                                        <option value="96 Core (8 Tube)">96 Core (8 Tube @ 12C)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Cadangan Slack Loop (Meter):</label>
+                                    <input type="number" x-model="detailForm.slack_length_meters" placeholder="15" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Titik Pangkal (Asal):</label>
+                                    <input type="text" x-model="detailForm.origin_node" placeholder="Contoh: OLT Server / ODC-01" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Titik Ujung (Tujuan):</label>
+                                    <input type="text" x-model="detailForm.destination_node" placeholder="Contoh: ODP-BTR-08" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                                </div>
+                            </div>
+                        </template>
+
+                        {{-- DYNAMIC VIEW FOR ODP MASTER DATABASE --}}
+                        <template x-if="detailElement && detailElement.isOdp">
+                            <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.76rem; font-weight: 800; color: #1E40AF;">Informasi ODP Database:</span>
+                                    <span style="font-size: 0.72rem; font-weight: 800; color: #0878E5;" x-text="'Kode: ' + detailElement.metadata.odp_code"></span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.76rem; color: #334155;">
+                                    <div>OLT Induk: <b x-text="detailElement.metadata.olt_name"></b></div>
+                                    <div>Port PON: <b x-text="detailElement.metadata.pon_name"></b></div>
+                                    <div>Total Port: <b x-text="detailElement.metadata.total_ports"></b></div>
+                                    <div>Port Terpakai: <b x-text="detailElement.metadata.used_ports"></b></div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    {{-- TAB 2: GALERI & UPLOAD FOTO DOKUMENTASI LAPANGAN --}}
+                    <div x-show="detailTab === 'photos'" style="display: flex; flex-direction: column; gap: 16px;">
+                        {{-- Photo Upload Box (Only for editable custom elements) --}}
+                        <template x-if="detailElement && !detailElement.isOdp">
+                            <div style="border: 2px dashed #CBD5E1; border-radius: 14px; padding: 16px; background: #F8FAFC; text-align: center; transition: all 0.15s ease;">
+                                <input 
+                                    type="file" 
+                                    id="ims-detail-photo-input" 
+                                    accept="image/*" 
+                                    capture="environment"
+                                    @change="handlePhotoSelect($event)" 
+                                    style="display: none;"
+                                >
+
+                                <template x-if="!tempPhotoData">
+                                    <div 
+                                        @click="document.getElementById('ims-detail-photo-input').click()" 
+                                        style="cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;"
+                                    >
+                                        <div style="width: 44px; height: 44px; border-radius: 12px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; color: #0878E5;">
+                                            <svg style="width: 22px; height: 22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 0.82rem; font-weight: 800; color: #0F172A;">Klik / Ambil Foto Lapangan</div>
+                                            <div style="font-size: 0.7rem; color: #64748B; margin-top: 2px;">Mendukung kamera HP langsung atau unggah file gambar (JPG, PNG, WebP)</div>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template x-if="tempPhotoData">
+                                    <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                                        <div style="position: relative; max-width: 260px; max-height: 160px; border-radius: 10px; overflow: hidden; border: 1.5px solid #CBD5E1; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                            <img :src="tempPhotoData" style="width: 100%; height: auto; display: block; object-fit: cover;">
+                                            <button 
+                                                type="button" 
+                                                @click="tempPhotoData = null; const el = document.getElementById('ims-detail-photo-input'); if(el) el.value = '';" 
+                                                style="position: absolute; top: 6px; right: 6px; border: none; background: rgba(0,0,0,0.7); color: #ffffff; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;"
+                                                title="Batal pilih foto"
+                                            >✕</button>
+                                        </div>
+                                        <div style="width: 100%; max-width: 380px; display: flex; gap: 8px;">
+                                            <input 
+                                                type="text" 
+                                                x-model="tempPhotoCaption" 
+                                                placeholder="Keterangan foto (misal: Sisi tiang menghadap utara)..." 
+                                                style="flex: 1; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.76rem; box-sizing: border-box;"
+                                            >
+                                            <button 
+                                                type="button" 
+                                                @click="submitUploadPhoto()" 
+                                                :disabled="isUploadingPhoto"
+                                                style="padding: 0 16px; border: none; background: #059669; color: #ffffff; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(5,150,105,0.25);"
+                                            >
+                                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                                <span>Simpan Foto</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        {{-- Photo Gallery Grid --}}
+                        <div>
+                            <div style="font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Foto Dokumentasi Tersimpan</div>
+                            
+                            <template x-if="!detailElement || !detailElement.metadata || !detailElement.metadata.photos || detailElement.metadata.photos.length === 0">
+                                <div style="padding: 30px 14px; text-align: center; background: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                    <div style="font-size: 24px;">📷</div>
+                                    <div style="font-size: 0.78rem; font-weight: 700; color: #64748B;">Belum ada foto dokumentasi untuk elemen ini.</div>
+                                </div>
+                            </template>
+
+                            <template x-if="detailElement && detailElement.metadata && detailElement.metadata.photos && detailElement.metadata.photos.length > 0">
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                                    <template x-for="p in detailElement.metadata.photos" :key="p.id">
+                                        <div style="border-radius: 12px; overflow: hidden; border: 1.5px solid #E2E8F0; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
+                                            <div style="position: relative; height: 110px; background: #0F172A; cursor: pointer;" @click="openPhotoPreview(p.url, p.caption)">
+                                                <img :src="p.url" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+                                                <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.25); opacity: 0; transition: opacity 0.15s ease; display: flex; align-items: center; justify-content: center; color: #ffffff;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                    <span style="background: rgba(0,0,0,0.7); padding: 4px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 800;">🔍 Perbesar</span>
+                                                </div>
+                                            </div>
+                                            <div style="padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; background: #ffffff;">
+                                                <div style="min-width: 0;">
+                                                    <div style="font-size: 0.72rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="p.caption || 'Foto Dokumentasi'"></div>
+                                                    <div style="font-size: 0.62rem; color: #94A3B8;" x-text="p.created_at || '-'"></div>
+                                                </div>
+                                                <button 
+                                                    type="button" 
+                                                    @click="deletePhoto(p.id)" 
+                                                    style="border: none; background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; width: 24px; height: 24px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
+                                                    title="Hapus foto ini"
+                                                >
+                                                    <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    {{-- TAB 3: RIWAYAT & CATATAN TEKNISI --}}
+                    <div x-show="detailTab === 'notes'" style="display: flex; flex-direction: column; gap: 14px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div>
+                                <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Tanggal Instalasi / Tanam:</label>
+                                <input type="date" x-model="detailForm.install_date" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Tanggal Pemeliharaan Terakhir:</label>
+                                <input type="date" x-model="detailForm.last_maintenance_date" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Teknisi Penanggung Jawab:</label>
+                                <input type="text" x-model="detailForm.technician_in_charge" placeholder="Contoh: Tim Maintenance Area Bandung Timur" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Catatan Tambahan & Log Lapangan:</label>
+                            <textarea 
+                                x-model="detailForm.notes" 
+                                placeholder="Tuliskan catatan teknis kondisi tiang, letak sambungan closure, atau instruksi khusus untuk teknisi di lapangan..." 
+                                style="width: 100%; height: 90px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 10px; font-size: 0.78rem; box-sizing: border-box;"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Modal Footer Actions --}}
+                <div style="padding: 12px 20px; border-top: 1.5px solid #F1F5F9; background: #F8FAFC; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; gap: 8px;">
+                        <button 
+                            type="button" 
+                            @click="openDetailModal = false; flyToCustomElement(detailElement);" 
+                            style="padding: 8px 12px; border-radius: 8px; border: 1.5px solid #BFDBFE; background: #EFF6FF; color: #0878E5; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px;"
+                            title="Fokus ke lokasi objek pada peta"
+                        >
+                            <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            <span>Fokus Peta</span>
+                        </button>
+                        <template x-if="detailElement && !detailElement.isOdp">
+                            <button 
+                                type="button" 
+                                @click="openDetailModal = false; openStylePicker(detailElement.id);" 
+                                style="padding: 8px 12px; border-radius: 8px; border: 1.5px solid #CBD5E1; background: #ffffff; color: #475569; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px;"
+                                title="Ubah gaya, warna dan ikon elemen"
+                            >
+                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+                                <span>Gaya & Warna</span>
+                            </button>
+                        </template>
+                    </div>
+
+                    <div style="display: flex; gap: 8px;">
+                        <button 
+                            type="button" 
+                            @click="openDetailModal = false" 
+                            style="padding: 8px 14px; border: 1px solid #CBD5E1; background: #ffffff; border-radius: 8px; font-size: 0.76rem; font-weight: 800; color: #64748B; cursor: pointer;"
+                        >Tutup</button>
+                        <template x-if="detailElement && !detailElement.isOdp">
+                            <button 
+                                type="button" 
+                                @click="saveElementDetails()" 
+                                style="padding: 8px 18px; border: none; background: #0878E5; color: #ffffff; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(8, 120, 229, 0.25); display: flex; align-items: center; gap: 6px;"
+                            >
+                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                <span>Simpan Data</span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ── 2.6 FULLSCREEN PHOTO ZOOM LIGHTBOX MODAL ── --}}
+        <div 
+            x-show="previewPhotoModal" 
+            x-cloak
+            style="position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 99999999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;"
+            @keydown.escape.window="previewPhotoModal = null"
+        >
+            <div style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px;">
+                <a 
+                    :href="previewPhotoModal ? previewPhotoModal.url : '#'" 
+                    target="_blank" 
+                    download 
+                    style="border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #ffffff; padding: 6px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 6px;"
+                >
+                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Download Asli</span>
+                </a>
+                <button 
+                    type="button" 
+                    @click="previewPhotoModal = null" 
+                    style="background: rgba(255,255,255,0.2); border: none; color: #ffffff; width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center;"
+                >✕</button>
+            </div>
+
+            <div style="max-width: 90vw; max-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <img 
+                    :src="previewPhotoModal ? previewPhotoModal.url : ''" 
+                    style="max-width: 100%; max-height: 75vh; object-fit: contain; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);"
+                >
+                <div 
+                    x-show="previewPhotoModal && previewPhotoModal.caption" 
+                    style="margin-top: 12px; color: #ffffff; font-size: 0.85rem; font-weight: 700; background: rgba(0,0,0,0.6); padding: 6px 16px; border-radius: 20px;" 
+                    x-text="previewPhotoModal ? previewPhotoModal.caption : ''"
+                ></div>
+            </div>
+        </div>
+
         {{-- ── 2.4 SPREADSHEET DATA TABLE MODAL (OPEN DATA TABLE) ── --}}
         <div 
             x-show="openDataTableModal" 
@@ -2230,6 +2783,14 @@
                                         <div style="display: flex; align-items: center; justify-content: flex-end; gap: 5px;">
                                             <button 
                                                 type="button" 
+                                                @click="openDetail(el)" 
+                                                style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #BBF7D0; background: #F0FDF4; color: #16A34A; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                                                title="Lihat Detail & Foto Dokumentasi"
+                                            >
+                                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                            </button>
+                                            <button 
+                                                type="button" 
                                                 @click="openDataTableModal = false; flyToCustomElement(el);" 
                                                 style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #BFDBFE; background: #EFF6FF; color: #0878E5; cursor: pointer; display: flex; align-items: center; justify-content: center;"
                                                 title="Fokus di peta"
@@ -2332,6 +2893,16 @@
                     openDataTableModal: false,
                     dataTableTab: 'all',
                     dataTableSearch: '',
+
+                    // Element Detail Modal & Photo Upload State
+                    openDetailModal: false,
+                    detailElement: null,
+                    detailTab: 'specs', // 'specs', 'photos', 'notes'
+                    detailForm: {},
+                    isUploadingPhoto: false,
+                    previewPhotoModal: null,
+                    tempPhotoData: null,
+                    tempPhotoCaption: '',
 
                     // Geocoding State
                     geocodingResults: [],
@@ -2571,6 +3142,44 @@
                             this.customElements = [];
                             this.renderCustomElements();
                             if (this.mapInstance) this.mapInstance.invalidateSize();
+                        });
+
+                        this.$wire.on('element-photo-uploaded', (event) => {
+                            const data = Array.isArray(event) ? event[0] : event;
+                            this.isUploadingPhoto = false;
+                            this.tempPhotoData = null;
+                            this.tempPhotoCaption = '';
+                            const fileInput = document.getElementById('ims-detail-photo-input');
+                            if (fileInput) fileInput.value = '';
+
+                            if (data.element) {
+                                const idx = this.customElements.findIndex(e => e.id === data.element.id);
+                                if (idx >= 0) {
+                                    this.customElements[idx] = data.element;
+                                }
+                                if (this.detailElement && this.detailElement.id === data.element.id) {
+                                    this.detailElement = data.element;
+                                }
+                            }
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast(data.message || 'Foto berhasil disimpan!', 'success');
+                            }
+                        });
+
+                        this.$wire.on('element-photo-deleted', (event) => {
+                            const data = Array.isArray(event) ? event[0] : event;
+                            if (data.element) {
+                                const idx = this.customElements.findIndex(e => e.id === data.element.id);
+                                if (idx >= 0) {
+                                    this.customElements[idx] = data.element;
+                                }
+                                if (this.detailElement && this.detailElement.id === data.element.id) {
+                                    this.detailElement = data.element;
+                                }
+                            }
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast(data.message || 'Foto berhasil dihapus!', 'info');
+                            }
                         });
 
                         // Browser native fullscreen change listeners
@@ -3663,11 +4272,20 @@
 
                             const marker = L.marker([odp.lat, odp.lng], { icon: customIcon });
                             marker.bindPopup(`
-                                <div style='font-family: inherit; padding: 4px; min-width: 180px;'>
-                                    <div style='font-size: 10px; font-weight: 800; color: #0878E5;'>ODP DATABASE</div>
-                                    <div style='font-size: 13px; font-weight: 900; color: #0B1F33; margin: 2px 0;'>${odp.name}</div>
-                                    <div style='font-size: 11px; color: #475569;'>Port: <b>${odp.used_ports}/${odp.total_ports}</b> • OLT: <b>${odp.olt_name}</b></div>
-                                    <div style='font-size: 10.5px; color: #64748B; margin-top: 4px;'>Koordinat: ${odp.lat.toFixed(6)}, ${odp.lng.toFixed(6)}</div>
+                                <div style='font-family: inherit; padding: 10px 12px; min-width: 250px; box-sizing: border-box;'>
+                                    <div style='display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;'>
+                                        <span style='font-size: 10px; font-weight: 900; color: #0878E5; background: #EFF6FF; padding: 2px 6px; border-radius: 4px;'>ODP MASTER</span>
+                                        <span style='font-size: 10px; font-weight: 800; color: ${isAvailable ? '#16A34A' : '#DC2626'};'>${isAvailable ? '● Slot Tersedia' : '● Penuh'}</span>
+                                    </div>
+                                    <div style='font-size: 14px; font-weight: 900; color: #0F172A; margin: 2px 0 4px 0;'>${odp.name}</div>
+                                    <div style='font-size: 11.5px; color: #475569; line-height: 1.4;'>Port: <b>${odp.used_ports}/${odp.total_ports}</b> • OLT: <b>${odp.olt_name}</b> • PON: <b>${odp.pon_name}</b></div>
+                                    <div style='font-size: 10.5px; color: #64748B; margin-top: 4px; font-family: monospace;'>GPS: ${odp.lat.toFixed(6)}, ${odp.lng.toFixed(6)}</div>
+                                    <div style='margin-top: 8px; padding-top: 8px; border-top: 1px solid #F1F5F9; display: flex; justify-content: flex-end;'>
+                                        <button onclick="window.imsDetailOdp('${odp.code}')" style='padding: 5px 12px; border-radius: 8px; border: 1.5px solid #BFDBFE; background: #EFF6FF; color: #0878E5; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 800; transition: all 0.15s ease;' onmouseover="this.style.background='#0878E5'; this.style.color='#ffffff'" onmouseout="this.style.background='#EFF6FF'; this.style.color='#0878E5'">
+                                            <svg style='width: 13px; height: 13px;' fill='none' stroke='currentColor' stroke-width='2.2' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10'/><line x1='12' y1='16' x2='12' y2='12'/><line x1='12' y1='8' x2='12.01' y2='8'/></svg>
+                                            <span>Detail ODP</span>
+                                        </button>
+                                    </div>
                                 </div>
                             `);
                             this.odpLayerGroup.addLayer(marker);
@@ -3802,6 +4420,10 @@
                                         </div>
 
                                         <div style='margin-top: 12px; padding-top: 10px; border-top: 1.5px solid #F1F5F9; display: flex; align-items: center; justify-content: flex-end; gap: 8px;'>
+                                            <button onclick="window.imsDetailFtthElement(${el.id})" style='height: 36px; padding: 0 10px; border-radius: 10px; border: 1.5px solid #BBF7D0; background: #F0FDF4; color: #16A34A; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 800; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(22,163,74,0.08);' onmouseover="this.style.background='#16A34A'; this.style.color='#ffffff'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#F0FDF4'; this.style.color='#16A34A'; this.style.transform='none'" title='Lihat Detail, Spesifikasi & Foto Dokumentasi'>
+                                                <svg style='width: 15px; height: 15px;' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10'/><line x1='12' y1='16' x2='12' y2='12'/><line x1='12' y1='8' x2='12.01' y2='8'/></svg>
+                                                <span>Detail</span>
+                                            </button>
                                             <button onclick="window.imsStyleFtthElement(${el.id})" style='width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid #BFDBFE; background: #EFF6FF; color: #0878E5; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(8,120,229,0.08);' onmouseover="this.style.background='#0878E5'; this.style.color='#ffffff'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#EFF6FF'; this.style.color='#0878E5'; this.style.transform='none'" title='Ubah Gaya & Warna'>
                                                 <svg style='width: 17px; height: 17px;' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'><circle cx='13.5' cy='6.5' r='.7' fill='currentColor'/><circle cx='17.5' cy='10.5' r='.7' fill='currentColor'/><circle cx='8.5' cy='7.5' r='.7' fill='currentColor'/><circle cx='6.5' cy='12.5' r='.7' fill='currentColor'/><path d='M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z'/></svg>
                                             </button>
@@ -3843,6 +4465,10 @@
                                         ${el.notes ? `<div style='font-size: 12px; color: #475569; background: #F8FAFC; padding: 6px 8px; border-radius: 6px; border-left: 3px solid #CBD5E1; margin: 6px 0; line-height: 1.4;'>${el.notes}</div>` : ''}
 
                                         <div style='margin-top: 12px; padding-top: 10px; border-top: 1.5px solid #F1F5F9; display: flex; align-items: center; justify-content: flex-end; gap: 8px;'>
+                                            <button onclick="window.imsDetailFtthElement(${el.id})" style='height: 36px; padding: 0 10px; border-radius: 10px; border: 1.5px solid #BBF7D0; background: #F0FDF4; color: #16A34A; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 800; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(22,163,74,0.08);' onmouseover="this.style.background='#16A34A'; this.style.color='#ffffff'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#F0FDF4'; this.style.color='#16A34A'; this.style.transform='none'" title='Lihat Detail, Spesifikasi & Foto Dokumentasi'>
+                                                <svg style='width: 15px; height: 15px;' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10'/><line x1='12' y1='16' x2='12' y2='12'/><line x1='12' y1='8' x2='12.01' y2='8'/></svg>
+                                                <span>Detail</span>
+                                            </button>
                                             <button onclick="window.imsStyleFtthElement(${el.id})" style='width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid #BFDBFE; background: #EFF6FF; color: #0878E5; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(8,120,229,0.08);' onmouseover="this.style.background='#0878E5'; this.style.color='#ffffff'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#EFF6FF'; this.style.color='#0878E5'; this.style.transform='none'" title='Ubah Gaya & Warna'>
                                                 <svg style='width: 17px; height: 17px;' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'><circle cx='13.5' cy='6.5' r='.7' fill='currentColor'/><circle cx='17.5' cy='10.5' r='.7' fill='currentColor'/><circle cx='8.5' cy='7.5' r='.7' fill='currentColor'/><circle cx='6.5' cy='12.5' r='.7' fill='currentColor'/><path d='M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z'/></svg>
                                             </button>
@@ -4557,7 +5183,240 @@
                         a.click();
                         URL.revokeObjectURL(url);
                     }
+                    // ── ELEMENT DETAIL & PHOTO UPLOAD METHODS ──
+                    openDetail(elementOrId) {
+                        let el = null;
+                        if (typeof elementOrId === 'object' && elementOrId !== null) {
+                            el = elementOrId;
+                        } else {
+                            el = this.customElements.find(e => e.id === parseInt(elementOrId));
+                        }
+                        if (!el) return;
+
+                        this.detailElement = el;
+                        const meta = (typeof el.metadata === 'string') ? JSON.parse(el.metadata || '{}') : (el.metadata || {});
+                        
+                        // Populate reactive detailForm
+                        this.detailForm = {
+                            name: el.name || '',
+                            notes: el.notes || '',
+                            // Pole specs
+                            pole_code: meta.pole_code || '',
+                            ownership: meta.ownership || 'Tiang Sendiri',
+                            pole_height: meta.pole_height || '7 Meter',
+                            pole_material: meta.pole_material || 'Besi Galvanis',
+                            physical_condition: meta.physical_condition || 'Bagus & Tegak',
+                            attached_loads: meta.attached_loads || '',
+                            // Joint Box specs
+                            closure_code: meta.closure_code || '',
+                            closure_type: meta.closure_type || 'Dome (Tabung)',
+                            core_capacity: meta.core_capacity || '24 Core',
+                            splicer_name: meta.splicer_name || '',
+                            average_loss_db: meta.average_loss_db || '0.05',
+                            tube_mapping: meta.tube_mapping || '',
+                            // ODC specs
+                            odc_code: meta.odc_code || '',
+                            total_passive_ports: meta.total_passive_ports || '48',
+                            splitter_ratio: meta.splitter_ratio || '1:8',
+                            inbound_power_dbm: meta.inbound_power_dbm || '+3.5',
+                            used_passive_ports: meta.used_passive_ports || '',
+                            // OLT specs
+                            olt_brand: meta.olt_brand || 'ZTE C320',
+                            olt_ip: meta.olt_ip || '',
+                            pon_slot_info: meta.pon_slot_info || '',
+                            backup_power: meta.backup_power || 'PLN + UPS Online',
+                            // Customer specs
+                            customer_id: meta.customer_id || '',
+                            customer_name: meta.customer_name || '',
+                            customer_phone: meta.customer_phone || '',
+                            service_package: meta.service_package || 'Home Fiber 50 Mbps',
+                            ont_serial: meta.ont_serial || '',
+                            ont_rx_power: meta.ont_rx_power || '-20.5',
+                            connected_odp_port: meta.connected_odp_port || '',
+                            // Cable specs
+                            cable_code: meta.cable_code || '',
+                            cable_type: meta.cable_type || (el.element_type === 'dropcore' ? 'Drop Cable FTTH (1-2 Core)' : 'ADSS Aerial (Udara)'),
+                            core_count: meta.core_count || (el.element_type === 'feeder' ? '48 Core (4 Tube)' : (el.element_type === 'distribution' ? '24 Core (2 Tube)' : '2 Core')),
+                            slack_length_meters: meta.slack_length_meters || '15',
+                            origin_node: meta.origin_node || '',
+                            destination_node: meta.destination_node || '',
+                            // Maintenance info
+                            install_date: meta.install_date || '',
+                            last_maintenance_date: meta.last_maintenance_date || '',
+                            technician_in_charge: meta.technician_in_charge || ''
+                        };
+
+                        this.tempPhotoData = null;
+                        this.tempPhotoCaption = '';
+                        this.detailTab = 'specs';
+                        this.openDetailModal = true;
+                    },
+
+                    openDetailForOdp(odpCode) {
+                        const odp = this.allOdps.find(o => o.code === odpCode);
+                        if (!odp) return;
+                        this.detailElement = {
+                            id: odp.code,
+                            isOdp: true,
+                            element_type: 'odp',
+                            category: 'marker',
+                            name: odp.name,
+                            latitude: odp.lat,
+                            longitude: odp.lng,
+                            notes: `ODP Master: ${odp.used_ports}/${odp.total_ports} Port Terpakai • OLT: ${odp.olt_name} • PON: ${odp.pon_name}`,
+                            color: odp.has_slot ? '#0878E5' : '#EF4444',
+                            metadata: {
+                                odp_code: odp.code,
+                                used_ports: odp.used_ports,
+                                total_ports: odp.total_ports,
+                                olt_name: odp.olt_name,
+                                pon_name: odp.pon_name,
+                                photos: []
+                            }
+                        };
+                        this.detailTab = 'specs';
+                        this.openDetailModal = true;
+                    },
+
+                    saveElementDetails() {
+                        if (!this.detailElement || this.detailElement.isOdp) {
+                            this.openDetailModal = false;
+                            return;
+                        }
+
+                        let meta = (typeof this.detailElement.metadata === 'string') ? JSON.parse(this.detailElement.metadata || '{}') : (this.detailElement.metadata || {});
+                        if (!meta) meta = {};
+
+                        // Merge all detail form values into metadata
+                        Object.keys(this.detailForm).forEach(k => {
+                            if (k !== 'name' && k !== 'notes') {
+                                meta[k] = this.detailForm[k];
+                            }
+                        });
+
+                        const updatePayload = {
+                            name: this.detailForm.name || this.detailElement.name,
+                            notes: this.detailForm.notes || null,
+                            metadata: meta
+                        };
+
+                        this.$wire.updateElement(this.detailElement.id, updatePayload);
+
+                        // Update local object immediately
+                        this.detailElement.name = updatePayload.name;
+                        this.detailElement.notes = updatePayload.notes;
+                        this.detailElement.metadata = meta;
+
+                        const idx = this.customElements.findIndex(e => e.id === this.detailElement.id);
+                        if (idx >= 0) {
+                            this.customElements[idx].name = updatePayload.name;
+                            this.customElements[idx].notes = updatePayload.notes;
+                            this.customElements[idx].metadata = meta;
+                        }
+
+                        this.renderCustomElements();
+                        this.openDetailModal = false;
+
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('💾 Spesifikasi & data "' + updatePayload.name + '" berhasil disimpan!', 'success');
+                        }
+                    },
+
+                    handlePhotoSelect(event) {
+                        const file = event.target.files && event.target.files[0];
+                        if (!file) return;
+
+                        if (file.size > 10 * 1024 * 1024) {
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('Ukuran foto terlalu besar (maksimal 10MB)!', 'warning');
+                            }
+                            return;
+                        }
+
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                let width = img.width;
+                                let height = img.height;
+                                const maxDim = 1280;
+                                if (width > maxDim || height > maxDim) {
+                                    if (width > height) {
+                                        height = Math.round((height * maxDim) / width);
+                                        width = maxDim;
+                                    } else {
+                                        width = Math.round((width * maxDim) / height);
+                                        height = maxDim;
+                                    }
+                                }
+                                canvas.width = width;
+                                canvas.height = height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0, width, height);
+                                this.tempPhotoData = canvas.toDataURL('image/jpeg', 0.85);
+                            };
+                            img.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    },
+
+                    submitUploadPhoto() {
+                        if (!this.detailElement || !this.tempPhotoData) {
+                            if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                IMS.toast('Silakan pilih foto terlebih dahulu!', 'warning');
+                            }
+                            return;
+                        }
+
+                        this.isUploadingPhoto = true;
+                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                            IMS.toast('⏳ Mengunggah foto dokumentasi...', 'info', 2000);
+                        }
+
+                        this.$wire.uploadElementPhoto(
+                            this.detailElement.id, 
+                            this.tempPhotoData, 
+                            this.tempPhotoCaption ? this.tempPhotoCaption.trim() : 'Dokumentasi Lapangan'
+                        );
+                    },
+
+                    deletePhoto(photoId) {
+                        if (!this.detailElement || !photoId) return;
+                        if (confirm('Hapus foto dokumentasi ini?')) {
+                            this.$wire.deleteElementPhoto(this.detailElement.id, photoId);
+                        }
+                    },
+
+                    openPhotoPreview(photoUrl, caption) {
+                        this.previewPhotoModal = {
+                            url: photoUrl,
+                            caption: caption || ''
+                        };
+                    }
                 };
+            };
+
+            // Global detail helper
+            window.imsDetailFtthElement = function(id) {
+                const componentEl = document.querySelector('[x-data*="imsFtthNetworkMapComponent"]');
+                if (componentEl && window.Alpine) {
+                    const alpineData = window.Alpine.$data(componentEl);
+                    if (alpineData && typeof alpineData.openDetail === 'function') {
+                        alpineData.openDetail(id);
+                    }
+                }
+            };
+
+            // Global ODP detail helper
+            window.imsDetailOdp = function(code) {
+                const componentEl = document.querySelector('[x-data*="imsFtthNetworkMapComponent"]');
+                if (componentEl && window.Alpine) {
+                    const alpineData = window.Alpine.$data(componentEl);
+                    if (alpineData && typeof alpineData.openDetailForOdp === 'function') {
+                        alpineData.openDetailForOdp(code);
+                    }
+                }
             };
 
             // Global style helper

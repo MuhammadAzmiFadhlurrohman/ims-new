@@ -340,6 +340,92 @@ class FtthNetworkMapPage extends Page
         ]);
     }
 
+    public function uploadElementPhoto(int $elementId, string $base64Data, ?string $caption = null)
+    {
+        $element = FtthNetworkElement::find($elementId);
+        if (!$element) {
+            $this->dispatch('element-action-failed', ['message' => 'Elemen tidak ditemukan!']);
+            return;
+        }
+
+        try {
+            // Extract base64 image data
+            if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
+                $data = substr($base64Data, strpos($base64Data, ',') + 1);
+                $type = strtolower($type[1]);
+                if (!in_array($type, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                    $type = 'jpg';
+                }
+                $data = base64_decode($data);
+                if ($data === false) {
+                    throw new \Exception('Gagal mendekode gambar base64');
+                }
+            } else {
+                $data = base64_decode($base64Data);
+                $type = 'jpg';
+            }
+
+            $filename = 'ftth_elem_' . $elementId . '_' . time() . '_' . substr(md5(uniqid()), 0, 6) . '.' . $type;
+            $dir = public_path('storage/ftth/photos');
+            if (!file_exists($dir)) {
+                mkdir($dir, 0755, true);
+            }
+            file_put_contents($dir . '/' . $filename, $data);
+            $publicUrl = asset('storage/ftth/photos/' . $filename);
+
+            $metadata = $element->metadata ?? [];
+            if (!is_array($metadata)) {
+                $metadata = json_decode($metadata, true) ?: [];
+            }
+
+            if (!isset($metadata['photos']) || !is_array($metadata['photos'])) {
+                $metadata['photos'] = [];
+            }
+
+            $newPhoto = [
+                'id' => 'photo_' . time() . '_' . substr(md5(uniqid()), 0, 4),
+                'url' => $publicUrl,
+                'caption' => $caption ?: 'Dokumentasi Lapangan',
+                'created_at' => date('d M Y, H:i'),
+            ];
+
+            $metadata['photos'][] = $newPhoto;
+            $element->update(['metadata' => $metadata]);
+
+            $this->dispatch('element-photo-uploaded', [
+                'message' => 'Foto dokumentasi berhasil disimpan!',
+                'element' => $element->fresh(),
+                'photo' => $newPhoto,
+            ]);
+        } catch (\Throwable $e) {
+            $this->dispatch('element-action-failed', ['message' => 'Gagal mengunggah foto: ' . $e->getMessage()]);
+        }
+    }
+
+    public function deleteElementPhoto(int $elementId, string $photoId)
+    {
+        $element = FtthNetworkElement::find($elementId);
+        if (!$element) return;
+
+        $metadata = $element->metadata ?? [];
+        if (!is_array($metadata)) {
+            $metadata = json_decode($metadata, true) ?: [];
+        }
+
+        if (isset($metadata['photos']) && is_array($metadata['photos'])) {
+            $metadata['photos'] = array_values(array_filter($metadata['photos'], function ($p) use ($photoId) {
+                return ($p['id'] ?? '') !== $photoId;
+            }));
+            $element->update(['metadata' => $metadata]);
+
+            $this->dispatch('element-photo-deleted', [
+                'message' => 'Foto dokumentasi berhasil dihapus!',
+                'element' => $element->fresh(),
+                'deletedPhotoId' => $photoId,
+            ]);
+        }
+    }
+
     public function importKmzUpload()
     {
         if (!$this->kmzFile) {
