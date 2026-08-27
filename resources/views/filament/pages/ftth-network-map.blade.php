@@ -1013,53 +1013,53 @@
                             <div 
                                 x-show="openMarkerMenu" 
                                 @click.outside="openMarkerMenu = false"
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 270px; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 280px; width: 280px; padding: 6px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box;"
                             >
-                                <button type="button" @click="startAddMarker('pole')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+                                <button type="button" @click="startAddMarker('pole')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #F1F5F9; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #334155;">
                                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="6" x2="19" y2="6"/><line x1="8" y1="11" x2="16" y2="11"/><circle cx="5" cy="6" r="1.5" fill="currentColor"/><circle cx="19" cy="6" r="1.5" fill="currentColor"/></svg>
                                     </div>
-                                    <div>
+                                    <div style="flex: 1; min-width: 0;">
                                         <div style="font-size: 0.8rem; font-weight: 800; color: #1E293B;">Tiang Fiber (*Pole*)</div>
                                         <div style="font-size: 0.68rem; color: #64748B; font-weight: 500;">Tiang distribusi 7m / 9m PLN</div>
                                     </div>
                                 </button>
 
-                                <button type="button" @click="startAddMarker('joint_box')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#ECFDF5'" onmouseout="this.style.background='transparent'">
+                                <button type="button" @click="startAddMarker('joint_box')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#ECFDF5'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669;">
                                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="6" width="16" height="12" rx="3"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>
                                     </div>
-                                    <div>
+                                    <div style="flex: 1; min-width: 0;">
                                         <div style="font-size: 0.8rem; font-weight: 800; color: #065F46;">Joint Box / Closure</div>
                                         <div style="font-size: 0.68rem; color: #059669; font-weight: 500;">Sambungan Splicing Kabel FO</div>
                                     </div>
                                 </button>
 
-                                <button type="button" @click="startAddMarker('odc')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
+                                <button type="button" @click="startAddMarker('odc')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #FFFBEB; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #D97706;">
                                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></svg>
                                     </div>
-                                    <div>
+                                    <div style="flex: 1; min-width: 0;">
                                         <div style="font-size: 0.8rem; font-weight: 800; color: #92400E;">ODC / FDT Kabinet</div>
                                         <div style="font-size: 0.68rem; color: #B45309; font-weight: 500;">Optical Distribution Cabinet</div>
                                     </div>
                                 </button>
 
-                                <button type="button" @click="startAddMarker('olt')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F5F3FF'" onmouseout="this.style.background='transparent'">
+                                <button type="button" @click="startAddMarker('olt')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F5F3FF'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #F5F3FF; border: 1px solid #DDD6FE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #7C3AED;">
                                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="4" width="20" height="7" rx="1.5"/><rect x="2" y="13" width="20" height="7" rx="1.5"/><circle cx="6" cy="7.5" r="1.5" fill="currentColor"/><circle cx="9" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6" cy="16.5" r="1.5" fill="currentColor"/><circle cx="9" cy="16.5" r="1.5" fill="currentColor"/></svg>
                                     </div>
-                                    <div>
+                                    <div style="flex: 1; min-width: 0;">
                                         <div style="font-size: 0.8rem; font-weight: 800; color: #5B21B6;">Server OLT / POP</div>
                                         <div style="font-size: 0.68rem; color: #7C3AED; font-weight: 500;">Pusat Distribusi Utama GPON</div>
                                     </div>
                                 </button>
 
-                                <button type="button" @click="startAddMarker('customer')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FDF2F8'" onmouseout="this.style.background='transparent'">
+                                <button type="button" @click="startAddMarker('customer')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FDF2F8'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #FDF2F8; border: 1px solid #FBCFE8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #DB2777;">
                                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/><path d="M9 21V12h6v9"/></svg>
                                     </div>
-                                    <div>
+                                    <div style="flex: 1; min-width: 0;">
                                         <div style="font-size: 0.8rem; font-weight: 800; color: #9D174D;">Rumah Pelanggan</div>
                                         <div style="font-size: 0.68rem; color: #DB2777; font-weight: 500;">Titik Lokasi ONT / Rumah</div>
                                     </div>
@@ -1081,33 +1081,33 @@
                             <div 
                                 x-show="openLineMenu" 
                                 @click.outside="openLineMenu = false"
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 270px; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
+                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 280px; width: 280px; padding: 6px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box;"
                             >
-                                <button type="button" @click="startDrawLine('feeder')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
+                                <button type="button" @click="startDrawLine('feeder')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF2F2; border: 1px solid #FECACA; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #DC2626;">
                                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>
                                     </div>
-                                    <div>
+                                    <div style="flex: 1; min-width: 0;">
                                         <div style="font-size: 0.8rem; font-weight: 800; color: #991B1B;">Kabel Feeder Utama</div>
                                         <div style="font-size: 0.68rem; color: #DC2626; font-weight: 500;">Kabel Backbone 48 / 96 / 144 Core</div>
                                     </div>
                                 </button>
 
-                                <button type="button" @click="startDrawLine('distribution')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'">
+                                <button type="button" @click="startDrawLine('distribution')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
                                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>
                                     </div>
-                                    <div>
+                                    <div style="flex: 1; min-width: 0;">
                                         <div style="font-size: 0.8rem; font-weight: 800; color: #1E40AF;">Kabel Distribusi PON</div>
                                         <div style="font-size: 0.68rem; color: #2563EB; font-weight: 500;">Distribusi 12 / 24 Core ke ODP</div>
                                     </div>
                                 </button>
 
-                                <button type="button" @click="startDrawLine('dropcore')" style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
+                                <button type="button" @click="startDrawLine('dropcore')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #FFFBEB; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #D97706;">
                                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="3 3" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="6" cy="12" r="2.5" fill="currentColor"/><circle cx="18" cy="12" r="2.5" fill="currentColor"/></svg>
                                     </div>
-                                    <div>
+                                    <div style="flex: 1; min-width: 0;">
                                         <div style="font-size: 0.8rem; font-weight: 800; color: #92400E;">Kabel Dropcore Pelanggan</div>
                                         <div style="font-size: 0.68rem; color: #B45309; font-weight: 500;">1 / 2 Core G.657A ke ONT</div>
                                     </div>
@@ -1225,24 +1225,24 @@
                             <div 
                                 x-show="openExtraMenu" 
                                 x-cloak
-                                style="position: absolute; top: calc(100% + 6px); right: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 20px 48px rgba(15,23,42,0.22); min-width: 290px; padding: 8px; display: flex; flex-direction: column; gap: 4px;"
+                                style="position: absolute; top: calc(100% + 6px); right: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 16px; box-shadow: 0 20px 48px rgba(15,23,42,0.22); min-width: 300px; width: 300px; padding: 10px; display: flex; flex-direction: column; gap: 6px; box-sizing: border-box;"
                             >
                                 {{-- Section 1: Data Table --}}
-                                <div style="padding: 4px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Data & Spreadsheet</div>
+                                <div style="padding: 4px 8px 2px 8px; font-size: 0.7rem; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px;">Data & Spreadsheet</div>
                                 
                                 <button 
                                     type="button" 
                                     @click="openDataTableModal = true; openExtraMenu = false;"
-                                    style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
-                                    onmouseover="this.style.background='#EFF6FF'" 
-                                    onmouseout="this.style.background='transparent'"
+                                    style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 9px 12px; border-radius: 12px; border: 1.5px solid transparent; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.15s ease;" 
+                                    onmouseover="this.style.background='#EFF6FF'; this.style.borderColor='#BFDBFE'" 
+                                    onmouseout="this.style.background='transparent'; this.style.borderColor='transparent'"
                                 >
-                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
-                                        <svg style="width: 17px; height: 17px;" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0878E5;">
+                                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
                                     </div>
-                                    <div>
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #1E40AF;">Tabel Data Jaringan</div>
-                                        <div style="font-size: 0.68rem; color: #2563EB; font-weight: 500;">Lihat seluruh aset & edit cepat</div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="font-size: 0.82rem; font-weight: 800; color: #1E40AF;">Tabel Data Jaringan</div>
+                                        <div style="font-size: 0.7rem; color: #2563EB; font-weight: 500; margin-top: 1px;">Lihat seluruh aset & edit cepat</div>
                                     </div>
                                 </button>
 
@@ -1250,13 +1250,13 @@
                                 <div style="height: 1px; background: #F1F5F9; margin: 4px 0;"></div>
 
                                 {{-- Section 2: Map Mode (Roadmap / Satellite) --}}
-                                <div style="padding: 4px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Tampilan Lapisan Peta</div>
+                                <div style="padding: 4px 8px 2px 8px; font-size: 0.7rem; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px;">Tampilan Lapisan Peta</div>
 
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 2px 4px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; box-sizing: border-box; padding: 2px 0;">
                                     <button 
                                         type="button" 
                                         @click="setMapMode('roadmap'); openExtraMenu = false;"
-                                        style="height: 38px !important; padding: 0 10px !important; border-radius: 8px !important; border: 1.5px solid !important; cursor: pointer !important; display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: center !important; gap: 7px !important; font-size: 0.78rem !important; font-weight: 800 !important; transition: all 0.15s ease !important; box-sizing: border-box !important; text-decoration: none !important;"
+                                        style="width: 100% !important; height: 40px !important; padding: 0 10px !important; border-radius: 10px !important; border: 1.5px solid !important; cursor: pointer !important; display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: center !important; gap: 7px !important; font-size: 0.8rem !important; font-weight: 800 !important; transition: all 0.15s ease !important; box-sizing: border-box !important; text-decoration: none !important;"
                                         :style="mapMode === 'roadmap' ? 'background: #EFF6FF !important; border-color: #0878E5 !important; color: #0878E5 !important; box-shadow: 0 2px 8px rgba(8,120,229,0.18) !important;' : 'background: #F8FAFC !important; border-color: #E2E8F0 !important; color: #475569 !important;'"
                                     >
                                         <svg width="16" height="16" style="width: 16px !important; height: 16px !important; min-width: 16px !important; max-width: 16px !important; display: inline-block !important; flex-shrink: 0 !important; vertical-align: middle !important; margin: 0 !important;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1269,7 +1269,7 @@
                                     <button 
                                         type="button" 
                                         @click="setMapMode('hybrid'); openExtraMenu = false;"
-                                        style="height: 38px !important; padding: 0 10px !important; border-radius: 8px !important; border: 1.5px solid !important; cursor: pointer !important; display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: center !important; gap: 7px !important; font-size: 0.78rem !important; font-weight: 800 !important; transition: all 0.15s ease !important; box-sizing: border-box !important; text-decoration: none !important;"
+                                        style="width: 100% !important; height: 40px !important; padding: 0 10px !important; border-radius: 10px !important; border: 1.5px solid !important; cursor: pointer !important; display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: center !important; gap: 7px !important; font-size: 0.8rem !important; font-weight: 800 !important; transition: all 0.15s ease !important; box-sizing: border-box !important; text-decoration: none !important;"
                                         :style="mapMode === 'hybrid' ? 'background: #EFF6FF !important; border-color: #0878E5 !important; color: #0878E5 !important; box-shadow: 0 2px 8px rgba(8,120,229,0.18) !important;' : 'background: #F8FAFC !important; border-color: #E2E8F0 !important; color: #475569 !important;'"
                                     >
                                         <svg width="16" height="16" style="width: 16px !important; height: 16px !important; min-width: 16px !important; max-width: 16px !important; display: inline-block !important; flex-shrink: 0 !important; vertical-align: middle !important; margin: 0 !important;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1287,41 +1287,42 @@
                                 <div style="height: 1px; background: #F1F5F9; margin: 4px 0;"></div>
 
                                 {{-- Section 3: File Import / Export --}}
-                                <div style="padding: 4px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Impor & Ekspor GIS</div>
+                                <div style="padding: 4px 8px 2px 8px; font-size: 0.7rem; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px;">Impor & Ekspor GIS</div>
 
                                 <button 
                                     type="button" 
                                     @click="openExtraMenu = false; document.getElementById('ims-kmz-file-input').click();"
-                                    style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
-                                    onmouseover="this.style.background='#ECFDF5'" 
-                                    onmouseout="this.style.background='transparent'"
+                                    style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 9px 12px; border-radius: 12px; border: 1.5px solid transparent; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.15s ease;" 
+                                    onmouseover="this.style.background='#ECFDF5'; this.style.borderColor='#A7F3D0'" 
+                                    onmouseout="this.style.background='transparent'; this.style.borderColor='transparent'"
                                 >
-                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669;">
-                                        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                                     </div>
-                                    <div>
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #065F46;">Import File KMZ / KML</div>
-                                        <div style="font-size: 0.68rem; color: #059669; font-weight: 500;">Google My Maps / Earth</div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="font-size: 0.82rem; font-weight: 800; color: #065F46;">Import File KMZ / KML</div>
+                                        <div style="font-size: 0.7rem; color: #059669; font-weight: 500; margin-top: 1px;">Google My Maps / Earth</div>
                                     </div>
                                 </button>
 
                                 <button 
                                     type="button" 
                                     @click="openExtraMenu = false; exportKml();"
-                                    style="text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" 
-                                    onmouseover="this.style.background='#FEF3C7'" 
-                                    onmouseout="this.style.background='transparent'"
+                                    style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 9px 12px; border-radius: 12px; border: 1.5px solid transparent; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.15s ease;" 
+                                    onmouseover="this.style.background='#FEF3C7'; this.style.borderColor='#FDE68A'" 
+                                    onmouseout="this.style.background='transparent'; this.style.borderColor='transparent'"
                                 >
-                                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF3C7; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #92400E;">
-                                        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #FEF3C7; border: 1px solid #FDE68A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #92400E;">
+                                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"/></svg>
                                     </div>
-                                    <div>
-                                        <div style="font-size: 0.8rem; font-weight: 800; color: #92400E;">Export File KML</div>
-                                        <div style="font-size: 0.68rem; color: #B45309; font-weight: 500;">Kompatibel Google Earth</div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="font-size: 0.82rem; font-weight: 800; color: #92400E;">Export File KML</div>
+                                        <div style="font-size: 0.7rem; color: #B45309; font-weight: 500; margin-top: 1px;">Kompatibel Google Earth</div>
                                     </div>
                                 </button>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
 
