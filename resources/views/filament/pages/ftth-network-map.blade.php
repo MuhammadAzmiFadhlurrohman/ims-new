@@ -54,6 +54,36 @@
                 box-sizing: border-box !important;
                 z-index: 50 !important;
             }
+            .ims-swal-large-popup {
+                border-radius: 20px !important;
+                padding: 24px !important;
+                background: #ffffff !important;
+                border: 1.5px solid #E2E8F0 !important;
+                box-shadow: 0 25px 60px -15px rgba(15,23,42,0.3) !important;
+            }
+            .ims-swal-confirm-btn {
+                padding: 10px 22px !important;
+                border-radius: 10px !important;
+                font-weight: 800 !important;
+                font-size: 0.82rem !important;
+                background: #0878E5 !important;
+                color: #ffffff !important;
+                border: none !important;
+                cursor: pointer !important;
+                box-shadow: 0 4px 14px rgba(8,120,229,0.3) !important;
+                transition: all 0.15s ease !important;
+            }
+            .ims-swal-cancel-btn {
+                padding: 10px 20px !important;
+                border-radius: 10px !important;
+                font-weight: 800 !important;
+                font-size: 0.82rem !important;
+                background: #F1F5F9 !important;
+                color: #475569 !important;
+                border: 1.5px solid #CBD5E1 !important;
+                cursor: pointer !important;
+                transition: all 0.15s ease !important;
+            }
             .ims-mode-menu-item {
                 width: 100% !important;
                 min-width: 100% !important;
@@ -4187,31 +4217,50 @@
                             const dataUrl = croppedCanvas.toDataURL('image/png');
                             const filename = `FTTH-Peta-${projectName.replace(/[^a-zA-Z0-9]/g, '_')}-${Date.now().toString().slice(-6)}.png`;
 
-                            // Trigger instant automatic download
-                            const a = document.createElement('a');
-                            a.href = dataUrl;
-                            a.download = filename;
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-
                             if (typeof Swal !== 'undefined') {
                                 Swal.fire({
-                                    title: '📸 Cuplikan Peta Berhasil!',
+                                    title: '📸 Pratinjau Cuplikan Peta',
                                     html: `
-                                        <div style="font-size: 13px; color: #475569; margin-bottom: 12px;">Gambar area pilihan telah otomatis diunduh: <b>${filename}</b></div>
-                                        <div style="border-radius: 12px; overflow: hidden; border: 1.5px solid #CBD5E1; box-shadow: 0 6px 20px rgba(0,0,0,0.15); max-height: 280px; display: flex; justify-content: center; background: #0F172A; padding: 4px;">
-                                            <img src="${dataUrl}" style="max-height: 270px; width: auto; max-width: 100%; border-radius: 8px; object-fit: contain;" />
+                                        <div style="font-size: 13.5px; color: #64748B; margin-bottom: 14px; text-align: center;">
+                                            Area terpilih: <b>${Math.round(crop.width)} × ${Math.round(crop.height)} px</b> &bull; Nama File: <b style="color: #0F172A;">${filename}</b>
+                                        </div>
+                                        <div style="border-radius: 14px; overflow: hidden; border: 1.5px solid #CBD5E1; box-shadow: 0 8px 30px rgba(15,23,42,0.18); max-height: 480px; display: flex; justify-content: center; align-items: center; background: #0F172A; padding: 6px;">
+                                            <img src="${dataUrl}" style="max-height: 460px; width: auto; max-width: 100%; border-radius: 10px; object-fit: contain;" />
                                         </div>
                                     `,
-                                    confirmButtonText: '✓ Selesai',
+                                    width: '880px',
+                                    showCancelButton: true,
+                                    confirmButtonText: '💾 Simpan / Unduh Gambar',
+                                    cancelButtonText: '✕ Batal',
+                                    confirmButtonColor: '#0878E5',
+                                    cancelButtonColor: '#64748B',
+                                    reverseButtons: true,
                                     customClass: {
-                                        popup: 'ims-swal-popup',
-                                        confirmButton: 'ims-swal-confirm'
+                                        popup: 'ims-swal-large-popup',
+                                        confirmButton: 'ims-swal-confirm-btn',
+                                        cancelButton: 'ims-swal-cancel-btn'
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        const a = document.createElement('a');
+                                        a.href = dataUrl;
+                                        a.download = filename;
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        document.body.removeChild(a);
+
+                                        if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
+                                            IMS.toast('✅ Gambar cuplikan peta berhasil disimpan!', 'success', 3000);
+                                        }
                                     }
                                 });
-                            } else if (typeof IMS !== 'undefined' && typeof IMS.toast === 'function') {
-                                IMS.toast('📸 Cuplikan peta berhasil diunduh!', 'success', 3000);
+                            } else {
+                                const a = document.createElement('a');
+                                a.href = dataUrl;
+                                a.download = filename;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
                             }
                         } catch (err) {
                             console.error('Final screenshot export error:', err);
