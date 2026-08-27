@@ -16,6 +16,28 @@
                 overflow: visible !important;
                 position: relative;
             }
+            .ims-sidebar-scroll-list {
+                flex: 1 1 0% !important;
+                overflow-y: auto !important;
+                min-height: 0 !important;
+                max-height: 100% !important;
+                overscroll-behavior: contain !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+            .ims-sidebar-scroll-list::-webkit-scrollbar {
+                width: 6px !important;
+            }
+            .ims-sidebar-scroll-list::-webkit-scrollbar-track {
+                background: #F1F5F9 !important;
+                border-radius: 4px !important;
+            }
+            .ims-sidebar-scroll-list::-webkit-scrollbar-thumb {
+                background: #CBD5E1 !important;
+                border-radius: 4px !important;
+            }
+            .ims-sidebar-scroll-list::-webkit-scrollbar-thumb:hover {
+                background: #94A3B8 !important;
+            }
             .ims-sidebar-tab-btn {
                 display: flex !important;
                 flex-direction: row !important;
@@ -1111,6 +1133,11 @@
                     x-transition:leave="transition ease-in duration-200"
                     x-transition:leave-start="transform translate-x-0 opacity-100"
                     x-transition:leave-end="transform -translate-x-full opacity-0"
+                    x-init="if (window.L && L.DomEvent) { L.DomEvent.disableScrollPropagation($el); L.DomEvent.disableClickPropagation($el); }"
+                    @wheel.stop
+                    @mousewheel.stop
+                    @DOMMouseScroll.stop
+                    @touchmove.stop
                     x-cloak
                     style="position: absolute; top: 0; left: 0; bottom: 0; width: 350px; max-width: 90vw; z-index: 1000; background: #ffffff; border-right: 1.5px solid #CBD5E1; box-shadow: 10px 0 32px rgba(15,23,42,0.16); display: flex; flex-direction: column; box-sizing: border-box; border-radius: 0 16px 16px 0; overflow: hidden;"
                 >
@@ -1178,7 +1205,7 @@
                     </div>
 
                     {{-- ── TAB 1: DAFTAR OBJEK JARINGAN ── --}}
-                    <div x-show="sidebarTab === 'objects'" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0;">
+                    <div x-show="sidebarTab === 'objects'" style="flex: 1 1 0%; display: flex; flex-direction: column; overflow: hidden; min-height: 0;">
                         {{-- Search and Category Filter --}}
                         <div style="padding: 6px 14px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #F1F5F9; flex-shrink: 0;">
                             <div style="position: relative; width: 100%;">
@@ -1233,7 +1260,7 @@
                         </div>
 
                         {{-- Scrollable List of Objects --}}
-                        <div style="flex: 1; overflow-y: auto; padding: 10px 14px; display: flex; flex-direction: column; gap: 8px;">
+                        <div class="ims-sidebar-scroll-list" style="padding: 10px 14px; display: flex; flex-direction: column; gap: 8px;">
                             <template x-if="filteredSidebarElements.length === 0">
                                 <div style="padding: 40px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
                                     <div style="width: 52px; height: 52px; border-radius: 14px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8;">
@@ -1305,7 +1332,7 @@
                     </div>
 
                     {{-- ── TAB 2: FILTER LAYER (SHOW / HIDE) ── --}}
-                    <div x-show="sidebarTab === 'layers'" style="flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; min-height: 0;">
+                    <div x-show="sidebarTab === 'layers'" class="ims-sidebar-scroll-list" style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px;">
                         <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; border-bottom: 1.5px solid #F1F5F9;">
                             <span style="font-size: 0.74rem; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px;">Visibilitas Layer</span>
                             <div style="display: flex; gap: 8px; font-size: 0.68rem; font-weight: 800;">
