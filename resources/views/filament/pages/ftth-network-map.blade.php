@@ -1099,34 +1099,34 @@
                                 {{-- Section 2: Map Mode (Roadmap / Satellite) --}}
                                 <div style="padding: 4px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Tampilan Lapisan Peta</div>
 
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 2px 4px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 2px 4px;">
                                     <button 
                                         type="button" 
                                         @click="setMapMode('roadmap'); openExtraMenu = false;"
-                                        style="padding: 8px 10px; border-radius: 8px; border: 1.5px solid; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 0.78rem; font-weight: 800; transition: all 0.15s ease;"
-                                        :style="mapMode === 'roadmap' ? 'background: #EFF6FF; border-color: #0878E5; color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.18);' : 'background: #F8FAFC; border-color: #E2E8F0; color: #475569;'"
+                                        style="height: 38px !important; padding: 0 10px !important; border-radius: 8px !important; border: 1.5px solid !important; cursor: pointer !important; display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: center !important; gap: 7px !important; font-size: 0.78rem !important; font-weight: 800 !important; transition: all 0.15s ease !important; box-sizing: border-box !important; text-decoration: none !important;"
+                                        :style="mapMode === 'roadmap' ? 'background: #EFF6FF !important; border-color: #0878E5 !important; color: #0878E5 !important; box-shadow: 0 2px 8px rgba(8,120,229,0.18) !important;' : 'background: #F8FAFC !important; border-color: #E2E8F0 !important; color: #475569 !important;'"
                                     >
-                                        <svg style="width: 15px; height: 15px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <svg width="16" height="16" style="width: 16px !important; height: 16px !important; min-width: 16px !important; max-width: 16px !important; display: inline-block !important; flex-shrink: 0 !important; vertical-align: middle !important; margin: 0 !important;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                             <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
                                             <line x1="8" y1="2" x2="8" y2="18"/>
                                             <line x1="16" y1="6" x2="16" y2="22"/>
                                         </svg>
-                                        <span>Roadmap</span>
+                                        <span style="display: inline-block !important; line-height: 1 !important; white-space: nowrap !important; font-size: 13px !important; font-weight: 800 !important;">Roadmap</span>
                                     </button>
                                     <button 
                                         type="button" 
                                         @click="setMapMode('hybrid'); openExtraMenu = false;"
-                                        style="padding: 8px 10px; border-radius: 8px; border: 1.5px solid; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 0.78rem; font-weight: 800; transition: all 0.15s ease;"
-                                        :style="mapMode === 'hybrid' ? 'background: #EFF6FF; border-color: #0878E5; color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.18);' : 'background: #F8FAFC; border-color: #E2E8F0; color: #475569;'"
+                                        style="height: 38px !important; padding: 0 10px !important; border-radius: 8px !important; border: 1.5px solid !important; cursor: pointer !important; display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; justify-content: center !important; gap: 7px !important; font-size: 0.78rem !important; font-weight: 800 !important; transition: all 0.15s ease !important; box-sizing: border-box !important; text-decoration: none !important;"
+                                        :style="mapMode === 'hybrid' ? 'background: #EFF6FF !important; border-color: #0878E5 !important; color: #0878E5 !important; box-shadow: 0 2px 8px rgba(8,120,229,0.18) !important;' : 'background: #F8FAFC !important; border-color: #E2E8F0 !important; color: #475569 !important;'"
                                     >
-                                        <svg style="width: 15px; height: 15px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <svg width="16" height="16" style="width: 16px !important; height: 16px !important; min-width: 16px !important; max-width: 16px !important; display: inline-block !important; flex-shrink: 0 !important; vertical-align: middle !important; margin: 0 !important;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M13 7 9 3 5 7l4 4"/>
                                             <path d="m17 11 4 4-4 4-4-4"/>
                                             <path d="m8 12 4 4 6-6-4-4Z"/>
                                             <path d="m16 8 3-3"/>
                                             <path d="M9 21a6 6 0 0 0-6-6"/>
                                         </svg>
-                                        <span>Satelit</span>
+                                        <span style="display: inline-block !important; line-height: 1 !important; white-space: nowrap !important; font-size: 13px !important; font-weight: 800 !important;">Satelit</span>
                                     </button>
                                 </div>
 
