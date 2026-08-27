@@ -24,15 +24,15 @@
                 display: flex !important;
                 flex-direction: column !important;
                 flex-wrap: nowrap !important;
-                width: 290px !important;
-                min-width: 290px !important;
-                max-width: 290px !important;
-                padding: 6px !important;
-                gap: 4px !important;
+                width: 300px !important;
+                min-width: 300px !important;
+                max-width: 300px !important;
+                padding: 7px !important;
+                gap: 5px !important;
                 background: #ffffff !important;
-                border: 1px solid #cbd5e1 !important;
-                border-radius: 14px !important;
-                box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05) !important;
+                border: 1.5px solid #E2E8F0 !important;
+                border-radius: 16px !important;
+                box-shadow: 0 20px 45px -10px rgba(15,23,42,0.22), 0 0 0 1px rgba(0,0,0,0.05) !important;
                 box-sizing: border-box !important;
             }
             .ims-mode-menu-item {
@@ -44,12 +44,12 @@
                 flex-wrap: nowrap !important;
                 align-items: center !important;
                 justify-content: flex-start !important;
-                gap: 10px !important;
+                gap: 11px !important;
                 box-sizing: border-box !important;
                 text-align: left !important;
-                padding: 8px 10px !important;
-                border-radius: 10px !important;
-                border: none !important;
+                padding: 9px 11px !important;
+                border-radius: 12px !important;
+                border: 1.5px solid transparent !important;
                 margin: 0 !important;
                 background: transparent;
                 cursor: pointer !important;
@@ -58,19 +58,24 @@
                 clear: both !important;
             }
             .ims-mode-menu-item:hover {
-                background: #F1F5F9 !important;
+                background: #F8FAFC !important;
+                border-color: #E2E8F0 !important;
             }
             .ims-mode-menu-item.is-mode-select {
                 background: #EFF6FF !important;
+                border-color: #BFDBFE !important;
             }
             .ims-mode-menu-item.is-mode-screenshot {
                 background: #FEF3C7 !important;
+                border-color: #FDE68A !important;
             }
             .ims-mode-menu-item.is-mode-inspect {
                 background: #ECFDF5 !important;
+                border-color: #A7F3D0 !important;
             }
             .ims-mode-menu-item.is-mode-locked {
                 background: #F1F5F9 !important;
+                border-color: #CBD5E1 !important;
             }
             .ims-mode-icon-box {
                 width: 32px !important;
@@ -1080,10 +1085,10 @@
                         </div>
 
                         {{-- Dropdown Mode Interaksi / Kursor --}}
-                        <div style="position: relative;" @click.outside="openModeMenu = false">
+                        <div style="position: relative;">
                             <button 
                                 type="button" 
-                                @click="openModeMenu = !openModeMenu; openMarkerMenu = false; openLineMenu = false; openProjectMenu = false; openExtraMenu = false;" 
+                                @click="openModeMenu = !openModeMenu; openMarkerMenu = false; openLineMenu = false; openProjectMenu = false; openExtraMenu = false; openMapTypeMenu = false;" 
                                 :class="['select', 'screenshot', 'inspect_coords', 'view_only'].includes(currentMode) || openModeMenu ? 'active' : ''"
                                 class="ims-tool-btn"
                                 title="Pilih Mode Interaksi Kursor Peta"
@@ -1130,6 +1135,7 @@
 
                             <div 
                                 x-show="openModeMenu" 
+                                @click.outside="openModeMenu = false"
                                 x-cloak
                                 class="ims-mode-menu-dropdown"
                                 style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999;"
@@ -2259,7 +2265,7 @@
                     style="position: relative; z-index: 1;"
                 ></div>
 
-                {{-- ── 2.2 SCREENSHOT AREA SELECTION OVERLAY (SNIP TOOL) ── --}}
+                {{-- ── 2.2 WINDOWS SNIPPING TOOL OVERLAY (PRO AREA SNIP) ── --}}
                 <div 
                     x-show="currentMode === 'screenshot'"
                     x-cloak
@@ -2267,16 +2273,32 @@
                     @mousedown="startScreenshotSelection($event)"
                     @mousemove="updateScreenshotSelection($event)"
                     @mouseup="finishScreenshotSelection($event)"
-                    style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 600; cursor: crosshair; user-select: none; overflow: hidden;"
+                    style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 600; cursor: crosshair; user-select: none; overflow: hidden; background: rgba(15, 23, 42, 0.35);"
                 >
-                    {{-- Dragged selection box --}}
+                    {{-- Floating Guidance Banner --}}
+                    <div 
+                        x-show="!isSelectingScreenshot" 
+                        style="position: absolute; top: 16px; left: 50%; transform: translateX(-50%); background: #0F172A; color: #ffffff; padding: 8px 18px; border-radius: 30px; font-size: 0.8rem; font-weight: 800; box-shadow: 0 8px 24px rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 8px; pointer-events: none; z-index: 10;"
+                    >
+                        <span style="font-size: 1rem;">✂️</span>
+                        <span>Klik & tarik mouse untuk membuat area cuplikan peta</span>
+                    </div>
+
+                    {{-- Dragged selection box (Clear cutout with dark background mask) --}}
                     <div 
                         x-show="isSelectingScreenshot"
                         id="ims-screenshot-box"
                         :style="getScreenshotBoxStyle()"
-                        style="position: absolute; border: 2px dashed #0878E5; background: rgba(8, 120, 229, 0.15); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.48); pointer-events: none; border-radius: 4px; box-sizing: border-box;"
+                        style="position: absolute; border: 2px solid #0878E5; outline: 1.5px dashed #ffffff; background: rgba(8, 120, 229, 0.05); box-shadow: 0 0 0 99999px rgba(15, 23, 42, 0.65), 0 0 16px rgba(8, 120, 229, 0.5); pointer-events: none; box-sizing: border-box;"
                     >
-                        <div style="position: absolute; bottom: -24px; right: 0; background: #0878E5; color: #ffffff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px; font-family: monospace; white-space: nowrap;" x-text="getScreenshotDimensions()"></div>
+                        {{-- Dimension Pill Badge --}}
+                        <div style="position: absolute; bottom: -28px; right: 0; background: #0878E5; color: #ffffff; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 5px; font-family: monospace; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.3);" x-text="getScreenshotDimensions()"></div>
+
+                        {{-- 4 Corner Handles --}}
+                        <div style="position: absolute; top: -4px; left: -4px; width: 8px; height: 8px; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 2px;"></div>
+                        <div style="position: absolute; top: -4px; right: -4px; width: 8px; height: 8px; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 2px;"></div>
+                        <div style="position: absolute; bottom: -4px; left: -4px; width: 8px; height: 8px; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 2px;"></div>
+                        <div style="position: absolute; bottom: -4px; right: -4px; width: 8px; height: 8px; background: #ffffff; border: 1.5px solid #0878E5; border-radius: 2px;"></div>
                     </div>
                 </div>
             </div>
