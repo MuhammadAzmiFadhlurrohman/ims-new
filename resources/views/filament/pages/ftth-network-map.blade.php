@@ -521,6 +521,112 @@
                 overflow: hidden !important;
                 animation: imsModalFadeZoom 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
             }
+
+            /* ── 100% STANDALONE ISOLATED MODAL TAB SWITCHER (ZERO TAILWIND INTERFERENCE) ── */
+            .ims-modal-tab-nav {
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                background: #F1F5F9 !important;
+                border: 1.5px solid #E2E8F0 !important;
+                border-radius: 12px !important;
+                padding: 4px !important;
+                gap: 6px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .ims-modal-tab-btn {
+                all: unset !important;
+                flex: 1 1 0% !important;
+                min-width: 0 !important;
+                height: 40px !important;
+                max-height: 40px !important;
+                border-radius: 9px !important;
+                padding: 0 10px !important;
+                background: transparent !important;
+                color: #475569 !important;
+                font-family: inherit !important;
+                font-size: 13px !important;
+                font-weight: 700 !important;
+                cursor: pointer !important;
+                user-select: none !important;
+                box-sizing: border-box !important;
+                display: inline-flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 7px !important;
+                white-space: nowrap !important;
+                line-height: 1 !important;
+                transition: all 0.15s ease !important;
+                border: 1.5px solid transparent !important;
+                text-align: center !important;
+            }
+            .ims-modal-tab-btn:hover:not(.is-active) {
+                background: #E2E8F0 !important;
+                color: #1E293B !important;
+            }
+            .ims-modal-tab-btn.is-active {
+                background: #0878E5 !important;
+                color: #ffffff !important;
+                font-weight: 800 !important;
+                box-shadow: 0 3px 10px rgba(8, 120, 229, 0.3) !important;
+                border-color: #0878E5 !important;
+            }
+            .ims-modal-tab-btn svg,
+            .ims-modal-tab-btn .ims-tab-icon {
+                display: inline-block !important;
+                position: static !important;
+                vertical-align: middle !important;
+                width: 16px !important;
+                height: 16px !important;
+                min-width: 16px !important;
+                max-width: 16px !important;
+                min-height: 16px !important;
+                max-height: 16px !important;
+                flex-shrink: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                transform: none !important;
+                float: none !important;
+                color: inherit !important;
+            }
+            .ims-modal-tab-btn span.ims-tab-label {
+                display: inline-block !important;
+                position: static !important;
+                vertical-align: middle !important;
+                font-size: 13px !important;
+                font-weight: inherit !important;
+                color: inherit !important;
+                line-height: 1 !important;
+                white-space: nowrap !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                flex-shrink: 0 !important;
+            }
+            .ims-modal-tab-btn span.ims-tab-badge {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 2px 7px !important;
+                border-radius: 10px !important;
+                font-size: 11px !important;
+                font-weight: 900 !important;
+                line-height: 1 !important;
+                margin-left: 2px !important;
+                flex-shrink: 0 !important;
+            }
+            .ims-modal-tab-btn.is-active span.ims-tab-badge {
+                background: #ffffff !important;
+                color: #0878E5 !important;
+            }
+            .ims-modal-tab-btn:not(.is-active) span.ims-tab-badge {
+                background: #E2E8F0 !important;
+                color: #475569 !important;
+            }
         </style>
 
         {{-- ── 1. HEADER BANNER & TELEMETRY STATS ── --}}
@@ -2180,52 +2286,42 @@
                         >✕</button>
                     </div>
 
-                    {{-- Modal Tab Navigation (Solid Segmented Grid Switcher) --}}
+                    {{-- Modal Tab Navigation (Solid Segmented Switcher) --}}
                     <div style="padding: 14px 22px 0 22px; background: #ffffff; flex-shrink: 0;">
-                        <div style="background: #F1F5F9; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-                            <div 
-                                role="button"
-                                tabindex="0"
-                                @click="detailTab = 'specs'" 
-                                @keydown.enter="detailTab = 'specs'"
-                                @keydown.space.prevent="detailTab = 'specs'"
-                                style="height: 38px; border-radius: 9px; cursor: pointer; transition: all 0.15s ease; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 8px !important; width: 100% !important; box-sizing: border-box !important; user-select: none !important;"
-                                :style="detailTab === 'specs' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important;' : 'background: transparent !important; color: #475569 !important;'"
+                        <div class="ims-modal-tab-nav">
+                            <button 
+                                type="button" 
+                                class="ims-modal-tab-btn" 
+                                :class="detailTab === 'specs' && 'is-active'"
+                                @click="detailTab = 'specs'"
                             >
-                                <svg style="width: 16px; height: 16px; min-width: 16px; min-height: 16px; position: static !important; display: block !important; margin: 0 !important; flex-shrink: 0 !important;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                                <span style="position: static !important; display: block !important; font-size: 0.8rem !important; font-weight: 800 !important; line-height: 1 !important; margin: 0 !important; white-space: nowrap !important;">Spesifikasi Teknis</span>
-                            </div>
+                                <svg class="ims-tab-icon" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                <span class="ims-tab-label">Spesifikasi Teknis</span>
+                            </button>
 
-                            <div 
-                                role="button"
-                                tabindex="0"
-                                @click="detailTab = 'photos'" 
-                                @keydown.enter="detailTab = 'photos'"
-                                @keydown.space.prevent="detailTab = 'photos'"
-                                style="height: 38px; border-radius: 9px; cursor: pointer; transition: all 0.15s ease; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 8px !important; width: 100% !important; box-sizing: border-box !important; user-select: none !important;"
-                                :style="detailTab === 'photos' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important;' : 'background: transparent !important; color: #475569 !important;'"
+                            <button 
+                                type="button" 
+                                class="ims-modal-tab-btn" 
+                                :class="detailTab === 'photos' && 'is-active'"
+                                @click="detailTab = 'photos'"
                             >
-                                <svg style="width: 16px; height: 16px; min-width: 16px; min-height: 16px; position: static !important; display: block !important; margin: 0 !important; flex-shrink: 0 !important;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                <span style="position: static !important; display: block !important; font-size: 0.8rem !important; font-weight: 800 !important; line-height: 1 !important; margin: 0 !important; white-space: nowrap !important;">Foto Lapangan</span>
+                                <svg class="ims-tab-icon" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <span class="ims-tab-label">Foto Lapangan</span>
                                 <span 
-                                    style="padding: 2px 7px; border-radius: 10px; font-size: 0.68rem; font-weight: 900; line-height: 1; position: static !important; display: inline-flex !important; margin: 0 !important;"
-                                    :style="detailTab === 'photos' ? 'background: #ffffff !important; color: #0878E5 !important;' : 'background: #E2E8F0 !important; color: #475569 !important;'"
+                                    class="ims-tab-badge"
                                     x-text="(detailElement && detailElement.metadata && detailElement.metadata.photos ? detailElement.metadata.photos.length : 0)"
                                 ></span>
-                            </div>
+                            </button>
 
-                            <div 
-                                role="button"
-                                tabindex="0"
-                                @click="detailTab = 'notes'" 
-                                @keydown.enter="detailTab = 'notes'"
-                                @keydown.space.prevent="detailTab = 'notes'"
-                                style="height: 38px; border-radius: 9px; cursor: pointer; transition: all 0.15s ease; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 8px !important; width: 100% !important; box-sizing: border-box !important; user-select: none !important;"
-                                :style="detailTab === 'notes' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important;' : 'background: transparent !important; color: #475569 !important;'"
+                            <button 
+                                type="button" 
+                                class="ims-modal-tab-btn" 
+                                :class="detailTab === 'notes' && 'is-active'"
+                                @click="detailTab = 'notes'"
                             >
-                                <svg style="width: 16px; height: 16px; min-width: 16px; min-height: 16px; position: static !important; display: block !important; margin: 0 !important; flex-shrink: 0 !important;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                                <span style="position: static !important; display: block !important; font-size: 0.8rem !important; font-weight: 800 !important; line-height: 1 !important; margin: 0 !important; white-space: nowrap !important;">Riwayat & Log</span>
-                            </div>
+                                <svg class="ims-tab-icon" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                <span class="ims-tab-label">Riwayat & Log</span>
+                            </button>
                         </div>
                     </div>
 
