@@ -553,10 +553,10 @@
                                     left: 0;
                                     z-index: 999999;
                                     background: #ffffff;
-                                    border: 1px solid #CBD5E1;
+                                    border: 1px solid #E2E8F0;
                                     border-radius: 18px;
-                                    box-shadow: 0 20px 48px rgba(15,23,42,0.18);
-                                    min-width: 360px;
+                                    box-shadow: 0 20px 48px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.03);
+                                    min-width: 370px;
                                     padding: 14px;
                                     display: flex;
                                     flex-direction: column;
@@ -573,49 +573,73 @@
                                     flex-wrap: nowrap !important;
                                     align-items: center !important;
                                     justify-content: space-between !important;
-                                    gap: 16px !important;
+                                    gap: 12px !important;
                                     width: 100% !important;
-                                    height: 64px !important;
-                                    min-height: 64px !important;
-                                    max-height: 64px !important;
-                                    padding: 0 16px !important;
+                                    min-height: 60px !important;
+                                    padding: 10px 14px !important;
                                     border-radius: 12px !important;
                                     background: #FFFFFF !important;
-                                    border: 2px solid #334155 !important;
+                                    border: 1.5px solid #E2E8F0 !important;
                                     box-sizing: border-box !important;
                                     cursor: pointer !important;
                                     user-select: none !important;
-                                    transition: all 0.15s ease !important;
-                                }
-                                .ims-prj-card-item.is-active {
-                                    background: #F0FDF4 !important;
-                                    border: 2px solid #16A34A !important;
+                                    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
                                 }
                                 .ims-prj-card-item:hover {
                                     background: #F8FAFC !important;
+                                    border-color: #CBD5E1 !important;
+                                    transform: translateY(-1px) !important;
+                                    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
+                                }
+                                .ims-prj-card-item.is-active {
+                                    background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%) !important;
+                                    border: 1.5px solid #86EFAC !important;
+                                    box-shadow: 0 4px 16px rgba(22, 163, 74, 0.14) !important;
                                 }
                                 .ims-prj-card-item.is-active:hover {
-                                    background: #F0FDF4 !important;
+                                    background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%) !important;
+                                    border-color: #4ADE80 !important;
                                 }
                                 .ims-prj-left-col {
                                     display: flex !important;
-                                    flex-direction: column !important;
-                                    justify-content: center !important;
-                                    align-items: flex-start !important;
+                                    flex-direction: row !important;
+                                    align-items: center !important;
+                                    gap: 12px !important;
                                     flex: 1 1 auto !important;
                                     min-width: 0 !important;
                                     overflow: hidden !important;
                                 }
-                                .ims-prj-title-wrap {
+                                .ims-prj-icon-box {
+                                    width: 38px !important;
+                                    height: 38px !important;
+                                    border-radius: 10px !important;
                                     display: flex !important;
-                                    flex-direction: row !important;
-                                    flex-wrap: nowrap !important;
                                     align-items: center !important;
-                                    gap: 8px !important;
-                                    width: 100% !important;
+                                    justify-content: center !important;
+                                    flex-shrink: 0 !important;
+                                    transition: all 0.15s ease !important;
+                                }
+                                .ims-prj-card-item .ims-prj-icon-box {
+                                    background: #F1F5F9 !important;
+                                    border: 1px solid #E2E8F0 !important;
+                                    color: #475569 !important;
+                                }
+                                .ims-prj-card-item.is-active .ims-prj-icon-box {
+                                    background: #16A34A !important;
+                                    border: 1px solid #15803D !important;
+                                    color: #FFFFFF !important;
+                                    box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3) !important;
+                                }
+                                .ims-prj-info-col {
+                                    display: flex !important;
+                                    flex-direction: column !important;
+                                    justify-content: center !important;
+                                    flex: 1 1 auto !important;
+                                    min-width: 0 !important;
+                                    overflow: hidden !important;
                                 }
                                 .ims-prj-title-txt {
-                                    font-size: 15px !important;
+                                    font-size: 14px !important;
                                     font-weight: 800 !important;
                                     color: #0F172A !important;
                                     white-space: nowrap !important;
@@ -624,19 +648,25 @@
                                     line-height: 1.25 !important;
                                     font-family: inherit !important;
                                 }
+                                .ims-prj-card-item.is-active .ims-prj-title-txt {
+                                    color: #14532D !important;
+                                }
                                 .ims-prj-sub-txt {
-                                    font-size: 12px !important;
-                                    font-weight: 500 !important;
+                                    font-size: 11.5px !important;
+                                    font-weight: 600 !important;
                                     color: #64748B !important;
                                     margin-top: 3px !important;
                                     white-space: nowrap !important;
                                     overflow: hidden !important;
                                     text-overflow: ellipsis !important;
                                     line-height: 1.25 !important;
-                                    font-family: inherit !important;
+                                    display: flex !important;
+                                    align-items: center !important;
+                                    gap: 5px !important;
                                 }
                                 .ims-prj-card-item.is-active .ims-prj-sub-txt {
                                     color: #15803D !important;
+                                    font-weight: 700 !important;
                                 }
                                 .ims-prj-right-col {
                                     display: flex !important;
@@ -646,32 +676,32 @@
                                     margin-left: auto !important;
                                 }
                                 .ims-prj-active-pill {
-                                    border: 2px solid #16A34A !important;
-                                    background: #DCFCE7 !important;
-                                    color: #15803D !important;
-                                    border-radius: 8px !important;
-                                    padding: 4px 14px !important;
-                                    font-size: 13px !important;
+                                    background: #16A34A !important;
+                                    color: #FFFFFF !important;
+                                    border: none !important;
+                                    border-radius: 20px !important;
+                                    padding: 4px 10px !important;
+                                    font-size: 11px !important;
                                     font-weight: 800 !important;
                                     display: inline-flex !important;
                                     align-items: center !important;
-                                    justify-content: center !important;
-                                    white-space: nowrap !important;
-                                    box-sizing: border-box !important;
+                                    gap: 4px !important;
+                                    box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25) !important;
+                                    letter-spacing: 0.3px !important;
                                 }
                                 .ims-prj-del-btn {
-                                    border: 2px solid #334155 !important;
-                                    background: #FFFFFF !important;
-                                    color: #334155 !important;
+                                    border: 1px solid #E2E8F0 !important;
+                                    background: #F8FAFC !important;
+                                    color: #94A3B8 !important;
                                     cursor: pointer !important;
                                     padding: 0 !important;
                                     border-radius: 8px !important;
-                                    width: 36px !important;
-                                    height: 36px !important;
-                                    min-width: 36px !important;
-                                    max-width: 36px !important;
-                                    min-height: 36px !important;
-                                    max-height: 36px !important;
+                                    width: 32px !important;
+                                    height: 32px !important;
+                                    min-width: 32px !important;
+                                    max-width: 32px !important;
+                                    min-height: 32px !important;
+                                    max-height: 32px !important;
                                     display: inline-flex !important;
                                     align-items: center !important;
                                     justify-content: center !important;
@@ -680,8 +710,9 @@
                                 }
                                 .ims-prj-del-btn:hover {
                                     background: #FEE2E2 !important;
-                                    border-color: #EF4444 !important;
+                                    border-color: #FECACA !important;
                                     color: #EF4444 !important;
+                                    transform: scale(1.06) !important;
                                 }
                             </style>
 
@@ -698,38 +729,49 @@
                                     <button 
                                         type="button" 
                                         @click="openNewProjectModal = true; openProjectMenu = false;"
-                                        style="border: none; background: #0878E5; color: #ffffff; padding: 5px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(8,120,229,0.28); transition: transform 0.1s ease;"
+                                        style="border: none; background: #0878E5; color: #ffffff; padding: 5px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(8,120,229,0.28); transition: transform 0.1s ease; display: inline-flex; align-items: center; gap: 4px;"
                                         onmousedown="this.style.transform='scale(0.96)'"
                                         onmouseup="this.style.transform='scale(1)'"
-                                    >+ Proyek Baru</button>
+                                    >
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        <span>Proyek Baru</span>
+                                    </button>
                                 </div>
 
-                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
                                     <template x-for="p in allProjects" :key="p.id">
                                         <div 
                                             @click="switchProject(p.id); openProjectMenu = false;"
                                             class="ims-prj-card-item"
                                             :class="currentProject && currentProject.id === p.id ? 'is-active' : ''"
                                         >
-                                            {{-- Left: Folder Icon + Title on Row 1, Subtitle on Row 2 --}}
+                                            {{-- Left: Folder Icon Box + Info Col --}}
                                             <div class="ims-prj-left-col">
-                                                <div class="ims-prj-title-wrap">
-                                                    <svg width="22" height="22" style="width: 22px !important; height: 22px !important; min-width: 22px !important; max-width: 22px !important; min-height: 22px !important; max-height: 22px !important; flex-shrink: 0 !important;" :style="currentProject && currentProject.id === p.id ? 'color: #16A34A !important;' : 'color: #0F172A !important;'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                                                <div class="ims-prj-icon-box">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
                                                     </svg>
-                                                    <span class="ims-prj-title-txt" x-text="p.name"></span>
                                                 </div>
-                                                <div class="ims-prj-sub-txt" x-text="(p.elements_count || 0) + ' Objek Tersimpan'"></div>
+                                                <div class="ims-prj-info-col">
+                                                    <div class="ims-prj-title-txt" x-text="p.name"></div>
+                                                    <div class="ims-prj-sub-txt">
+                                                        <span style="width: 6px; height: 6px; border-radius: 50%; display: inline-block;" :style="currentProject && currentProject.id === p.id ? 'background: #16A34A;' : 'background: #94A3B8;'"></span>
+                                                        <span x-text="(p.elements_count || 0) + ' Objek Tersimpan'"></span>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            {{-- Right: Trash Icon in Rounded Box OR Active Badge --}}
+                                            {{-- Right: Trash Icon Button OR Active Badge --}}
                                             <div class="ims-prj-right-col">
-                                                {{-- Active Badge in Rounded Box (Shown ONLY for active project) --}}
+                                                {{-- Active Badge with Checkmark --}}
                                                 <template x-if="currentProject && currentProject.id === p.id">
-                                                    <span class="ims-prj-active-pill">Active</span>
+                                                    <span class="ims-prj-active-pill">
+                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                                        <span>Aktif</span>
+                                                    </span>
                                                 </template>
 
-                                                {{-- Trash Button in Rounded Box (Shown ONLY for deletable inactive projects) --}}
+                                                {{-- Trash Button for Inactive Projects --}}
                                                 <template x-if="(!currentProject || currentProject.id !== p.id) && allProjects.length > 1 && p.code !== 'PRJ-DEFAULT'">
                                                     <button 
                                                         type="button" 
@@ -737,8 +779,8 @@
                                                         class="ims-prj-del-btn"
                                                         title="Hapus proyek ini"
                                                     >
-                                                        <svg width="18" height="18" style="width: 18px !important; height: 18px !important; min-width: 18px !important; max-width: 18px !important; pointer-events: none !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>
                                                         </svg>
                                                     </button>
                                                 </template>
@@ -784,8 +826,13 @@
                             @click="setMode('select')" 
                             :class="currentMode === 'select' ? 'active' : ''"
                             class="ims-tool-btn"
+                            title="Mode Jelajah (Navigasi & pilih elemen)"
                         >
-                            👆 Jelajah
+                            <svg style="width: 14px; height: 14px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+                                <path d="m13 13 6 6"/>
+                            </svg>
+                            <span>Jelajah</span>
                         </button>
 
                         <button 
@@ -1056,19 +1103,29 @@
                                     <button 
                                         type="button" 
                                         @click="setMapMode('roadmap'); openExtraMenu = false;"
-                                        style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.76rem; font-weight: 800; transition: all 0.15s ease;"
-                                        :style="mapMode === 'roadmap' ? 'background: #EFF6FF; border-color: #0878E5; color: #0878E5;' : 'background: #F8FAFC; border-color: #E2E8F0; color: #475569;'"
+                                        style="padding: 8px 10px; border-radius: 8px; border: 1.5px solid; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 0.78rem; font-weight: 800; transition: all 0.15s ease;"
+                                        :style="mapMode === 'roadmap' ? 'background: #EFF6FF; border-color: #0878E5; color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.18);' : 'background: #F8FAFC; border-color: #E2E8F0; color: #475569;'"
                                     >
-                                        <span>🗺️</span>
+                                        <svg style="width: 15px; height: 15px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+                                            <line x1="8" y1="2" x2="8" y2="18"/>
+                                            <line x1="16" y1="6" x2="16" y2="22"/>
+                                        </svg>
                                         <span>Roadmap</span>
                                     </button>
                                     <button 
                                         type="button" 
                                         @click="setMapMode('hybrid'); openExtraMenu = false;"
-                                        style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.76rem; font-weight: 800; transition: all 0.15s ease;"
-                                        :style="mapMode === 'hybrid' ? 'background: #EFF6FF; border-color: #0878E5; color: #0878E5;' : 'background: #F8FAFC; border-color: #E2E8F0; color: #475569;'"
+                                        style="padding: 8px 10px; border-radius: 8px; border: 1.5px solid; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 0.78rem; font-weight: 800; transition: all 0.15s ease;"
+                                        :style="mapMode === 'hybrid' ? 'background: #EFF6FF; border-color: #0878E5; color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.18);' : 'background: #F8FAFC; border-color: #E2E8F0; color: #475569;'"
                                     >
-                                        <span>🛰️</span>
+                                        <svg style="width: 15px; height: 15px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M13 7 9 3 5 7l4 4"/>
+                                            <path d="m17 11 4 4-4 4-4-4"/>
+                                            <path d="m8 12 4 4 6-6-4-4Z"/>
+                                            <path d="m16 8 3-3"/>
+                                            <path d="M9 21a6 6 0 0 0-6-6"/>
+                                        </svg>
                                         <span>Satelit</span>
                                     </button>
                                 </div>
