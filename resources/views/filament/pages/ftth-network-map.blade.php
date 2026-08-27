@@ -2182,39 +2182,50 @@
 
                     {{-- Modal Tab Navigation (Solid Segmented Grid Switcher) --}}
                     <div style="padding: 14px 22px 0 22px; background: #ffffff; flex-shrink: 0;">
-                        <div style="background: #F1F5F9; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
-                            <button 
-                                type="button" 
+                        <div style="background: #F1F5F9; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+                            <div 
+                                role="button"
+                                tabindex="0"
                                 @click="detailTab = 'specs'" 
-                                style="height: 38px; border-radius: 9px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid transparent; width: 100%; box-sizing: border-box; text-align: center; line-height: 1; white-space: nowrap;"
-                                :style="detailTab === 'specs' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important; border-color: #0878E5 !important;' : 'background: transparent !important; color: #475569 !important;'"
+                                @keydown.enter="detailTab = 'specs'"
+                                @keydown.space.prevent="detailTab = 'specs'"
+                                style="height: 38px; border-radius: 9px; cursor: pointer; transition: all 0.15s ease; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 8px !important; width: 100% !important; box-sizing: border-box !important; user-select: none !important;"
+                                :style="detailTab === 'specs' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important;' : 'background: transparent !important; color: #475569 !important;'"
                             >
-                                <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                                <span>Spesifikasi Teknis</span>
-                            </button>
-                            <button 
-                                type="button" 
+                                <svg style="width: 16px; height: 16px; min-width: 16px; min-height: 16px; position: static !important; display: block !important; margin: 0 !important; flex-shrink: 0 !important;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                <span style="position: static !important; display: block !important; font-size: 0.8rem !important; font-weight: 800 !important; line-height: 1 !important; margin: 0 !important; white-space: nowrap !important;">Spesifikasi Teknis</span>
+                            </div>
+
+                            <div 
+                                role="button"
+                                tabindex="0"
                                 @click="detailTab = 'photos'" 
-                                style="height: 38px; border-radius: 9px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid transparent; width: 100%; box-sizing: border-box; text-align: center; line-height: 1; white-space: nowrap;"
-                                :style="detailTab === 'photos' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important; border-color: #0878E5 !important;' : 'background: transparent !important; color: #475569 !important;'"
+                                @keydown.enter="detailTab = 'photos'"
+                                @keydown.space.prevent="detailTab = 'photos'"
+                                style="height: 38px; border-radius: 9px; cursor: pointer; transition: all 0.15s ease; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 8px !important; width: 100% !important; box-sizing: border-box !important; user-select: none !important;"
+                                :style="detailTab === 'photos' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important;' : 'background: transparent !important; color: #475569 !important;'"
                             >
-                                <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                <span>Foto Lapangan</span>
+                                <svg style="width: 16px; height: 16px; min-width: 16px; min-height: 16px; position: static !important; display: block !important; margin: 0 !important; flex-shrink: 0 !important;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <span style="position: static !important; display: block !important; font-size: 0.8rem !important; font-weight: 800 !important; line-height: 1 !important; margin: 0 !important; white-space: nowrap !important;">Foto Lapangan</span>
                                 <span 
-                                    style="padding: 2px 7px; border-radius: 10px; font-size: 0.68rem; font-weight: 900; line-height: 1;"
+                                    style="padding: 2px 7px; border-radius: 10px; font-size: 0.68rem; font-weight: 900; line-height: 1; position: static !important; display: inline-flex !important; margin: 0 !important;"
                                     :style="detailTab === 'photos' ? 'background: #ffffff !important; color: #0878E5 !important;' : 'background: #E2E8F0 !important; color: #475569 !important;'"
                                     x-text="(detailElement && detailElement.metadata && detailElement.metadata.photos ? detailElement.metadata.photos.length : 0)"
                                 ></span>
-                            </button>
-                            <button 
-                                type="button" 
+                            </div>
+
+                            <div 
+                                role="button"
+                                tabindex="0"
                                 @click="detailTab = 'notes'" 
-                                style="height: 38px; border-radius: 9px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid transparent; width: 100%; box-sizing: border-box; text-align: center; line-height: 1; white-space: nowrap;"
-                                :style="detailTab === 'notes' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important; border-color: #0878E5 !important;' : 'background: transparent !important; color: #475569 !important;'"
+                                @keydown.enter="detailTab = 'notes'"
+                                @keydown.space.prevent="detailTab = 'notes'"
+                                style="height: 38px; border-radius: 9px; cursor: pointer; transition: all 0.15s ease; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 8px !important; width: 100% !important; box-sizing: border-box !important; user-select: none !important;"
+                                :style="detailTab === 'notes' ? 'background: #0878E5 !important; color: #ffffff !important; box-shadow: 0 3px 10px rgba(8,120,229,0.3) !important;' : 'background: transparent !important; color: #475569 !important;'"
                             >
-                                <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                                <span>Riwayat & Log</span>
-                            </button>
+                                <svg style="width: 16px; height: 16px; min-width: 16px; min-height: 16px; position: static !important; display: block !important; margin: 0 !important; flex-shrink: 0 !important;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                <span style="position: static !important; display: block !important; font-size: 0.8rem !important; font-weight: 800 !important; line-height: 1 !important; margin: 0 !important; white-space: nowrap !important;">Riwayat & Log</span>
+                            </div>
                         </div>
                     </div>
 
@@ -2615,25 +2626,25 @@
                             <button 
                                 type="button" 
                                 @click="openDetailModal = false; flyToCustomElement(detailElement);" 
-                                style="height: 38px; padding: 0 15px; border-radius: 10px; border: 1.5px solid #BFDBFE; background: #EFF6FF; color: #0878E5; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s ease;"
+                                style="height: 38px; padding: 0 15px; border-radius: 10px; border: 1.5px solid #BFDBFE; background: #EFF6FF; color: #0878E5; cursor: pointer; display: inline-flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 7px !important; transition: all 0.15s ease;"
                                 onmouseover="this.style.background='#DBEAFE'"
                                 onmouseout="this.style.background='#EFF6FF'"
                                 title="Fokus ke lokasi objek pada peta"
                             >
-                                <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                                <span>Fokus Peta</span>
+                                <svg style="width: 15px; height: 15px; min-width: 15px; position: static !important; display: block !important; margin: 0 !important; flex-shrink: 0 !important;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                                <span style="position: static !important; display: block !important; font-size: 0.78rem !important; font-weight: 800 !important; line-height: 1 !important; margin: 0 !important;">Fokus Peta</span>
                             </button>
                             <template x-if="detailElement && !detailElement.isOdp">
                                 <button 
                                     type="button" 
                                     @click="openDetailModal = false; openStylePicker(detailElement.id);" 
-                                    style="height: 38px; padding: 0 15px; border-radius: 10px; border: 1.5px solid #CBD5E1; background: #ffffff; color: #334155; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s ease;"
+                                    style="height: 38px; padding: 0 15px; border-radius: 10px; border: 1.5px solid #CBD5E1; background: #ffffff; color: #334155; cursor: pointer; display: inline-flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 7px !important; transition: all 0.15s ease;"
                                     onmouseover="this.style.background='#F1F5F9'"
                                     onmouseout="this.style.background='#ffffff'"
                                     title="Ubah gaya, warna dan ikon elemen"
                                 >
-                                    <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
-                                    <span>Gaya & Warna</span>
+                                    <svg style="width: 15px; height: 15px; min-width: 15px; position: static !important; display: block !important; margin: 0 !important; flex-shrink: 0 !important;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+                                    <span style="position: static !important; display: block !important; font-size: 0.78rem !important; font-weight: 800 !important; line-height: 1 !important; margin: 0 !important;">Gaya & Warna</span>
                                 </button>
                             </template>
                         </div>
@@ -2642,20 +2653,22 @@
                             <button 
                                 type="button" 
                                 @click="openDetailModal = false" 
-                                style="height: 38px; padding: 0 18px; border: 1.5px solid #CBD5E1; background: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; color: #475569; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease;"
+                                style="height: 38px; padding: 0 18px; border: 1.5px solid #CBD5E1; background: #ffffff; border-radius: 10px; color: #475569; cursor: pointer; display: inline-flex !important; align-items: center !important; justify-content: center !important; transition: all 0.15s ease;"
                                 onmouseover="this.style.background='#F1F5F9'"
                                 onmouseout="this.style.background='#ffffff'"
-                            >Tutup</button>
+                            >
+                                <span style="position: static !important; display: block !important; font-size: 0.78rem !important; font-weight: 800 !important; line-height: 1 !important; margin: 0 !important;">Tutup</span>
+                            </button>
                             <template x-if="detailElement && !detailElement.isOdp">
                                 <button 
                                     type="button" 
                                     @click="saveElementDetails()" 
-                                    style="height: 38px; padding: 0 22px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.8rem; font-weight: 900; cursor: pointer; box-shadow: 0 4px 14px rgba(8, 120, 229, 0.35); display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s ease;"
+                                    style="height: 38px; padding: 0 22px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 14px rgba(8, 120, 229, 0.35); display: inline-flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 7px !important; transition: all 0.15s ease;"
                                     onmouseover="this.style.background='#0765c2'; this.style.transform='translateY(-1px)'"
                                     onmouseout="this.style.background='#0878E5'; this.style.transform='none'"
                                 >
-                                    <svg style="width: 15px; height: 15px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                                    <span>Simpan Data</span>
+                                    <svg style="width: 15px; height: 15px; min-width: 15px; position: static !important; display: block !important; margin: 0 !important; flex-shrink: 0 !important;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                    <span style="position: static !important; display: block !important; font-size: 0.8rem !important; font-weight: 900 !important; line-height: 1 !important; margin: 0 !important;">Simpan Data</span>
                                 </button>
                             </template>
                         </div>
