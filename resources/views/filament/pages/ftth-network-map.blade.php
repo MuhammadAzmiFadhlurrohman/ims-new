@@ -1850,990 +1850,1026 @@
             </div>
         </div>
 
-        {{-- ── 3. MODAL TAMBAH PROYEK BARU ── --}}
-        <div 
-            x-show="openNewProjectModal" 
-            x-cloak
-            style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); z-index: 99999999; display: flex; align-items: center; justify-content: center; padding: 1rem;"
-        >
+        {{-- ── 3. MODAL TAMBAH PROYEK BARU (CENTERED TELEPORT) ── --}}
+        <template x-teleport="body">
             <div 
-                @click.outside="openNewProjectModal = false"
-                style="background: #ffffff; border-radius: 16px; box-shadow: 0 24px 48px rgba(0,0,0,0.28); width: 100%; max-width: 440px; padding: 1.5rem; position: relative;"
+                x-show="openNewProjectModal" 
+                x-cloak
+                style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;"
+                @keydown.escape.window="openNewProjectModal = false"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
             >
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; color: #0878E5;">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                    </div>
-                    <div>
-                        <h3 style="font-size: 1.05rem; font-weight: 900; color: #0F172A; margin: 0;">Tambah Proyek FTTH Baru</h3>
-                        <p style="font-size: 0.74rem; color: #64748B; margin: 2px 0 0 0;">Buat area pemetaan jaringan baru terpisah.</p>
-                    </div>
-                </div>
-
-                <div style="margin: 14px 0 12px 0;">
-                    <label style="display: block; font-size: 0.76rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Nama Proyek / Area *</label>
-                    <input 
-                        type="text" 
-                        x-model="newProjectName" 
-                        placeholder="Contoh: Konsorsium CJP, Area Arcamanik, Proyek Dago..."
-                        style="width: 100%; height: 38px; padding: 0 12px; border: 1.5px solid #CBD5E1; border-radius: 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; box-sizing: border-box; outline: none;"
-                    >
-                </div>
-
-                <div style="margin-bottom: 18px;">
-                    <label style="display: block; font-size: 0.76rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Deskripsi / Catatan (Opsional)</label>
-                    <textarea 
-                        x-model="newProjectDescription" 
-                        rows="2"
-                        placeholder="Keterangan wilayah, klien, atau kapasitas..."
-                        style="width: 100%; padding: 8px 12px; border: 1.5px solid #CBD5E1; border-radius: 10px; font-size: 0.78rem; font-weight: 600; color: #0F172A; box-sizing: border-box; outline: none; resize: none;"
-                    ></textarea>
-                </div>
-
-                <div style="display: flex; justify-content: flex-end; gap: 8px;">
-                    <button 
-                        type="button" 
-                        @click="openNewProjectModal = false"
-                        style="padding: 8px 14px; border: 1px solid #CBD5E1; background: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; color: #64748B; cursor: pointer;"
-                    >Batal</button>
-                    <button 
-                        type="button" 
-                        @click="submitNewProject()"
-                        style="padding: 8px 18px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(8, 120, 229, 0.25);"
-                    >Simpan & Buka Proyek</button>
-                </div>
-            </div>
-        </div>
-
-        {{-- ── 4. MODAL KUSTOMISASI WARNA & IKON (GOOGLE MY MAPS STYLE) ── --}}
-        <div 
-            x-show="openStyleModal" 
-            x-cloak
-            style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); z-index: 99999999; display: flex; align-items: center; justify-content: center; padding: 1rem;"
-        >
-            <div 
-                @click.outside="openStyleModal = false"
-                style="background: #ffffff; border-radius: 18px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); width: 100%; max-width: 460px; padding: 1.5rem; position: relative; border: 1px solid #E2E8F0;"
-            >
-                {{-- Header --}}
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid #F1F5F9;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 36px; height: 36px; border-radius: 10px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; font-size: 18px;">
-                            🎨
+                <div 
+                    @click.outside="openNewProjectModal = false"
+                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 25px 60px -12px rgba(0,0,0,0.35); width: 100%; max-width: 440px; padding: 1.5rem; position: relative; margin: auto;"
+                >
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                        <div style="width: 38px; height: 38px; border-radius: 10px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; color: #0878E5;">
+                            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
                         </div>
                         <div>
-                            <h3 style="font-size: 1rem; font-weight: 900; color: #0F172A; margin: 0;">Gaya & Warna Objek</h3>
-                            <p style="font-size: 0.72rem; color: #64748B; margin: 2px 0 0 0;" x-text="stylingElement ? stylingElement.name : 'Kustomisasi Tampilan'"></p>
+                            <h3 style="font-size: 1.05rem; font-weight: 900; color: #0F172A; margin: 0;">Tambah Proyek FTTH Baru</h3>
+                            <p style="font-size: 0.74rem; color: #64748B; margin: 2px 0 0 0;">Buat area pemetaan jaringan baru terpisah.</p>
                         </div>
                     </div>
-                    <button 
-                        type="button" 
-                        @click="openStyleModal = false" 
-                        style="background: #F1F5F9; border: none; color: #64748B; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900;"
-                    >✕</button>
-                </div>
 
-                {{-- Live Preview Box --}}
-                <div style="margin-bottom: 14px; padding: 12px 14px; border-radius: 12px; background: #F8FAFC; border: 1.5px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between;">
-                    <span style="font-size: 0.76rem; font-weight: 800; color: #475569;">Pratinjau Tampilan:</span>
-                    <template x-if="stylingElement && stylingElement.category === 'marker'">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <div 
-                                style="width: 34px; height: 34px; border-radius: 50%; border: 2.5px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; transition: all 0.15s ease;"
-                                :style="'background:' + selectedColor"
-                                x-html="getIconSvg(selectedIcon)"
-                            ></div>
-                            <span style="font-size: 0.76rem; font-weight: 800; color: #0F172A;" x-text="selectedColor"></span>
-                        </div>
-                    </template>
-                    <template x-if="stylingElement && stylingElement.category === 'line'">
+                    <div style="margin: 14px 0 12px 0;">
+                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Nama Proyek / Area *</label>
+                        <input 
+                            type="text" 
+                            x-model="newProjectName" 
+                            placeholder="Contoh: Konsorsium CJP, Area Arcamanik, Proyek Dago..."
+                            style="width: 100%; height: 40px; padding: 0 12px; border: 1.5px solid #CBD5E1; border-radius: 10px; font-size: 0.82rem; font-weight: 700; color: #0F172A; box-sizing: border-box; outline: none; background: #F8FAFC;"
+                        >
+                    </div>
+
+                    <div style="margin-bottom: 18px;">
+                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Deskripsi / Catatan (Opsional)</label>
+                        <textarea 
+                            x-model="newProjectDescription" 
+                            rows="2"
+                            placeholder="Keterangan wilayah, klien, atau kapasitas..."
+                            style="width: 100%; padding: 10px 12px; border: 1.5px solid #CBD5E1; border-radius: 10px; font-size: 0.78rem; font-weight: 600; color: #0F172A; box-sizing: border-box; outline: none; resize: none; background: #F8FAFC;"
+                        ></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                        <button 
+                            type="button" 
+                            @click="openNewProjectModal = false"
+                            style="padding: 8px 14px; border: 1.5px solid #CBD5E1; background: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; color: #64748B; cursor: pointer;"
+                        >Batal</button>
+                        <button 
+                            type="button" 
+                            @click="submitNewProject()"
+                            style="padding: 8px 18px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(8, 120, 229, 0.25);"
+                        >Simpan & Buka Proyek</button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        {{-- ── 4. MODAL KUSTOMISASI WARNA & IKON (CENTERED TELEPORT) ── --}}
+        <template x-teleport="body">
+            <div 
+                x-show="openStyleModal" 
+                x-cloak
+                style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;"
+                @keydown.escape.window="openStyleModal = false"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+            >
+                <div 
+                    @click.outside="openStyleModal = false"
+                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.35); width: 100%; max-width: 480px; padding: 1.5rem; position: relative; border: 1px solid #E2E8F0; margin: auto;"
+                >
+                    {{-- Header --}}
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid #F1F5F9;">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <div 
-                                style="width: 70px; height: 8px; border-radius: 4px; transition: all 0.15s ease;"
-                                :style="'background:' + selectedColor + '; height:' + Math.min(10, Math.max(3, selectedLineWidth)) + 'px; ' + (selectedLineDash === 'dashed' ? 'border-top: 3px dashed ' + selectedColor + '; background: transparent;' : '')"
-                            ></div>
-                            <span style="font-size: 0.76rem; font-weight: 800; color: #0F172A;" x-text="selectedColor"></span>
+                            <div style="width: 38px; height: 38px; border-radius: 10px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                                🎨
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1rem; font-weight: 900; color: #0F172A; margin: 0;">Gaya & Warna Objek</h3>
+                                <p style="font-size: 0.72rem; color: #64748B; margin: 2px 0 0 0;" x-text="stylingElement ? stylingElement.name : 'Kustomisasi Tampilan'"></p>
+                            </div>
                         </div>
-                    </template>
-                </div>
+                        <button 
+                            type="button" 
+                            @click="openStyleModal = false" 
+                            style="background: #F1F5F9; border: none; color: #64748B; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900;"
+                        >✕</button>
+                    </div>
 
-                {{-- Color Palette Swatches --}}
-                <div style="margin-bottom: 14px;">
-                    <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Pilihan Warna</label>
-                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;">
-                        <template x-for="c in paletteColors" :key="c">
-                            <button 
-                                type="button" 
-                                @click="selectedColor = c" 
-                                style="height: 34px; border-radius: 9px; cursor: pointer; border: 2px solid transparent; transition: all 0.12s ease; display: flex; align-items: center; justify-content: center;"
-                                :style="'background:' + c + ';' + (selectedColor === c ? 'border-color: #0F172A; transform: scale(1.08); box-shadow: 0 0 0 2px #ffffff, 0 4px 10px rgba(0,0,0,0.3);' : 'box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);')"
-                            >
-                                <svg x-show="selectedColor === c" style="width: 16px; height: 16px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-                            </button>
+                    {{-- Live Preview Box --}}
+                    <div style="margin-bottom: 14px; padding: 12px 14px; border-radius: 12px; background: #F8FAFC; border: 1.5px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 0.76rem; font-weight: 800; color: #475569;">Pratinjau Tampilan:</span>
+                        <template x-if="stylingElement && stylingElement.category === 'marker'">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div 
+                                    style="width: 34px; height: 34px; border-radius: 50%; border: 2.5px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; transition: all 0.15s ease;"
+                                    :style="'background:' + selectedColor"
+                                    x-html="getIconSvg(selectedIcon)"
+                                ></div>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #0F172A;" x-text="selectedColor"></span>
+                            </div>
+                        </template>
+                        <template x-if="stylingElement && stylingElement.category === 'line'">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div 
+                                    style="width: 70px; height: 8px; border-radius: 4px; transition: all 0.15s ease;"
+                                    :style="'background:' + selectedColor + '; height:' + Math.min(10, Math.max(3, selectedLineWidth)) + 'px; ' + (selectedLineDash === 'dashed' ? 'border-top: 3px dashed ' + selectedColor + '; background: transparent;' : '')"
+                                ></div>
+                                <span style="font-size: 0.76rem; font-weight: 800; color: #0F172A;" x-text="selectedColor"></span>
+                            </div>
                         </template>
                     </div>
-                    <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
-                        <label style="font-size: 0.72rem; font-weight: 700; color: #64748B;">Warna Kustom:</label>
-                        <input type="color" x-model="selectedColor" style="width: 32px; height: 28px; padding: 0; border: 1px solid #CBD5E1; border-radius: 6px; cursor: pointer;">
-                        <input type="text" x-model="selectedColor" style="height: 28px; width: 85px; font-size: 0.74rem; font-weight: 800; border: 1px solid #CBD5E1; border-radius: 6px; padding: 0 6px; text-transform: uppercase;">
-                    </div>
-                </div>
 
-                {{-- Marker Icon Selector (Only for category === 'marker') --}}
-                <template x-if="stylingElement && stylingElement.category === 'marker'">
-                    <div style="margin-bottom: 18px;">
-                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Bentuk Ikon Marker</label>
-                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; max-height: 140px; overflow-y: auto; padding: 4px;">
-                            <template x-for="icon in availableIcons" :key="icon.id">
+                    {{-- Color Palette Swatches --}}
+                    <div style="margin-bottom: 14px;">
+                        <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Pilihan Warna</label>
+                        <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;">
+                            <template x-for="c in paletteColors" :key="c">
                                 <button 
                                     type="button" 
-                                    @click="selectedIcon = icon.id" 
-                                    style="height: 38px; border-radius: 9px; cursor: pointer; border: 1.5px solid #E2E8F0; background: #F8FAFC; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.12s ease;"
-                                    :style="selectedIcon === icon.id ? 'border-color: #0878E5; background: #EFF6FF; color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.25);' : 'color: #475569;'"
-                                    :title="icon.name"
+                                    @click="selectedColor = c" 
+                                    style="height: 34px; border-radius: 9px; cursor: pointer; border: 2px solid transparent; transition: all 0.12s ease; display: flex; align-items: center; justify-content: center;"
+                                    :style="'background:' + c + ';' + (selectedColor === c ? 'border-color: #0F172A; transform: scale(1.08); box-shadow: 0 0 0 2px #ffffff, 0 4px 10px rgba(0,0,0,0.3);' : 'box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);')"
                                 >
-                                    <div style="width: 18px; height: 18px;" x-html="icon.svg"></div>
+                                    <svg x-show="selectedColor === c" style="width: 16px; height: 16px; color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
                                 </button>
                             </template>
                         </div>
+                        <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
+                            <label style="font-size: 0.72rem; font-weight: 700; color: #64748B;">Warna Kustom:</label>
+                            <input type="color" x-model="selectedColor" style="width: 32px; height: 28px; padding: 0; border: 1px solid #CBD5E1; border-radius: 6px; cursor: pointer;">
+                            <input type="text" x-model="selectedColor" style="height: 28px; width: 85px; font-size: 0.74rem; font-weight: 800; border: 1px solid #CBD5E1; border-radius: 6px; padding: 0 6px; text-transform: uppercase;">
+                        </div>
                     </div>
-                </template>
 
-                {{-- Line Options (Only for category === 'line') --}}
-                <template x-if="stylingElement && stylingElement.category === 'line'">
-                    <div style="margin-bottom: 18px;">
-                        <div style="margin-bottom: 10px;">
-                            <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Ketebalan Garis</label>
-                            <div style="display: flex; gap: 6px;">
-                                <template x-for="w in [3, 4.5, 6.5, 9]" :key="w">
+                    {{-- Marker Icon Selector (Only for category === 'marker') --}}
+                    <template x-if="stylingElement && stylingElement.category === 'marker'">
+                        <div style="margin-bottom: 18px;">
+                            <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Bentuk Ikon Marker</label>
+                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; max-height: 140px; overflow-y: auto; padding: 4px;">
+                                <template x-for="icon in availableIcons" :key="icon.id">
                                     <button 
                                         type="button" 
-                                        @click="selectedLineWidth = w" 
-                                        style="flex: 1; padding: 6px 0; border-radius: 8px; font-size: 0.72rem; font-weight: 800; border: 1.5px solid #E2E8F0; cursor: pointer;"
-                                        :style="selectedLineWidth == w ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #F8FAFC; color: #475569;'"
-                                        x-text="w + ' px'"
-                                    ></button>
+                                        @click="selectedIcon = icon.id" 
+                                        style="height: 38px; border-radius: 9px; cursor: pointer; border: 1.5px solid #E2E8F0; background: #F8FAFC; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.12s ease;"
+                                        :style="selectedIcon === icon.id ? 'border-color: #0878E5; background: #EFF6FF; color: #0878E5; box-shadow: 0 2px 8px rgba(8,120,229,0.25);' : 'color: #475569;'"
+                                        :title="icon.name"
+                                    >
+                                        <div style="width: 18px; height: 18px;" x-html="icon.svg"></div>
+                                    </button>
                                 </template>
                             </div>
                         </div>
-                        <div>
-                            <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Gaya Garis</label>
-                            <div style="display: flex; gap: 6px;">
-                                <button 
-                                    type="button" 
-                                    @click="selectedLineDash = 'solid'" 
-                                    style="flex: 1; padding: 6px 0; border-radius: 8px; font-size: 0.72rem; font-weight: 800; border: 1.5px solid #E2E8F0; cursor: pointer;"
-                                    :style="selectedLineDash === 'solid' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #F8FAFC; color: #475569;'"
-                                >Solid (Lurus)</button>
-                                <button 
-                                    type="button" 
-                                    @click="selectedLineDash = 'dashed'" 
-                                    style="flex: 1; padding: 6px 0; border-radius: 8px; font-size: 0.72rem; font-weight: 800; border: 1.5px solid #E2E8F0; cursor: pointer;"
-                                    :style="selectedLineDash === 'dashed' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #F8FAFC; color: #475569;'"
-                                >Putus-Putus</button>
+                    </template>
+
+                    {{-- Line Options (Only for category === 'line') --}}
+                    <template x-if="stylingElement && stylingElement.category === 'line'">
+                        <div style="margin-bottom: 18px;">
+                            <div style="margin-bottom: 10px;">
+                                <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Ketebalan Garis</label>
+                                <div style="display: flex; gap: 6px;">
+                                    <template x-for="w in [3, 4.5, 6.5, 9]" :key="w">
+                                        <button 
+                                            type="button" 
+                                            @click="selectedLineWidth = w" 
+                                            style="flex: 1; padding: 6px 0; border-radius: 8px; font-size: 0.72rem; font-weight: 800; border: 1.5px solid #E2E8F0; cursor: pointer;"
+                                            :style="selectedLineWidth == w ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #F8FAFC; color: #475569;'"
+                                            x-text="w + ' px'"
+                                        ></button>
+                                    </template>
+                                </div>
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Gaya Garis</label>
+                                <div style="display: flex; gap: 6px;">
+                                    <button 
+                                        type="button" 
+                                        @click="selectedLineDash = 'solid'" 
+                                        style="flex: 1; padding: 6px 0; border-radius: 8px; font-size: 0.72rem; font-weight: 800; border: 1.5px solid #E2E8F0; cursor: pointer;"
+                                        :style="selectedLineDash === 'solid' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #F8FAFC; color: #475569;'"
+                                    >Solid (Lurus)</button>
+                                    <button 
+                                        type="button" 
+                                        @click="selectedLineDash = 'dashed'" 
+                                        style="flex: 1; padding: 6px 0; border-radius: 8px; font-size: 0.72rem; font-weight: 800; border: 1.5px solid #E2E8F0; cursor: pointer;"
+                                        :style="selectedLineDash === 'dashed' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #F8FAFC; color: #475569;'"
+                                    >Putus-Putus</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </template>
+                    </template>
 
-                {{-- Action Buttons --}}
-                <div style="display: flex; justify-content: flex-end; gap: 8px;">
-                    <button 
-                        type="button" 
-                        @click="openStyleModal = false"
-                        style="padding: 8px 14px; border: 1px solid #CBD5E1; background: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; color: #64748B; cursor: pointer;"
-                    >Batal</button>
-                    <button 
-                        type="button" 
-                        @click="saveElementStyle()"
-                        style="padding: 8px 18px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(8, 120, 229, 0.25);"
-                    >Terapkan Gaya</button>
+                    {{-- Action Buttons --}}
+                    <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                        <button 
+                            type="button" 
+                            @click="openStyleModal = false"
+                            style="padding: 8px 14px; border: 1.5px solid #CBD5E1; background: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; color: #64748B; cursor: pointer;"
+                        >Batal</button>
+                        <button 
+                            type="button" 
+                            @click="saveElementStyle()"
+                            style="padding: 8px 18px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(8, 120, 229, 0.25);"
+                        >Terapkan Gaya</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
 
-        {{-- ── 2.5 ELEMENT DETAIL & SPECIFICATIONS MODAL WITH PHOTO UPLOAD ── --}}
-        <div 
-            x-show="openDetailModal" 
-            x-cloak
-            style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); z-index: 9999999; display: flex; align-items: center; justify-content: center; padding: 1rem;"
-            @keydown.escape.window="openDetailModal = false"
-        >
+        {{-- ── 2.5 ELEMENT DETAIL & SPECIFICATIONS MODAL WITH PHOTO UPLOAD (CENTERED TELEPORT) ── --}}
+        <template x-teleport="body">
             <div 
-                @click.outside="openDetailModal = false"
-                style="background: #ffffff; border-radius: 18px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); width: 100%; max-width: 680px; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #CBD5E1; position: relative;"
+                x-show="openDetailModal" 
+                x-cloak
+                style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;"
+                @keydown.escape.window="openDetailModal = false"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
             >
-                {{-- Modal Header --}}
-                <div style="padding: 14px 20px; border-bottom: 1.5px solid #F1F5F9; display: flex; align-items: center; justify-content: space-between; background: #0F172A; color: #ffffff;">
-                    <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
-                        <div 
-                            style="width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.2);"
-                            :style="'background:' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5')"
-                            x-html="detailElement ? getIconSvg((detailElement.metadata && detailElement.metadata.custom_icon) || detailElement.element_type) : ''"
-                        ></div>
-                        <div style="min-width: 0;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <div style="font-size: 1rem; font-weight: 900; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="detailElement ? (detailForm.name || detailElement.name) : 'Detail Elemen'"></div>
-                                <span 
-                                    style="font-size: 0.64rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.4px;"
-                                    :style="'background:' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5') + '22; color: #ffffff; border: 1px solid ' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5')"
-                                    x-text="detailElement ? detailElement.element_type.replace('_', ' ') : ''"
-                                ></span>
-                            </div>
-                            <div style="font-size: 0.7rem; color: #94A3B8; margin-top: 2px; font-family: monospace;">
-                                <template x-if="detailElement && detailElement.category === 'marker'">
-                                    <span>GPS: <span x-text="detailElement.latitude ? (detailElement.latitude.toFixed(6) + ', ' + detailElement.longitude.toFixed(6)) : '-'"></span></span>
-                                </template>
-                                <template x-if="detailElement && detailElement.category === 'line'">
-                                    <span>Jalur Kabel • Panjang Terukur: ~<span x-text="detailElement.length_meters || 0"></span> meter</span>
-                                </template>
+                <div 
+                    @click.outside="openDetailModal = false"
+                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 30px 80px -15px rgba(15, 23, 42, 0.45), 0 0 0 1px rgba(226, 232, 240, 0.8); width: 100%; max-width: 680px; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; position: relative; margin: auto; animation: imsModalZoom 0.2s cubic-bezier(0.16, 1, 0.3, 1);"
+                >
+                    {{-- Modal Header --}}
+                    <div style="padding: 16px 22px; border-bottom: 1.5px solid #1E293B; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: #ffffff; flex-shrink: 0;">
+                        <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
+                            <div 
+                                style="width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.2);"
+                                :style="'background:' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5')"
+                                x-html="detailElement ? getIconSvg((detailElement.metadata && detailElement.metadata.custom_icon) || detailElement.element_type) : ''"
+                            ></div>
+                            <div style="min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="font-size: 1.05rem; font-weight: 900; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ffffff;" x-text="detailElement ? (detailForm.name || detailElement.name) : 'Detail Elemen'"></div>
+                                    <span 
+                                        style="font-size: 0.65rem; font-weight: 800; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;"
+                                        :style="'background:' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5') + '33; color: #ffffff; border: 1.5px solid ' + (detailElement ? (detailElement.color || '#0878E5') : '#0878E5')"
+                                        x-text="detailElement ? detailElement.element_type.replace('_', ' ') : ''"
+                                    ></span>
+                                </div>
+                                <div style="font-size: 0.72rem; color: #94A3B8; margin-top: 3px; font-family: monospace; display: flex; align-items: center; gap: 6px;">
+                                    <template x-if="detailElement && detailElement.category === 'marker'">
+                                        <span>📍 GPS: <span x-text="detailElement.latitude ? (detailElement.latitude.toFixed(6) + ', ' + detailElement.longitude.toFixed(6)) : '-'"></span></span>
+                                    </template>
+                                    <template x-if="detailElement && detailElement.category === 'line'">
+                                        <span>📏 Jalur Kabel • Panjang: ~<span x-text="detailElement.length_meters || 0"></span> meter</span>
+                                    </template>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <button 
-                        type="button" 
-                        @click="openDetailModal = false" 
-                        style="background: rgba(255,255,255,0.1); border: none; color: #ffffff; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; transition: background 0.15s ease;"
-                        onmouseover="this.style.background='rgba(255,255,255,0.2)'"
-                        onmouseout="this.style.background='rgba(255,255,255,0.1)'"
-                    >✕</button>
-                </div>
-
-                {{-- Modal Tab Navigation --}}
-                <div style="padding: 0 20px; background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; display: flex; gap: 8px;">
-                    <button 
-                        type="button" 
-                        @click="detailTab = 'specs'" 
-                        style="padding: 10px 14px; font-size: 0.76rem; font-weight: 800; border: none; background: transparent; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all 0.15s ease; display: flex; align-items: center; gap: 6px;"
-                        :style="detailTab === 'specs' ? 'color: #0878E5; border-bottom-color: #0878E5;' : 'color: #64748B;'"
-                    >
-                        <span>📊 Spesifikasi Teknis</span>
-                    </button>
-                    <button 
-                        type="button" 
-                        @click="detailTab = 'photos'" 
-                        style="padding: 10px 14px; font-size: 0.76rem; font-weight: 800; border: none; background: transparent; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all 0.15s ease; display: flex; align-items: center; gap: 6px;"
-                        :style="detailTab === 'photos' ? 'color: #0878E5; border-bottom-color: #0878E5;' : 'color: #64748B;'"
-                    >
-                        <span>📸 Galeri & Foto Lapangan</span>
-                        <span 
-                            style="padding: 1px 6px; border-radius: 10px; font-size: 0.64rem; font-weight: 900;"
-                            :style="detailTab === 'photos' ? 'background: #0878E5; color: #ffffff;' : 'background: #E2E8F0; color: #475569;'"
-                            x-text="(detailElement && detailElement.metadata && detailElement.metadata.photos ? detailElement.metadata.photos.length : 0)"
-                        ></span>
-                    </button>
-                    <button 
-                        type="button" 
-                        @click="detailTab = 'notes'" 
-                        style="padding: 10px 14px; font-size: 0.76rem; font-weight: 800; border: none; background: transparent; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all 0.15s ease; display: flex; align-items: center; gap: 6px;"
-                        :style="detailTab === 'notes' ? 'color: #0878E5; border-bottom-color: #0878E5;' : 'color: #64748B;'"
-                    >
-                        <span>📝 Riwayat & Log Teknisi</span>
-                    </button>
-                </div>
-
-                {{-- Modal Body (Scrollable) --}}
-                <div style="padding: 20px; overflow-y: auto; flex: 1; background: #ffffff;">
-                    {{-- TAB 1: SPESIFIKASI TEKNIS --}}
-                    <div x-show="detailTab === 'specs'" style="display: flex; flex-direction: column; gap: 14px;">
-                        {{-- Common Name Field --}}
-                        <div>
-                            <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Nama / Identitas Elemen:</label>
-                            <input 
-                                type="text" 
-                                x-model="detailForm.name" 
-                                :disabled="detailElement && detailElement.isOdp"
-                                style="width: 100%; height: 38px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; font-weight: 800; color: #0F172A; box-sizing: border-box;"
-                            >
-                        </div>
-
-                        {{-- DYNAMIC FIELDS FOR POLE (TIANG) --}}
-                        <template x-if="detailElement && detailElement.element_type === 'pole'">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Nomor / Kode Tiang:</label>
-                                    <input type="text" x-model="detailForm.pole_code" placeholder="Contoh: TG-PLN-042" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Status Kepemilikan:</label>
-                                    <select x-model="detailForm.ownership" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="Tiang Sendiri">Tiang Sendiri (Dedicated ISP)</option>
-                                        <option value="Sewa PLN">Sewa Tiang PLN</option>
-                                        <option value="Sewa Telkom">Sewa Tiang Telkom</option>
-                                        <option value="Tiang Swadaya Warga">Tiang Swadaya Warga</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Tinggi Tiang:</label>
-                                    <select x-model="detailForm.pole_height" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="7 Meter">7 Meter (Standar Distribusi)</option>
-                                        <option value="9 Meter">9 Meter (Jalur Feeder / Utama)</option>
-                                        <option value="11 Meter">11 Meter (Lintas Jalan Raya)</option>
-                                        <option value="12 Meter">12 Meter (Menara Khusus)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Bahan Tiang:</label>
-                                    <select x-model="detailForm.pole_material" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="Besi Galvanis">Besi Galvanis</option>
-                                        <option value="Beton Bertulang">Beton Bertulang</option>
-                                        <option value="Besi Biasa (Cat Hitam)">Besi Biasa (Cat Hitam)</option>
-                                        <option value="Kayu / Komposit">Kayu / Komposit</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Kondisi Fisik Tiang:</label>
-                                    <select x-model="detailForm.physical_condition" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="Bagus & Tegak">✅ Bagus & Tegak</option>
-                                        <option value="Sedikit Miring">⚠️ Sedikit Miring</option>
-                                        <option value="Perlu Perbaikan Trekschoring">🔧 Perlu Perbaikan (Tali Trekschoring)</option>
-                                        <option value="Keropos / Kritis">❌ Keropos / Kritis (Ganti Tiang)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Perangkat / Beban Terpasang:</label>
-                                    <input type="text" x-model="detailForm.attached_loads" placeholder="Contoh: 1 ODP + 2 Tarikan Dropcore" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                            </div>
-                        </template>
-
-                        {{-- DYNAMIC FIELDS FOR JOINT BOX / CLOSURE --}}
-                        <template x-if="detailElement && detailElement.element_type === 'joint_box'">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Kode Sambungan / Closure:</label>
-                                    <input type="text" x-model="detailForm.closure_code" placeholder="Contoh: JB-01-FD-04" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Tipe Box Closure:</label>
-                                    <select x-model="detailForm.closure_type" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="Dome (Tabung)">Dome (Model Tabung Vertikal)</option>
-                                        <option value="Inline (Horizontal)">Inline (Model Pipih Horizontal)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Kapasitas Tray Splicing:</label>
-                                    <select x-model="detailForm.core_capacity" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="12 Core">12 Core (1 Tray)</option>
-                                        <option value="24 Core">24 Core (2 Tray)</option>
-                                        <option value="48 Core">48 Core (4 Tray)</option>
-                                        <option value="96 Core">96 Core (8 Tray)</option>
-                                        <option value="144 Core">144 Core (12 Tray)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Nama Teknisi Splicer:</label>
-                                    <input type="text" x-model="detailForm.splicer_name" placeholder="Contoh: Rahmat / Dedi" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div style="grid-column: 1 / -1;">
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Catatan Pemetaan Core & Tube (Splicing Matrix):</label>
-                                    <textarea x-model="detailForm.tube_mapping" placeholder="Contoh: Tube 1 (Biru) -> Disambung ke Feeder ODC Port 1-12. Tube 2 (Oranye) -> Cadangan." style="width: 100%; height: 60px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 8px 10px; font-size: 0.78rem; box-sizing: border-box;"></textarea>
-                                </div>
-                            </div>
-                        </template>
-
-                        {{-- DYNAMIC FIELDS FOR ODC / FDT --}}
-                        <template x-if="detailElement && detailElement.element_type === 'odc'">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Kode ODC:</label>
-                                    <input type="text" x-model="detailForm.odc_code" placeholder="Contoh: ODC-BDG-01" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Total Port Pasif:</label>
-                                    <select x-model="detailForm.total_passive_ports" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="24">24 Port</option>
-                                        <option value="48">48 Port</option>
-                                        <option value="96">96 Port</option>
-                                        <option value="144">144 Port</option>
-                                        <option value="288">288 Port</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Rasio Splitter Primer:</label>
-                                    <select x-model="detailForm.splitter_ratio" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="1:4">Splitter 1:4</option>
-                                        <option value="1:8">Splitter 1:8</option>
-                                        <option value="1:16">Splitter 1:16</option>
-                                        <option value="Direct Pass">Direct Splicing (Pass-through)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Redaman Inbound dari OLT (dBm):</label>
-                                    <input type="text" x-model="detailForm.inbound_power_dbm" placeholder="Contoh: +3.8 dBm" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                            </div>
-                        </template>
-
-                        {{-- DYNAMIC FIELDS FOR OLT / SERVER --}}
-                        <template x-if="detailElement && detailElement.element_type === 'olt'">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Merk & Tipe Perangkat OLT:</label>
-                                    <input type="text" x-model="detailForm.olt_brand" placeholder="Contoh: ZTE C320 / Huawei MA5608T" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">IP Manajemen OLT:</label>
-                                    <input type="text" x-model="detailForm.olt_ip" placeholder="Contoh: 10.10.100.2" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Slot PON & Port Info:</label>
-                                    <input type="text" x-model="detailForm.pon_slot_info" placeholder="Contoh: Slot 1 - 8 Port GPON C++" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Catu Daya Cadangan (Power Backup):</label>
-                                    <select x-model="detailForm.backup_power" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="PLN + UPS Online">PLN + UPS Online 2000VA</option>
-                                        <option value="PLN + Genset Auto">PLN + Genset ATS Auto</option>
-                                        <option value="Baterai DC 48V">Bank Baterai DC 48V (Rectifier)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </template>
-
-                        {{-- DYNAMIC FIELDS FOR CUSTOMER (PELANGGAN) --}}
-                        <template x-if="detailElement && detailElement.element_type === 'customer'">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">ID Pelanggan / No. Layanan:</label>
-                                    <input type="text" x-model="detailForm.customer_id" placeholder="Contoh: CUST-0192" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">No. WhatsApp / HP Pelanggan:</label>
-                                    <input type="text" x-model="detailForm.customer_phone" placeholder="Contoh: 08123456789" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Paket Langganan:</label>
-                                    <input type="text" x-model="detailForm.service_package" placeholder="Contoh: Home Fiber 50 Mbps" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">SN / MAC Modem ONT:</label>
-                                    <input type="text" x-model="detailForm.ont_serial" placeholder="Contoh: ZTEGC123456" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Redaman Rx ONT (dBm):</label>
-                                    <input type="text" x-model="detailForm.ont_rx_power" placeholder="Contoh: -20.5 dBm" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Port ODP Asal:</label>
-                                    <input type="text" x-model="detailForm.connected_odp_port" placeholder="Contoh: ODP-BTR-08 / Port 4" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                            </div>
-                        </template>
-
-                        {{-- DYNAMIC FIELDS FOR CABLE LINES (FEEDER, DISTRIBUSI, DROPCORE) --}}
-                        <template x-if="detailElement && detailElement.category === 'line'">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Kode Segmen Jalur Kabel:</label>
-                                    <input type="text" x-model="detailForm.cable_code" placeholder="Contoh: KBL-FDR-01" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Tipe Konstruksi Kabel:</label>
-                                    <select x-model="detailForm.cable_type" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="ADSS Aerial (Udara)">ADSS Aerial (Udara Non-Logam)</option>
-                                        <option value="Figure-8 Aerial">Figure-8 Aerial (Dengan Kawat Sling)</option>
-                                        <option value="Duct Bawah Tanah">Duct Underground (Bawah Tanah)</option>
-                                        <option value="Drop Cable FTTH (1-2 Core)">Drop Cable FTTH (1-2 Core)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Jumlah Core / Tube:</label>
-                                    <select x-model="detailForm.core_count" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 8px; font-size: 0.78rem; font-weight: 700; box-sizing: border-box;">
-                                        <option value="1-2 Core">1 - 2 Core</option>
-                                        <option value="6 Core (1 Tube)">6 Core (1 Tube)</option>
-                                        <option value="12 Core (1 Tube)">12 Core (1 Tube)</option>
-                                        <option value="24 Core (2 Tube)">24 Core (2 Tube @ 12C)</option>
-                                        <option value="48 Core (4 Tube)">48 Core (4 Tube @ 12C)</option>
-                                        <option value="96 Core (8 Tube)">96 Core (8 Tube @ 12C)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Cadangan Slack Loop (Meter):</label>
-                                    <input type="number" x-model="detailForm.slack_length_meters" placeholder="15" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Titik Pangkal (Asal):</label>
-                                    <input type="text" x-model="detailForm.origin_node" placeholder="Contoh: OLT Server / ODC-01" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                                <div>
-                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Titik Ujung (Tujuan):</label>
-                                    <input type="text" x-model="detailForm.destination_node" placeholder="Contoh: ODP-BTR-08" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                                </div>
-                            </div>
-                        </template>
-
-                        {{-- DYNAMIC VIEW FOR ODP MASTER DATABASE --}}
-                        <template x-if="detailElement && detailElement.isOdp">
-                            <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="font-size: 0.76rem; font-weight: 800; color: #1E40AF;">Informasi ODP Database:</span>
-                                    <span style="font-size: 0.72rem; font-weight: 800; color: #0878E5;" x-text="'Kode: ' + detailElement.metadata.odp_code"></span>
-                                </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.76rem; color: #334155;">
-                                    <div>OLT Induk: <b x-text="detailElement.metadata.olt_name"></b></div>
-                                    <div>Port PON: <b x-text="detailElement.metadata.pon_name"></b></div>
-                                    <div>Total Port: <b x-text="detailElement.metadata.total_ports"></b></div>
-                                    <div>Port Terpakai: <b x-text="detailElement.metadata.used_ports"></b></div>
-                                </div>
-                            </div>
-                        </template>
+                        <button 
+                            type="button" 
+                            @click="openDetailModal = false" 
+                            style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); color: #ffffff; width: 32px; height: 32px; border-radius: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; transition: all 0.15s ease; flex-shrink: 0;"
+                            onmouseover="this.style.background='rgba(239,68,68,0.85)'; this.style.borderColor='transparent'"
+                            onmouseout="this.style.background='rgba(255,255,255,0.12)'; this.style.borderColor='rgba(255,255,255,0.18)'"
+                            title="Tutup Modal (Esc)"
+                        >✕</button>
                     </div>
 
-                    {{-- TAB 2: GALERI & UPLOAD FOTO DOKUMENTASI LAPANGAN --}}
-                    <div x-show="detailTab === 'photos'" style="display: flex; flex-direction: column; gap: 16px;">
-                        {{-- Photo Upload Box (Only for editable custom elements) --}}
-                        <template x-if="detailElement && !detailElement.isOdp">
-                            <div style="border: 2px dashed #CBD5E1; border-radius: 14px; padding: 16px; background: #F8FAFC; text-align: center; transition: all 0.15s ease;">
+                    {{-- Modal Tab Navigation (Modern iOS Segmented Pills) --}}
+                    <div style="padding: 10px 22px; background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; display: flex; gap: 8px; flex-shrink: 0;">
+                        <button 
+                            type="button" 
+                            @click="detailTab = 'specs'" 
+                            style="flex: 1; padding: 8px 12px; font-size: 0.76rem; font-weight: 800; border-radius: 10px; border: 1.5px solid transparent; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
+                            :style="detailTab === 'specs' ? 'background: #ffffff; color: #0878E5; border-color: #BFDBFE; box-shadow: 0 2px 8px rgba(8,120,229,0.12); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                        >
+                            <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                            <span>Spesifikasi Teknis</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="detailTab = 'photos'" 
+                            style="flex: 1; padding: 8px 12px; font-size: 0.76rem; font-weight: 800; border-radius: 10px; border: 1.5px solid transparent; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
+                            :style="detailTab === 'photos' ? 'background: #ffffff; color: #0878E5; border-color: #BFDBFE; box-shadow: 0 2px 8px rgba(8,120,229,0.12); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                        >
+                            <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>Foto Lapangan</span>
+                            <span 
+                                style="padding: 1px 7px; border-radius: 10px; font-size: 0.65rem; font-weight: 900;"
+                                :style="detailTab === 'photos' ? 'background: #0878E5; color: #ffffff;' : 'background: #E2E8F0; color: #475569;'"
+                                x-text="(detailElement && detailElement.metadata && detailElement.metadata.photos ? detailElement.metadata.photos.length : 0)"
+                            ></span>
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="detailTab = 'notes'" 
+                            style="flex: 1; padding: 8px 12px; font-size: 0.76rem; font-weight: 800; border-radius: 10px; border: 1.5px solid transparent; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;"
+                            :style="detailTab === 'notes' ? 'background: #ffffff; color: #0878E5; border-color: #BFDBFE; box-shadow: 0 2px 8px rgba(8,120,229,0.12); font-weight: 900;' : 'background: transparent; color: #64748B;'"
+                        >
+                            <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                            <span>Riwayat & Log</span>
+                        </button>
+                    </div>
+
+                    {{-- Modal Body (Scrollable with modern styling) --}}
+                    <div style="padding: 22px; overflow-y: auto; flex: 1; background: #ffffff;">
+                        {{-- TAB 1: SPESIFIKASI TEKNIS --}}
+                        <div x-show="detailTab === 'specs'" style="display: flex; flex-direction: column; gap: 16px;">
+                            {{-- Common Name Field --}}
+                            <div>
+                                <label style="display: block; font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.4px;">Nama / Identitas Elemen</label>
                                 <input 
-                                    type="file" 
-                                    id="ims-detail-photo-input" 
-                                    accept="image/*" 
-                                    capture="environment"
-                                    @change="handlePhotoSelect($event)" 
-                                    style="display: none;"
+                                    type="text" 
+                                    x-model="detailForm.name" 
+                                    :disabled="detailElement && detailElement.isOdp"
+                                    style="width: 100%; height: 40px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 0 14px; font-size: 0.84rem; font-weight: 800; color: #0F172A; background: #F8FAFC; box-sizing: border-box; transition: all 0.15s ease;"
+                                    onfocus="this.style.background='#ffffff'; this.style.borderColor='#0878E5'; this.style.boxShadow='0 0 0 3px rgba(8,120,229,0.12)'"
+                                    onblur="this.style.background='#F8FAFC'; this.style.borderColor='#CBD5E1'; this.style.boxShadow='none'"
                                 >
-
-                                <template x-if="!tempPhotoData">
-                                    <div 
-                                        @click="document.getElementById('ims-detail-photo-input').click()" 
-                                        style="cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;"
-                                    >
-                                        <div style="width: 44px; height: 44px; border-radius: 12px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; color: #0878E5;">
-                                            <svg style="width: 22px; height: 22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                        </div>
-                                        <div>
-                                            <div style="font-size: 0.82rem; font-weight: 800; color: #0F172A;">Klik / Ambil Foto Lapangan</div>
-                                            <div style="font-size: 0.7rem; color: #64748B; margin-top: 2px;">Mendukung kamera HP langsung atau unggah file gambar (JPG, PNG, WebP)</div>
-                                        </div>
-                                    </div>
-                                </template>
-
-                                <template x-if="tempPhotoData">
-                                    <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
-                                        <div style="position: relative; max-width: 260px; max-height: 160px; border-radius: 10px; overflow: hidden; border: 1.5px solid #CBD5E1; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                                            <img :src="tempPhotoData" style="width: 100%; height: auto; display: block; object-fit: cover;">
-                                            <button 
-                                                type="button" 
-                                                @click="tempPhotoData = null; const el = document.getElementById('ims-detail-photo-input'); if(el) el.value = '';" 
-                                                style="position: absolute; top: 6px; right: 6px; border: none; background: rgba(0,0,0,0.7); color: #ffffff; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;"
-                                                title="Batal pilih foto"
-                                            >✕</button>
-                                        </div>
-                                        <div style="width: 100%; max-width: 380px; display: flex; gap: 8px;">
-                                            <input 
-                                                type="text" 
-                                                x-model="tempPhotoCaption" 
-                                                placeholder="Keterangan foto (misal: Sisi tiang menghadap utara)..." 
-                                                style="flex: 1; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.76rem; box-sizing: border-box;"
-                                            >
-                                            <button 
-                                                type="button" 
-                                                @click="submitUploadPhoto()" 
-                                                :disabled="isUploadingPhoto"
-                                                style="padding: 0 16px; border: none; background: #059669; color: #ffffff; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(5,150,105,0.25);"
-                                            >
-                                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                                                <span>Simpan Foto</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </template>
                             </div>
-                        </template>
 
-                        {{-- Photo Gallery Grid --}}
-                        <div>
-                            <div style="font-size: 0.74rem; font-weight: 800; color: #334155; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Foto Dokumentasi Tersimpan</div>
-                            
-                            <template x-if="!detailElement || !detailElement.metadata || !detailElement.metadata.photos || detailElement.metadata.photos.length === 0">
-                                <div style="padding: 30px 14px; text-align: center; background: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                    <div style="font-size: 24px;">📷</div>
-                                    <div style="font-size: 0.78rem; font-weight: 700; color: #64748B;">Belum ada foto dokumentasi untuk elemen ini.</div>
+                            {{-- DYNAMIC FIELDS FOR POLE (TIANG) --}}
+                            <template x-if="detailElement && detailElement.element_type === 'pole'">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Nomor / Kode Tiang</label>
+                                        <input type="text" x-model="detailForm.pole_code" placeholder="Contoh: TG-PLN-042" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Status Kepemilikan</label>
+                                        <select x-model="detailForm.ownership" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="Tiang Sendiri">Tiang Sendiri (Dedicated ISP)</option>
+                                            <option value="Sewa PLN">Sewa Tiang PLN</option>
+                                            <option value="Sewa Telkom">Sewa Tiang Telkom</option>
+                                            <option value="Tiang Swadaya Warga">Tiang Swadaya Warga</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Tinggi Tiang</label>
+                                        <select x-model="detailForm.pole_height" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="7 Meter">7 Meter (Standar Distribusi)</option>
+                                            <option value="9 Meter">9 Meter (Jalur Feeder / Utama)</option>
+                                            <option value="11 Meter">11 Meter (Lintas Jalan Raya)</option>
+                                            <option value="12 Meter">12 Meter (Menara Khusus)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Bahan Tiang</label>
+                                        <select x-model="detailForm.pole_material" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="Besi Galvanis">Besi Galvanis</option>
+                                            <option value="Beton Bertulang">Beton Bertulang</option>
+                                            <option value="Besi Biasa (Cat Hitam)">Besi Biasa (Cat Hitam)</option>
+                                            <option value="Kayu / Komposit">Kayu / Komposit</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Kondisi Fisik Tiang</label>
+                                        <select x-model="detailForm.physical_condition" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="Bagus & Tegak">✅ Bagus & Tegak</option>
+                                            <option value="Sedikit Miring">⚠️ Sedikit Miring</option>
+                                            <option value="Perlu Perbaikan Trekschoring">🔧 Perlu Perbaikan Trekschoring</option>
+                                            <option value="Keropos / Kritis">❌ Keropos / Kritis (Ganti Tiang)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Beban / Perangkat Terpasang</label>
+                                        <input type="text" x-model="detailForm.attached_loads" placeholder="Contoh: 1 ODP + 2 Tarikan Dropcore" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
                                 </div>
                             </template>
 
-                            <template x-if="detailElement && detailElement.metadata && detailElement.metadata.photos && detailElement.metadata.photos.length > 0">
-                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                                    <template x-for="p in detailElement.metadata.photos" :key="p.id">
-                                        <div style="border-radius: 12px; overflow: hidden; border: 1.5px solid #E2E8F0; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-                                            <div style="position: relative; height: 110px; background: #0F172A; cursor: pointer;" @click="openPhotoPreview(p.url, p.caption)">
-                                                <img :src="p.url" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
-                                                <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.25); opacity: 0; transition: opacity 0.15s ease; display: flex; align-items: center; justify-content: center; color: #ffffff;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
-                                                    <span style="background: rgba(0,0,0,0.7); padding: 4px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 800;">🔍 Perbesar</span>
-                                                </div>
+                            {{-- DYNAMIC FIELDS FOR JOINT BOX / CLOSURE --}}
+                            <template x-if="detailElement && detailElement.element_type === 'joint_box'">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Kode Sambungan / Closure</label>
+                                        <input type="text" x-model="detailForm.closure_code" placeholder="Contoh: JB-01-FD-04" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Tipe Box Closure</label>
+                                        <select x-model="detailForm.closure_type" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="Dome (Tabung)">Dome (Model Tabung Vertikal)</option>
+                                            <option value="Inline (Horizontal)">Inline (Model Pipih Horizontal)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Kapasitas Tray Splicing</label>
+                                        <select x-model="detailForm.core_capacity" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="12 Core">12 Core (1 Tray)</option>
+                                            <option value="24 Core">24 Core (2 Tray)</option>
+                                            <option value="48 Core">48 Core (4 Tray)</option>
+                                            <option value="96 Core">96 Core (8 Tray)</option>
+                                            <option value="144 Core">144 Core (12 Tray)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Nama Teknisi Splicer</label>
+                                        <input type="text" x-model="detailForm.splicer_name" placeholder="Contoh: Rahmat / Dedi" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div style="grid-column: 1 / -1;">
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Catatan Pemetaan Core & Tube (Splicing Matrix)</label>
+                                        <textarea x-model="detailForm.tube_mapping" placeholder="Contoh: Tube 1 (Biru) -> Disambung ke Feeder ODC Port 1-12. Tube 2 (Oranye) -> Cadangan." style="width: 100%; height: 65px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 8px 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;"></textarea>
+                                    </div>
+                                </div>
+                            </template>
+
+                            {{-- DYNAMIC FIELDS FOR ODC / FDT --}}
+                            <template x-if="detailElement && detailElement.element_type === 'odc'">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Kode ODC</label>
+                                        <input type="text" x-model="detailForm.odc_code" placeholder="Contoh: ODC-BDG-01" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Total Port Pasif</label>
+                                        <select x-model="detailForm.total_passive_ports" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="24">24 Port</option>
+                                            <option value="48">48 Port</option>
+                                            <option value="96">96 Port</option>
+                                            <option value="144">144 Port</option>
+                                            <option value="288">288 Port</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Rasio Splitter Primer</label>
+                                        <select x-model="detailForm.splitter_ratio" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="1:4">Splitter 1:4</option>
+                                            <option value="1:8">Splitter 1:8</option>
+                                            <option value="1:16">Splitter 1:16</option>
+                                            <option value="Direct Pass">Direct Splicing (Pass-through)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Redaman Inbound dari OLT (dBm)</label>
+                                        <input type="text" x-model="detailForm.inbound_power_dbm" placeholder="Contoh: +3.8 dBm" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                </div>
+                            </template>
+
+                            {{-- DYNAMIC FIELDS FOR OLT / SERVER --}}
+                            <template x-if="detailElement && detailElement.element_type === 'olt'">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Merk & Tipe Perangkat OLT</label>
+                                        <input type="text" x-model="detailForm.olt_brand" placeholder="Contoh: ZTE C320 / Huawei MA5608T" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">IP Manajemen OLT</label>
+                                        <input type="text" x-model="detailForm.olt_ip" placeholder="Contoh: 10.10.100.2" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Slot PON & Port Info</label>
+                                        <input type="text" x-model="detailForm.pon_slot_info" placeholder="Contoh: Slot 1 - 8 Port GPON C++" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Catu Daya Cadangan (Power Backup)</label>
+                                        <select x-model="detailForm.backup_power" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="PLN + UPS Online">PLN + UPS Online 2000VA</option>
+                                            <option value="PLN + Genset Auto">PLN + Genset ATS Auto</option>
+                                            <option value="Baterai DC 48V">Bank Baterai DC 48V (Rectifier)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </template>
+
+                            {{-- DYNAMIC FIELDS FOR CUSTOMER (PELANGGAN) --}}
+                            <template x-if="detailElement && detailElement.element_type === 'customer'">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">ID Pelanggan / No. Layanan</label>
+                                        <input type="text" x-model="detailForm.customer_id" placeholder="Contoh: CUST-0192" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">No. WhatsApp Pelanggan</label>
+                                        <input type="text" x-model="detailForm.customer_phone" placeholder="Contoh: 08123456789" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Paket Langganan</label>
+                                        <input type="text" x-model="detailForm.service_package" placeholder="Contoh: Home Fiber 50 Mbps" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">SN / MAC Modem ONT</label>
+                                        <input type="text" x-model="detailForm.ont_serial" placeholder="Contoh: ZTEGC123456" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Redaman Rx ONT (dBm)</label>
+                                        <input type="text" x-model="detailForm.ont_rx_power" placeholder="Contoh: -20.5 dBm" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Port ODP Asal</label>
+                                        <input type="text" x-model="detailForm.connected_odp_port" placeholder="Contoh: ODP-BTR-08 / Port 4" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                </div>
+                            </template>
+
+                            {{-- DYNAMIC FIELDS FOR CABLE LINES (FEEDER, DISTRIBUSI, DROPCORE) --}}
+                            <template x-if="detailElement && detailElement.category === 'line'">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Kode Segmen Jalur Kabel</label>
+                                        <input type="text" x-model="detailForm.cable_code" placeholder="Contoh: KBL-FDR-01" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Tipe Konstruksi Kabel</label>
+                                        <select x-model="detailForm.cable_type" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="ADSS Aerial (Udara)">ADSS Aerial (Udara Non-Logam)</option>
+                                            <option value="Figure-8 Aerial">Figure-8 Aerial (Dengan Kawat Sling)</option>
+                                            <option value="Duct Bawah Tanah">Duct Underground (Bawah Tanah)</option>
+                                            <option value="Drop Cable FTTH (1-2 Core)">Drop Cable FTTH (1-2 Core)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Jumlah Core / Tube</label>
+                                        <select x-model="detailForm.core_count" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.8rem; font-weight: 700; background: #F8FAFC; box-sizing: border-box;">
+                                            <option value="1-2 Core">1 - 2 Core</option>
+                                            <option value="6 Core (1 Tube)">6 Core (1 Tube)</option>
+                                            <option value="12 Core (1 Tube)">12 Core (1 Tube)</option>
+                                            <option value="24 Core (2 Tube)">24 Core (2 Tube @ 12C)</option>
+                                            <option value="48 Core (4 Tube)">48 Core (4 Tube @ 12C)</option>
+                                            <option value="96 Core (8 Tube)">96 Core (8 Tube @ 12C)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Cadangan Slack Loop (Meter)</label>
+                                        <input type="number" x-model="detailForm.slack_length_meters" placeholder="15" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Titik Pangkal (Asal)</label>
+                                        <input type="text" x-model="detailForm.origin_node" placeholder="Contoh: OLT Server / ODC-01" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Titik Ujung (Tujuan)</label>
+                                        <input type="text" x-model="detailForm.destination_node" placeholder="Contoh: ODP-BTR-08" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                    </div>
+                                </div>
+                            </template>
+
+                            {{-- DYNAMIC VIEW FOR ODP MASTER DATABASE --}}
+                            <template x-if="detailElement && detailElement.isOdp">
+                                <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #1E40AF; display: flex; align-items: center; gap: 6px;">
+                                            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                            Informasi ODP Master Database:
+                                        </span>
+                                        <span style="font-size: 0.72rem; font-weight: 900; color: #0878E5; background: #ffffff; padding: 3px 8px; border-radius: 6px; border: 1px solid #BFDBFE;" x-text="'Kode: ' + detailElement.metadata.odp_code"></span>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: #334155;">
+                                        <div style="background: #ffffff; padding: 8px 12px; border-radius: 8px; border: 1px solid #DBEAFE;">OLT Induk: <b style="color: #0F172A;" x-text="detailElement.metadata.olt_name"></b></div>
+                                        <div style="background: #ffffff; padding: 8px 12px; border-radius: 8px; border: 1px solid #DBEAFE;">Port PON: <b style="color: #0F172A;" x-text="detailElement.metadata.pon_name"></b></div>
+                                        <div style="background: #ffffff; padding: 8px 12px; border-radius: 8px; border: 1px solid #DBEAFE;">Total Port: <b style="color: #0F172A;" x-text="detailElement.metadata.total_ports"></b></div>
+                                        <div style="background: #ffffff; padding: 8px 12px; border-radius: 8px; border: 1px solid #DBEAFE;">Port Terpakai: <b style="color: #0878E5;" x-text="detailElement.metadata.used_ports"></b></div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                        {{-- TAB 2: GALERI & UPLOAD FOTO DOKUMENTASI LAPANGAN --}}
+                        <div x-show="detailTab === 'photos'" style="display: flex; flex-direction: column; gap: 16px;">
+                            {{-- Photo Upload Box (Only for editable custom elements) --}}
+                            <template x-if="detailElement && !detailElement.isOdp">
+                                <div style="border: 2px dashed #94A3B8; border-radius: 14px; padding: 18px; background: #F8FAFC; text-align: center; transition: all 0.15s ease;">
+                                    <input 
+                                        type="file" 
+                                        id="ims-detail-photo-input" 
+                                        accept="image/*" 
+                                        capture="environment"
+                                        @change="handlePhotoSelect($event)" 
+                                        style="display: none;"
+                                    >
+
+                                    <template x-if="!tempPhotoData">
+                                        <div 
+                                            @click="document.getElementById('ims-detail-photo-input').click()" 
+                                            style="cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px;"
+                                        >
+                                            <div style="width: 50px; height: 50px; border-radius: 14px; background: #EFF6FF; border: 1.5px solid #BFDBFE; display: flex; align-items: center; justify-content: center; color: #0878E5; box-shadow: 0 4px 12px rgba(8,120,229,0.15);">
+                                                <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                                             </div>
-                                            <div style="padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; background: #ffffff;">
-                                                <div style="min-width: 0;">
-                                                    <div style="font-size: 0.72rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="p.caption || 'Foto Dokumentasi'"></div>
-                                                    <div style="font-size: 0.62rem; color: #94A3B8;" x-text="p.created_at || '-'"></div>
-                                                </div>
+                                            <div>
+                                                <div style="font-size: 0.86rem; font-weight: 800; color: #0F172A;">Ambil / Unggah Foto Lapangan</div>
+                                                <div style="font-size: 0.72rem; color: #64748B; margin-top: 2px;">Gunakan kamera HP langsung atau pilih file foto (JPG, PNG, WebP)</div>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <template x-if="tempPhotoData">
+                                        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                                            <div style="position: relative; max-width: 280px; max-height: 180px; border-radius: 12px; overflow: hidden; border: 2px solid #0878E5; box-shadow: 0 6px 18px rgba(0,0,0,0.15);">
+                                                <img :src="tempPhotoData" style="width: 100%; height: auto; display: block; object-fit: cover;">
                                                 <button 
                                                     type="button" 
-                                                    @click="deletePhoto(p.id)" 
-                                                    style="border: none; background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; width: 24px; height: 24px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
-                                                    title="Hapus foto ini"
+                                                    @click="tempPhotoData = null; const el = document.getElementById('ims-detail-photo-input'); if(el) el.value = '';" 
+                                                    style="position: absolute; top: 6px; right: 6px; border: none; background: rgba(0,0,0,0.75); color: #ffffff; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900;"
+                                                    title="Batal pilih foto"
+                                                >✕</button>
+                                            </div>
+                                            <div style="width: 100%; max-width: 420px; display: flex; gap: 8px;">
+                                                <input 
+                                                    type="text" 
+                                                    x-model="tempPhotoCaption" 
+                                                    placeholder="Keterangan foto (misal: Sisi tiang menghadap jalan)..." 
+                                                    style="flex: 1; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.78rem; background: #ffffff; box-sizing: border-box;"
                                                 >
-                                                    <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                <button 
+                                                    type="button" 
+                                                    @click="submitUploadPhoto()" 
+                                                    :disabled="isUploadingPhoto"
+                                                    style="padding: 0 16px; border: none; background: #059669; color: #ffffff; border-radius: 9px; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 3px 10px rgba(5,150,105,0.25); white-space: nowrap;"
+                                                >
+                                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                                    <span>Simpan Foto</span>
                                                 </button>
                                             </div>
                                         </div>
                                     </template>
                                 </div>
                             </template>
+
+                            {{-- Photo Gallery Grid --}}
+                            <div>
+                                <div style="font-size: 0.74rem; font-weight: 800; color: #475569; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
+                                    <span>Galeri Foto Dokumentasi</span>
+                                </div>
+                                
+                                <template x-if="!detailElement || !detailElement.metadata || !detailElement.metadata.photos || detailElement.metadata.photos.length === 0">
+                                    <div style="padding: 36px 16px; text-align: center; background: #F8FAFC; border-radius: 14px; border: 1.5px solid #E2E8F0; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                        <div style="font-size: 28px;">📷</div>
+                                        <div style="font-size: 0.82rem; font-weight: 800; color: #475569;">Belum ada foto dokumentasi lapangan.</div>
+                                        <div style="font-size: 0.72rem; color: #94A3B8;">Foto yang diunggah akan otomatis tampil di sini.</div>
+                                    </div>
+                                </template>
+
+                                <template x-if="detailElement && detailElement.metadata && detailElement.metadata.photos && detailElement.metadata.photos.length > 0">
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                                        <template x-for="p in detailElement.metadata.photos" :key="p.id">
+                                            <div style="border-radius: 12px; overflow: hidden; border: 1.5px solid #E2E8F0; background: #ffffff; box-shadow: 0 3px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column;">
+                                                <div style="position: relative; height: 120px; background: #0F172A; cursor: pointer;" @click="openPhotoPreview(p.url, p.caption)">
+                                                    <img :src="p.url" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+                                                    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.15s ease; display: flex; align-items: center; justify-content: center; color: #ffffff;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                        <span style="background: rgba(0,0,0,0.75); padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800;">🔍 Perbesar</span>
+                                                    </div>
+                                                </div>
+                                                <div style="padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; background: #ffffff;">
+                                                    <div style="min-width: 0;">
+                                                        <div style="font-size: 0.74rem; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" x-text="p.caption || 'Foto Dokumentasi'"></div>
+                                                        <div style="font-size: 0.64rem; color: #94A3B8;" x-text="p.created_at || '-'"></div>
+                                                    </div>
+                                                    <button 
+                                                        type="button" 
+                                                        @click="deletePhoto(p.id)" 
+                                                        style="border: none; background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; width: 26px; height: 26px; border-radius: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
+                                                        title="Hapus foto ini"
+                                                    >
+                                                        <svg style="width: 13px; height: 13px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        {{-- TAB 3: RIWAYAT & CATATAN TEKNISI --}}
+                        <div x-show="detailTab === 'notes'" style="display: flex; flex-direction: column; gap: 14px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Tanggal Instalasi / Tanam</label>
+                                    <input type="date" x-model="detailForm.install_date" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Tanggal Pemeliharaan Terakhir</label>
+                                    <input type="date" x-model="detailForm.last_maintenance_date" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                </div>
+                                <div style="grid-column: 1 / -1;">
+                                    <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Teknisi / Tim Penanggung Jawab</label>
+                                    <input type="text" x-model="detailForm.technician_in_charge" placeholder="Contoh: Tim Maintenance Area Bandung Timur" style="width: 100%; height: 38px; border-radius: 9px; border: 1.5px solid #CBD5E1; padding: 0 12px; font-size: 0.8rem; background: #F8FAFC; box-sizing: border-box;">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #475569; margin-bottom: 4px;">Catatan Lapangan Tambahan & Log Kondisi</label>
+                                <textarea 
+                                    x-model="detailForm.notes" 
+                                    placeholder="Tuliskan catatan teknis kondisi tiang, letak sambungan closure, atau instruksi khusus untuk teknisi di lapangan..." 
+                                    style="width: 100%; height: 100px; border-radius: 10px; border: 1.5px solid #CBD5E1; padding: 12px; font-size: 0.82rem; background: #F8FAFC; box-sizing: border-box; resize: vertical;"
+                                ></textarea>
+                            </div>
                         </div>
                     </div>
 
-                    {{-- TAB 3: RIWAYAT & CATATAN TEKNISI --}}
-                    <div x-show="detailTab === 'notes'" style="display: flex; flex-direction: column; gap: 14px;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                            <div>
-                                <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Tanggal Instalasi / Tanam:</label>
-                                <input type="date" x-model="detailForm.install_date" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                            </div>
-                            <div>
-                                <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Tanggal Pemeliharaan Terakhir:</label>
-                                <input type="date" x-model="detailForm.last_maintenance_date" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                            </div>
-                            <div style="grid-column: 1 / -1;">
-                                <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Teknisi Penanggung Jawab:</label>
-                                <input type="text" x-model="detailForm.technician_in_charge" placeholder="Contoh: Tim Maintenance Area Bandung Timur" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px; font-size: 0.78rem; box-sizing: border-box;">
-                            </div>
+                    {{-- Modal Footer Actions --}}
+                    <div style="padding: 14px 22px; border-top: 1.5px solid #F1F5F9; background: #F8FAFC; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+                        <div style="display: flex; gap: 8px;">
+                            <button 
+                                type="button" 
+                                @click="openDetailModal = false; flyToCustomElement(detailElement);" 
+                                style="padding: 8px 14px; border-radius: 10px; border: 1.5px solid #BFDBFE; background: #EFF6FF; color: #0878E5; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s ease;"
+                                onmouseover="this.style.background='#DBEAFE'"
+                                onmouseout="this.style.background='#EFF6FF'"
+                                title="Fokus ke lokasi objek pada peta"
+                            >
+                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                                <span>Fokus Peta</span>
+                            </button>
+                            <template x-if="detailElement && !detailElement.isOdp">
+                                <button 
+                                    type="button" 
+                                    @click="openDetailModal = false; openStylePicker(detailElement.id);" 
+                                    style="padding: 8px 14px; border-radius: 10px; border: 1.5px solid #CBD5E1; background: #ffffff; color: #475569; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s ease;"
+                                    onmouseover="this.style.background='#F1F5F9'"
+                                    onmouseout="this.style.background='#ffffff'"
+                                    title="Ubah gaya, warna dan ikon elemen"
+                                >
+                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+                                    <span>Gaya & Warna</span>
+                                </button>
+                            </template>
                         </div>
 
-                        <div>
-                            <label style="display: block; font-size: 0.72rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Catatan Tambahan & Log Lapangan:</label>
-                            <textarea 
-                                x-model="detailForm.notes" 
-                                placeholder="Tuliskan catatan teknis kondisi tiang, letak sambungan closure, atau instruksi khusus untuk teknisi di lapangan..." 
-                                style="width: 100%; height: 90px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 10px; font-size: 0.78rem; box-sizing: border-box;"
-                            ></textarea>
+                        <div style="display: flex; gap: 8px;">
+                            <button 
+                                type="button" 
+                                @click="openDetailModal = false" 
+                                style="padding: 8px 16px; border: 1.5px solid #CBD5E1; background: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 800; color: #64748B; cursor: pointer; transition: all 0.15s ease;"
+                                onmouseover="this.style.background='#F1F5F9'"
+                                onmouseout="this.style.background='#ffffff'"
+                            >Tutup</button>
+                            <template x-if="detailElement && !detailElement.isOdp">
+                                <button 
+                                    type="button" 
+                                    @click="saveElementDetails()" 
+                                    style="padding: 8px 20px; border: none; background: #0878E5; color: #ffffff; border-radius: 10px; font-size: 0.78rem; font-weight: 900; cursor: pointer; box-shadow: 0 4px 14px rgba(8, 120, 229, 0.35); display: flex; align-items: center; gap: 6px; transition: all 0.15s ease;"
+                                    onmouseover="this.style.background='#0765c2'; this.style.transform='translateY(-1px)'"
+                                    onmouseout="this.style.background='#0878E5'; this.style.transform='none'"
+                                >
+                                    <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                    <span>Simpan Data</span>
+                                </button>
+                            </template>
                         </div>
                     </div>
                 </div>
-
-                {{-- Modal Footer Actions --}}
-                <div style="padding: 12px 20px; border-top: 1.5px solid #F1F5F9; background: #F8FAFC; display: flex; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; gap: 8px;">
-                        <button 
-                            type="button" 
-                            @click="openDetailModal = false; flyToCustomElement(detailElement);" 
-                            style="padding: 8px 12px; border-radius: 8px; border: 1.5px solid #BFDBFE; background: #EFF6FF; color: #0878E5; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px;"
-                            title="Fokus ke lokasi objek pada peta"
-                        >
-                            <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                            <span>Fokus Peta</span>
-                        </button>
-                        <template x-if="detailElement && !detailElement.isOdp">
-                            <button 
-                                type="button" 
-                                @click="openDetailModal = false; openStylePicker(detailElement.id);" 
-                                style="padding: 8px 12px; border-radius: 8px; border: 1.5px solid #CBD5E1; background: #ffffff; color: #475569; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px;"
-                                title="Ubah gaya, warna dan ikon elemen"
-                            >
-                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
-                                <span>Gaya & Warna</span>
-                            </button>
-                        </template>
-                    </div>
-
-                    <div style="display: flex; gap: 8px;">
-                        <button 
-                            type="button" 
-                            @click="openDetailModal = false" 
-                            style="padding: 8px 14px; border: 1px solid #CBD5E1; background: #ffffff; border-radius: 8px; font-size: 0.76rem; font-weight: 800; color: #64748B; cursor: pointer;"
-                        >Tutup</button>
-                        <template x-if="detailElement && !detailElement.isOdp">
-                            <button 
-                                type="button" 
-                                @click="saveElementDetails()" 
-                                style="padding: 8px 18px; border: none; background: #0878E5; color: #ffffff; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(8, 120, 229, 0.25); display: flex; align-items: center; gap: 6px;"
-                            >
-                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                                <span>Simpan Data</span>
-                            </button>
-                        </template>
-                    </div>
-                </div>
             </div>
-        </div>
+        </template>
 
-        {{-- ── 2.6 FULLSCREEN PHOTO ZOOM LIGHTBOX MODAL ── --}}
-        <div 
-            x-show="previewPhotoModal" 
-            x-cloak
-            style="position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 99999999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;"
-            @keydown.escape.window="previewPhotoModal = null"
-        >
-            <div style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px;">
-                <a 
-                    :href="previewPhotoModal ? previewPhotoModal.url : '#'" 
-                    target="_blank" 
-                    download 
-                    style="border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #ffffff; padding: 6px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 6px;"
-                >
-                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    <span>Download Asli</span>
-                </a>
-                <button 
-                    type="button" 
-                    @click="previewPhotoModal = null" 
-                    style="background: rgba(255,255,255,0.2); border: none; color: #ffffff; width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center;"
-                >✕</button>
-            </div>
-
-            <div style="max-width: 90vw; max-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <img 
-                    :src="previewPhotoModal ? previewPhotoModal.url : ''" 
-                    style="max-width: 100%; max-height: 75vh; object-fit: contain; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);"
-                >
-                <div 
-                    x-show="previewPhotoModal && previewPhotoModal.caption" 
-                    style="margin-top: 12px; color: #ffffff; font-size: 0.85rem; font-weight: 700; background: rgba(0,0,0,0.6); padding: 6px 16px; border-radius: 20px;" 
-                    x-text="previewPhotoModal ? previewPhotoModal.caption : ''"
-                ></div>
-            </div>
-        </div>
-
-        {{-- ── 2.4 SPREADSHEET DATA TABLE MODAL (OPEN DATA TABLE) ── --}}
-        <div 
-            x-show="openDataTableModal" 
-            x-cloak
-            style="position: fixed; inset: 0; z-index: 999999; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 20px;"
-            @keydown.escape.window="openDataTableModal = false"
-        >
+        {{-- ── 2.6 FULLSCREEN PHOTO ZOOM LIGHTBOX MODAL (CENTERED TELEPORT) ── --}}
+        <template x-teleport="body">
             <div 
-                @click.outside="openDataTableModal = false"
-                style="background: #ffffff; width: 100%; max-width: 1100px; height: 85vh; border-radius: 16px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #CBD5E1;"
+                x-show="previewPhotoModal" 
+                x-cloak
+                style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 999999999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;"
+                @keydown.escape.window="previewPhotoModal = null"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
             >
-                {{-- Modal Header --}}
-                <div style="padding: 14px 20px; border-bottom: 1.5px solid #F1F5F9; display: flex; align-items: center; justify-content: space-between; background: #0F172A; color: #ffffff;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 32px; height: 32px; border-radius: 8px; background: #0878E5; display: flex; align-items: center; justify-content: center;">
-                            <svg style="width: 17px; height: 17px; color: #ffffff;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                <div style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 10;">
+                    <a 
+                        :href="previewPhotoModal ? previewPhotoModal.url : '#'" 
+                        target="_blank" 
+                        download 
+                        style="border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.15); color: #ffffff; padding: 8px 16px; border-radius: 10px; font-size: 0.78rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 6px; backdrop-filter: blur(4px);"
+                    >
+                        <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span>Download Asli</span>
+                    </a>
+                    <button 
+                        type="button" 
+                        @click="previewPhotoModal = null" 
+                        style="background: rgba(255,255,255,0.2); border: none; color: #ffffff; width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: 900; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);"
+                    >✕</button>
+                </div>
+
+                <div style="max-width: 90vw; max-height: 82vh; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;">
+                    <img 
+                        :src="previewPhotoModal ? previewPhotoModal.url : ''" 
+                        style="max-width: 100%; max-height: 75vh; object-fit: contain; border-radius: 12px; box-shadow: 0 25px 60px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15);"
+                    >
+                    <div 
+                        x-show="previewPhotoModal && previewPhotoModal.caption" 
+                        style="margin-top: 14px; color: #ffffff; font-size: 0.88rem; font-weight: 700; background: rgba(0,0,0,0.7); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(6px);" 
+                        x-text="previewPhotoModal ? previewPhotoModal.caption : ''"
+                    ></div>
+                </div>
+            </div>
+        </template>
+
+        {{-- ── 2.4 SPREADSHEET DATA TABLE MODAL (CENTERED TELEPORT) ── --}}
+        <template x-teleport="body">
+            <div 
+                x-show="openDataTableModal" 
+                x-cloak
+                style="position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 99999999; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;"
+                @keydown.escape.window="openDataTableModal = false"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+            >
+                <div 
+                    @click.outside="openDataTableModal = false"
+                    style="background: #ffffff; width: 100%; max-width: 1100px; height: 85vh; border-radius: 20px; box-shadow: 0 30px 80px -15px rgba(15, 23, 42, 0.45); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #CBD5E1; margin: auto;"
+                >
+                    {{-- Modal Header --}}
+                    <div style="padding: 16px 22px; border-bottom: 1.5px solid #1E293B; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: #ffffff;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 38px; height: 38px; border-radius: 10px; background: #0878E5; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(8,120,229,0.3);">
+                                <svg style="width: 18px; height: 18px; color: #ffffff;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                            </div>
+                            <div>
+                                <div style="font-size: 1rem; font-weight: 900; line-height: 1.2;">Tabel Data Jaringan FTTH</div>
+                                <div style="font-size: 0.72rem; color: #94A3B8; font-weight: 500; margin-top: 2px;">Edit nama, panjang, dan catatan seluruh elemen jaringan dalam satu tabel terpusat</div>
+                            </div>
                         </div>
-                        <div>
-                            <div style="font-size: 0.95rem; font-weight: 900; line-height: 1.2;">Tabel Data Jaringan FTTH</div>
-                            <div style="font-size: 0.7rem; color: #94A3B8; font-weight: 500;">Edit nama, panjang, dan catatan seluruh elemen jaringan dalam satu tabel terpusat</div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button 
+                                type="button" 
+                                @click="exportTableCsv()" 
+                                style="border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.12); color: #ffffff; padding: 7px 14px; border-radius: 9px; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s ease;"
+                                onmouseover="this.style.background='rgba(255,255,255,0.25)'"
+                                onmouseout="this.style.background='rgba(255,255,255,0.12)'"
+                                title="Unduh tabel ini dalam format file CSV"
+                            >
+                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                <span>Unduh CSV</span>
+                            </button>
+                            <button 
+                                type="button" 
+                                @click="openDataTableModal = false" 
+                                style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); color: #ffffff; width: 32px; height: 32px; border-radius: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; transition: all 0.15s ease;"
+                                onmouseover="this.style.background='rgba(239,68,68,0.85)'; this.style.borderColor='transparent'"
+                                onmouseout="this.style.background='rgba(255,255,255,0.12)'; this.style.borderColor='rgba(255,255,255,0.18)'"
+                            >✕</button>
                         </div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <button 
-                            type="button" 
-                            @click="exportTableCsv()" 
-                            style="border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: #ffffff; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.15s ease;"
-                            onmouseover="this.style.background='rgba(255,255,255,0.2)'"
-                            onmouseout="this.style.background='rgba(255,255,255,0.1)'"
-                            title="Unduh tabel ini dalam format file CSV"
-                        >
-                            <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            <span>Unduh CSV</span>
-                        </button>
+
+                    {{-- Toolbar: Category Filters & Search --}}
+                    <div style="padding: 12px 20px; background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <button 
+                                type="button" 
+                                @click="dataTableTab = 'all'" 
+                                style="padding: 6px 14px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; border: 1px solid transparent;"
+                                :style="dataTableTab === 'all' ? 'background: #0878E5; color: #ffffff; box-shadow: 0 2px 6px rgba(8,120,229,0.25);' : 'background: #ffffff; color: #64748B; border-color: #E2E8F0;'"
+                            >Semua (<span x-text="customElements.length"></span>)</button>
+                            <button 
+                                type="button" 
+                                @click="dataTableTab = 'line'" 
+                                style="padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; border: 1px solid transparent;"
+                                :style="dataTableTab === 'line' ? 'background: #0878E5; color: #ffffff;' : 'background: #ffffff; color: #64748B; border-color: #E2E8F0;'"
+                            >Kabel (<span x-text="customElements.filter(e => e.category === 'line').length"></span>)</button>
+                            <button 
+                                type="button" 
+                                @click="dataTableTab = 'pole'" 
+                                style="padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; border: 1px solid transparent;"
+                                :style="dataTableTab === 'pole' ? 'background: #0878E5; color: #ffffff;' : 'background: #ffffff; color: #64748B; border-color: #E2E8F0;'"
+                            >Tiang (<span x-text="customElements.filter(e => e.element_type === 'pole').length"></span>)</button>
+                            <button 
+                                type="button" 
+                                @click="dataTableTab = 'joint_box'" 
+                                style="padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; border: 1px solid transparent;"
+                                :style="dataTableTab === 'joint_box' ? 'background: #0878E5; color: #ffffff;' : 'background: #ffffff; color: #64748B; border-color: #E2E8F0;'"
+                            >Joint Box (<span x-text="customElements.filter(e => e.element_type === 'joint_box').length"></span>)</button>
+                            <button 
+                                type="button" 
+                                @click="dataTableTab = 'odc'" 
+                                style="padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; border: 1px solid transparent;"
+                                :style="dataTableTab === 'odc' ? 'background: #0878E5; color: #ffffff;' : 'background: #ffffff; color: #64748B; border-color: #E2E8F0;'"
+                            >ODC (<span x-text="customElements.filter(e => e.element_type === 'odc').length"></span>)</button>
+                            <button 
+                                type="button" 
+                                @click="dataTableTab = 'olt'" 
+                                style="padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; border: 1px solid transparent;"
+                                :style="dataTableTab === 'olt' ? 'background: #0878E5; color: #ffffff;' : 'background: #ffffff; color: #64748B; border-color: #E2E8F0;'"
+                            >OLT (<span x-text="customElements.filter(e => e.element_type === 'olt').length"></span>)</button>
+                            <button 
+                                type="button" 
+                                @click="dataTableTab = 'customer'" 
+                                style="padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease; border: 1px solid transparent;"
+                                :style="dataTableTab === 'customer' ? 'background: #0878E5; color: #ffffff;' : 'background: #ffffff; color: #64748B; border-color: #E2E8F0;'"
+                            >Pelanggan (<span x-text="customElements.filter(e => e.element_type === 'customer').length"></span>)</button>
+                        </div>
+                        <div style="position: relative; width: 220px;">
+                            <input 
+                                type="text" 
+                                x-model="dataTableSearch" 
+                                placeholder="Cari elemen..." 
+                                style="width: 100%; height: 34px; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 10px 0 30px; font-size: 0.78rem; background: #ffffff; box-sizing: border-box;"
+                            >
+                            <svg style="position: absolute; left: 9px; top: 10px; width: 14px; height: 14px; color: #94A3B8;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </div>
+                    </div>
+
+                    {{-- Spreadsheet Table Body --}}
+                    <div style="flex: 1; overflow: auto; background: #ffffff;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; text-align: left;">
+                            <thead style="background: #F1F5F9; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid #CBD5E1;">
+                                <tr>
+                                    <th style="padding: 10px 14px; font-weight: 800; color: #475569; width: 50px;">#</th>
+                                    <th style="padding: 10px 12px; font-weight: 800; color: #475569; width: 130px;">Tipe</th>
+                                    <th style="padding: 10px 12px; font-weight: 800; color: #475569; min-width: 200px;">Nama Elemen (Klik untuk Edit)</th>
+                                    <th style="padding: 10px 12px; font-weight: 800; color: #475569; width: 120px;">Metrik / Lokasi</th>
+                                    <th style="padding: 10px 12px; font-weight: 800; color: #475569; min-width: 180px;">Catatan Lapangan</th>
+                                    <th style="padding: 10px 14px; font-weight: 800; color: #475569; width: 140px; text-align: right;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="(el, idx) in dataTableElements" :key="el.id">
+                                    <tr style="border-bottom: 1px solid #F1F5F9; transition: background 0.1s ease;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background='transparent'">
+                                        <td style="padding: 10px 14px; color: #94A3B8; font-weight: 700;" x-text="idx + 1"></td>
+                                        <td style="padding: 10px 12px;">
+                                            <div style="display: flex; align-items: center; gap: 6px;">
+                                                <span 
+                                                    style="width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0;"
+                                                    :style="'background:' + (el.color || '#0878E5')"
+                                                ></span>
+                                                <span style="font-weight: 800; text-transform: uppercase; font-size: 0.7rem; color: #334155;" x-text="el.element_type.replace('_', ' ')"></span>
+                                            </div>
+                                        </td>
+                                        <td style="padding: 8px 12px;">
+                                            <input 
+                                                type="text" 
+                                                :value="el.name" 
+                                                @change="$wire.updateElement(el.id, { name: $event.target.value }); el.name = $event.target.value; renderCustomElements();"
+                                                style="width: 100%; height: 30px; border-radius: 6px; border: 1px solid transparent; padding: 0 8px; font-size: 0.8rem; font-weight: 800; color: #0F172A; background: transparent; transition: all 0.15s ease;"
+                                                onfocus="this.style.borderColor='#0878E5'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 2px rgba(8,120,229,0.1)'"
+                                                onblur="this.style.borderColor='transparent'; this.style.background='transparent'; this.style.boxShadow='none'"
+                                            >
+                                        </td>
+                                        <td style="padding: 10px 12px; font-size: 0.74rem;">
+                                            <template x-if="el.category === 'line'">
+                                                <span style="color: #0878E5; font-weight: 800;" x-text="'~' + (el.length_meters || 0) + ' m'"></span>
+                                            </template>
+                                            <template x-if="el.category === 'marker'">
+                                                <span style="font-family: monospace; font-size: 0.68rem; color: #64748B;" x-text="el.latitude ? (el.latitude.toFixed(5) + ', ' + el.longitude.toFixed(5)) : '-'"></span>
+                                            </template>
+                                        </td>
+                                        <td style="padding: 8px 12px;">
+                                            <input 
+                                                type="text" 
+                                                :value="el.notes || ''" 
+                                                @change="$wire.updateElement(el.id, { notes: $event.target.value }); el.notes = $event.target.value; renderCustomElements();"
+                                                placeholder="Tambah catatan..."
+                                                style="width: 100%; height: 30px; border-radius: 6px; border: 1px solid transparent; padding: 0 8px; font-size: 0.74rem; color: #475569; background: transparent; transition: all 0.15s ease;"
+                                                onfocus="this.style.borderColor='#0878E5'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 2px rgba(8,120,229,0.1)'"
+                                                onblur="this.style.borderColor='transparent'; this.style.background='transparent'; this.style.boxShadow='none'"
+                                            >
+                                        </td>
+                                        <td style="padding: 10px 12px; text-align: right;">
+                                            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 5px;">
+                                                <button 
+                                                    type="button" 
+                                                    @click="openDetail(el)" 
+                                                    style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #BBF7D0; background: #F0FDF4; color: #16A34A; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                                                    title="Lihat Detail & Foto Dokumentasi"
+                                                >
+                                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                                </button>
+                                                <button 
+                                                    type="button" 
+                                                    @click="openDataTableModal = false; flyToCustomElement(el);" 
+                                                    style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #BFDBFE; background: #EFF6FF; color: #0878E5; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                                                    title="Fokus di peta"
+                                                >
+                                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                                                </button>
+                                                <button 
+                                                    type="button" 
+                                                    @click="openStylePicker(el.id)" 
+                                                    style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #CBD5E1; background: #F8FAFC; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                                                    title="Ubah Gaya & Warna"
+                                                >
+                                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+                                                </button>
+                                                <button 
+                                                    type="button" 
+                                                    @click="deleteCustomElementDirect(el.id, el.name)" 
+                                                    style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #FECACA; background: #FEF2F2; color: #DC2626; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                                                    title="Hapus elemen ini"
+                                                >
+                                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- Table Footer --}}
+                    <div style="padding: 12px 22px; background: #F8FAFC; border-top: 1.5px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between; font-size: 0.74rem; font-weight: 700; color: #64748B;">
+                        <div>
+                            Menampilkan <span style="font-weight: 900; color: #0F172A;" x-text="dataTableElements.length"></span> dari <span style="font-weight: 900; color: #0F172A;" x-text="customElements.length"></span> elemen
+                        </div>
                         <button 
                             type="button" 
                             @click="openDataTableModal = false" 
-                            style="border: none; background: transparent; color: #94A3B8; cursor: pointer; padding: 6px; border-radius: 8px; display: flex; align-items: center; justify-content: center;"
-                            onmouseover="this.style.color='#ffffff'; this.style.background='rgba(255,255,255,0.1)'"
-                            onmouseout="this.style.color='#94A3B8'; this.style.background='transparent'"
-                        >
-                            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-                        </button>
+                            style="padding: 7px 18px; border-radius: 9px; border: none; background: #0F172A; color: #ffffff; font-weight: 800; cursor: pointer; transition: all 0.15s ease;"
+                            onmouseover="this.style.background='#1E293B'"
+                            onmouseout="this.style.background='#0F172A'"
+                        >Tutup</button>
                     </div>
-                </div>
-
-                {{-- Toolbar & Filters Inside Table --}}
-                <div style="padding: 10px 20px; background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
-                    {{-- Category Tabs --}}
-                    <div style="display: flex; gap: 4px; overflow-x: auto;">
-                        <button 
-                            type="button" 
-                            @click="dataTableTab = 'all'" 
-                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
-                            :style="dataTableTab === 'all' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
-                        >
-                            Semua (<span x-text="customElements.length"></span>)
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="dataTableTab = 'line'" 
-                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
-                            :style="dataTableTab === 'line' ? 'background: #0878E5; color: #ffffff; border-color: #0878E5;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
-                        >
-                            Kabel (<span x-text="customElements.filter(e => e.category === 'line').length"></span>)
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="dataTableTab = 'pole'" 
-                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
-                            :style="dataTableTab === 'pole' ? 'background: #334155; color: #ffffff; border-color: #334155;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
-                        >
-                            Tiang (<span x-text="customElements.filter(e => e.element_type === 'pole').length"></span>)
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="dataTableTab = 'joint_box'" 
-                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
-                            :style="dataTableTab === 'joint_box' ? 'background: #059669; color: #ffffff; border-color: #059669;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
-                        >
-                            Joint Box (<span x-text="customElements.filter(e => e.element_type === 'joint_box').length"></span>)
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="dataTableTab = 'odc'" 
-                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
-                            :style="dataTableTab === 'odc' ? 'background: #D97706; color: #ffffff; border-color: #D97706;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
-                        >
-                            ODC (<span x-text="customElements.filter(e => e.element_type === 'odc').length"></span>)
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="dataTableTab = 'olt'" 
-                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
-                            :style="dataTableTab === 'olt' ? 'background: #7C3AED; color: #ffffff; border-color: #7C3AED;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
-                        >
-                            OLT (<span x-text="customElements.filter(e => e.element_type === 'olt').length"></span>)
-                        </button>
-                        <button 
-                            type="button" 
-                            @click="dataTableTab = 'customer'" 
-                            style="padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer; border: 1.5px solid;"
-                            :style="dataTableTab === 'customer' ? 'background: #DB2777; color: #ffffff; border-color: #DB2777;' : 'background: #ffffff; color: #475569; border-color: #CBD5E1;'"
-                        >
-                            Pelanggan (<span x-text="customElements.filter(e => e.element_type === 'customer').length"></span>)
-                        </button>
-                    </div>
-
-                    {{-- Search Input in Table --}}
-                    <div style="position: relative; width: 220px;">
-                        <input 
-                            type="text" 
-                            x-model="dataTableSearch" 
-                            placeholder="Cari dalam tabel..." 
-                            style="width: 100%; height: 32px; font-size: 0.74rem; font-weight: 600; border-radius: 8px; border: 1.5px solid #CBD5E1; padding: 0 24px 0 10px; box-sizing: border-box; background: #ffffff; outline: none;"
-                        >
-                        <button 
-                            type="button" 
-                            x-show="dataTableSearch" 
-                            @click="dataTableSearch = ''" 
-                            style="position: absolute; right: 6px; top: 7px; border: none; background: transparent; color: #94A3B8; font-size: 11px; cursor: pointer;"
-                        >✕</button>
-                    </div>
-                </div>
-
-                {{-- Table Scroll Container --}}
-                <div style="flex: 1; overflow: auto; background: #ffffff;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left;">
-                        <thead style="position: sticky; top: 0; background: #F1F5F9; z-index: 10; border-bottom: 2px solid #CBD5E1;">
-                            <tr>
-                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 45px;">No</th>
-                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 70px;">Gaya</th>
-                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 240px;">Nama Objek</th>
-                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 140px;">Tipe & Kategori</th>
-                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 150px;">Metrik / Lokasi</th>
-                                <th style="padding: 10px 12px; font-weight: 900; color: #334155;">Catatan Teknis</th>
-                                <th style="padding: 10px 12px; font-weight: 900; color: #334155; width: 130px; text-align: right;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template x-for="(el, idx) in dataTableElements" :key="el.id">
-                                <tr style="border-bottom: 1px solid #E2E8F0; transition: background 0.1s ease;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background='#ffffff'">
-                                    <td style="padding: 10px 12px; color: #64748B; font-weight: 700;" x-text="idx + 1"></td>
-                                    <td style="padding: 10px 12px;">
-                                        <div 
-                                            @click="openStylePicker(el.id)"
-                                            style="width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
-                                            :style="'background:' + getElementBadge(el).bg + '; color:' + getElementBadge(el).color + '; border: 1.5px solid ' + getElementBadge(el).border"
-                                            x-html="getElementBadge(el).iconHtml"
-                                            title="Klik untuk ubah gaya & warna"
-                                        ></div>
-                                    </td>
-                                    <td style="padding: 8px 12px;">
-                                        <input 
-                                            type="text" 
-                                            :value="el.name" 
-                                            @change="$wire.updateElement(el.id, { name: $event.target.value }); el.name = $event.target.value; renderCustomElements();"
-                                            style="width: 100%; height: 30px; border-radius: 6px; border: 1px solid transparent; padding: 0 8px; font-weight: 800; font-size: 0.76rem; color: #0F172A; background: transparent; transition: all 0.15s ease;"
-                                            onfocus="this.style.borderColor='#0878E5'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 2px rgba(8,120,229,0.1)'"
-                                            onblur="this.style.borderColor='transparent'; this.style.background='transparent'; this.style.boxShadow='none'"
-                                        >
-                                    </td>
-                                    <td style="padding: 10px 12px;">
-                                        <span style="font-size: 0.65rem; font-weight: 900; padding: 2px 7px; border-radius: 6px; text-transform: uppercase;" :style="'background:' + getElementBadge(el).bg + '; color:' + getElementBadge(el).border" x-text="el.element_type"></span>
-                                    </td>
-                                    <td style="padding: 10px 12px; font-weight: 700; color: #334155;">
-                                        <template x-if="el.category === 'line'">
-                                            <span style="color: #0878E5; font-weight: 800;" x-text="'~' + (el.length_meters || 0) + ' m'"></span>
-                                        </template>
-                                        <template x-if="el.category === 'marker'">
-                                            <span style="font-family: monospace; font-size: 0.68rem; color: #64748B;" x-text="el.latitude ? (el.latitude.toFixed(5) + ', ' + el.longitude.toFixed(5)) : '-'"></span>
-                                        </template>
-                                    </td>
-                                    <td style="padding: 8px 12px;">
-                                        <input 
-                                            type="text" 
-                                            :value="el.notes || ''" 
-                                            @change="$wire.updateElement(el.id, { notes: $event.target.value }); el.notes = $event.target.value; renderCustomElements();"
-                                            placeholder="Tambah catatan..."
-                                            style="width: 100%; height: 30px; border-radius: 6px; border: 1px solid transparent; padding: 0 8px; font-size: 0.74rem; color: #475569; background: transparent; transition: all 0.15s ease;"
-                                            onfocus="this.style.borderColor='#0878E5'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 2px rgba(8,120,229,0.1)'"
-                                            onblur="this.style.borderColor='transparent'; this.style.background='transparent'; this.style.boxShadow='none'"
-                                        >
-                                    </td>
-                                    <td style="padding: 10px 12px; text-align: right;">
-                                        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 5px;">
-                                            <button 
-                                                type="button" 
-                                                @click="openDetail(el)" 
-                                                style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #BBF7D0; background: #F0FDF4; color: #16A34A; cursor: pointer; display: flex; align-items: center; justify-content: center;"
-                                                title="Lihat Detail & Foto Dokumentasi"
-                                            >
-                                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                                            </button>
-                                            <button 
-                                                type="button" 
-                                                @click="openDataTableModal = false; flyToCustomElement(el);" 
-                                                style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #BFDBFE; background: #EFF6FF; color: #0878E5; cursor: pointer; display: flex; align-items: center; justify-content: center;"
-                                                title="Fokus di peta"
-                                            >
-                                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                                            </button>
-                                            <button 
-                                                type="button" 
-                                                @click="openStylePicker(el.id)" 
-                                                style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #CBD5E1; background: #F8FAFC; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center;"
-                                                title="Ubah Gaya & Warna"
-                                            >
-                                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
-                                            </button>
-                                            <button 
-                                                type="button" 
-                                                @click="deleteCustomElementDirect(el.id, el.name)" 
-                                                style="width: 28px; height: 28px; border-radius: 7px; border: 1px solid #FECACA; background: #FEF2F2; color: #DC2626; cursor: pointer; display: flex; align-items: center; justify-content: center;"
-                                                title="Hapus elemen ini"
-                                            >
-                                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
-
-                {{-- Table Footer --}}
-                <div style="padding: 10px 20px; background: #F8FAFC; border-top: 1.5px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between; font-size: 0.74rem; font-weight: 700; color: #64748B;">
-                    <div>
-                        Menampilkan <span style="font-weight: 900; color: #0F172A;" x-text="dataTableElements.length"></span> dari <span style="font-weight: 900; color: #0F172A;" x-text="customElements.length"></span> elemen
-                    </div>
-                    <button 
-                        type="button" 
-                        @click="openDataTableModal = false" 
-                        style="padding: 6px 16px; border-radius: 8px; border: none; background: #0F172A; color: #ffffff; font-weight: 800; cursor: pointer;"
-                    >Tutup</button>
                 </div>
             </div>
-        </div>
+        </template>
 
         @script
         <script>
