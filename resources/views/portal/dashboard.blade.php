@@ -249,7 +249,7 @@
         const s = (this.remainingSeconds % 60).toString().padStart(2, '0');
         this.formattedTime = `${m}:${s}`;
     }
-}" class="flex flex-col min-h-screen text-slate-800 pb-20 sm:pb-8 relative overflow-x-hidden">
+}" class="flex flex-col min-h-screen text-slate-800 relative overflow-x-hidden m-0 p-0">
 
     {{-- ══════════════════════════════════════════════════════════════
          ── DYNAMIC AMBIENT GLOW MESH BACKDROP (FOR GLASS REFLECTIONS) ──
@@ -382,7 +382,7 @@
     {{-- ══════════════════════════════════════════════════════════════
          ── MAIN DASHBOARD CONTAINER ──
          ══════════════════════════════════════════════════════════════ --}}
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 flex-1 w-full space-y-5 relative z-10">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-6 pb-12 flex-1 w-full space-y-5 relative z-10">
         
         @if(session('ticket_created'))
             <div class="p-4 sm:p-5 rounded-2xl glass-panel bg-amber-500/10 border-amber-300/60 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs backdrop-blur-md">
@@ -1192,7 +1192,7 @@
     </main>
 
     <!-- Footer (Glass Footer) -->
-    <footer class="p-6 text-center text-xs text-slate-500 border-t border-white/60 glass-navbar relative z-10 mt-auto">
+    <footer class="py-5 px-6 text-center text-xs text-slate-500 border-t border-white/60 glass-navbar relative z-10 mt-auto w-full">
         &copy; {{ date('Y') }} IMS ONE Fiber Network. Portal Layanan Mandiri Pelanggan.
     </footer>
 
