@@ -816,138 +816,147 @@
                     </div>
                 </div>
 
-                <!-- Form Content -->
-                <form action="{{ route('customer.ticket.submit') }}" method="POST" class="space-y-5 text-xs">
-                    @csrf
-
+                <!-- Service Forms Container -->
+                <div class="space-y-5 text-xs">
                     <!-- TAB 1: GANGGUAN JARINGAN -->
-                    <div x-show="activeTicketTab === 'gangguan'" x-cloak class="space-y-4 sm:space-y-5">
-                        <input type="hidden" name="category" value="LOS">
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                            <div>
-                                <label class="block font-bold text-brand-navy mb-2">Kategori Gangguan *</label>
-                                <select name="issue_detail" class="w-full px-4 py-2.5 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
-                                    <option value="Lampu LOS Merah / Mati Total">Lampu LOS Merah / Koneksi Mati Total</option>
-                                    <option value="Internet Lemot / Speed Turun">Internet Lemot / Speed Turun Drastis</option>
-                                    <option value="Kabel Fiber Putus / Tertimpa">Kabel Fiber Putus / Kendala Tiang</option>
-                                    <option value="WiFi Sering Putus / Restart">Modem Router Panas / Sering Restart</option>
-                                    <option value="Lainnya">Gangguan Lainnya</option>
-                                </select>
+                    <div x-show="activeTicketTab === 'gangguan'" x-cloak>
+                        <form action="{{ route('customer.ticket.submit') }}" method="POST" class="space-y-4 sm:space-y-5">
+                            @csrf
+                            <input type="hidden" name="category" value="LOS">
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                                <div>
+                                    <label class="block font-bold text-brand-navy mb-2">Kategori Gangguan *</label>
+                                    <select name="issue_detail" class="w-full px-4 py-2.5 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                        <option value="Lampu LOS Merah / Mati Total">Lampu LOS Merah / Koneksi Mati Total</option>
+                                        <option value="Internet Lemot / Speed Turun">Internet Lemot / Speed Turun Drastis</option>
+                                        <option value="Kabel Fiber Putus / Tertimpa">Kabel Fiber Putus / Kendala Tiang</option>
+                                        <option value="WiFi Sering Putus / Restart">Modem Router Panas / Sering Restart</option>
+                                        <option value="Lainnya">Gangguan Lainnya</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-brand-navy mb-2">Status Lampu Indikator Modem</label>
+                                    <input type="text" name="modem_status" placeholder="Contoh: Lampu PON mati, LOS merah" class="w-full px-4 py-2.5 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                </div>
                             </div>
+
                             <div>
-                                <label class="block font-bold text-brand-navy mb-2">Status Lampu Indikator Modem</label>
-                                <input type="text" name="modem_status" placeholder="Contoh: Lampu PON mati, LOS merah" class="w-full px-4 py-2.5 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                <label class="block font-bold text-brand-navy mb-2">Deskripsi Gejala Gangguan *</label>
+                                <textarea name="description" rows="3" placeholder="Ceritakan kendala yang dialami, sejak jam berapa, dan apakah sudah dicoba restart modem..." required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-medium"></textarea>
                             </div>
-                        </div>
 
-                        <div>
-                            <label class="block font-bold text-brand-navy mb-2">Deskripsi Gejala Gangguan *</label>
-                            <textarea name="description" rows="3" placeholder="Ceritakan kendala yang dialami, sejak jam berapa, dan apakah sudah dicoba restart modem..." required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-medium"></textarea>
-                        </div>
-
-                        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-700 hover:to-rose-600 text-white font-black text-xs shadow-md shadow-rose-500/25 border border-white/30 transition-all flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                            </svg>
-                            <span>Kirim Laporan Gangguan ke NOC</span>
-                        </button>
+                            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-700 hover:to-rose-600 text-white font-black text-xs shadow-md shadow-rose-500/25 border border-white/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                </svg>
+                                <span>Kirim Laporan Gangguan ke NOC</span>
+                            </button>
+                        </form>
                     </div>
 
                     <!-- TAB 2: UPGRADE / DOWNGRADE -->
-                    <div x-show="activeTicketTab === 'upgrade'" x-cloak class="space-y-4 sm:space-y-5">
-                        <input type="hidden" name="category" value="REQ_UPGRADE_DOWNGRADE">
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                            <div>
-                                <label class="block font-bold text-brand-navy mb-2">Pilih Target Paket Baru *</label>
-                                <select name="target_package" x-model="selectedNewPackage" class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
-                                    @foreach($availablePackages as $pkg)
-                                        <option value="{{ $pkg->name }} ({{ $pkg->speed_mbps }} Mbps) - Rp {{ number_format($pkg->price, 0, ',', '.') }}/bln">
-                                            {{ $pkg->name }} ({{ $pkg->speed_mbps }} Mbps) — Rp {{ number_format($pkg->price, 0, ',', '.') }}/bln
-                                        </option>
-                                    @endforeach
-                                </select>
+                    <div x-show="activeTicketTab === 'upgrade'" x-cloak>
+                        <form action="{{ route('customer.ticket.submit') }}" method="POST" class="space-y-4 sm:space-y-5">
+                            @csrf
+                            <input type="hidden" name="category" value="REQ_UPGRADE_DOWNGRADE">
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                                <div>
+                                    <label class="block font-bold text-brand-navy mb-2">Pilih Target Paket Baru *</label>
+                                    <select name="target_package" x-model="selectedNewPackage" class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                        @foreach($availablePackages as $pkg)
+                                            <option value="{{ $pkg->name }} ({{ $pkg->speed_mbps }} Mbps) - Rp {{ number_format($pkg->price, 0, ',', '.') }}/bln">
+                                                {{ $pkg->name }} ({{ $pkg->speed_mbps }} Mbps) — Rp {{ number_format($pkg->price, 0, ',', '.') }}/bln
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-brand-navy mb-2">Waktu Efektif Perubahan</label>
+                                    <select name="effective_date" class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                        <option value="Segera / Hari Ini">Segera / Hari Ini (Prorata)</option>
+                                        <option value="Awal Bulan Depan">Mulai Awal Bulan Depan (Siklus Baru)</option>
+                                    </select>
+                                </div>
                             </div>
+
                             <div>
-                                <label class="block font-bold text-brand-navy mb-2">Waktu Efektif Perubahan</label>
-                                <select name="effective_date" class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
-                                    <option value="Segera / Hari Ini">Segera / Hari Ini (Prorata)</option>
-                                    <option value="Awal Bulan Depan">Mulai Awal Bulan Depan (Siklus Baru)</option>
-                                </select>
+                                <label class="block font-bold text-brand-navy mb-2">Alasan Permohonan / Catatan</label>
+                                <textarea name="description" rows="3" placeholder="Contoh: Kebutuhan bandwidth bertambah untuk kantor / streaming studio..." class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-medium"></textarea>
                             </div>
-                        </div>
 
-                        <div>
-                            <label class="block font-bold text-brand-navy mb-2">Alasan Permohonan / Catatan *</label>
-                            <textarea name="description" rows="3" placeholder="Contoh: Kebutuhan bandwidth bertambah untuk kantor / streaming studio..." required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-medium"></textarea>
-                        </div>
-
-                        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm transition-all flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                            </svg>
-                            <span>Ajukan Perubahan Paket</span>
-                        </button>
+                            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                </svg>
+                                <span>Ajukan Perubahan Paket</span>
+                            </button>
+                        </form>
                     </div>
 
                     <!-- TAB 3: RELOKASI / PINDAH ALAMAT -->
-                    <div x-show="activeTicketTab === 'relokasi'" x-cloak class="space-y-4 sm:space-y-5">
-                        <input type="hidden" name="category" value="REQ_RELOKASI">
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                            <div>
-                                <label class="block font-bold text-brand-navy mb-2">Alamat Lengkap Tujuan Baru *</label>
-                                <input type="text" name="new_address" placeholder="Nama Jalan, No Rumah, RT/RW, Kelurahan, Kecamatan" required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                    <div x-show="activeTicketTab === 'relokasi'" x-cloak>
+                        <form action="{{ route('customer.ticket.submit') }}" method="POST" class="space-y-4 sm:space-y-5">
+                            @csrf
+                            <input type="hidden" name="category" value="REQ_RELOKASI">
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                                <div>
+                                    <label class="block font-bold text-brand-navy mb-2">Alamat Lengkap Tujuan Baru *</label>
+                                    <input type="text" name="new_address" placeholder="Nama Jalan, No Rumah, RT/RW, Kelurahan, Kecamatan" required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-brand-navy mb-2">Rencana Tanggal Pindah / Tarik Kabel</label>
+                                    <input type="date" name="relocation_date" class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                </div>
                             </div>
+
                             <div>
-                                <label class="block font-bold text-brand-navy mb-2">Rencana Tanggal Pindah / Tarik Kabel *</label>
-                                <input type="date" name="relocation_date" class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                <label class="block font-bold text-brand-navy mb-2">Patokan Lokasi &amp; Kontak di Lokasi Baru</label>
+                                <textarea name="description" rows="3" placeholder="Contoh: Sebelah Masjid Al-Ikhlas, rumah pagar hitam. PIC di lokasi: Bpk. Bambang..." class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-medium"></textarea>
                             </div>
-                        </div>
 
-                        <div>
-                            <label class="block font-bold text-brand-navy mb-2">Patokan Lokasi &amp; Kontak di Lokasi Baru *</label>
-                            <textarea name="description" rows="3" placeholder="Contoh: Sebelah Masjid Al-Ikhlas, rumah pagar hitam. PIC di lokasi: Bpk. Bambang..." required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-medium"></textarea>
-                        </div>
-
-                        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm transition-all flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                            </svg>
-                            <span>Ajukan Jadwal Relokasi Teknisi</span>
-                        </button>
+                            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                </svg>
+                                <span>Ajukan Jadwal Relokasi Teknisi</span>
+                            </button>
+                        </form>
                     </div>
 
                     <!-- TAB 4: GANTI PASSWORD -->
-                    <div x-show="activeTicketTab === 'password'" x-cloak class="space-y-4 sm:space-y-5">
-                        <input type="hidden" name="category" value="GANTI_PASSWORD">
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                            <div>
-                                <label class="block font-bold text-brand-navy mb-2">Password WiFi Baru * (Min 8 Karakter)</label>
-                                <input type="text" name="new_password" placeholder="Contoh: b4ndung2026!" required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                    <div x-show="activeTicketTab === 'password'" x-cloak>
+                        <form action="{{ route('customer.ticket.submit') }}" method="POST" class="space-y-4 sm:space-y-5">
+                            @csrf
+                            <input type="hidden" name="category" value="GANTI_PASSWORD">
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                                <div>
+                                    <label class="block font-bold text-brand-navy mb-2">Password WiFi Baru * (Min 8 Karakter)</label>
+                                    <input type="text" name="new_password" placeholder="Contoh: b4ndung2026!" required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-brand-navy mb-2">Konfirmasi Password Baru *</label>
+                                    <input type="text" name="confirm_password" placeholder="Ketik ulang password baru" required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                </div>
                             </div>
+
                             <div>
-                                <label class="block font-bold text-brand-navy mb-2">Konfirmasi Password Baru *</label>
-                                <input type="text" name="confirm_password" placeholder="Ketik ulang password baru" required class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-semibold">
+                                <label class="block font-bold text-brand-navy mb-2">Catatan Tambahan (Opsional)</label>
+                                <textarea name="description" rows="2" placeholder="Catatan tambahan untuk tim teknisi (misal: jika ingin sekaligus ganti nama WiFi/SSID)..." class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-medium"></textarea>
                             </div>
-                        </div>
 
-                        <div>
-                            <label class="block font-bold text-brand-navy mb-2">Catatan Tambahan (Opsional)</label>
-                            <textarea name="description" rows="2" placeholder="Catatan tambahan untuk tim teknisi (misal: jika ingin sekaligus ganti nama WiFi/SSID)..." class="w-full px-4 py-3 rounded-2xl glass-input text-brand-navy outline-none text-xs font-medium"></textarea>
-                        </div>
-
-                        <button type="submit" class="w-full sm:w-auto px-8 py-3 rounded-2xl btn-glass-primary font-black text-xs shadow-md transition-all flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
-                            </svg>
-                            <span>Simpan &amp; Ajukan Ganti Password</span>
-                        </button>
+                            <button type="submit" class="w-full sm:w-auto px-8 py-3 rounded-2xl btn-glass-primary font-black text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                                </svg>
+                                <span>Simpan &amp; Ajukan Ganti Password</span>
+                            </button>
+                        </form>
                     </div>
-
-                </form>
+                </div>
             </div>
 
             <!-- Box Riwayat & Live Tracking Tiket (Glass Panel) -->

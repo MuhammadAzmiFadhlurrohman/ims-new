@@ -260,20 +260,31 @@ class CustomerPortalController extends Controller
 
         $request->validate([
             'category' => 'required|string',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
         ]);
 
         $category = $request->input('category');
-        $desc = $request->input('description');
+        $desc = trim((string)$request->input('description', ''));
 
         // Append custom request context if upgrade/downgrade, relocation, or change password
-        if ($category === 'REQ_UPGRADE_DOWNGRADE' && $request->filled('target_package')) {
-            $desc = "[Permohonan Ubah Paket]: Target paket baru: " . $request->input('target_package') . "\nCatatan: " . $desc;
-        } elseif ($category === 'REQ_RELOKASI' && $request->filled('new_address')) {
-            $desc = "[Permohonan Relokasi/Pindah Alamat]: Alamat Baru: " . $request->input('new_address') . "\nCatatan: " . $desc;
+        if ($category === 'LOS' || $category === 'GANGGUAN') {
+            $issue = $request->input('issue_detail', 'Laporan Gangguan');
+            $modem = $request->input('modem_status');
+            $prefix = "[Kendala: {$issue}]" . ($modem ? " [Status Lampu Modem: {$modem}]" : "");
+            $desc = $prefix . "\n" . ($desc ?: 'Pelanggan melaporkan kendala koneksi internet.');
+        } elseif ($category === 'REQ_UPGRADE_DOWNGRADE') {
+            $targetPkg = $request->input('target_package', 'Paket Baru');
+            $effective = $request->input('effective_date', 'Segera');
+            $desc = "[Permohonan Ubah Paket]: Target: {$targetPkg} (Waktu: {$effective})\n" . ($desc ?: 'Mohon proses upgrade/downgrade paket berlangganan.');
+        } elseif ($category === 'REQ_RELOKASI') {
+            $newAddr = $request->input('new_address', '-');
+            $reloDate = $request->input('relocation_date', '-');
+            $desc = "[Permohonan Relokasi/Pindah Alamat]: Alamat Baru: {$newAddr} (Rencana Tgl: {$reloDate})\n" . ($desc ?: 'Mohon jadwalkan survey/penarikan kabel relokasi.');
         } elseif ($category === 'GANTI_PASSWORD' || $category === 'BANTUAN_WIFI') {
             $newPass = $request->input('new_password') ?? $request->input('wifi_password', '-');
-            $desc = "[Permohonan Ganti Password]: Password Baru: " . $newPass . "\nCatatan: " . ($desc ?: 'Mohon bantu update password WiFi modem router.');
+            $desc = "[Permohonan Ganti Password WiFi]: Password Baru: {$newPass}\n" . ($desc ?: 'Mohon bantu update password WiFi modem router.');
+        } else {
+            $desc = $desc ?: 'Pengajuan layanan pelanggan mandiri.';
         }
 
         $randomNo = rand(100, 999);
