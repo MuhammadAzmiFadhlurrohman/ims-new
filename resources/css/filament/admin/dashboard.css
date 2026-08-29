@@ -4,6 +4,11 @@
    ========================================================================== */
 
 /* ── BASE WRAPPER & CONTAINER ── */
+.fi-page:has(.ims-dashboard-wrapper) > header.fi-header,
+.fi-page:has(.ims-dashboard-wrapper) .fi-header-heading {
+    display: none !important;
+}
+
 .ims-dashboard-wrapper {
     display: flex;
     flex-direction: column;
