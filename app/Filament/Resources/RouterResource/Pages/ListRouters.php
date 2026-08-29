@@ -3,19 +3,22 @@
 namespace App\Filament\Resources\RouterResource\Pages;
 
 use App\Filament\Resources\RouterResource;
-use Filament\Actions;
+use App\Models\Router;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\View\View;
 
 class ListRouters extends ListRecords
 {
     protected static string $resource = RouterResource::class;
 
-    protected function getHeaderActions(): array
+    public function getHeader(): ?View
     {
-        return [
-            Actions\CreateAction::make()
-                ->label('Tambah Router Baru')
-                ->icon('heroicon-o-plus-circle'),
-        ];
+        $totalRouters = Router::count();
+        $activeRouters = Router::where('is_active', true)->count();
+
+        return view('filament.headers.router-header', [
+            'totalRouters' => $totalRouters,
+            'activeRouters' => $activeRouters,
+        ]);
     }
 }
