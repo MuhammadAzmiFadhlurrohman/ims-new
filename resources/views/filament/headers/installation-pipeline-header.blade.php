@@ -38,7 +38,7 @@
     <div style="display: flex; align-items: center; flex-shrink: 0; margin-left: auto;">
         <a href="{{ url('/admin/installation-pipelines/create') }}" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; padding: 9px 20px; border-radius: 12px; font-size: 12.5px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 4px 14px rgba(2, 132, 199, 0.45); transition: all 0.2s ease;" onmouseover="this.style.transform='scale(1.04)'; this.style.boxShadow='0 6px 20px rgba(2, 132, 199, 0.6)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 14px rgba(2, 132, 199, 0.45)';">
             <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-            <span>+ Registrasi Baru</span>
+            <span>Registrasi Baru</span>
         </a>
     </div>
 </div>
