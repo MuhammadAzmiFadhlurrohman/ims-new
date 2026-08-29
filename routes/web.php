@@ -36,7 +36,43 @@ Route::get('/', function () {
         ];
     }
 
-    return view('landing', compact('mapPins'));
+    // Get Active Home Packages from Database (unique speeds)
+    $homePackages = \App\Models\BandwidthPackage::where('is_active', true)
+        ->whereIn('category_code', ['KB09212', 'KB69771', 'KB69779'])
+        ->where('price', '>=', 100000)
+        ->orderBy('speed_mbps')
+        ->orderBy('price')
+        ->get()
+        ->unique('speed_mbps');
+
+    if ($homePackages->isEmpty()) {
+        $homePackages = \App\Models\BandwidthPackage::where('is_active', true)
+            ->whereNotIn('category_code', ['KB1682', 'KB22285', 'KBFRE02', 'KB58163'])
+            ->where('price', '>', 0)
+            ->orderBy('speed_mbps')
+            ->get()
+            ->unique('speed_mbps');
+    }
+
+    // Get Active Business Packages from Database (unique speeds)
+    $businessPackages = \App\Models\BandwidthPackage::where('is_active', true)
+        ->whereIn('category_code', ['KB1682', 'KB22285', 'KBBOD1'])
+        ->where('price', '>=', 400000)
+        ->orderBy('speed_mbps')
+        ->orderBy('price')
+        ->get()
+        ->unique('speed_mbps');
+
+    if ($businessPackages->isEmpty()) {
+        $businessPackages = \App\Models\BandwidthPackage::where('is_active', true)
+            ->where('category_code', 'KB1682')
+            ->where('price', '>', 0)
+            ->orderBy('speed_mbps')
+            ->get()
+            ->unique('speed_mbps');
+    }
+
+    return view('landing', compact('mapPins', 'homePackages', 'businessPackages'));
 });
 
 // ── CUSTOMER SELF-SERVICE PORTAL ──

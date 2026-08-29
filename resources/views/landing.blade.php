@@ -1318,316 +1318,268 @@
                 </div>
             </div>
 
-            {{-- ── TAB 1: PAKET RUMAH & KELUARGA ── --}}
-            <div x-show="pricingTab === 'rumah'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-                
-                <!-- Package 1: 30 Mbps (Starter Home) -->
-                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-brand-soft card-interactive h-full transition-all duration-300">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-black text-brand uppercase tracking-wider px-3 py-1 rounded-full bg-brand-soft">
-                                STARTER HOME
-                            </span>
-                            <span class="text-xs text-ink-muted font-bold">Entry Level</span>
-                        </div>
+            {{-- ── TAB 1: PAKET RUMAH & KELUARGA (DYNAMIC FROM DATABASE) ── --}}
+            <div x-show="pricingTab === 'rumah'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+                @foreach($homePackages as $index => $pkg)
+                    @php
+                        $isFeatured = ($loop->iteration === 2) || ($pkg->speed_mbps == 20 && $loop->count >= 2);
+                        $tierName = match(true) {
+                            $pkg->speed_mbps <= 10 => 'STARTER HOME',
+                            $pkg->speed_mbps <= 15 => 'FAMILY HOME',
+                            $pkg->speed_mbps <= 20 => 'PRO STREAMER',
+                            $pkg->speed_mbps <= 30 => 'ULTRA GAMER',
+                            default => 'GIGABIT HOME'
+                        };
+                        $tierTag = match(true) {
+                            $pkg->speed_mbps <= 10 => 'Entry Level',
+                            $pkg->speed_mbps <= 15 => 'Favorite',
+                            $pkg->speed_mbps <= 20 => 'Best Value',
+                            $pkg->speed_mbps <= 30 => 'Popular',
+                            default => 'Ultra Speed'
+                        };
+                        $desc = match(true) {
+                            $pkg->speed_mbps <= 10 => 'Ideal untuk browsing harian, media sosial, dan 2–4 gadget santai.',
+                            $pkg->speed_mbps <= 15 => 'Streaming HD lancar, belajar daring sekolah & meeting WFH nyaman.',
+                            $pkg->speed_mbps <= 20 => 'Streaming Full HD & 4K, WFH bebas lag, multi-user 5–8 perangkat.',
+                            $pkg->speed_mbps <= 25 => 'Download file besar cepat, gaming kompetitif tanpa buffering.',
+                            $pkg->speed_mbps <= 30 => 'Keluarga besar, smart home IoT, & streaming multi-kamera lancar.',
+                            default => 'Kapasitas maksimal untuk studio konten & aktivitas beban berat.'
+                        };
+                    @endphp
 
-                        <div>
-                            <h3 class="font-heading text-3xl font-black text-brand-navy">30 Mbps</h3>
-                            <p class="text-xs text-ink-muted mt-1.5 min-h-[36px]">Ideal untuk browsing harian, media sosial, dan 3–5 perangkat keluarga.</p>
-                        </div>
+                    @if($isFeatured)
+                        <!-- FEATURED HERO CARD (MONOCHROMATIC BLUE #0878E5) -->
+                        <div class="bg-brand text-white border-2 border-blue-400/50 rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative shadow-brand-card card-interactive h-full transition-all duration-300">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="inline-flex items-center gap-1 text-[11px] font-black text-white uppercase tracking-wider px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm">
+                                        <span>⭐</span>
+                                        <span>{{ strtoupper($pkg->name) }}</span>
+                                    </span>
+                                    <span class="text-xs text-white font-bold bg-white/20 px-2.5 py-0.5 rounded-full">{{ $tierTag }}</span>
+                                </div>
 
-                        <div class="pt-4 border-t border-slate-100">
-                            <div class="font-heading text-3xl sm:text-4xl font-black text-brand-navy">
-                                Rp 175.000<span class="text-xs font-bold text-ink-subtle font-sans"> / bulan</span>
-                            </div>
-                            <span class="text-[11px] text-brand font-bold block mt-1">✓ Sudah Termasuk PPN &amp; Sewa Modem</span>
-                        </div>
+                                <div>
+                                    <h3 class="font-heading text-3xl font-black text-white">{{ $pkg->speed_mbps }} Mbps</h3>
+                                    <p class="text-xs text-blue-100 mt-1.5 min-h-[36px]">{{ $desc }}</p>
+                                </div>
 
-                        <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-body">
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Simetris 30 Mbps (Upload = Download)</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span><strong>True Unlimited</strong> (Tanpa batas kuota FUP)</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Router WiFi High-Gain Dual Band</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Dukungan Helpdesk CS 24/7</span>
-                            </div>
-                        </div>
-                    </div>
+                                <div class="pt-4 border-t border-white/20">
+                                    <div class="font-heading text-3xl sm:text-4xl font-black text-white">
+                                        Rp {{ number_format($pkg->price, 0, ',', '.') }}<span class="text-xs font-bold text-blue-100 font-sans"> / bulan</span>
+                                    </div>
+                                    <span class="text-[11px] text-white font-bold block mt-1">✓ Sudah Termasuk PPN &amp; Sewa Modem</span>
+                                </div>
 
-                    <div class="pt-6 mt-6 border-t border-slate-100">
-                        <button @click="openRegister('Paket Starter (30 Mbps)')" class="w-full py-3.5 rounded-2xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-1.5">
-                            <span>Pilih Paket 30 Mbps</span>
-                            <span>&rarr;</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Package 2: 100 Mbps (FEATURED HERO CARD - MONOCHROMATIC BLUE #0878E5) -->
-                <div class="bg-brand text-white border-2 border-blue-400/50 rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative shadow-brand-card card-interactive h-full transition-all duration-300">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="inline-flex items-center gap-1 text-[11px] font-black text-white uppercase tracking-wider px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm">
-                                <span>⭐</span>
-                                <span>100 MBPS PRO</span>
-                            </span>
-                            <span class="text-xs text-white font-bold bg-white/20 px-2.5 py-0.5 rounded-full">Best Value</span>
-                        </div>
-
-                        <div>
-                            <h3 class="font-heading text-3xl font-black text-white">100 Mbps</h3>
-                            <p class="text-xs text-blue-100 mt-1.5 min-h-[36px]">Streaming 4K lancar, meeting WFH bebas putus, dan gaming multi-user.</p>
-                        </div>
-
-                        <div class="pt-4 border-t border-white/20">
-                            <div class="font-heading text-3xl sm:text-4xl font-black text-white">
-                                Rp 320.000<span class="text-xs font-bold text-blue-100 font-sans"> / bulan</span>
+                                <div class="pt-4 border-t border-white/20 space-y-3 text-xs text-white">
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span><strong>Simetris {{ $pkg->speed_mbps }} Mbps</strong> (Upload = Download)</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span><strong>True Unlimited</strong> (Bebas kuota tanpa FUP)</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span><strong>High-Gain WiFi Router</strong> Dual-Band</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span>Prioritas Penanganan Teknisi &amp; CS 24/7</span>
+                                    </div>
+                                </div>
                             </div>
-                            <span class="text-[11px] text-white font-bold block mt-1">✓ Gratis Biaya Pasang + Router WiFi 6</span>
-                        </div>
 
-                        <div class="pt-4 border-t border-white/20 space-y-3 text-xs text-white">
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span><strong>Simetris 100 Mbps</strong> (Upload = Download)</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span><strong>True Unlimited</strong> (Bebas kuota tanpa FUP)</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span><strong>Gigabit Router WiFi 6</strong> Dual-Band</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Prioritas Penanganan Teknisi Lapangan</span>
+                            <div class="pt-6 mt-6 border-t border-white/20">
+                                <button @click="openRegister('{{ $pkg->name }} ({{ $pkg->speed_mbps }} Mbps - Rp {{ number_format($pkg->price, 0, ',', '.') }})')" class="w-full py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-brand font-black text-xs sm:text-sm transition-all shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02] cursor-pointer">
+                                    <span>PASANG SEKARANG</span>
+                                    <span class="text-brand font-black">&rarr;</span>
+                                </button>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <!-- STANDARD CARD -->
+                        <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-brand-soft card-interactive h-full transition-all duration-300">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[11px] font-black text-brand uppercase tracking-wider px-3 py-1 rounded-full bg-brand-soft">
+                                        {{ $tierName }}
+                                    </span>
+                                    <span class="text-xs text-ink-muted font-bold">{{ $tierTag }}</span>
+                                </div>
 
-                    <div class="pt-6 mt-6 border-t border-white/20">
-                        <button @click="openRegister('Paket Pro (100 Mbps)')" class="w-full py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-brand font-black text-xs sm:text-sm transition-all shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02]">
-                            <span>PASANG SEKARANG</span>
-                            <span class="text-brand font-black">&rarr;</span>
-                        </button>
-                    </div>
-                </div>
+                                <div>
+                                    <h3 class="font-heading text-3xl font-black text-brand-navy">{{ $pkg->speed_mbps }} Mbps</h3>
+                                    <p class="text-xs text-ink-muted mt-1.5 min-h-[36px]">{{ $desc }}</p>
+                                </div>
 
-                <!-- Package 3: 300 Mbps (Ultimate Creator) -->
-                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-brand-soft card-interactive h-full transition-all duration-300">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-black text-brand uppercase tracking-wider px-3 py-1 rounded-full bg-brand-soft">
-                                CREATOR &amp; HEAVY
-                            </span>
-                            <span class="text-xs text-ink-muted font-bold">Ultra Speed</span>
+                                <div class="pt-4 border-t border-slate-100">
+                                    <div class="font-heading text-3xl sm:text-4xl font-black text-brand-navy">
+                                        Rp {{ number_format($pkg->price, 0, ',', '.') }}<span class="text-xs font-bold text-ink-subtle font-sans"> / bulan</span>
+                                    </div>
+                                    <span class="text-[11px] text-brand font-bold block mt-1">✓ Sudah Termasuk PPN &amp; Sewa Modem</span>
+                                </div>
+
+                                <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-body">
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span>Simetris {{ $pkg->speed_mbps }} Mbps (Upload = Download)</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span><strong>True Unlimited</strong> (Tanpa batas kuota FUP)</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span>Router WiFi High-Gain Dual Band</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span>Dukungan Helpdesk CS 24/7</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-6 mt-6 border-t border-slate-100">
+                                <button @click="openRegister('{{ $pkg->name }} ({{ $pkg->speed_mbps }} Mbps - Rp {{ number_format($pkg->price, 0, ',', '.') }})')" class="w-full py-3.5 rounded-2xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                                    <span>Pilih Paket {{ $pkg->speed_mbps }} Mbps</span>
+                                    <span>&rarr;</span>
+                                </button>
+                            </div>
                         </div>
-
-                        <div>
-                            <h3 class="font-heading text-3xl font-black text-brand-navy">300 Mbps</h3>
-                            <p class="text-xs text-ink-muted mt-1.5 min-h-[36px]">Untuk studio konten, e-sport, streaming multi-kamera, &amp; backup data besar.</p>
-                        </div>
-
-                        <div class="pt-4 border-t border-slate-100">
-                            <div class="font-heading text-3xl sm:text-4xl font-black text-brand-navy">
-                                Rp 650.000<span class="text-xs font-bold text-ink-subtle font-sans"> / bulan</span>
-                            </div>
-                            <span class="text-[11px] text-brand font-bold block mt-1">✓ IP Public Dedicated (Opsional)</span>
-                        </div>
-
-                        <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-body">
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Simetris 300 Mbps Dedicated</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Routing Jalur Khusus Ultra Low Latency</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Garansi SLA 99.8% Uptime Jaringan</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Dedicated Account Manager Helpdesk</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pt-6 mt-6 border-t border-slate-100">
-                        <button @click="openRegister('Paket Ultimate (300 Mbps)')" class="w-full py-3.5 rounded-2xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-1.5">
-                            <span>Pilih Paket 300 Mbps</span>
-                            <span>&rarr;</span>
-                        </button>
-                    </div>
-                </div>
-
+                    @endif
+                @endforeach
             </div>
 
-            {{-- ── TAB 2: PAKET BISNIS & KORPORAT ── --}}
-            <div x-show="pricingTab === 'bisnis'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-                
-                <!-- Business 1: 100 Mbps SME -->
-                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-brand-soft card-interactive h-full transition-all duration-300">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-black text-brand uppercase tracking-wider px-3 py-1 rounded-full bg-brand-soft">
-                                BUSINESS STARTER
-                            </span>
-                            <span class="text-xs text-ink-muted font-bold">1 Static IP</span>
-                        </div>
+            {{-- ── TAB 2: PAKET BISNIS & KORPORAT (DYNAMIC FROM DATABASE) ── --}}
+            <div x-show="pricingTab === 'bisnis'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+                @foreach($businessPackages as $index => $pkg)
+                    @php
+                        $isFeatured = ($loop->iteration === 2) || ($pkg->speed_mbps == 30 && $loop->count >= 2);
+                        $tierName = match(true) {
+                            $pkg->speed_mbps <= 20 => 'SOHO STARTER',
+                            $pkg->speed_mbps <= 40 => 'SOHO PRO',
+                            $pkg->speed_mbps <= 50 => 'BUSINESS ADVANCED',
+                            default => 'ENTERPRISE DEDICATED'
+                        };
+                        $tierTag = match(true) {
+                            $pkg->speed_mbps <= 20 => 'Small Business',
+                            $pkg->speed_mbps <= 40 => 'Most Popular',
+                            $pkg->speed_mbps <= 50 => 'Best Value',
+                            default => 'High Speed'
+                        };
+                        $desc = match(true) {
+                            $pkg->speed_mbps <= 20 => 'Solusi internet stabil untuk cafe, ruko, klinik, & tim kantor kecil.',
+                            $pkg->speed_mbps <= 40 => 'Optimal untuk kantor cabang, software house, & transaksi multi-kasir.',
+                            $pkg->speed_mbps <= 50 => 'Bandwidth terjamin dengan prioritas routing & uptime SLA 99.8%.',
+                            default => 'Infrastruktur utama kantor pusat, data server, & koneksi beban tinggi.'
+                        };
+                    @endphp
 
-                        <div>
-                            <h3 class="font-heading text-3xl font-black text-brand-navy">100 Mbps</h3>
-                            <p class="text-xs text-ink-muted mt-1.5 min-h-[36px]">Solusi internet stabil untuk cafe, ruko, kantor cabang, dan klinik.</p>
-                        </div>
+                    @if($isFeatured)
+                        <!-- FEATURED BUSINESS HERO CARD -->
+                        <div class="bg-brand text-white border-2 border-blue-400/50 rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative shadow-brand-card card-interactive h-full transition-all duration-300">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="inline-flex items-center gap-1 text-[11px] font-black text-white uppercase tracking-wider px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm">
+                                        <span>⭐</span>
+                                        <span>{{ strtoupper($pkg->name) }}</span>
+                                    </span>
+                                    <span class="text-xs text-white font-bold bg-white/20 px-2.5 py-0.5 rounded-full">{{ $tierTag }}</span>
+                                </div>
 
-                        <div class="pt-4 border-t border-slate-100">
-                            <div class="font-heading text-3xl font-black text-brand-navy">
-                                Rp 1.250.000<span class="text-xs font-bold text-ink-subtle font-sans"> / bulan</span>
-                            </div>
-                            <span class="text-[11px] text-brand font-bold block mt-1">✓ 1 Static IP Public /29 Included</span>
-                        </div>
+                                <div>
+                                    <h3 class="font-heading text-3xl font-black text-white">{{ $pkg->speed_mbps }} Mbps</h3>
+                                    <p class="text-xs text-blue-100 mt-1.5 min-h-[36px]">{{ $desc }}</p>
+                                </div>
 
-                        <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-body">
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>1:1 Dedicated Bandwidth (CIR 1:1)</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>SLA Garansi Uptime 99.8%</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Enterprise Router &amp; Access Point</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Respon Teknisi On-Site &lt; 2 Jam</span>
-                            </div>
-                        </div>
-                    </div>
+                                <div class="pt-4 border-t border-white/20">
+                                    <div class="font-heading text-3xl sm:text-4xl font-black text-white">
+                                        Rp {{ number_format($pkg->price, 0, ',', '.') }}<span class="text-xs font-bold text-blue-100 font-sans"> / bulan</span>
+                                    </div>
+                                    <span class="text-[11px] text-white font-bold block mt-1">✓ Termasuk SLA Jaringan &amp; Router SOHO</span>
+                                </div>
 
-                    <div class="pt-6 mt-6 border-t border-slate-100">
-                        <button @click="openRegister('Bisnis SME Pro (100 Mbps Dedicated)')" class="w-full py-3.5 rounded-2xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-1.5">
-                            <span>Pilih Paket Business</span>
-                            <span>&rarr;</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Business 2: 300 Mbps (ENTERPRISE DEDICATED) -->
-                <div class="bg-brand text-white border-2 border-blue-400/50 rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative shadow-brand-card card-interactive h-full transition-all duration-300">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="inline-flex items-center gap-1 text-[11px] font-black text-white uppercase tracking-wider px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm">
-                                <span>⭐</span>
-                                <span>ENTERPRISE PRO</span>
-                            </span>
-                            <span class="text-xs text-white font-bold bg-white/20 px-2.5 py-0.5 rounded-full">Multi Static IP</span>
-                        </div>
-
-                        <div>
-                            <h3 class="font-heading text-3xl font-black text-white">300 Mbps</h3>
-                            <p class="text-xs text-blue-100 mt-1.5 min-h-[36px]">Infrastruktur utama kantor pusat, software house, fintech, &amp; perhotelan.</p>
-                        </div>
-
-                        <div class="pt-4 border-t border-white/20">
-                            <div class="font-heading text-3xl sm:text-4xl font-black text-white">
-                                Rp 2.800.000<span class="text-xs font-bold text-blue-100 font-sans"> / bulan</span>
+                                <div class="pt-4 border-t border-white/20 space-y-3 text-xs text-white">
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span><strong>Simetris {{ $pkg->speed_mbps }} Mbps</strong> (Upload = Download)</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span><strong>SLA Garansi Uptime 99.8%</strong></span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span><strong>Enterprise Gigabit Router</strong> &amp; Optical ONT</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span>Dedicated Account Manager &amp; On-Site Support</span>
+                                    </div>
+                                </div>
                             </div>
-                            <span class="text-[11px] text-white font-bold block mt-1">✓ Multi Static IP + Dual-Link Redundancy</span>
-                        </div>
 
-                        <div class="pt-4 border-t border-white/20 space-y-3 text-xs text-white">
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span><strong>CIR 1:1 Pure Dedicated</strong> (No Sharing)</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span><strong>SLA Garansi Uptime 99.9%</strong> dengan MRTG</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span><strong>IP Public Static Block /29</strong></span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-white text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Dedicated Technical Account Manager 24/7</span>
+                            <div class="pt-6 mt-6 border-t border-white/20">
+                                <button @click="openRegister('{{ $pkg->name }} ({{ $pkg->speed_mbps }} Mbps - Rp {{ number_format($pkg->price, 0, ',', '.') }})')" class="w-full py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-brand font-black text-xs sm:text-sm transition-all shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02] cursor-pointer">
+                                    <span>PASANG SEKARANG</span>
+                                    <span class="text-brand font-black">&rarr;</span>
+                                </button>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <!-- STANDARD BUSINESS CARD -->
+                        <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-brand-soft card-interactive h-full transition-all duration-300">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[11px] font-black text-brand uppercase tracking-wider px-3 py-1 rounded-full bg-brand-soft">
+                                        {{ $tierName }}
+                                    </span>
+                                    <span class="text-xs text-ink-muted font-bold">{{ $tierTag }}</span>
+                                </div>
 
-                    <div class="pt-6 mt-6 border-t border-white/20">
-                        <button @click="openRegister('Enterprise Dedicated (300 Mbps)')" class="w-full py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-brand font-black text-xs sm:text-sm transition-all shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02]">
-                            <span>PASANG SEKARANG</span>
-                            <span class="text-brand font-black">&rarr;</span>
-                        </button>
-                    </div>
-                </div>
+                                <div>
+                                    <h3 class="font-heading text-3xl font-black text-brand-navy">{{ $pkg->speed_mbps }} Mbps</h3>
+                                    <p class="text-xs text-ink-muted mt-1.5 min-h-[36px]">{{ $desc }}</p>
+                                </div>
 
-                <!-- Business 3: 1 Gbps (GIGABIT BACKBONE) -->
-                <div class="bg-white border-2 border-slate-200 hover:border-brand rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-brand-soft card-interactive h-full transition-all duration-300">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-black text-brand uppercase tracking-wider px-3 py-1 rounded-full bg-brand-soft">
-                                GIGABIT BACKBONE
-                            </span>
-                            <span class="text-xs text-ink-muted font-bold">BGP Peering</span>
+                                <div class="pt-4 border-t border-slate-100">
+                                    <div class="font-heading text-3xl font-black text-brand-navy">
+                                        Rp {{ number_format($pkg->price, 0, ',', '.') }}<span class="text-xs font-bold text-ink-subtle font-sans"> / bulan</span>
+                                    </div>
+                                    <span class="text-[11px] text-brand font-bold block mt-1">✓ Termasuk SLA Jaringan &amp; Router SOHO</span>
+                                </div>
+
+                                <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-body">
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span>Simetris {{ $pkg->speed_mbps }} Mbps Dedicated</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span>SLA Garansi Uptime 99.8%</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span>Router SOHO Dual-Band Gigabit</span>
+                                    </div>
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
+                                        <span>Respon Cepat Teknisi &amp; Helpdesk 24/7</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-6 mt-6 border-t border-slate-100">
+                                <button @click="openRegister('{{ $pkg->name }} ({{ $pkg->speed_mbps }} Mbps - Rp {{ number_format($pkg->price, 0, ',', '.') }})')" class="w-full py-3.5 rounded-2xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                                    <span>Pilih Paket {{ $pkg->speed_mbps }} Mbps</span>
+                                    <span>&rarr;</span>
+                                </button>
+                            </div>
                         </div>
-
-                        <div>
-                            <h3 class="font-heading text-3xl font-black text-brand-navy">1 Gbps</h3>
-                            <p class="text-xs text-ink-muted mt-1.5 min-h-[36px]">Kapasitas gigabit penuh untuk data center, universitas, &amp; gedung perkantoran.</p>
-                        </div>
-
-                        <div class="pt-4 border-t border-slate-100">
-                            <div class="font-heading text-3xl font-black text-brand-navy">
-                                Rp 7.500.000<span class="text-xs font-bold text-ink-subtle font-sans"> / bulan</span>
-                            </div>
-                            <span class="text-[11px] text-brand font-bold block mt-1">✓ BGP Peering Direct + IP Block /28</span>
-                        </div>
-
-                        <div class="pt-4 border-t border-slate-100 space-y-3 text-xs text-ink-body">
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>1 Gbps Dedicated Direct Core Routing</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Dual-Homed Metro-E Redundant Fiber</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Garansi SLA 99.95% High Availability</span>
-                            </div>
-                            <div class="flex items-start gap-2.5">
-                                <span class="w-4 h-4 rounded-full bg-brand-soft text-brand flex items-center justify-center font-black text-[10px] shrink-0 mt-0.5">✓</span>
-                                <span>Prioritas NOC Escalation Level 3</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pt-6 mt-6 border-t border-slate-100">
-                        <button @click="openRegister('Corporate Gigabit (1 Gbps Dedicated)')" class="w-full py-3.5 rounded-2xl border-2 border-brand text-brand hover:bg-brand hover:text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-1.5">
-                            <span>Pilih Paket 1 Gbps</span>
-                            <span>&rarr;</span>
-                        </button>
-                    </div>
-                </div>
-
+                    @endif
+                @endforeach
             </div>
 
         </div>
