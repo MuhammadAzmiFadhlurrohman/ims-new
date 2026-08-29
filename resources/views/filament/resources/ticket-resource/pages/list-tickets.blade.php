@@ -210,47 +210,76 @@
                 height: 6px;
             }
 
-            /* Card Accents */
+            /* Card Accents & Stat Box Focus */
+            .ims-card-count-focus {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                justify-content: center;
+                padding: 0.35rem 0.85rem;
+                border-radius: 12px;
+                min-width: 80px;
+                text-align: right;
+                transition: all 0.2s ease;
+            }
+
+            .ims-count-number {
+                font-size: 1.75rem;
+                font-weight: 900;
+                line-height: 1;
+                font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+                letter-spacing: -0.03em;
+            }
+
+            .ims-count-unit {
+                font-size: 0.62rem;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-top: 3px;
+                opacity: 0.9;
+            }
+
             .ims-card-gangguan::before { background: linear-gradient(90deg, #e11d48, #f43f5e); }
             .ims-card-gangguan:hover { border-color: #fca5a5; }
             .ims-card-gangguan .ims-card-icon-wrap { background: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6; }
-            .ims-card-gangguan .ims-count-badge { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
+            .ims-card-gangguan .ims-card-count-focus { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
             .ims-card-gangguan:hover .ims-card-arrow { color: #e11d48; }
 
             .ims-card-password::before { background: linear-gradient(90deg, #4f46e5, #6366f1); }
             .ims-card-password:hover { border-color: #c7d2fe; }
             .ims-card-password .ims-card-icon-wrap { background: #eef2ff; color: #4f46e5; border: 1px solid #e0e7ff; }
-            .ims-card-password .ims-count-badge { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+            .ims-card-password .ims-card-count-focus { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
             .ims-card-password:hover .ims-card-arrow { color: #4f46e5; }
 
             .ims-card-coverage::before { background: linear-gradient(90deg, #059669, #10b981); }
             .ims-card-coverage:hover { border-color: #a7f3d0; }
             .ims-card-coverage .ims-card-icon-wrap { background: #ecfdf5; color: #059669; border: 1px solid #d1fae5; }
-            .ims-card-coverage .ims-count-badge { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+            .ims-card-coverage .ims-card-count-focus { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
             .ims-card-coverage:hover .ims-card-arrow { color: #059669; }
 
             .ims-card-terminasi::before { background: linear-gradient(90deg, #475569, #64748b); }
             .ims-card-terminasi:hover { border-color: #cbd5e1; }
             .ims-card-terminasi .ims-card-icon-wrap { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
-            .ims-card-terminasi .ims-count-badge { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+            .ims-card-terminasi .ims-card-count-focus { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
             .ims-card-terminasi:hover .ims-card-arrow { color: #475569; }
 
             .ims-card-suspend::before { background: linear-gradient(90deg, #d97706, #f59e0b); }
             .ims-card-suspend:hover { border-color: #fde68a; }
             .ims-card-suspend .ims-card-icon-wrap { background: #fffbeb; color: #d97706; border: 1px solid #fef3c7; }
-            .ims-card-suspend .ims-count-badge { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+            .ims-card-suspend .ims-card-count-focus { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
             .ims-card-suspend:hover .ims-card-arrow { color: #d97706; }
 
             .ims-card-psb::before { background: linear-gradient(90deg, #0284c7, #38bdf8); }
             .ims-card-psb:hover { border-color: #bae6fd; }
             .ims-card-psb .ims-card-icon-wrap { background: #f0f9ff; color: #0284c7; border: 1px solid #e0f2fe; }
-            .ims-card-psb .ims-count-badge { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
+            .ims-card-psb .ims-card-count-focus { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
             .ims-card-psb:hover .ims-card-arrow { color: #0284c7; }
 
             .ims-card-mutasi::before { background: linear-gradient(90deg, #7c3aed, #8b5cf6); }
             .ims-card-mutasi:hover { border-color: #ddd6fe; }
             .ims-card-mutasi .ims-card-icon-wrap { background: #f5f3ff; color: #7c3aed; border: 1px solid #ede9fe; }
-            .ims-card-mutasi .ims-count-badge { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+            .ims-card-mutasi .ims-card-count-focus { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
             .ims-card-mutasi:hover .ims-card-arrow { color: #7c3aed; }
 
             /* Card Content Layout */
@@ -274,17 +303,6 @@
 
             .ims-ticket-card:hover .ims-card-icon-wrap {
                 transform: scale(1.06);
-            }
-
-            .ims-count-badge {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.35rem;
-                padding: 0.3rem 0.75rem;
-                border-radius: 9999px;
-                font-size: 0.75rem;
-                font-weight: 800;
-                letter-spacing: -0.01em;
             }
 
             .ims-card-middle {
@@ -360,25 +378,25 @@
             }
 
             html.dark .ims-card-gangguan .ims-card-icon-wrap { background: rgba(225, 29, 72, 0.15) !important; color: #fb7185 !important; border-color: rgba(225, 29, 72, 0.3) !important; }
-            html.dark .ims-card-gangguan .ims-count-badge { background: rgba(225, 29, 72, 0.2) !important; color: #fda4af !important; border-color: rgba(225, 29, 72, 0.35) !important; }
+            html.dark .ims-card-gangguan .ims-card-count-focus { background: rgba(225, 29, 72, 0.2) !important; color: #fda4af !important; border-color: rgba(225, 29, 72, 0.35) !important; }
 
             html.dark .ims-card-password .ims-card-icon-wrap { background: rgba(99, 102, 241, 0.15) !important; color: #a5b4fc !important; border-color: rgba(99, 102, 241, 0.3) !important; }
-            html.dark .ims-card-password .ims-count-badge { background: rgba(99, 102, 241, 0.2) !important; color: #c7d2fe !important; border-color: rgba(99, 102, 241, 0.35) !important; }
+            html.dark .ims-card-password .ims-card-count-focus { background: rgba(99, 102, 241, 0.2) !important; color: #c7d2fe !important; border-color: rgba(99, 102, 241, 0.35) !important; }
 
             html.dark .ims-card-coverage .ims-card-icon-wrap { background: rgba(16, 185, 129, 0.15) !important; color: #6ee7b7 !important; border-color: rgba(16, 185, 129, 0.3) !important; }
-            html.dark .ims-card-coverage .ims-count-badge { background: rgba(16, 185, 129, 0.2) !important; color: #a7f3d0 !important; border-color: rgba(16, 185, 129, 0.35) !important; }
+            html.dark .ims-card-coverage .ims-card-count-focus { background: rgba(16, 185, 129, 0.2) !important; color: #a7f3d0 !important; border-color: rgba(16, 185, 129, 0.35) !important; }
 
             html.dark .ims-card-psb .ims-card-icon-wrap { background: rgba(14, 165, 233, 0.15) !important; color: #7dd3fc !important; border-color: rgba(14, 165, 233, 0.3) !important; }
-            html.dark .ims-card-psb .ims-count-badge { background: rgba(14, 165, 233, 0.2) !important; color: #bae6fd !important; border-color: rgba(14, 165, 233, 0.35) !important; }
+            html.dark .ims-card-psb .ims-card-count-focus { background: rgba(14, 165, 233, 0.2) !important; color: #bae6fd !important; border-color: rgba(14, 165, 233, 0.35) !important; }
 
             html.dark .ims-card-mutasi .ims-card-icon-wrap { background: rgba(168, 85, 247, 0.15) !important; color: #d8b4fe !important; border-color: rgba(168, 85, 247, 0.3) !important; }
-            html.dark .ims-card-mutasi .ims-count-badge { background: rgba(168, 85, 247, 0.2) !important; color: #e9d5ff !important; border-color: rgba(168, 85, 247, 0.35) !important; }
+            html.dark .ims-card-mutasi .ims-card-count-focus { background: rgba(168, 85, 247, 0.2) !important; color: #e9d5ff !important; border-color: rgba(168, 85, 247, 0.35) !important; }
 
             html.dark .ims-card-suspend .ims-card-icon-wrap { background: rgba(245, 158, 11, 0.15) !important; color: #fcd34d !important; border-color: rgba(245, 158, 11, 0.3) !important; }
-            html.dark .ims-card-suspend .ims-count-badge { background: rgba(245, 158, 11, 0.2) !important; color: #fde68a !important; border-color: rgba(245, 158, 11, 0.35) !important; }
+            html.dark .ims-card-suspend .ims-card-count-focus { background: rgba(245, 158, 11, 0.2) !important; color: #fde68a !important; border-color: rgba(245, 158, 11, 0.35) !important; }
 
             html.dark .ims-card-terminasi .ims-card-icon-wrap { background: rgba(148, 163, 184, 0.15) !important; color: #cbd5e1 !important; border-color: rgba(148, 163, 184, 0.3) !important; }
-            html.dark .ims-card-terminasi .ims-count-badge { background: rgba(148, 163, 184, 0.2) !important; color: #e2e8f0 !important; border-color: rgba(148, 163, 184, 0.35) !important; }
+            html.dark .ims-card-terminasi .ims-card-count-focus { background: rgba(148, 163, 184, 0.2) !important; color: #e2e8f0 !important; border-color: rgba(148, 163, 184, 0.35) !important; }
 
             /* ── MOBILE & TABLET 2-COLUMN RESPONSIVE LAYOUT (< 1024px) ── */
             @media (max-width: 1023px) {
@@ -454,10 +472,18 @@
                     height: 18px !important;
                 }
 
-                .ims-count-badge {
-                    padding: 0.2rem 0.5rem !important;
-                    font-size: 0.65rem !important;
-                    white-space: nowrap !important;
+                .ims-card-count-focus {
+                    padding: 0.25rem 0.55rem !important;
+                    min-width: 60px !important;
+                    border-radius: 9px !important;
+                }
+
+                .ims-count-number {
+                    font-size: 1.35rem !important;
+                }
+
+                .ims-count-unit {
+                    font-size: 0.55rem !important;
                 }
 
                 .ims-card-middle {
@@ -466,13 +492,13 @@
                 }
 
                 .ims-card-title {
-                    font-size: 0.84rem !important;
+                    font-size: 0.88rem !important;
                     line-height: 1.22 !important;
                     font-weight: 900 !important;
                 }
 
                 .ims-card-desc {
-                    font-size: 0.68rem !important;
+                    font-size: 0.7rem !important;
                     line-height: 1.35 !important;
                     display: -webkit-box !important;
                     -webkit-line-clamp: 2 !important;
@@ -481,8 +507,8 @@
                 }
 
                 .ims-card-bottom {
-                    padding-top: 0.6rem !important;
-                    font-size: 0.68rem !important;
+                    padding-top: 0.65rem !important;
+                    font-size: 0.72rem !important;
                     gap: 4px !important;
                 }
 
@@ -494,9 +520,14 @@
                 }
             }
 
-            @media (max-width: 420px) {
+            @media (max-width: 639px) {
+                .ims-ticket-hero-right {
+                    grid-template-columns: 1fr;
+                }
+
                 .ims-ticket-grid {
-                    gap: 0.55rem !important;
+                    gap: 0.6rem !important;
+                    grid-template-columns: 1fr !important;
                 }
 
                 .ims-ticket-card {
@@ -516,9 +547,17 @@
                     height: 16px !important;
                 }
 
-                .ims-count-badge {
-                    padding: 0.15rem 0.4rem !important;
-                    font-size: 0.6rem !important;
+                .ims-card-count-focus {
+                    padding: 0.2rem 0.45rem !important;
+                    min-width: 50px !important;
+                }
+
+                .ims-count-number {
+                    font-size: 1.2rem !important;
+                }
+
+                .ims-count-unit {
+                    font-size: 0.52rem !important;
                 }
 
                 .ims-card-title {
@@ -543,9 +582,9 @@
                 <div class="ims-ticket-hero-left">
                     <div class="ims-ticket-live-pill">
                         <span class="ims-live-dot"></span>
-                        NOC & Helpdesk Dispatch Portal
+                        NOC &amp; Helpdesk Dispatch Portal
                     </div>
-                    <h1 class="ims-ticket-hero-title">Portal Manajemen Tiket & Layanan</h1>
+                    <h1 class="ims-ticket-hero-title">Portal Manajemen Tiket &amp; Layanan</h1>
                     <p class="ims-ticket-hero-desc">
                         Monitoring antrian keluhan teknis, gangguan jaringan fiber optik, permohonan pelanggan, dan alur operasional lapangan secara terpusat.
                     </p>
@@ -575,11 +614,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                             </svg>
                         </div>
-                        <span class="ims-count-badge">{{ $counts['gangguan'] }} Tiket</span>
+                        <div class="ims-card-count-focus">
+                            <span class="ims-count-number">{{ $counts['gangguan'] }}</span>
+                            <span class="ims-count-unit">Tiket Masuk</span>
+                        </div>
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Gangguan Layanan</h2>
-                        <p class="ims-card-desc">Laporan LOS (Red/Bending), kabel putus, redaman tinggi, koneksi lambat & penanganan helpdesk.</p>
+                        <p class="ims-card-desc">Laporan LOS (Red/Bending), kabel putus, redaman tinggi, koneksi lambat &amp; penanganan helpdesk.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Buka Helpdesk NOC</span>
@@ -595,11 +637,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
                             </svg>
                         </div>
-                        <span class="ims-count-badge">{{ $counts['ubah_password'] }} Tiket</span>
+                        <div class="ims-card-count-focus">
+                            <span class="ims-count-number">{{ $counts['ubah_password'] }}</span>
+                            <span class="ims-count-unit">Tiket Masuk</span>
+                        </div>
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Ubah Password</h2>
-                        <p class="ims-card-desc">Permintaan reset kata sandi WiFi / SSID, verifikasi data pelanggan, & konfigurasi ONT.</p>
+                        <p class="ims-card-desc">Permintaan reset kata sandi WiFi / SSID, verifikasi data pelanggan, &amp; konfigurasi ONT.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Buka Permintaan</span>
@@ -616,11 +661,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
                         </div>
-                        <span class="ims-count-badge">{{ $counts['coverage'] }} Tiket</span>
+                        <div class="ims-card-count-focus">
+                            <span class="ims-count-number">{{ $counts['coverage'] }}</span>
+                            <span class="ims-count-unit">Tiket Masuk</span>
+                        </div>
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Cek Coverage Area</h2>
-                        <p class="ims-card-desc">Survey jangkauan fiber optik, pengecekan ketersediaan port ODP & kelayakan pasang baru.</p>
+                        <p class="ims-card-desc">Survey jangkauan fiber optik, pengecekan ketersediaan port ODP &amp; kelayakan pasang baru.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Buka Survey Area</span>
@@ -636,11 +684,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                             </svg>
                         </div>
-                        <span class="ims-count-badge">{{ $counts['psb'] }} Antrian</span>
+                        <div class="ims-card-count-focus">
+                            <span class="ims-count-number">{{ $counts['psb'] }}</span>
+                            <span class="ims-count-unit">Antrian Aktif</span>
+                        </div>
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Pemasangan Baru (PSB)</h2>
-                        <p class="ims-card-desc">Pipeline instalasi teknisi, penarikan kabel dropcore, aktivasi ONU/ONT & validasi billing.</p>
+                        <p class="ims-card-desc">Pipeline instalasi teknisi, penarikan kabel dropcore, aktivasi ONU/ONT &amp; validasi billing.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Pipeline Instalasi</span>
@@ -656,11 +707,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
                             </svg>
                         </div>
-                        <span class="ims-count-badge">{{ $counts['ubah_layanan'] }} Tiket</span>
+                        <div class="ims-card-count-focus">
+                            <span class="ims-count-number">{{ $counts['ubah_layanan'] }}</span>
+                            <span class="ims-count-unit">Tiket Masuk</span>
+                        </div>
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Ubah Layanan</h2>
-                        <p class="ims-card-desc">Permohonan upgrade/downgrade bandwidth paket, mutasi profil speed, & penyesuaian tagihan.</p>
+                        <p class="ims-card-desc">Permohonan upgrade/downgrade bandwidth paket, mutasi profil speed, &amp; penyesuaian tagihan.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Buka Mutasi Paket</span>
@@ -676,7 +730,10 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
-                        <span class="ims-count-badge">{{ $counts['suspend'] }} Tiket</span>
+                        <div class="ims-card-count-focus">
+                            <span class="ims-count-number">{{ $counts['suspend'] }}</span>
+                            <span class="ims-count-unit">Tiket Masuk</span>
+                        </div>
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Suspend Layanan</h2>
@@ -696,11 +753,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
                             </svg>
                         </div>
-                        <span class="ims-count-badge">{{ $counts['terminasi'] }} Tiket</span>
+                        <div class="ims-card-count-focus">
+                            <span class="ims-count-number">{{ $counts['terminasi'] }}</span>
+                            <span class="ims-count-unit">Tiket Masuk</span>
+                        </div>
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Terminasi Layanan</h2>
-                        <p class="ims-card-desc">Pemutusan layanan permanen, penyelesaian administrasi akhir, & penarikan perangkat ONT.</p>
+                        <p class="ims-card-desc">Pemutusan layanan permanen, penyelesaian administrasi akhir, &amp; penarikan perangkat ONT.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Daftar Pencabutan</span>
