@@ -621,7 +621,6 @@
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Gangguan Layanan</h2>
-                        <p class="ims-card-desc">Laporan LOS (Red/Bending), kabel putus, redaman tinggi, koneksi lambat &amp; penanganan helpdesk.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Buka Helpdesk NOC</span>
@@ -644,7 +643,6 @@
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Ubah Password</h2>
-                        <p class="ims-card-desc">Permintaan reset kata sandi WiFi / SSID, verifikasi data pelanggan, &amp; konfigurasi ONT.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Buka Permintaan</span>
@@ -668,7 +666,6 @@
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Cek Coverage Area</h2>
-                        <p class="ims-card-desc">Survey jangkauan fiber optik, pengecekan ketersediaan port ODP &amp; kelayakan pasang baru.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Buka Survey Area</span>
@@ -691,7 +688,6 @@
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Pemasangan Baru (PSB)</h2>
-                        <p class="ims-card-desc">Pipeline instalasi teknisi, penarikan kabel dropcore, aktivasi ONU/ONT &amp; validasi billing.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Pipeline Instalasi</span>
@@ -714,7 +710,6 @@
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Ubah Layanan</h2>
-                        <p class="ims-card-desc">Permohonan upgrade/downgrade bandwidth paket, mutasi profil speed, &amp; penyesuaian tagihan.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Buka Mutasi Paket</span>
@@ -737,7 +732,6 @@
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Suspend Layanan</h2>
-                        <p class="ims-card-desc">Daftar isolir sementara pelanggan akibat keterlambatan pembayaran atau cuti berlangganan.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Daftar Isolir</span>
@@ -760,7 +754,6 @@
                     </div>
                     <div class="ims-card-middle">
                         <h2 class="ims-card-title">Terminasi Layanan</h2>
-                        <p class="ims-card-desc">Pemutusan layanan permanen, penyelesaian administrasi akhir, &amp; penarikan perangkat ONT.</p>
                     </div>
                     <div class="ims-card-bottom">
                         <span>Daftar Pencabutan</span>
