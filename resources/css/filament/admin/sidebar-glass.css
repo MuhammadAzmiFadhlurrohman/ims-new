@@ -870,7 +870,7 @@ html.dark .fi-sidebar .fi-badge {
 .fi-sidebar-nav,
 aside.fi-sidebar {
     scrollbar-width: thin !important;
-    scrollbar-color: #0878E5 rgba(8, 120, 229, 0.08) !important;
+    scrollbar-color: #0878E5 transparent !important;
 }
 
 html.dark .fi-sidebar nav,
@@ -882,14 +882,13 @@ html.dark aside.fi-sidebar {
 .fi-sidebar nav::-webkit-scrollbar,
 .fi-sidebar-nav::-webkit-scrollbar,
 aside.fi-sidebar::-webkit-scrollbar {
-    width: 6px !important;
+    width: 3.5px !important;
 }
 
 .fi-sidebar nav::-webkit-scrollbar-track,
 .fi-sidebar-nav::-webkit-scrollbar-track,
 aside.fi-sidebar::-webkit-scrollbar-track {
-    background: rgba(8, 120, 229, 0.04) !important;
-    border-radius: 99px !important;
+    background: transparent !important;
 }
 
 /* Light Mode: Vibrant Blue Scrollbar Thumb */
@@ -899,7 +898,6 @@ aside.fi-sidebar::-webkit-scrollbar-thumb {
     background: #0878E5 !important;
     background: linear-gradient(180deg, #0ea5e9 0%, #0284c7 50%, #0878E5 100%) !important;
     border-radius: 99px !important;
-    box-shadow: 0 0 6px rgba(8, 120, 229, 0.3) !important;
 }
 
 .fi-sidebar nav::-webkit-scrollbar-thumb:hover,
