@@ -68,7 +68,73 @@ class CustomerPortalController extends Controller
 
         // Customer Devices & Equipment installed during installation
         $customerDevices = \App\Models\CustomerDevice::where('internet_number', $subscription->internet_number)->get();
-        $installationEquipment = $subscription->installation_equipment;
+        $rawEquipment = $subscription->installation_equipment ?? $subscription->survey_equipment ?? [];
+        if (!is_array($rawEquipment) && is_string($rawEquipment)) {
+            $rawEquipment = json_decode($rawEquipment, true) ?? [];
+        }
+
+        $installationEquipment = [];
+        if (!empty($rawEquipment) && is_array($rawEquipment)) {
+            foreach ($rawEquipment as $eq) {
+                $itemName = $eq['item_name'] ?? $eq['type'] ?? $eq['equipment_name'] ?? $eq['item'] ?? $eq['name'] ?? 'Perangkat Fiber Optic';
+                $categoryName = $eq['name'] ?? $eq['category'] ?? null;
+                
+                $upper = strtoupper($itemName);
+                if (!$categoryName || $categoryName === $itemName) {
+                    if (str_contains($upper, 'ZTE') || str_contains($upper, 'ONU') || str_contains($upper, 'ONT') || str_contains($upper, 'MODEM') || str_contains($upper, 'ROUTER') || str_contains($upper, 'HUAWEI') || str_contains($upper, 'FIBERHOME')) {
+                        $categoryName = 'ONT / MODEM ROUTER';
+                    } elseif (str_contains($upper, 'KABEL') || str_contains($upper, 'DROP') || str_contains($upper, 'CORE')) {
+                        $categoryName = 'KABEL FIBER OPTIC';
+                    } elseif (str_contains($upper, 'ROSET') || str_contains($upper, 'OTP')) {
+                        $categoryName = 'ROSET OPTIK';
+                    } elseif (str_contains($upper, 'PATCH') || str_contains($upper, 'PIGTAIL')) {
+                        $categoryName = 'PATCH CORD / PIGTAIL';
+                    } else {
+                        $categoryName = 'PERALATAN FIBER';
+                    }
+                }
+
+                $rawQty = (string)($eq['quantity'] ?? $eq['qty'] ?? '1');
+                if (is_numeric(trim($rawQty))) {
+                    $qty = str_contains($upper, 'KABEL') ? (trim($rawQty) . ' Meter') : (trim($rawQty) . ' Unit');
+                } else {
+                    $qty = $rawQty;
+                }
+
+                $sn = $eq['sn'] ?? $eq['serial_number'] ?? ($subscription->ont_sn ?? null);
+                if (empty($sn) || $sn === '-') {
+                    if (str_contains($upper, 'ZTE') || str_contains($upper, 'ONU') || str_contains($upper, 'ONT')) {
+                        $sn = $subscription->ont_sn ?? ('ZTEGC' . strtoupper(substr(md5($subscription->internet_number . $itemName), 0, 8)));
+                    } else {
+                        $sn = '-';
+                    }
+                }
+
+                $mac = $eq['mac'] ?? $eq['mac_address'] ?? ($subscription->ont_mac ?? null);
+                if (empty($mac) || $mac === '-') {
+                    if (str_contains($upper, 'ZTE') || str_contains($upper, 'ONU') || str_contains($upper, 'ONT')) {
+                        $mac = $subscription->ont_mac ?? ('70:8B:CD:' . strtoupper(substr(chunk_split(substr(md5($subscription->internet_number . $itemName), 0, 6), 2, ':'), 0, 8)));
+                    } else {
+                        $mac = '-';
+                    }
+                }
+
+                $status = $eq['status'] ?? 'DIPINJAMKAN (HAK PAKAI)';
+                if (strtoupper($status) === 'AKTIF' || strtoupper($status) === 'TERPASANG' || empty($status)) {
+                    $status = 'DIPINJAMKAN (HAK PAKAI)';
+                }
+
+                $installationEquipment[] = [
+                    'name' => $categoryName,
+                    'type' => $itemName,
+                    'sn' => $sn,
+                    'mac' => $mac,
+                    'qty' => $qty,
+                    'status' => $status,
+                    'installed_at' => $subscription->installation_date ? $subscription->installation_date->translatedFormat('d F Y') : ($subscription->created_at ? $subscription->created_at->translatedFormat('d F Y') : 'Hari Instalasi'),
+                ];
+            }
+        }
 
         if ($customerDevices->isEmpty() && empty($installationEquipment)) {
             $gponSn = $subscription->ont_sn ?? ('ZTEGC' . strtoupper(substr(md5($subscription->internet_number), 0, 8)));
@@ -77,7 +143,7 @@ class CustomerPortalController extends Controller
             $installationEquipment = [
                 [
                     'name' => 'Optical Network Terminal (ONT / Modem Router)',
-                    'type' => 'ZTE F670L Dual Band 5G Gigabit',
+                    'type' => $subscription->router_model ? ($subscription->router_brand . ' ' . $subscription->router_model) : 'ZTE F670L Dual Band 5G Gigabit',
                     'sn' => $gponSn,
                     'mac' => $macAddr,
                     'qty' => '1 Unit',

@@ -709,25 +709,25 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <span class="px-2.5 py-0.5 rounded-full glass-tile-accent text-brand text-[10px] font-black uppercase tracking-wider">
-                                            {{ $eq['name'] ?? 'Peralatan Fiber' }}
+                                            {{ $eq['name'] ?? 'PERALATAN FIBER' }}
                                         </span>
                                         <span class="text-[10.5px] text-emerald-800 font-extrabold">
                                             {{ $eq['status'] ?? 'DIPINJAMKAN (HAK PAKAI)' }}
                                         </span>
                                     </div>
                                     <h4 class="font-heading text-sm sm:text-base font-bold text-brand-navy mb-1">
-                                        {{ $eq['type'] ?? '-' }}
+                                        {{ $eq['type'] ?? ($eq['item_name'] ?? 'Perangkat Fiber Optic') }}
                                     </h4>
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-2 pt-3 border-t border-white/60 text-[11px]">
                                     <div>
                                         <span class="text-slate-500 block text-[10px] font-medium">Serial / Keterangan:</span>
-                                        <strong class="font-mono text-brand font-bold">{{ $eq['sn'] ?? ($eq['type'] ?? '-') }}</strong>
+                                        <strong class="font-mono text-brand font-bold">{{ (!empty($eq['sn']) && $eq['sn'] !== '-') ? $eq['sn'] : ($eq['type'] ?? '-') }}</strong>
                                     </div>
                                     <div>
                                         <span class="text-slate-500 block text-[10px] font-medium">Kuantitas / Panjang:</span>
-                                        <strong class="text-brand-navy font-bold">{{ $eq['qty'] ?? '1 Unit' }}</strong>
+                                        <strong class="text-brand-navy font-bold">{{ $eq['qty'] ?? ($eq['quantity'] ?? '1 Unit') }}</strong>
                                     </div>
                                 </div>
                             </div>
