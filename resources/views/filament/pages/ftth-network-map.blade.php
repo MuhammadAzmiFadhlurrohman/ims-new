@@ -26,7 +26,7 @@
                 flex-wrap: nowrap !important;
                 width: 300px !important;
                 min-width: 300px !important;
-                max-width: 300px !important;
+                max-width: calc(100vw - 20px) !important;
                 padding: 7px !important;
                 gap: 5px !important;
                 background: #ffffff !important;
@@ -34,13 +34,19 @@
                 border-radius: 16px !important;
                 box-shadow: 0 20px 45px -10px rgba(15,23,42,0.22), 0 0 0 1px rgba(0,0,0,0.05) !important;
                 box-sizing: border-box !important;
-                position: absolute !important;
-                top: calc(100% + 6px) !important;
-                left: 0 !important;
-                z-index: 999999 !important;
+                position: fixed !important;
+                z-index: 9999999 !important;
             }
             .ims-mode-menu-dropdown.is-open {
                 display: flex !important;
+            }
+            .ims-gis-floating-dropdown {
+                position: fixed !important;
+                z-index: 9999999 !important;
+                max-width: calc(100vw - 20px) !important;
+                max-height: 80vh !important;
+                overflow-y: auto !important;
+                box-sizing: border-box !important;
             }
 
             /* ── PRO WINDOWS SNIPPING TOOL OVERLAY & DRAG BOX ── */
@@ -1215,7 +1221,7 @@
             id="ims-ftth-map-card-root"
             class="ims-map-card" 
             :class="isFullscreen ? 'is-fullscreen' : ''"
-            style="position: relative; z-index: 1; max-width: 100%; overflow: hidden;"
+            style="position: relative; z-index: 1; max-width: 100%; overflow: visible !important;"
         >
             
             {{-- Toolbar Top Header: 100% Horizontally Scrollable Bar --}}
@@ -1227,7 +1233,7 @@
                         <div style="position: relative;" @click.outside="openProjectMenu = false">
                             <button 
                                 type="button" 
-                                @click="openProjectMenu = !openProjectMenu; openMarkerMenu = false; openLineMenu = false; openMapTypeMenu = false;" 
+                                @click="openProjectMenu = !openProjectMenu; if(openProjectMenu) { $nextTick(() => window.imsPositionDropdown($event.currentTarget, document.getElementById('ims-prj-dropdown-box'))); openMarkerMenu = false; openLineMenu = false; openExtraMenu = false; }" 
                                 class="ims-tool-btn"
                                 style="background: #F0FDF4; border-color: #BBF7D0; color: #166534; font-weight: 900;"
                                 title="Pilih atau kelola proyek GIS FTTH"
@@ -1239,15 +1245,16 @@
                             {{-- Standalone Project Dropdown Styles (100% Isolated from Tailwind/Filament) --}}
                             <style>
                                 .ims-prj-menu-box {
-                                    position: absolute;
-                                    top: calc(100% + 8px);
-                                    left: 0;
-                                    z-index: 999999;
+                                    position: fixed !important;
+                                    z-index: 9999999 !important;
                                     background: #ffffff;
                                     border: 1px solid #E2E8F0;
                                     border-radius: 18px;
                                     box-shadow: 0 20px 48px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.03);
-                                    min-width: 370px;
+                                    min-width: 340px;
+                                    max-width: calc(100vw - 20px);
+                                    max-height: 80vh;
+                                    overflow-y: auto;
                                     padding: 14px;
                                     display: flex;
                                     flex-direction: column;
@@ -1408,6 +1415,7 @@
                             </style>
 
                             <div 
+                                id="ims-prj-dropdown-box"
                                 x-show="openProjectMenu" 
                                 x-cloak
                                 class="ims-prj-menu-box"
@@ -1612,10 +1620,11 @@
                         </div>
                         
                         {{-- Dropdown Add Marker --}}
-                        <div style="position: relative;">
+                        <div style="position: relative;" @click.outside="openMarkerMenu = false">
                             <button 
                                 type="button" 
-                                @click="openMarkerMenu = !openMarkerMenu; openLineMenu = false; openProjectMenu = false; openMapTypeMenu = false;" 
+                                id="ims-btn-marker-menu"
+                                @click="openMarkerMenu = !openMarkerMenu; if(openMarkerMenu) { $nextTick(() => window.imsPositionDropdown($event.currentTarget, document.getElementById('ims-marker-dropdown-box'))); openLineMenu = false; openProjectMenu = false; openExtraMenu = false; }" 
                                 :class="(currentMode === 'add_marker' || openMarkerMenu) ? 'active' : ''"
                                 class="ims-tool-btn"
                             >
@@ -1623,9 +1632,11 @@
                                 <span>Tambah Titik / Node ▾</span>
                             </button>
                             <div 
+                                id="ims-marker-dropdown-box"
                                 x-show="openMarkerMenu" 
-                                @click.outside="openMarkerMenu = false"
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 280px; width: 280px; padding: 6px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box;"
+                                x-cloak
+                                class="ims-gis-floating-dropdown"
+                                style="min-width: 280px; width: 280px; padding: 6px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05);"
                             >
                                 <button type="button" @click="startAddMarker('pole')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #F1F5F9; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #334155;">
@@ -1690,10 +1701,11 @@
                         </div>
 
                         {{-- Dropdown Add Line --}}
-                        <div style="position: relative;">
+                        <div style="position: relative;" @click.outside="openLineMenu = false">
                             <button 
                                 type="button" 
-                                @click="openLineMenu = !openLineMenu; openMarkerMenu = false; openProjectMenu = false; openMapTypeMenu = false;" 
+                                id="ims-btn-line-menu"
+                                @click="openLineMenu = !openLineMenu; if(openLineMenu) { $nextTick(() => window.imsPositionDropdown($event.currentTarget, document.getElementById('ims-line-dropdown-box'))); openMarkerMenu = false; openProjectMenu = false; openExtraMenu = false; }" 
                                 :class="(currentMode === 'draw_line' || openLineMenu) ? 'active' : ''"
                                 class="ims-tool-btn"
                             >
@@ -1701,9 +1713,11 @@
                                 <span>Tarik Jalur Kabel ▾</span>
                             </button>
                             <div 
+                                id="ims-line-dropdown-box"
                                 x-show="openLineMenu" 
-                                @click.outside="openLineMenu = false"
-                                style="position: absolute; top: calc(100% + 6px); left: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05); min-width: 280px; width: 280px; padding: 6px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box;"
+                                x-cloak
+                                class="ims-gis-floating-dropdown"
+                                style="min-width: 280px; width: 280px; padding: 6px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 0 0 1px rgba(0,0,0,0.05);"
                             >
                                 <button type="button" @click="startDrawLine('feeder')" style="width: 100% !important; box-sizing: border-box !important; text-align: left; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF2F2; border: 1px solid #FECACA; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #DC2626;">
@@ -1751,10 +1765,11 @@
                             </div>
                             <input 
                                 type="text" 
+                                id="ims-gis-search-input"
                                 class="ims-search-box-input"
                                 x-model="searchQuery" 
-                                @input="performGeocoding(searchQuery)"
-                                @focus="searchFocused = true"
+                                @input="performGeocoding(searchQuery); $nextTick(() => window.imsPositionDropdown(document.getElementById('ims-gis-search-input'), document.getElementById('ims-search-results-dropdown')));"
+                                @focus="searchFocused = true; $nextTick(() => window.imsPositionDropdown($event.currentTarget, document.getElementById('ims-search-results-dropdown')));"
                                 @click.outside="searchFocused = false"
                                 @keydown.escape="searchFocused = false"
                                 placeholder="Cari Tiang, ODP, atau Alamat..." 
@@ -1770,9 +1785,11 @@
 
                         {{-- Instant Autocomplete Results Dropdown --}}
                         <div 
+                            id="ims-search-results-dropdown"
                             x-show="searchFocused && searchResults.length > 0"
                             x-cloak
-                            style="position: absolute; top: calc(100% + 6px); left: 0; right: 0; min-width: 300px; max-height: 380px; overflow-y: auto; background: #ffffff; border: 1px solid #CBD5E1; border-radius: 14px; box-shadow: 0 18px 40px rgba(15,23,42,0.24); z-index: 999999; padding: 6px; display: flex; flex-direction: column; gap: 4px;"
+                            class="ims-gis-floating-dropdown ims-search-results-box"
+                            style="min-width: 300px; max-height: 380px; overflow-y: auto; background: #ffffff; border: 1px solid #CBD5E1; border-radius: 14px; box-shadow: 0 18px 40px rgba(15,23,42,0.24); padding: 6px; display: flex; flex-direction: column; gap: 4px;"
                         >
                             <div style="padding: 6px 8px; font-size: 0.68rem; font-weight: 800; color: #64748B; text-transform: uppercase; border-bottom: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center;">
                                 <span>Hasil Pencarian (<span x-text="searchResults.length"></span>)</span>
@@ -1830,7 +1847,8 @@
                         <div style="position: relative;" @click.outside="openExtraMenu = false">
                             <button 
                                 type="button" 
-                                @click="openExtraMenu = !openExtraMenu; openProjectMenu = false; openMarkerMenu = false; openLineMenu = false;" 
+                                id="ims-btn-extra-menu"
+                                @click="openExtraMenu = !openExtraMenu; if(openExtraMenu) { $nextTick(() => window.imsPositionDropdown($event.currentTarget, document.getElementById('ims-extra-dropdown-box'), true)); openProjectMenu = false; openMarkerMenu = false; openLineMenu = false; }" 
                                 :class="openExtraMenu ? 'active' : ''"
                                 class="ims-tool-btn"
                                 style="background: #F8FAFC; border-color: #CBD5E1; color: #1E293B; font-weight: 800;"
@@ -1845,9 +1863,11 @@
                             </button>
 
                             <div 
+                                id="ims-extra-dropdown-box"
                                 x-show="openExtraMenu" 
                                 x-cloak
-                                style="position: absolute; top: calc(100% + 6px); right: 0; z-index: 999999; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 16px; box-shadow: 0 20px 48px rgba(15,23,42,0.22); min-width: 300px; width: 300px; padding: 10px; display: flex; flex-direction: column; gap: 6px; box-sizing: border-box;"
+                                class="ims-gis-floating-dropdown"
+                                style="min-width: 300px; width: 300px; padding: 10px; display: flex; flex-direction: column; gap: 6px; box-sizing: border-box; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 16px; box-shadow: 0 20px 48px rgba(15,23,42,0.22);"
                             >
                                 {{-- Section 1: Tools & Data --}}
                                 <div style="padding: 4px 8px 2px 8px; font-size: 0.7rem; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px;">Alat GIS & Data</div>
@@ -3819,15 +3839,33 @@
 
         @script
         <script>
+            // ── GLOBAL FLOATING DROPDOWN POSITIONER (IMMUNE TO OVERFLOW & MAP CLIPPING) ──
+            window.imsPositionDropdown = function(buttonEl, dropdownEl, alignRight = false) {
+                if (!buttonEl || !dropdownEl) return;
+                const rect = buttonEl.getBoundingClientRect();
+                const dropdownWidth = dropdownEl.offsetWidth || 290;
+                let left = alignRight ? (rect.right - dropdownWidth) : rect.left;
+                left = Math.max(10, Math.min(left, window.innerWidth - dropdownWidth - 10));
+                const top = rect.bottom + 6;
+                dropdownEl.style.position = 'fixed';
+                dropdownEl.style.top = top + 'px';
+                dropdownEl.style.left = left + 'px';
+                dropdownEl.style.zIndex = '9999999';
+            };
+
             // ── 100% STANDALONE JS & CSS MODE DROPDOWN CONTROLLER ──
             window.imsToggleModeDropdown = function(e) {
                 if (e) {
                     e.stopPropagation();
                     e.preventDefault();
                 }
+                const btn = document.getElementById('ims-mode-dropdown-btn');
                 const menu = document.getElementById('ims-mode-dropdown-menu');
-                if (!menu) return;
+                if (!menu || !btn) return;
                 menu.classList.toggle('is-open');
+                if (menu.classList.contains('is-open')) {
+                    window.imsPositionDropdown(btn, menu);
+                }
             };
 
             window.imsCloseModeDropdown = function() {
