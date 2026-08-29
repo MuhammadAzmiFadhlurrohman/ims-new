@@ -226,7 +226,52 @@
     }" class="ims-dashboard-wrapper">
 
         {{-- ══════════════════════════════════════════════════════════════
-             ── 1. TOP HEADER & GLOBAL ALERT BAR ──
+             ── 1. SIGNATURE GRADIENT HEADER BANNER & TELEMETRY STATS ──
+             ══════════════════════════════════════════════════════════════ --}}
+        <div class="ims-dash-gradient-banner" style="background: linear-gradient(135deg, #0B1F33 0%, #0878E5 100%); border-radius: 16px; padding: 1.15rem 1.5rem; color: #ffffff; box-shadow: 0 8px 24px rgba(8, 120, 229, 0.2); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+            <div class="ims-dash-header-left" style="display: flex; align-items: center; gap: 14px;">
+                <div class="ims-dash-header-icon" style="width: 46px; height: 46px; border-radius: 12px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.25); flex-shrink: 0;">
+                    <svg style="width: 24px; height: 24px; color: #55C7FF;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="ims-dash-header-text">
+                    <h2 style="font-size: 1.15rem; font-weight: 900; margin: 0; color: #ffffff; letter-spacing: -0.01em;">
+                        Dashboard Monitoring &amp; Operasional ISP (NOC Command Center)
+                    </h2>
+                    <p style="font-size: 0.78rem; color: #EAF5FF; margin: 2px 0 0 0; opacity: 0.9;">
+                        Pemetaan interaktif rute operasional, status pelanggan real-time, tiket gangguan, dan telemetri jaringan ODP.
+                    </p>
+                </div>
+            </div>
+
+            {{-- Quick Summary Badges --}}
+            <div class="ims-dash-stats-scroll" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+                <div class="ims-badge-stat" style="background: rgba(255,255,255,0.18); border: 1.5px solid rgba(255,255,255,0.35); color: #ffffff; padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; backdrop-filter: blur(8px); white-space: nowrap;">
+                    <span>📁 Wilayah:</span>
+                    <strong style="color: #55C7FF;" x-text="selectedRegion === 'all' ? 'Semua Bandung' : selectedRegion.replace('_', ' ').toUpperCase()"></strong>
+                </div>
+                <div class="ims-badge-stat" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff; padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; backdrop-filter: blur(8px); white-space: nowrap;">
+                    <span>⚡ ODP:</span>
+                    <strong style="color: #55C7FF;" x-text="mapPins.length"></strong>
+                </div>
+                <div class="ims-badge-stat" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff; padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; backdrop-filter: blur(8px); white-space: nowrap;">
+                    <span>📍 Pelanggan:</span>
+                    <strong style="color: #55C7FF;" x-text="displayActive"></strong>
+                </div>
+                <div class="ims-badge-stat" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff; padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; backdrop-filter: blur(8px); white-space: nowrap;">
+                    <span>🎫 Tiket:</span>
+                    <strong style="color: #55C7FF;" x-text="displayTicket"></strong>
+                </div>
+                <div class="ims-badge-stat" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff; padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; backdrop-filter: blur(8px); white-space: nowrap;">
+                    <span>📐 SLA:</span>
+                    <strong style="color: #55C7FF;" x-text="displaySLA + '%'"></strong>
+                </div>
+            </div>
+        </div>
+
+        {{-- ══════════════════════════════════════════════════════════════
+             ── 2. TOP FILTER & SEARCH BAR ──
              ══════════════════════════════════════════════════════════════ --}}
         <div class="ims-dash-header-bar">
             <!-- Global Search Box -->
