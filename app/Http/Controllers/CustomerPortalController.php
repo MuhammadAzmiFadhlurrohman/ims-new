@@ -287,6 +287,14 @@ class CustomerPortalController extends Controller
             $desc = $desc ?: 'Pengajuan layanan pelanggan mandiri.';
         }
 
+        // Normalize DB category
+        $dbCategory = 'LOS';
+        if ($category === 'REQ_UPGRADE_DOWNGRADE' || $category === 'REQ_RELOKASI') {
+            $dbCategory = 'UBAH_LAYANAN';
+        } elseif ($category === 'GANTI_PASSWORD' || $category === 'BANTUAN_WIFI') {
+            $dbCategory = 'PASSWORD';
+        }
+
         $randomNo = rand(100, 999);
         $ticketNo = 'TKT-' . date('Ym') . '-' . $randomNo;
 
@@ -295,8 +303,8 @@ class CustomerPortalController extends Controller
             'internet_number' => $subscription->internet_number,
             'reporter_name' => $subscription->customer_name,
             'reporter_phone' => $subscription->phone_number ?? '08123456789',
-            'category' => $category,
-            'priority' => ($category === 'LOS' || $category === 'GANGGUAN_TOTAL') ? 'HIGH' : 'NORMAL',
+            'category' => $dbCategory,
+            'priority' => ($category === 'LOS' || $category === 'GANGGUAN_TOTAL') ? 'HIGH' : 'MEDIUM',
             'description' => $desc,
             'status' => 'OPEN',
             'assigned_technician' => 'Helpdesk NOC On-Duty',
