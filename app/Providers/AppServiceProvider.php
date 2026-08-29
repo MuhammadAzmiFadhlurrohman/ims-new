@@ -7,6 +7,7 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Activitylog\Models\Activity;
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // ── 0. GLOBAL SUPER ADMIN GATE BYPASS ──
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('super_admin') ? true : null;
+        });
         // ── 1. RATE LIMITING (BRUTE FORCE PROTECTION) ──
         RateLimiter::for('login', function (Request $request) {
             $key = ($request->input('email') ?: 'unknown') . '|' . $request->ip();

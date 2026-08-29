@@ -10,6 +10,20 @@ class BandwidthPackagePolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, string $ability): ?bool
+    {
+        if ($user->hasRole('super_admin') || $user->hasAnyRole(['director', 'finance', 'noc_support', 'customer_service', 'sales_marketing'])) {
+            if (in_array($ability, ['viewAny', 'view'])) {
+                return true;
+            }
+        }
+        if ($user->hasRole('super_admin')) {
+            return true;
+        }
+
+        return null;
+    }
+
     /**
      * Determine whether the user can view any models.
      */
