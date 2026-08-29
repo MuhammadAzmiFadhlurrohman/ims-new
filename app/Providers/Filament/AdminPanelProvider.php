@@ -450,24 +450,31 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 NavigationGroup::make('Pelanggan & Layanan')
                     ->icon('heroicon-o-users')
+                    ->collapsible(true)
                     ->collapsed(false),
                 NavigationGroup::make('Keuangan & Billing')
                     ->icon('heroicon-o-banknotes')
+                    ->collapsible(true)
                     ->collapsed(false),
                 NavigationGroup::make('Operasional & Helpdesk')
                     ->icon('heroicon-o-wrench-screwdriver')
+                    ->collapsible(true)
                     ->collapsed(false),
                 NavigationGroup::make('Jaringan & Inventaris')
                     ->icon('heroicon-o-server-stack')
+                    ->collapsible(true)
                     ->collapsed(false),
                 NavigationGroup::make('OLT')
                     ->icon('heroicon-o-share')
-                    ->collapsed(false),
+                    ->collapsible(true)
+                    ->collapsed(true),
                 NavigationGroup::make('Manajemen Internal & System')
                     ->icon('heroicon-o-cog-6-tooth')
+                    ->collapsible(true)
                     ->collapsed(true),
                 NavigationGroup::make('Keamanan & Audit Sistem')
                     ->icon('heroicon-o-shield-check')
+                    ->collapsible(true)
                     ->collapsed(false),
             ])
             ->navigationItems((function () {
