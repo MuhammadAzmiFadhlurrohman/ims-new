@@ -168,7 +168,7 @@ class CustomerPortalController extends Controller
         if ($subscription) {
             Session::put('customer_internet_number', $subscription->internet_number);
             Session::put('customer_login_at', now()->timestamp);
-            return redirect()->route('customer.portal')->with('success', 'Selamat datang kembali, ' . $subscription->customer_name . '!');
+            return redirect()->route('customer.portal');
         }
 
         return back()->with('error', 'Nomor telepon atau ID Pelanggan tidak ditemukan. Pastikan nomor yang Anda masukkan terdaftar saat pemasangan, atau hubungi Customer Service.');
