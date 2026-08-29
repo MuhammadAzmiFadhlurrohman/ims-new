@@ -1878,31 +1878,59 @@ html.dark .ims-so-sales-code {
    ============================================================ */
 
 /* 1. View Transitions API CSS Overrides */
-::view-transition-group(root) {
-    animation-duration: 1.5s !important;
+@media (min-width: 1024px) {
+    ::view-transition-group(root) {
+        animation-duration: 1.5s !important;
+    }
+
+    ::view-transition-image-pair(root) {
+        isolation: isolate !important;
+    }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none !important;
+        mix-blend-mode: normal !important;
+        display: block !important;
+        position: fixed !important;
+        inset: 0 !important;
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    ::view-transition-old(root) {
+        z-index: 1 !important;
+    }
+
+    ::view-transition-new(root) {
+        z-index: 9999999 !important;
+    }
 }
 
-::view-transition-image-pair(root) {
-    isolation: isolate !important;
+@media (max-width: 1023px) {
+    ::view-transition-group(root) {
+        animation-duration: 0.25s !important;
+    }
+
+    ::view-transition-old(root) {
+        animation: 0.25s cubic-bezier(0.4, 0, 0.2, 1) both ims-mobile-fade-out !important;
+        z-index: 1 !important;
+    }
+
+    ::view-transition-new(root) {
+        animation: 0.25s cubic-bezier(0.4, 0, 0.2, 1) both ims-mobile-fade-in !important;
+        z-index: 2 !important;
+    }
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
-    animation: none !important;
-    mix-blend-mode: normal !important;
-    display: block !important;
-    position: fixed !important;
-    inset: 0 !important;
-    height: 100% !important;
-    width: 100% !important;
+@keyframes ims-mobile-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 
-::view-transition-old(root) {
-    z-index: 1 !important;
-}
-
-::view-transition-new(root) {
-    z-index: 9999999 !important;
+@keyframes ims-mobile-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* ── SCOPED LOGIN CYBER-GLASS STYLING ── */

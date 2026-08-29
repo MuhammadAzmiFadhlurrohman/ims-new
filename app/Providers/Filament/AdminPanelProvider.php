@@ -164,47 +164,82 @@ class AdminPanelProvider extends PanelProvider
                                     }
                                 }
 
+                                var isMobile = window.innerWidth < 1024;
+
                                 if (document.startViewTransition) {
-                                    var maxDistX = Math.max(x, window.innerWidth - x);
-                                    var maxDistY = Math.max(y, window.innerHeight - y);
-                                    var endRadius = Math.ceil(Math.hypot(maxDistX, maxDistY) * 1.1);
+                                    if (isMobile) {
+                                        var transition = document.startViewTransition(function() {
+                                            applyDOMToggle();
+                                        });
 
-                                    var transition = document.startViewTransition(function() {
-                                        applyDOMToggle();
-                                    });
+                                        transition.ready.then(function() {
+                                            try {
+                                                var anim = document.documentElement.animate(
+                                                    [
+                                                        { opacity: 0 },
+                                                        { opacity: 1 }
+                                                    ],
+                                                    {
+                                                        duration: 250,
+                                                        easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+                                                        pseudoElement: "::view-transition-new(root)"
+                                                    }
+                                                );
+                                                anim.onfinish = function() {
+                                                    isThemeToggling = false;
+                                                };
+                                            } catch(err) {
+                                                transition.finished.then(function() {
+                                                    isThemeToggling = false;
+                                                }).catch(function() {
+                                                    isThemeToggling = false;
+                                                });
+                                            }
+                                        }).catch(function() {
+                                            isThemeToggling = false;
+                                        });
+                                    } else {
+                                        var maxDistX = Math.max(x, window.innerWidth - x);
+                                        var maxDistY = Math.max(y, window.innerHeight - y);
+                                        var endRadius = Math.ceil(Math.hypot(maxDistX, maxDistY) * 1.1);
 
-                                    transition.ready.then(function() {
-                                        var clipPath = [
-                                            "circle(0px at " + x + "px " + y + "px)",
-                                            "circle(" + endRadius + "px at " + x + "px " + y + "px)"
-                                        ];
-                                        try {
-                                            var anim = document.documentElement.animate(
-                                                { clipPath: clipPath },
-                                                {
-                                                    duration: 1500,
-                                                    easing: "cubic-bezier(0.35, 0, 0.25, 1)",
-                                                    pseudoElement: "::view-transition-new(root)"
-                                                }
-                                            );
-                                            anim.onfinish = function() {
-                                                isThemeToggling = false;
-                                            };
-                                        } catch(err) {
-                                            transition.finished.then(function() {
-                                                isThemeToggling = false;
-                                            }).catch(function() {
-                                                isThemeToggling = false;
-                                            });
-                                        }
-                                    }).catch(function() {
-                                        isThemeToggling = false;
-                                    });
+                                        var transition = document.startViewTransition(function() {
+                                            applyDOMToggle();
+                                        });
+
+                                        transition.ready.then(function() {
+                                            var clipPath = [
+                                                "circle(0px at " + x + "px " + y + "px)",
+                                                "circle(" + endRadius + "px at " + x + "px " + y + "px)"
+                                            ];
+                                            try {
+                                                var anim = document.documentElement.animate(
+                                                    { clipPath: clipPath },
+                                                    {
+                                                        duration: 1500,
+                                                        easing: "cubic-bezier(0.35, 0, 0.25, 1)",
+                                                        pseudoElement: "::view-transition-new(root)"
+                                                    }
+                                                );
+                                                anim.onfinish = function() {
+                                                    isThemeToggling = false;
+                                                };
+                                            } catch(err) {
+                                                transition.finished.then(function() {
+                                                    isThemeToggling = false;
+                                                }).catch(function() {
+                                                    isThemeToggling = false;
+                                                });
+                                            }
+                                        }).catch(function() {
+                                            isThemeToggling = false;
+                                        });
+                                    }
                                 } else {
                                     applyDOMToggle();
                                     setTimeout(function() {
                                         isThemeToggling = false;
-                                    }, 300);
+                                    }, 250);
                                 }
                             };
 
