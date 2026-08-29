@@ -866,25 +866,66 @@ html.dark .fi-sidebar .fi-badge {
 }
 
 /* ── 11. ULTRA-SLIM SCROLLBAR ── */
+.fi-sidebar nav,
+.fi-sidebar-nav,
+aside.fi-sidebar {
+    scrollbar-width: thin !important;
+    scrollbar-color: #0878E5 rgba(8, 120, 229, 0.08) !important;
+}
+
+html.dark .fi-sidebar nav,
+html.dark .fi-sidebar-nav,
+html.dark aside.fi-sidebar {
+    scrollbar-color: rgba(56, 189, 248, 0.35) transparent !important;
+}
+
 .fi-sidebar nav::-webkit-scrollbar,
-.fi-sidebar-nav::-webkit-scrollbar {
-    width: 4px !important;
+.fi-sidebar-nav::-webkit-scrollbar,
+aside.fi-sidebar::-webkit-scrollbar {
+    width: 6px !important;
 }
 
 .fi-sidebar nav::-webkit-scrollbar-track,
-.fi-sidebar-nav::-webkit-scrollbar-track {
-    background: transparent !important;
-}
-
-.fi-sidebar nav::-webkit-scrollbar-thumb,
-.fi-sidebar-nav::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 184, 0.35) !important;
+.fi-sidebar-nav::-webkit-scrollbar-track,
+aside.fi-sidebar::-webkit-scrollbar-track {
+    background: rgba(8, 120, 229, 0.04) !important;
     border-radius: 99px !important;
 }
 
+/* Light Mode: Vibrant Blue Scrollbar Thumb */
+.fi-sidebar nav::-webkit-scrollbar-thumb,
+.fi-sidebar-nav::-webkit-scrollbar-thumb,
+aside.fi-sidebar::-webkit-scrollbar-thumb {
+    background: #0878E5 !important;
+    background: linear-gradient(180deg, #0ea5e9 0%, #0284c7 50%, #0878E5 100%) !important;
+    border-radius: 99px !important;
+    box-shadow: 0 0 6px rgba(8, 120, 229, 0.3) !important;
+}
+
+.fi-sidebar nav::-webkit-scrollbar-thumb:hover,
+.fi-sidebar-nav::-webkit-scrollbar-thumb:hover,
+aside.fi-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #0369a1 !important;
+}
+
+/* Dark Mode: Neon Cyan Scrollbar Thumb */
+html.dark .fi-sidebar nav::-webkit-scrollbar-track,
+html.dark .fi-sidebar-nav::-webkit-scrollbar-track,
+html.dark aside.fi-sidebar::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
 html.dark .fi-sidebar nav::-webkit-scrollbar-thumb,
-html.dark .fi-sidebar-nav::-webkit-scrollbar-thumb {
-    background: rgba(56, 189, 248, 0.25) !important;
+html.dark .fi-sidebar-nav::-webkit-scrollbar-thumb,
+html.dark aside.fi-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(56, 189, 248, 0.35) !important;
+    box-shadow: none !important;
+}
+
+html.dark .fi-sidebar nav::-webkit-scrollbar-thumb:hover,
+html.dark .fi-sidebar-nav::-webkit-scrollbar-thumb:hover,
+html.dark aside.fi-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(56, 189, 248, 0.6) !important;
 }
 
 /* ── 12. SIDEBAR FOOTER ── */
