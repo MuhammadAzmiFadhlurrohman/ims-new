@@ -366,21 +366,6 @@
          ══════════════════════════════════════════════════════════════ --}}
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 flex-1 w-full space-y-5 relative z-10">
         
-        <!-- Alerts (Glass Banner) -->
-        @if(session('success'))
-            <div class="p-4 sm:p-5 rounded-2xl glass-panel bg-emerald-500/10 border-emerald-300/60 text-emerald-900 text-xs font-semibold flex items-center justify-between shadow-xs backdrop-blur-md">
-                <div class="flex items-center gap-3">
-                    <div class="w-7 h-7 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center text-sm font-bold border border-emerald-400/40">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-                        </svg>
-                    </div>
-                    <span class="font-bold">{{ session('success') }}</span>
-                </div>
-                <button onclick="this.parentElement.remove()" class="text-emerald-700/60 hover:text-emerald-900 font-black text-base">&times;</button>
-            </div>
-        @endif
-
         @if(session('ticket_created'))
             <div class="p-4 sm:p-5 rounded-2xl glass-panel bg-amber-500/10 border-amber-300/60 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs backdrop-blur-md">
                 <div class="flex items-start gap-3">
