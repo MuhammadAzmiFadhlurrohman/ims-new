@@ -215,6 +215,24 @@
     selectedNewPackage: '{{ $availablePackages->first()->name ?? 'Paket 100 Mbps' }}',
     remainingSeconds: {{ $remainingSeconds ?? 3600 }},
     formattedTime: '60:00',
+    openPaymentModal: false,
+    activePaymentMethod: 'va', // 'va', 'qris', 'retail'
+    selectedVaBank: 'bca', // 'bca', 'mandiri', 'bri', 'bni'
+    copiedToast: false,
+    copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text);
+        } else {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        }
+        this.copiedToast = true;
+        setTimeout(() => { this.copiedToast = false; }, 2500);
+    },
     init() {
         this.updateTime();
         setInterval(() => {
@@ -1045,53 +1063,75 @@
 
                     <div class="p-3.5 rounded-2xl glass-tile-accent flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
                         <span class="text-slate-600 text-center sm:text-left text-xs font-medium">Jatuh tempo setiap <strong class="text-brand-navy">Tanggal {{ $subscription->billing_cycle_day ?? '05' }}</strong>.</span>
-                        <a href="https://wa.me/6281234567890?text=Halo%20Billing%20IMS%20ONE%2C%20saya%20ingin%20konfirmasi%20pembayaran%20tagihan%20CID%20{{ $subscription->internet_number }}" target="_blank" class="px-5 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm text-center flex items-center justify-center gap-1.5">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <span>Konfirmasi Pembayaran</span>
-                        </a>
+                        <div class="flex items-center gap-2">
+                            <button type="button" @click="openPaymentModal = true; activePaymentMethod = 'va'" class="px-5 py-2.5 rounded-xl btn-glass-primary font-black text-xs shadow-sm text-center flex items-center justify-center gap-1.5 cursor-pointer hover:scale-[1.02] transition-transform">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                <span>Bayar Sekarang</span>
+                            </button>
+                            <a href="https://wa.me/6281234567890?text=Halo%20Billing%20IMS%20ONE%2C%20saya%20ingin%20konfirmasi%20pembayaran%20tagihan%20CID%20{{ $subscription->internet_number }}" target="_blank" class="px-3.5 py-2.5 rounded-xl btn-glass-inactive font-bold text-xs text-center flex items-center justify-center gap-1">
+                                <span>Konfirmasi WA</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Petunjuk & Metode Pembayaran (Glass Panel) -->
                 <div class="lg:col-span-4 glass-panel rounded-3xl p-5 sm:p-7 flex flex-col justify-between">
                     <div>
-                        <h4 class="font-heading text-base font-black text-brand-navy mb-3.5">Metode Pembayaran</h4>
+                        <div class="flex items-center justify-between mb-3.5">
+                            <h4 class="font-heading text-base font-black text-brand-navy">Metode Pembayaran</h4>
+                            <span class="text-[10px] font-bold text-brand bg-brand/10 px-2 py-0.5 rounded-full">Pilih Saluran ▾</span>
+                        </div>
                         <div class="space-y-2.5 text-xs text-slate-700">
-                            <div class="p-3 rounded-2xl glass-tile flex items-start gap-2.5">
-                                <div class="w-7 h-7 rounded-xl bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                    </svg>
+                            <!-- Option 1: Virtual Account -->
+                            <button type="button" @click="openPaymentModal = true; activePaymentMethod = 'va'" class="w-full text-left p-3 rounded-2xl glass-tile flex items-center justify-between group hover:border-brand/50 hover:bg-white/90 transition-all cursor-pointer">
+                                <div class="flex items-start gap-2.5">
+                                    <div class="w-7 h-7 rounded-xl bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5 group-hover:bg-brand group-hover:text-white transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <strong class="text-brand-navy block font-bold mb-0.5 group-hover:text-brand transition-colors">Virtual Account (Otomatis)</strong>
+                                        <span class="text-[10.5px] text-slate-500">BCA, Mandiri, BRI, BNI via m-Banking/ATM.</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <strong class="text-brand-navy block font-bold mb-0.5">Virtual Account (Otomatis)</strong>
-                                    <span class="text-[10.5px] text-slate-500">BCA, Mandiri, BRI, BNI via m-Banking/ATM.</span>
+                                <span class="text-brand opacity-0 group-hover:opacity-100 transition-opacity font-bold text-sm">→</span>
+                            </button>
+
+                            <!-- Option 2: QRIS & E-Wallet -->
+                            <button type="button" @click="openPaymentModal = true; activePaymentMethod = 'qris'" class="w-full text-left p-3 rounded-2xl glass-tile flex items-center justify-between group hover:border-brand/50 hover:bg-white/90 transition-all cursor-pointer">
+                                <div class="flex items-start gap-2.5">
+                                    <div class="w-7 h-7 rounded-xl bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5 group-hover:bg-brand group-hover:text-white transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <strong class="text-brand-navy block font-bold mb-0.5 group-hover:text-brand transition-colors">QRIS &amp; E-Wallet</strong>
+                                        <span class="text-[10.5px] text-slate-500">GoPay, OVO, Dana, ShopeePay.</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="p-3 rounded-2xl glass-tile flex items-start gap-2.5">
-                                <div class="w-7 h-7 rounded-xl bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                                    </svg>
+                                <span class="text-brand opacity-0 group-hover:opacity-100 transition-opacity font-bold text-sm">→</span>
+                            </button>
+
+                            <!-- Option 3: Gerai Retail -->
+                            <button type="button" @click="openPaymentModal = true; activePaymentMethod = 'retail'" class="w-full text-left p-3 rounded-2xl glass-tile flex items-center justify-between group hover:border-brand/50 hover:bg-white/90 transition-all cursor-pointer">
+                                <div class="flex items-start gap-2.5">
+                                    <div class="w-7 h-7 rounded-xl bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5 group-hover:bg-brand group-hover:text-white transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <strong class="text-brand-navy block font-bold mb-0.5 group-hover:text-brand transition-colors">Gerai Retail</strong>
+                                        <span class="text-[10.5px] text-slate-500">Alfamart &amp; Indomaret sebutkan CID Anda.</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <strong class="text-brand-navy block font-bold mb-0.5">QRIS &amp; E-Wallet</strong>
-                                    <span class="text-[10.5px] text-slate-500">GoPay, OVO, Dana, ShopeePay.</span>
-                                </div>
-                            </div>
-                            <div class="p-3 rounded-2xl glass-tile flex items-start gap-2.5">
-                                <div class="w-7 h-7 rounded-xl bg-brand/10 text-brand flex items-center justify-center shrink-0 border border-brand/20 mt-0.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <strong class="text-brand-navy block font-bold mb-0.5">Gerai Retail</strong>
-                                    <span class="text-[10.5px] text-slate-500">Alfamart &amp; Indomaret sebutkan CID Anda.</span>
-                                </div>
-                            </div>
+                                <span class="text-brand opacity-0 group-hover:opacity-100 transition-opacity font-bold text-sm">→</span>
+                            </button>
                         </div>
                     </div>
 
@@ -1155,6 +1195,350 @@
     <footer class="p-6 text-center text-xs text-slate-500 border-t border-white/60 glass-navbar relative z-10 mt-auto">
         &copy; {{ date('Y') }} IMS ONE Fiber Network. Portal Layanan Mandiri Pelanggan.
     </footer>
+
+    {{-- ══════════════════════════════════════════════════════════════
+         ── MODAL PEMBAYARAN INSTAN (VA, QRIS, GERAI RETAIL) ──
+         ══════════════════════════════════════════════════════════════ --}}
+    <div 
+        x-show="openPaymentModal" 
+        x-cloak 
+        class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto bg-slate-950/60 backdrop-blur-md"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @keydown.escape.window="openPaymentModal = false"
+    >
+        <div 
+            @click.outside="openPaymentModal = false"
+            class="relative w-full max-w-xl bg-white/95 rounded-3xl shadow-2xl border border-white/80 overflow-hidden flex flex-col max-h-[92vh] text-slate-800"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+        >
+            {{-- Modal Header --}}
+            <div class="p-5 sm:p-6 bg-gradient-to-r from-slate-900 via-brand-navy to-slate-900 text-white flex items-start justify-between relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-brand/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="flex items-center gap-3 relative z-10">
+                    <div class="w-10 h-10 rounded-2xl bg-brand flex items-center justify-center text-white shadow-lg shadow-brand/30 shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-black text-brand-cyan tracking-wider uppercase bg-white/10 px-2 py-0.5 rounded-md">Metode Pembayaran Online</span>
+                        <h3 class="font-heading text-lg font-black mt-0.5">Checkout Pembayaran Tagihan</h3>
+                    </div>
+                </div>
+                <button 
+                    type="button" 
+                    @click="openPaymentModal = false"
+                    class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer shrink-0 font-bold text-sm relative z-10"
+                >✕</button>
+            </div>
+
+            {{-- Summary Banner --}}
+            <div class="px-5 sm:px-6 py-3.5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div>
+                    <span class="text-slate-500 block text-[10.5px]">Pelanggan (CID):</span>
+                    <strong class="text-brand font-mono font-black text-sm">{{ $subscription->internet_number }}</strong>
+                    <span class="text-slate-600 font-medium">({{ $subscription->customer_name }})</span>
+                </div>
+                <div class="text-right">
+                    <span class="text-slate-500 block text-[10.5px]">Total Tagihan:</span>
+                    <strong class="text-emerald-700 font-heading font-black text-base sm:text-lg">
+                        Rp {{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}
+                    </strong>
+                </div>
+            </div>
+
+            {{-- Modal Body: Scrollable --}}
+            <div class="p-5 sm:p-6 overflow-y-auto flex-1 space-y-5">
+                
+                {{-- Payment Channel Selector Tabs --}}
+                <div class="grid grid-cols-3 gap-2 p-1 bg-slate-100 rounded-2xl">
+                    <button 
+                        type="button" 
+                        @click="activePaymentMethod = 'va'"
+                        :class="activePaymentMethod === 'va' ? 'bg-white text-brand shadow-sm font-black' : 'text-slate-600 hover:text-slate-900 font-bold'"
+                        class="py-2.5 px-2 rounded-xl text-xs flex flex-col sm:flex-row items-center justify-center gap-1.5 transition-all text-center cursor-pointer"
+                    >
+                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                        <span>Virtual Account</span>
+                    </button>
+                    <button 
+                        type="button" 
+                        @click="activePaymentMethod = 'qris'"
+                        :class="activePaymentMethod === 'qris' ? 'bg-white text-brand shadow-sm font-black' : 'text-slate-600 hover:text-slate-900 font-bold'"
+                        class="py-2.5 px-2 rounded-xl text-xs flex flex-col sm:flex-row items-center justify-center gap-1.5 transition-all text-center cursor-pointer"
+                    >
+                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                        <span>QRIS &amp; E-Wallet</span>
+                    </button>
+                    <button 
+                        type="button" 
+                        @click="activePaymentMethod = 'retail'"
+                        :class="activePaymentMethod === 'retail' ? 'bg-white text-brand shadow-sm font-black' : 'text-slate-600 hover:text-slate-900 font-bold'"
+                        class="py-2.5 px-2 rounded-xl text-xs flex flex-col sm:flex-row items-center justify-center gap-1.5 transition-all text-center cursor-pointer"
+                    >
+                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                        <span>Gerai Retail</span>
+                    </button>
+                </div>
+
+                {{-- TAB 1: VIRTUAL ACCOUNT --}}
+                <div x-show="activePaymentMethod === 'va'" class="space-y-4">
+                    <span class="text-xs font-extrabold text-slate-700 block">Pilih Bank Tujuan Virtual Account:</span>
+                    
+                    {{-- Bank Choice Pills --}}
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        <button 
+                            type="button" 
+                            @click="selectedVaBank = 'bca'"
+                            :class="selectedVaBank === 'bca' ? 'border-brand bg-blue-50/80 text-brand ring-2 ring-brand/20' : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'"
+                            class="p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1"
+                        >
+                            <span class="font-black text-sm tracking-wide text-[#003B70]">BCA</span>
+                            <span class="text-[10px] font-bold text-slate-500">BCA Virtual Account</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="selectedVaBank = 'mandiri'"
+                            :class="selectedVaBank === 'mandiri' ? 'border-brand bg-blue-50/80 text-brand ring-2 ring-brand/20' : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'"
+                            class="p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1"
+                        >
+                            <span class="font-black text-sm tracking-wide text-[#002D62]">MANDIRI</span>
+                            <span class="text-[10px] font-bold text-slate-500">Mandiri Livin' VA</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="selectedVaBank = 'bri'"
+                            :class="selectedVaBank === 'bri' ? 'border-brand bg-blue-50/80 text-brand ring-2 ring-brand/20' : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'"
+                            class="p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1"
+                        >
+                            <span class="font-black text-sm tracking-wide text-[#00529C]">BRI</span>
+                            <span class="text-[10px] font-bold text-slate-500">BRIVA Otomatis</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            @click="selectedVaBank = 'bni'"
+                            :class="selectedVaBank === 'bni' ? 'border-brand bg-blue-50/80 text-brand ring-2 ring-brand/20' : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'"
+                            class="p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1"
+                        >
+                            <span class="font-black text-sm tracking-wide text-[#E05A17]">BNI</span>
+                            <span class="text-[10px] font-bold text-slate-500">BNI Virtual Account</span>
+                        </button>
+                    </div>
+
+                    @php
+                        $cleanCidDigits = preg_replace('/[^0-9]/', '', $subscription->internet_number);
+                        if (empty($cleanCidDigits)) {
+                            $cleanCidDigits = str_pad((string)$subscription->id, 8, '0', STR_PAD_LEFT);
+                        }
+                        $bcaVa = '80777' . $cleanCidDigits;
+                        $mandiriVa = '88908' . $cleanCidDigits;
+                        $briVa = '12345' . $cleanCidDigits;
+                        $bniVa = '98801' . $cleanCidDigits;
+                    @endphp
+
+                    {{-- VA Number Display Box --}}
+                    <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-50 to-blue-50/60 border border-blue-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div>
+                            <span class="text-[11px] text-slate-500 block font-semibold">Nomor Virtual Account (<span x-text="selectedVaBank.toUpperCase()"></span>):</span>
+                            <div class="font-mono text-xl sm:text-2xl font-black text-brand tracking-wider mt-0.5">
+                                <span x-show="selectedVaBank === 'bca'">{{ $bcaVa }}</span>
+                                <span x-show="selectedVaBank === 'mandiri'">{{ $mandiriVa }}</span>
+                                <span x-show="selectedVaBank === 'bri'">{{ $briVa }}</span>
+                                <span x-show="selectedVaBank === 'bni'">{{ $bniVa }}</span>
+                            </div>
+                            <span class="text-[10.5px] text-slate-500 block mt-0.5 font-medium">Atas Nama: <strong class="text-slate-800">IMS ONE / {{ $subscription->customer_name }}</strong></span>
+                        </div>
+                        <button 
+                            type="button" 
+                            @click="
+                                let va = '{{ $bcaVa }}';
+                                if (selectedVaBank === 'mandiri') va = '{{ $mandiriVa }}';
+                                if (selectedVaBank === 'bri') va = '{{ $briVa }}';
+                                if (selectedVaBank === 'bni') va = '{{ $bniVa }}';
+                                copyText(va);
+                            "
+                            class="px-4 py-2.5 rounded-xl bg-brand hover:bg-brand-navy text-white text-xs font-black shrink-0 shadow-sm flex items-center gap-1.5 cursor-pointer transition-colors"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10a2 2 0 00-2 2v3a2 2 0 002 2h10a2 2 0 002-2v-3a2 2 0 00-2-2z"/>
+                            </svg>
+                            <span>Salin No. VA</span>
+                        </button>
+                    </div>
+
+                    {{-- Petunjuk Langkah Pembayaran --}}
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-2">
+                        <strong class="text-brand-navy block font-bold">Panduan Pembayaran m-Banking:</strong>
+                        <ol class="list-decimal list-inside space-y-1 text-[11.5px] text-slate-600 font-medium">
+                            <li>Buka aplikasi Mobile Banking bank pilihan Anda (BCA Mobile, Livin Mandiri, BRImo, atau BNI Mobile).</li>
+                            <li>Pilih menu <strong>Transfer</strong> &rarr; <strong>Virtual Account / Pembayaran</strong>.</li>
+                            <li>Masukkan Nomor Virtual Account di atas.</li>
+                            <li>Periksa nominal tagihan yang muncul (<strong class="text-slate-800">Rp {{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}</strong>) dan nama pelanggan.</li>
+                            <li>Konfirmasi PIN transaksi m-Banking Anda. Pembayaran akan terverifikasi secara instan.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                {{-- TAB 2: QRIS & E-WALLET --}}
+                <div x-show="activePaymentMethod === 'qris'" class="space-y-4 text-center">
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center space-y-3">
+                        <div class="flex items-center justify-center gap-3 mb-1">
+                            <span class="text-xs font-black text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200">QRIS</span>
+                            <span class="text-xs font-black text-slate-700 bg-white px-2 py-0.5 rounded border border-slate-200">GPN</span>
+                            <span class="text-[11px] text-slate-500 font-semibold">Pembayaran Digital Nasional</span>
+                        </div>
+
+                        {{-- SVG QRIS Code Simulation --}}
+                        <div class="p-3 bg-white rounded-2xl shadow-md border border-slate-200 inline-block">
+                            <svg class="w-48 h-48 sm:w-56 sm:h-56 mx-auto text-slate-900" viewBox="0 0 200 200" fill="currentColor">
+                                <rect x="10" y="10" width="60" height="60" rx="6" fill="#0F172A"/>
+                                <rect x="20" y="20" width="40" height="40" rx="3" fill="#FFFFFF"/>
+                                <rect x="30" y="30" width="20" height="20" rx="2" fill="#0F172A"/>
+                                
+                                <rect x="130" y="10" width="60" height="60" rx="6" fill="#0F172A"/>
+                                <rect x="140" y="20" width="40" height="40" rx="3" fill="#FFFFFF"/>
+                                <rect x="150" y="30" width="20" height="20" rx="2" fill="#0F172A"/>
+                                
+                                <rect x="10" y="130" width="60" height="60" rx="6" fill="#0F172A"/>
+                                <rect x="20" y="140" width="40" height="40" rx="3" fill="#FFFFFF"/>
+                                <rect x="30" y="150" width="20" height="20" rx="2" fill="#0F172A"/>
+
+                                <rect x="80" y="15" width="10" height="25" fill="#0F172A"/>
+                                <rect x="100" y="25" width="15" height="10" fill="#0F172A"/>
+                                <rect x="85" y="50" width="30" height="10" fill="#0F172A"/>
+                                
+                                <rect x="15" y="80" width="25" height="10" fill="#0F172A"/>
+                                <rect x="35" y="95" width="40" height="15" fill="#0F172A"/>
+                                <rect x="85" y="85" width="30" height="30" rx="4" fill="#0878E5"/>
+                                <rect x="125" y="80" width="20" height="10" fill="#0F172A"/>
+                                <rect x="155" y="95" width="30" height="20" fill="#0F172A"/>
+
+                                <rect x="80" y="135" width="20" height="10" fill="#0F172A"/>
+                                <rect x="110" y="130" width="10" height="30" fill="#0F172A"/>
+                                <rect x="130" y="145" width="25" height="15" fill="#0F172A"/>
+                                <rect x="165" y="135" width="25" height="25" fill="#0F172A"/>
+                                <rect x="135" y="170" width="20" height="15" fill="#0F172A"/>
+                                <rect x="80" y="170" width="40" height="15" fill="#0F172A"/>
+                            </svg>
+                        </div>
+
+                        <div class="text-center">
+                            <span class="text-xs text-slate-500 font-medium">Nominal Transaksi:</span>
+                            <div class="font-heading text-xl font-black text-brand">
+                                Rp {{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}
+                            </div>
+                            <span class="text-[10px] text-slate-400 block mt-0.5">NMID: ID1020039201920 • IMS ONE NET</span>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-center gap-2 pt-2 border-t border-slate-200 w-full text-[11px] text-slate-600">
+                            <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">GoPay</span>
+                            <span class="px-2 py-0.5 rounded bg-purple-50 text-purple-700 font-bold border border-purple-200">OVO</span>
+                            <span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold border border-blue-200">DANA</span>
+                            <span class="px-2 py-0.5 rounded bg-orange-50 text-orange-700 font-bold border border-orange-200">ShopeePay</span>
+                            <span class="px-2 py-0.5 rounded bg-red-50 text-red-700 font-bold border border-red-200">LinkAja</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold border border-slate-200">Semua m-Banking</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200 text-left text-xs text-slate-700">
+                        <strong class="text-brand font-bold block mb-1">Cara Bayar QRIS:</strong>
+                        <p class="text-[11.5px] text-slate-600">Buka aplikasi E-Wallet atau m-Banking Anda, pilih menu <strong>Scan / Bayar QRIS</strong>, arahkan kamera ke kode QR di atas, lalu konfirmasi pembayaran.</p>
+                    </div>
+                </div>
+
+                {{-- TAB 3: GERAI RETAIL --}}
+                <div x-show="activePaymentMethod === 'retail'" class="space-y-4">
+                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-800 flex items-center justify-center shrink-0 border border-amber-300 font-black text-base">
+                                🏪
+                            </div>
+                            <div>
+                                <h4 class="font-heading text-sm font-bold text-brand-navy">Pembayaran di Kasir Minimarket</h4>
+                                <span class="text-[11px] text-slate-500">Tersedia di seluruh gerai Indomaret &amp; Alfamart terdekat</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-white border border-slate-200 space-y-2">
+                            <span class="text-[11px] text-slate-500 font-medium block">Kode Pembayaran Tagihan:</span>
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="font-mono text-xl sm:text-2xl font-black text-brand tracking-widest">
+                                    IMS-{{ $cleanCidDigits }}
+                                </span>
+                                <button 
+                                    type="button" 
+                                    @click="copyText('IMS-{{ $cleanCidDigits }}')"
+                                    class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold shrink-0 transition-colors cursor-pointer"
+                                >
+                                    Salin
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Petunjuk Kasir --}}
+                        <div class="text-xs text-slate-700 space-y-1.5 pt-2">
+                            <strong class="text-brand-navy block font-bold">Langkah Pembayaran di Kasir:</strong>
+                            <ol class="list-decimal list-inside space-y-1 text-[11.5px] text-slate-600">
+                                <li>Datang ke kasir Indomaret atau Alfamart.</li>
+                                <li>Sampaikan kepada kasir ingin melakukan <strong>Pembayaran Internet IMS ONE</strong>.</li>
+                                <li>Tunjukkan kode pembayaran <strong class="font-mono text-slate-900">IMS-{{ $cleanCidDigits }}</strong> atau sebutkan nomor CID Anda.</li>
+                                <li>Bayar sesuai nominal yang tertera (<strong class="text-slate-900">Rp {{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}</strong>).</li>
+                                <li>Simpan struk pembayaran sebagai bukti transaksi sah.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            {{-- Toast Floating Feedback --}}
+            <div 
+                x-show="copiedToast" 
+                x-cloak 
+                class="absolute bottom-16 left-1/2 -translate-x-1/2 bg-emerald-700 text-white px-4 py-2 rounded-full shadow-lg text-xs font-bold flex items-center gap-2 pointer-events-none z-30"
+                x-transition
+            >
+                <span>✓ Berhasil disalin ke clipboard!</span>
+            </div>
+
+            {{-- Modal Footer --}}
+            <div class="p-4 sm:p-5 bg-slate-100/90 border-t border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                <a 
+                    href="https://wa.me/6281234567890?text=Halo%20Billing%20IMS%20ONE%2C%20saya%20sudah%20melakukan%20pembayaran%20tagihan%20CID%20{{ $subscription->internet_number }}%20sebesar%20Rp%20{{ number_format($currentPackage->price ?? 320000, 0, ',', '.') }}." 
+                    target="_blank"
+                    class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-sm text-center flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Konfirmasi via WhatsApp</span>
+                </a>
+                <button 
+                    type="button" 
+                    @click="openPaymentModal = false"
+                    class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs text-center transition-colors cursor-pointer"
+                >
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
