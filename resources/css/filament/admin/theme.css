@@ -39,6 +39,94 @@ html {
 }
 
 /* ══════════════════════════════════════
+   GLOBAL WINDOW & PAGE SCROLLBAR
+   ══════════════════════════════════════ */
+
+/* Light Mode: Sleek Blue Scrollbar */
+html,
+body,
+.fi-main-ctn,
+.fi-main {
+    scrollbar-width: thin !important;
+    scrollbar-color: #0878E5 #f1f5f9 !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.fi-main-ctn::-webkit-scrollbar,
+.fi-main::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+.fi-main-ctn::-webkit-scrollbar-track,
+.fi-main::-webkit-scrollbar-track {
+    background: #f1f5f9 !important;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.fi-main-ctn::-webkit-scrollbar-thumb,
+.fi-main::-webkit-scrollbar-thumb {
+    background: #0878E5 !important;
+    background: linear-gradient(180deg, #38bdf8 0%, #0284c7 50%, #0878E5 100%) !important;
+    border-radius: 99px !important;
+    border: 2px solid #f1f5f9 !important;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+.fi-main-ctn::-webkit-scrollbar-thumb:hover,
+.fi-main::-webkit-scrollbar-thumb:hover {
+    background: #0369a1 !important;
+}
+
+/* Dark Mode: Light / Bright Glowing Scrollbar */
+html.dark,
+html.dark body,
+html.dark .fi-main-ctn,
+html.dark .fi-main {
+    scrollbar-width: thin !important;
+    scrollbar-color: #e2e8f0 #060e1a !important;
+}
+
+html.dark::-webkit-scrollbar,
+html.dark body::-webkit-scrollbar,
+html.dark .fi-main-ctn::-webkit-scrollbar,
+html.dark .fi-main::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+html.dark::-webkit-scrollbar-track,
+html.dark body::-webkit-scrollbar-track,
+html.dark .fi-main-ctn::-webkit-scrollbar-track,
+html.dark .fi-main::-webkit-scrollbar-track {
+    background: #060e1a !important;
+}
+
+html.dark::-webkit-scrollbar-thumb,
+html.dark body::-webkit-scrollbar-thumb,
+html.dark .fi-main-ctn::-webkit-scrollbar-thumb,
+html.dark .fi-main::-webkit-scrollbar-thumb {
+    background: #f1f5f9 !important;
+    background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%) !important;
+    border-radius: 99px !important;
+    border: 2px solid #060e1a !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.45) !important;
+}
+
+html.dark::-webkit-scrollbar-thumb:hover,
+html.dark body::-webkit-scrollbar-thumb:hover,
+html.dark .fi-main-ctn::-webkit-scrollbar-thumb:hover,
+html.dark .fi-main::-webkit-scrollbar-thumb:hover {
+    background: #ffffff !important;
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.8) !important;
+}
+
+/* ══════════════════════════════════════
    PAGE WRAPPER, TOPBAR & BREADCRUMBS
    ══════════════════════════════════════ */
 .fi-main-ctn,
