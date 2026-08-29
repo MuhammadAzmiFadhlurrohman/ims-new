@@ -5,7 +5,9 @@
 
 /* ── BASE WRAPPER & CONTAINER ── */
 .fi-page:has(.ims-dashboard-wrapper) > header.fi-header,
-.fi-page:has(.ims-dashboard-wrapper) .fi-header-heading {
+.fi-page:has(.ims-dashboard-wrapper) .fi-header-heading,
+.fi-page:has(.ims-pkg-gradient-banner) > header.fi-header,
+.fi-page:has(.ims-pkg-gradient-banner) .fi-header-heading {
     display: none !important;
 }
 

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\BandwidthPackageResource\Pages;
 
 use App\Filament\Resources\BandwidthPackageResource;
+use App\Filament\Widgets\BandwidthPackageHeaderWidget;
 use App\Models\BandwidthPackage;
 use App\Models\BuildingType;
 use Filament\Actions;
@@ -14,10 +15,20 @@ class ListBandwidthPackages extends ListRecords
 {
     protected static string $resource = BandwidthPackageResource::class;
 
+    public function getHeading(): string
+    {
+        return '';
+    }
+
     protected function getHeaderActions(): array
     {
+        return [];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
         return [
-            Actions\CreateAction::make()->label('+ Tambah Paket Baru'),
+            BandwidthPackageHeaderWidget::class,
         ];
     }
 
