@@ -899,25 +899,239 @@
                 margin-left: 2px !important;
                 flex-shrink: 0 !important;
             }
-            .ims-modal-tab-btn.is-active span.ims-tab-badge {
-                background: #ffffff !important;
-                color: #0878E5 !important;
-            }
-            .ims-modal-tab-btn:not(.is-active) span.ims-tab-badge {
-                background: #E2E8F0 !important;
-                color: #475569 !important;
+            /* ══════════════════════════════════════════════════════════════
+               ── RESPONSIVE MOBILE GIS MAP OPTIMIZATION (< 1024px) ──
+               ══════════════════════════════════════════════════════════════ */
+            @media (max-width: 1023px) {
+                /* 1. Header Banner & Telemetry Stats */
+                .ims-ftth-header-banner {
+                    padding: 0.85rem 1rem !important;
+                    border-radius: 14px !important;
+                    gap: 0.75rem !important;
+                    flex-direction: column !important;
+                    align-items: stretch !important;
+                }
+                .ims-ftth-header-left {
+                    gap: 10px !important;
+                    width: 100% !important;
+                }
+                .ims-ftth-header-icon {
+                    width: 38px !important;
+                    height: 38px !important;
+                    border-radius: 10px !important;
+                    flex-shrink: 0 !important;
+                }
+                .ims-ftth-header-icon svg {
+                    width: 20px !important;
+                    height: 20px !important;
+                }
+                .ims-ftth-header-text h2 {
+                    font-size: 0.98rem !important;
+                    line-height: 1.25 !important;
+                }
+                .ims-ftth-header-text p {
+                    font-size: 0.72rem !important;
+                    display: -webkit-box !important;
+                    -webkit-line-clamp: 1 !important;
+                    -webkit-box-orient: vertical !important;
+                    overflow: hidden !important;
+                    margin-top: 1px !important;
+                }
+                .ims-ftth-stats-scroll {
+                    width: 100% !important;
+                    display: flex !important;
+                    flex-wrap: nowrap !important;
+                    overflow-x: auto !important;
+                    -webkit-overflow-scrolling: touch !important;
+                    padding-bottom: 2px !important;
+                    gap: 6px !important;
+                    scrollbar-width: none !important;
+                }
+                .ims-ftth-stats-scroll::-webkit-scrollbar {
+                    display: none !important;
+                }
+                .ims-badge-stat {
+                    flex-shrink: 0 !important;
+                    padding: 3.5px 8px !important;
+                    font-size: 10.5px !important;
+                    border-radius: 7px !important;
+                }
+
+                /* 2. Top Toolbar Scroll & Buttons */
+                .ims-ftth-toolbar-container {
+                    padding: 0.45rem 0.6rem !important;
+                    overflow-x: auto !important;
+                    -webkit-overflow-scrolling: touch !important;
+                    scrollbar-width: none !important;
+                }
+                .ims-ftth-toolbar-container::-webkit-scrollbar {
+                    display: none !important;
+                }
+                .ims-ftth-toolbar-inner {
+                    display: flex !important;
+                    flex-wrap: nowrap !important;
+                    align-items: center !important;
+                    gap: 6px !important;
+                    min-width: max-content !important;
+                }
+                .ims-tool-btn {
+                    padding: 6px 10px !important;
+                    font-size: 11px !important;
+                    height: 33px !important;
+                    border-radius: 8px !important;
+                }
+
+                /* 3. Popups & Dropdown Menus */
+                .ims-prj-menu-box,
+                .ims-mode-menu-dropdown,
+                div[x-show="openMarkerMenu"],
+                div[x-show="openLineMenu"],
+                div[x-show="openExtraMenu"] {
+                    max-width: calc(100vw - 28px) !important;
+                    width: min(320px, calc(100vw - 28px)) !important;
+                    min-width: 250px !important;
+                    left: 0 !important;
+                    right: auto !important;
+                    box-sizing: border-box !important;
+                }
+                div[x-show="openExtraMenu"] {
+                    left: auto !important;
+                    right: 0 !important;
+                }
+                .ims-prj-card-item {
+                    min-height: 52px !important;
+                    padding: 8px 10px !important;
+                }
+                .ims-prj-icon-box {
+                    width: 32px !important;
+                    height: 32px !important;
+                }
+                .ims-prj-title-txt {
+                    font-size: 13px !important;
+                }
+
+                /* 4. Active Sub-Bars during Tool Usage */
+                .ims-ftth-subbar {
+                    flex-direction: column !important;
+                    align-items: stretch !important;
+                    gap: 8px !important;
+                    padding: 8px 10px !important;
+                }
+                .ims-ftth-subbar-info {
+                    display: flex !important;
+                    flex-wrap: wrap !important;
+                    align-items: center !important;
+                    gap: 6px !important;
+                    width: 100% !important;
+                }
+                .ims-ftth-subbar-actions {
+                    display: flex !important;
+                    flex-wrap: wrap !important;
+                    align-items: center !important;
+                    justify-content: stretch !important;
+                    gap: 6px !important;
+                    width: 100% !important;
+                }
+                .ims-ftth-subbar-actions button,
+                .ims-ftth-subbar-actions label {
+                    flex: 1 1 auto !important;
+                    height: 32px !important;
+                    justify-content: center !important;
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    text-align: center !important;
+                }
+
+                /* 5. Map Canvas & Heights on Mobile */
+                .ims-map-container-wrap {
+                    height: clamp(440px, calc(100vh - 240px), 580px) !important;
+                    min-height: 440px !important;
+                }
+                .ims-map-canvas {
+                    height: 100% !important;
+                    min-height: 440px !important;
+                }
+
+                /* 6. Sidebar Drawer on Mobile */
+                .ims-drawer-root {
+                    width: min(340px, 92vw) !important;
+                    max-width: 92vw !important;
+                }
+                .ims-drawer-header {
+                    height: 52px !important;
+                    padding: 0 12px !important;
+                }
+                .ims-drawer-tabs-row {
+                    height: 46px !important;
+                    padding: 6px 10px !important;
+                }
+
+                /* 7. Legend Footer on Mobile */
+                .ims-ftth-legend-footer {
+                    padding: 0.5rem 0.75rem !important;
+                    gap: 6px !important;
+                    flex-direction: column !important;
+                    align-items: flex-start !important;
+                }
+                .ims-ftth-legend-items {
+                    display: flex !important;
+                    flex-wrap: nowrap !important;
+                    overflow-x: auto !important;
+                    -webkit-overflow-scrolling: touch !important;
+                    gap: 10px !important;
+                    width: 100% !important;
+                    padding-bottom: 3px !important;
+                    scrollbar-width: none !important;
+                }
+                .ims-ftth-legend-items::-webkit-scrollbar {
+                    display: none !important;
+                }
+                .ims-ftth-legend-items span {
+                    flex-shrink: 0 !important;
+                    font-size: 11px !important;
+                }
+                .ims-ftth-legend-tips {
+                    font-size: 10.5px !important;
+                    opacity: 0.85 !important;
+                }
+
+                /* 8. Modals Mobile Optimization */
+                .ims-modal-overlay-root {
+                    padding: 8px !important;
+                }
+                .ims-modal-card-dialog {
+                    max-width: 100% !important;
+                    width: 100% !important;
+                    max-height: 94vh !important;
+                    border-radius: 16px !important;
+                }
+                .ims-modal-tab-btn {
+                    height: 36px !important;
+                    padding: 0 6px !important;
+                    font-size: 11px !important;
+                    gap: 4px !important;
+                }
+                .ims-modal-tab-btn svg,
+                .ims-modal-tab-btn .ims-tab-icon {
+                    width: 13px !important;
+                    height: 13px !important;
+                    min-width: 13px !important;
+                }
+                .ims-modal-tab-btn span.ims-tab-label {
+                    font-size: 11px !important;
+                }
             }
         </style>
 
         {{-- ── 1. HEADER BANNER & TELEMETRY STATS ── --}}
-        <div style="background: linear-gradient(135deg, #0B1F33 0%, #0878E5 100%); border-radius: 16px; padding: 1.25rem 1.5rem; color: #ffffff; box-shadow: 0 8px 24px rgba(8, 120, 229, 0.2); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
-            <div style="display: flex; align-items: center; gap: 14px;">
-                <div style="width: 46px; height: 46px; border-radius: 12px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.25); flex-shrink: 0;">
+        <div class="ims-ftth-header-banner" style="background: linear-gradient(135deg, #0B1F33 0%, #0878E5 100%); border-radius: 16px; padding: 1.25rem 1.5rem; color: #ffffff; box-shadow: 0 8px 24px rgba(8, 120, 229, 0.2); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+            <div class="ims-ftth-header-left" style="display: flex; align-items: center; gap: 14px;">
+                <div class="ims-ftth-header-icon" style="width: 46px; height: 46px; border-radius: 12px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.25); flex-shrink: 0;">
                     <svg style="width: 24px; height: 24px; color: #55C7FF;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
-                <div>
+                <div class="ims-ftth-header-text">
                     <h2 style="font-size: 1.15rem; font-weight: 900; margin: 0; color: #ffffff; letter-spacing: -0.01em;">
                         Peta Jaringan & Jalur FTTH (GIS Network Builder)
                     </h2>
@@ -928,7 +1142,7 @@
             </div>
 
             {{-- Quick Summary Badges --}}
-            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+            <div class="ims-ftth-stats-scroll" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
                 <div class="ims-badge-stat" style="background: rgba(255,255,255,0.18); border: 1.5px solid rgba(255,255,255,0.35); color: #ffffff;">
                     <span>📁 Proyek:</span>
                     <strong style="color: #55C7FF;" x-text="currentProject ? currentProject.name : 'Utama'"></strong>
@@ -961,8 +1175,8 @@
         >
             
             {{-- Toolbar Top Header: 100% Single Row & Unclipped Overflows (No Staggering / Sejajar) --}}
-            <div style="padding: 0.55rem 0.85rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow: visible !important;">
-                <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; width: 100%;">
+            <div class="ims-ftth-toolbar-container" style="padding: 0.55rem 0.85rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow: visible !important;">
+                <div class="ims-ftth-toolbar-inner" style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; width: 100%;">
                     
                     {{-- 1. Project Selector --}}
                     <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
@@ -1712,9 +1926,10 @@
                 <div 
                     x-show="currentMode === 'draw_line'" 
                     x-cloak
+                    class="ims-ftth-subbar"
                     style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #FFFBEB; border: 1px solid #FDE68A; box-shadow: 0 2px 8px rgba(217,119,6,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap;">
+                    <div class="ims-ftth-subbar-info" style="display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap;">
                         <div style="display: inline-flex; align-items: center; gap: 6px; background: #D97706; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(217,119,6,0.3);">
                             <span>⚡ TARIK KABEL</span>
                             <span style="opacity: 0.85;">•</span>
@@ -1730,7 +1945,7 @@
                         </div>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                    <div class="ims-ftth-subbar-actions" style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                         <label style="display: inline-flex; align-items: center; gap: 5px; background: #ffffff; padding: 4px 8px; border-radius: 8px; border: 1px solid #CBD5E1; cursor: pointer; font-size: 0.72rem; font-weight: 800; color: #1E293B;">
                             <input type="checkbox" x-model="autoSnapRoad" style="border-radius: 4px; color: #0878E5;">
                             <span>🛣️ Snap Jalan</span>
@@ -1769,9 +1984,10 @@
                 <div 
                     x-show="currentMode === 'measure'" 
                     x-cloak
+                    class="ims-ftth-subbar"
                     style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #F5F3FF; border: 1px solid #DDD6FE; box-shadow: 0 2px 8px rgba(124,58,237,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap;">
+                    <div class="ims-ftth-subbar-info" style="display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap;">
                         <div style="display: inline-flex; align-items: center; gap: 6px; background: #7C3AED; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(124,58,237,0.3);">
                             <span>📏 UKUR JARAK KABEL</span>
                         </div>
@@ -1785,7 +2001,7 @@
                         </div>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                    <div class="ims-ftth-subbar-actions" style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                         <button 
                             type="button" 
                             @click="undoMeasurePoint()" 
@@ -1816,9 +2032,10 @@
                 <div 
                     x-show="currentMode === 'edit_element'" 
                     x-cloak
+                    class="ims-ftth-subbar"
                     style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #EFF6FF; border: 1px solid #BFDBFE; box-shadow: 0 2px 8px rgba(8,120,229,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap;">
+                    <div class="ims-ftth-subbar-info" style="display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap;">
                         <div style="display: inline-flex; align-items: center; gap: 6px; background: #0878E5; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(8,120,229,0.3);">
                             <span>✏️ EDIT RUTE / TITIK</span>
                         </div>
@@ -1833,7 +2050,7 @@
                         </template>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                    <div class="ims-ftth-subbar-actions" style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                         <button 
                             type="button" 
                             @click="saveEditElement()" 
@@ -1858,9 +2075,10 @@
                 <div 
                     x-show="currentMode === 'add_marker'" 
                     x-cloak
+                    class="ims-ftth-subbar"
                     style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #EFF6FF; border: 1px solid #BFDBFE; box-shadow: 0 2px 8px rgba(8,120,229,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                    <div class="ims-ftth-subbar-info" style="display: flex; align-items: center; gap: 10px; min-width: 0;">
                         <div style="display: inline-flex; align-items: center; gap: 6px; background: #0878E5; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(8,120,229,0.3);">
                             <svg style="width: 13px; height: 13px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             <span>PENEMPATAN TITIK</span>
@@ -1869,25 +2087,28 @@
                             Klik pada peta untuk menaruh: <span style="background: #DBEAFE; color: #1E40AF; padding: 2px 8px; border-radius: 6px; font-weight: 900; text-transform: uppercase; font-size: 0.74rem;" x-text="activeElementType.replace('_', ' ')"></span>
                         </div>
                     </div>
-                    <button 
-                        type="button" 
-                        @click="cancelDrawing()" 
-                        style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; transition: all 0.15s ease;"
-                        onmouseover="this.style.background='#DC2626'; this.style.color='#ffffff'; this.style.borderColor='#DC2626';"
-                        onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'; this.style.borderColor='#FECACA';"
-                    >
-                        <span>✕</span>
-                        <span>Batal</span>
-                    </button>
+                    <div class="ims-ftth-subbar-actions">
+                        <button 
+                            type="button" 
+                            @click="cancelDrawing()" 
+                            style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; transition: all 0.15s ease;"
+                            onmouseover="this.style.background='#DC2626'; this.style.color='#ffffff'; this.style.borderColor='#DC2626';"
+                            onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'; this.style.borderColor='#FECACA';"
+                        >
+                            <span>✕</span>
+                            <span>Batal</span>
+                        </button>
+                    </div>
                 </div>
 
                 {{-- Dynamic Sub-Bar: Coordinate Inspector Mode --}}
                 <div 
                     x-show="currentMode === 'inspect_coords'" 
                     x-cloak
+                    class="ims-ftth-subbar"
                     style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #ECFDF5; border: 1px solid #A7F3D0; box-shadow: 0 2px 8px rgba(5,150,105,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                    <div class="ims-ftth-subbar-info" style="display: flex; align-items: center; gap: 10px; min-width: 0;">
                         <div style="display: inline-flex; align-items: center; gap: 6px; background: #059669; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(5,150,105,0.3);">
                             <span>🎯 INSPEKTUR GPS</span>
                         </div>
@@ -1895,22 +2116,25 @@
                             Klik di mana saja pada peta untuk menyalin titik koordinat Lat-Long secara instan ke clipboard.
                         </div>
                     </div>
-                    <button 
-                        type="button" 
-                        @click="setMode('select')" 
-                        style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(5,150,105,0.3); flex-shrink: 0;"
-                    >
-                        ✕ Selesai
-                    </button>
+                    <div class="ims-ftth-subbar-actions">
+                        <button 
+                            type="button" 
+                            @click="setMode('select')" 
+                            style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #059669; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(5,150,105,0.3); flex-shrink: 0;"
+                        >
+                            ✕ Selesai
+                        </button>
+                    </div>
                 </div>
 
                 {{-- Dynamic Sub-Bar: Screenshot Area Mode --}}
                 <div 
                     x-show="currentMode === 'screenshot'" 
                     x-cloak
+                    class="ims-ftth-subbar"
                     style="margin-top: 10px; padding: 8px 14px; border-radius: 12px; background: #FFFBEB; border: 1px solid #FDE68A; box-shadow: 0 2px 8px rgba(217,119,6,0.08); display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 12px; box-sizing: border-box;"
                 >
-                    <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                    <div class="ims-ftth-subbar-info" style="display: flex; align-items: center; gap: 10px; min-width: 0;">
                         <div style="display: inline-flex; align-items: center; gap: 6px; background: #D97706; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.3px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(217,119,6,0.3);">
                             <span>📸 CUPLIKAN PETA (SNIP)</span>
                         </div>
@@ -1918,15 +2142,17 @@
                             Klik & tarik mouse di atas peta untuk membuat area screenshot. Lepaskan mouse untuk memotret.
                         </div>
                     </div>
-                    <button 
-                        type="button" 
-                        @click="setMode('select')" 
-                        style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; flex-shrink: 0;"
-                        onmouseover="this.style.background='#DC2626'; this.style.color='#ffffff'; this.style.borderColor='#DC2626';"
-                        onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'; this.style.borderColor='#FECACA';"
-                    >
-                        ✕ Batalkan Snip
-                    </button>
+                    <div class="ims-ftth-subbar-actions">
+                        <button 
+                            type="button" 
+                            @click="setMode('select')" 
+                            style="height: 30px; padding: 0 12px; border-radius: 8px; font-size: 0.74rem; font-weight: 800; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; cursor: pointer; flex-shrink: 0;"
+                            onmouseover="this.style.background='#DC2626'; this.style.color='#ffffff'; this.style.borderColor='#DC2626';"
+                            onmouseout="this.style.background='#FEE2E2'; this.style.color='#DC2626'; this.style.borderColor='#FECACA';"
+                        >
+                            ✕ Batalkan Snip
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -2460,8 +2686,8 @@
             </div>
 
             {{-- Legend Footer --}}
-            <div style="padding: 0.55rem 1.25rem; background: #F8FAFC; border-top: 1px solid #E2E8F0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.72rem; color: #475569; flex-shrink: 0;">
-                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px;">
+            <div class="ims-ftth-legend-footer" style="padding: 0.55rem 1.25rem; background: #F8FAFC; border-top: 1px solid #E2E8F0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.72rem; color: #475569; flex-shrink: 0;">
+                <div class="ims-ftth-legend-items" style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px;">
                     <span style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
                         <span style="width: 12px; height: 12px; border-radius: 50%; background: #0878E5; border: 1.5px solid #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); display: inline-block;"></span>
                         <span style="color: #0F172A;">ODP Database</span>
@@ -2499,7 +2725,7 @@
                         <span style="color: #92400E;">Dropcore</span>
                     </span>
                 </div>
-                <span style="color: #64748B; font-weight: 600;">
+                <span class="ims-ftth-legend-tips" style="color: #64748B; font-weight: 600;">
                     💡 Tips: Klik pada penanda di peta untuk melihat detail atau menghapusnya.
                 </span>
             </div>
