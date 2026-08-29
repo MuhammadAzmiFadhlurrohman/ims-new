@@ -282,11 +282,26 @@ class TicketResource extends Resource
                             ->label('Catatan Perbaikan / Konfirmasi Password'),
                     ])
                     ->action(function (Ticket $record, array $data) {
-                        $record->update([
+                        $updateData = [
                             'status' => $data['status'],
                             'assigned_technician' => $data['assigned_technician'],
                             'resolution_notes' => $data['resolution_notes'] ?? null,
-                        ]);
+                        ];
+
+                        if (in_array($data['status'], ['RESOLVED', 'CLOSED'])) {
+                            $updateData['resolved_at'] = now();
+
+                            // Also sync any matching PackageMutation if ticket is Ubah Layanan / Mutasi
+                            \App\Models\PackageMutation::where('internet_number', $record->internet_number)
+                                ->whereIn('status', ['Request', 'PENDING', 'Draft', ''])
+                                ->update([
+                                    'status' => 'Closed',
+                                    'closed_at' => now(),
+                                    'closing_note' => $data['resolution_notes'] ?? ('Diselesaikan via tiket #' . $record->ticket_number),
+                                ]);
+                        }
+
+                        $record->update($updateData);
 
                         Notification::make()
                             ->title('Tiket Berhasil Diperbarui')

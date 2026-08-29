@@ -16,4 +16,12 @@ class EditTicket extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if (in_array($data['status'] ?? '', ['RESOLVED', 'CLOSED']) && empty($data['resolved_at'])) {
+            $data['resolved_at'] = now();
+        }
+        return $data;
+    }
 }

@@ -311,6 +311,23 @@ class CustomerPortalController extends Controller
             'resolution_notes' => 'Tiket sedang dalam antrean verifikasi tim teknisi NOC.',
         ]);
 
+        if ($category === 'REQ_UPGRADE_DOWNGRADE') {
+            $rawPkg = $request->input('target_package', '');
+            $targetPkgModel = \App\Models\BandwidthPackage::where('code', $rawPkg)
+                ->orWhere('name', $rawPkg)
+                ->orWhere('name', 'like', "%{$rawPkg}%")
+                ->first();
+
+            \App\Models\PackageMutation::create([
+                'internet_number' => $subscription->internet_number,
+                'old_package_code' => $subscription->package_code,
+                'new_package_code' => $targetPkgModel?->code ?? $subscription->package_code,
+                'status' => 'Request',
+                'requested_at' => now(),
+                'notes' => $desc,
+            ]);
+        }
+
         return redirect()->route('customer.portal')->with('ticket_created', [
             'ticket_no' => $ticketNo,
             'category' => $category,
