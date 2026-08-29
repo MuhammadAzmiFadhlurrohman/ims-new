@@ -900,6 +900,51 @@
                 flex-shrink: 0 !important;
             }
             /* ══════════════════════════════════════════════════════════════
+               ── TOP GIS TOOLBAR SCROLLABLE HORIZONTAL BAR ──
+               ══════════════════════════════════════════════════════════════ */
+            .ims-ftth-toolbar-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow-x: auto !important;
+                overflow-y: visible !important;
+                -webkit-overflow-scrolling: touch !important;
+                padding: 0.55rem 0.85rem !important;
+                background: #ffffff !important;
+                border-bottom: 1px solid #e2e8f0 !important;
+                border-radius: 16px 16px 0 0 !important;
+                position: relative !important;
+                z-index: 10000 !important;
+                box-sizing: border-box !important;
+                scrollbar-width: thin !important;
+                scrollbar-color: #CBD5E1 #F8FAFC !important;
+            }
+            .ims-ftth-toolbar-container::-webkit-scrollbar {
+                height: 4px !important;
+                display: block !important;
+            }
+            .ims-ftth-toolbar-container::-webkit-scrollbar-track {
+                background: #F1F5F9 !important;
+                border-radius: 4px !important;
+            }
+            .ims-ftth-toolbar-container::-webkit-scrollbar-thumb {
+                background: #CBD5E1 !important;
+                border-radius: 4px !important;
+            }
+            .ims-ftth-toolbar-container::-webkit-scrollbar-thumb:hover {
+                background: #94A3B8 !important;
+            }
+            .ims-ftth-toolbar-inner {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                gap: 8px !important;
+                width: max-content !important;
+                min-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            /* ══════════════════════════════════════════════════════════════
                ── RESPONSIVE MOBILE GIS MAP OPTIMIZATION (< 1024px) ──
                ══════════════════════════════════════════════════════════════ */
             @media (max-width: 1023px) {
@@ -962,23 +1007,22 @@
                     padding: 0.45rem 0.6rem !important;
                     overflow-x: auto !important;
                     -webkit-overflow-scrolling: touch !important;
-                    scrollbar-width: none !important;
-                }
-                .ims-ftth-toolbar-container::-webkit-scrollbar {
-                    display: none !important;
+                    scrollbar-width: thin !important;
                 }
                 .ims-ftth-toolbar-inner {
                     display: flex !important;
                     flex-wrap: nowrap !important;
                     align-items: center !important;
                     gap: 6px !important;
-                    min-width: max-content !important;
+                    width: max-content !important;
+                    min-width: 100% !important;
                 }
                 .ims-tool-btn {
                     padding: 6px 10px !important;
                     font-size: 11px !important;
                     height: 33px !important;
                     border-radius: 8px !important;
+                    flex-shrink: 0 !important;
                 }
 
                 /* 3. Popups & Dropdown Menus */
@@ -1171,12 +1215,12 @@
             id="ims-ftth-map-card-root"
             class="ims-map-card" 
             :class="isFullscreen ? 'is-fullscreen' : ''"
-            style="overflow: visible !important; position: relative; z-index: 1;"
+            style="position: relative; z-index: 1; max-width: 100%; overflow: hidden;"
         >
             
-            {{-- Toolbar Top Header: 100% Single Row & Unclipped Overflows (No Staggering / Sejajar) --}}
-            <div class="ims-ftth-toolbar-container" style="padding: 0.55rem 0.85rem; background: #ffffff; border-bottom: 1px solid #e2e8f0; border-radius: 16px 16px 0 0; position: relative; z-index: 10000; overflow: visible !important;">
-                <div class="ims-ftth-toolbar-inner" style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; width: 100%;">
+            {{-- Toolbar Top Header: 100% Horizontally Scrollable Bar --}}
+            <div class="ims-ftth-toolbar-container">
+                <div class="ims-ftth-toolbar-inner">
                     
                     {{-- 1. Project Selector --}}
                     <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
@@ -1695,7 +1739,7 @@
                     </div>
 
                     {{-- 3. Live Universal GIS Search Bar with Geocoding --}}
-                    <div style="position: relative; flex: 1 1 170px; min-width: 130px; max-width: 240px; flex-shrink: 1;">
+                    <div style="position: relative; width: 190px; min-width: 160px; max-width: 220px; flex-shrink: 0;">
                         <div class="ims-search-box-container">
                             <div class="ims-search-box-icon">
                                 <template x-if="!isGeocodingLoading">
