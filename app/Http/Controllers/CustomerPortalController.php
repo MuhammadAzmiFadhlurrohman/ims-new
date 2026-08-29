@@ -50,8 +50,8 @@ class CustomerPortalController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $activeTickets = $tickets->where('status', '!=', 'RESOLVED');
-        $resolvedTickets = $tickets->where('status', 'RESOLVED');
+        $activeTickets = $tickets->whereNotIn('status', ['RESOLVED', 'CLOSED', 'SELESAI', 'Resolved', 'Closed']);
+        $resolvedTickets = $tickets->whereIn('status', ['RESOLVED', 'CLOSED', 'SELESAI', 'Resolved', 'Closed']);
 
         // Customer Invoices
         $invoices = MonthlyInvoice::where('internet_number', $subscription->internet_number)

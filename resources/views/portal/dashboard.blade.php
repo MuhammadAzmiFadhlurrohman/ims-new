@@ -989,8 +989,8 @@
                                     <div class="flex items-center gap-2.5 flex-wrap">
                                         <strong class="font-mono text-xs sm:text-sm font-black text-brand">{{ $tkt->ticket_number }}</strong>
                                         <span class="px-3 py-1 rounded-full text-[10.5px] font-extrabold uppercase backdrop-blur-md
-                                            {{ $tkt->status === 'RESOLVED' ? 'bg-emerald-500/15 text-emerald-800 border border-emerald-400/60' : ($tkt->status === 'IN_PROGRESS' ? 'bg-sky-500/15 text-sky-800 border border-sky-400/60' : 'bg-amber-500/15 text-amber-800 border border-amber-400/60') }}">
-                                            {{ $tkt->status === 'RESOLVED' ? '✓ Selesai' : ($tkt->status === 'IN_PROGRESS' ? 'Diproses Teknisi' : 'Tiket Diterima') }}
+                                            {{ in_array($tkt->status, ['RESOLVED', 'CLOSED', 'SELESAI', 'Resolved', 'Closed', 'Selesai']) ? 'bg-emerald-500/15 text-emerald-800 border border-emerald-400/60' : (in_array($tkt->status, ['IN_PROGRESS', 'ASSIGNED', 'KONFIRMASI PENANGANAN', 'Proses', 'In Progress']) ? 'bg-sky-500/15 text-sky-800 border border-sky-400/60' : 'bg-amber-500/15 text-amber-800 border border-amber-400/60') }}">
+                                            {{ in_array($tkt->status, ['RESOLVED', 'CLOSED', 'SELESAI', 'Resolved', 'Closed', 'Selesai']) ? '✓ Selesai' : (in_array($tkt->status, ['IN_PROGRESS', 'ASSIGNED', 'KONFIRMASI PENANGANAN', 'Proses', 'In Progress']) ? 'Diproses Teknisi' : 'Tiket Diterima') }}
                                         </span>
                                         <span class="text-[11px] text-slate-500 font-medium">📅 {{ $tkt->created_at->format('d M Y, H:i') }} WIB</span>
                                     </div>

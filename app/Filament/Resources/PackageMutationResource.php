@@ -493,12 +493,18 @@ class PackageMutationResource extends Resource
 
                         // 3. Resolve ticket terkait
                         Ticket::where('internet_number', $record->internet_number)
-                            ->where('category', 'UBAH_LAYANAN')
-                            ->where('status', 'OPEN')
+                            ->where(function($q) {
+                                $q->where('category', 'UBAH_LAYANAN')
+                                  ->orWhere('category', 'REQ_UPGRADE_DOWNGRADE')
+                                  ->orWhere('category', 'MUTASI')
+                                  ->orWhere('description', 'like', '%Ubah Paket%');
+                            })
+                            ->whereNotIn('status', ['RESOLVED', 'CLOSED', 'SELESAI'])
                             ->update([
                                 'status' => 'RESOLVED',
                                 'resolved_at' => now(),
-                                'resolution_notes' => "Closed & Bandwidth diubah ke {$record->new_package_code} oleh " . (auth()->user()?->name ?? 'NOC'),
+                                'assigned_technician' => auth()->user()?->name ?? 'Staff NOC',
+                                'resolution_notes' => "Closed & Paket berhasil dimutasi ke {$record->new_package_code} oleh " . (auth()->user()?->name ?? 'NOC'),
                             ]);
 
                         Notification::make()
