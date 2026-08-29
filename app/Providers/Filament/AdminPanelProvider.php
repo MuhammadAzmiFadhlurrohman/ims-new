@@ -78,6 +78,10 @@ class AdminPanelProvider extends PanelProvider
                 fn () => view('filament.components.sidebar-footer')
             )
             ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn () => view('filament.components.live-sound-notifier')
+            )
+            ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn () => Blade::render('<style>{!! file_get_contents(resource_path("css/filament/admin/theme.css")) !!}</style>')
             )

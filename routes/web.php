@@ -89,6 +89,90 @@ Route::post('/portal/ticket', [\App\Http\Controllers\CustomerPortalController::c
     ->name('customer.ticket.submit');
 
 Route::middleware(['web', 'auth'])->group(function () {
+    // ── Live Notification & Chime Telemetry API ──
+    Route::get('/admin/api/live-events', function (Request $request) {
+        $since = $request->query('since');
+        $initial = $request->boolean('initial', false);
+        $currentTime = now()->toISOString();
+
+        if ($initial || !$since) {
+            return response()->json([
+                'timestamp' => $currentTime,
+                'events' => [],
+            ]);
+        }
+
+        try {
+            $sinceDate = \Carbon\Carbon::parse($since);
+        } catch (\Throwable $e) {
+            $sinceDate = now()->subMinutes(1);
+        }
+
+        $events = [];
+
+        // 1. New Incoming Tickets
+        $newTickets = \App\Models\Ticket::where('created_at', '>', $sinceDate)
+            ->orderByDesc('created_at')
+            ->take(5)
+            ->get();
+
+        foreach ($newTickets as $t) {
+            $customerName = $t->subscription?->customer_name ?? 'Pelanggan';
+            $events[] = [
+                'id' => 'ticket_' . $t->ticket_number . '_' . $t->updated_at?->timestamp,
+                'type' => 'ticket',
+                'category' => 'TIKET MASUK',
+                'title' => '🎫 Tiket Pengaduan Baru!',
+                'message' => "#{$t->ticket_number} - {$customerName}: " . \Illuminate\Support\Str::limit($t->issue_description ?? $t->subject ?? 'Pengaduan Layanan', 50),
+                'url' => url('/admin/tickets'),
+                'time' => $t->created_at?->format('H:i:s') ?? now()->format('H:i:s'),
+            ];
+        }
+
+        // 2. New Customer Registrations (Pipeline)
+        $newRegistrations = \App\Models\CustomerSubscription::where('created_at', '>', $sinceDate)
+            ->whereNotIn('registration_status', ['20', 'LIVE', 'live', 'aktif', 'Aktif'])
+            ->orderByDesc('created_at')
+            ->take(5)
+            ->get();
+
+        foreach ($newRegistrations as $reg) {
+            $area = $reg->area_name ?: ($reg->city ?: 'FTTH Network');
+            $events[] = [
+                'id' => 'reg_' . $reg->id . '_' . ($reg->updated_at ? $reg->updated_at->timestamp : time()),
+                'type' => 'registration',
+                'category' => 'PENDAFTARAN BARU',
+                'title' => '📋 Pendaftaran Baru!',
+                'message' => $reg->customer_name . ' (' . $area . ')',
+                'url' => url('/admin/installation-pipelines'),
+                'time' => $reg->created_at ? $reg->created_at->format('H:i:s') : now()->format('H:i:s'),
+            ];
+        }
+
+        // 3. New Package Mutations (Up/Downgrade)
+        $newMutations = \App\Models\PackageMutation::where('created_at', '>', $sinceDate)
+            ->orderByDesc('created_at')
+            ->take(5)
+            ->get();
+
+        foreach ($newMutations as $mut) {
+            $events[] = [
+                'id' => 'mutation_' . $mut->id . '_' . $mut->updated_at?->timestamp,
+                'type' => 'mutation',
+                'category' => 'MUTASI PAKET',
+                'title' => '⚡ Mutasi Paket (Up/Downgrade)!',
+                'message' => "CID {$mut->internet_number}: {$mut->old_package_code} ➔ {$mut->new_package_code}",
+                'url' => url('/admin/package-mutations'),
+                'time' => $mut->created_at?->format('H:i:s') ?? now()->format('H:i:s'),
+            ];
+        }
+
+        return response()->json([
+            'timestamp' => $currentTime,
+            'events' => $events,
+        ]);
+    });
+
     Route::post('/admin/update-status-type', function (Request $request) {
         $request->validate([
             'key' => 'required',
